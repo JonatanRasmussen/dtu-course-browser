@@ -215,7 +215,7 @@
                     <td class="align-top">
                       <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" name="reporthandin" value="exam_type" id="exam_type3">
-                        <label class="form-check-label" for="exam_type3">📑Exam project</label>
+                        <label class="form-check-label" for="exam_type3">📑No exam</label>
                       </div>
                     </td>
                   </tr>
@@ -1163,7 +1163,7 @@
   <!-- Start of outer loop -->
   {% for category in dicts_to_display.list_of_dicts %}
 
-  <h1 class="display-5">Featured list: {{category}}</h1>
+  <h1 class="display-5">{{category}}</h1>
   <br>
   <p class="lead">Pro-tip: Click on a card to see detailed course statistics!</p>
   <br>
@@ -1271,6 +1271,9 @@
   <!-- End of outer loop -->
   {% endfor %}
 
+  <a href="https://dtucourseanalyzer.pythonanywhere.com/faq" style="font-size: 20px" target="_blank">If you're unsure about where to go from here, check out the FAQ page!</a>
+  <br><br><br><br>
+
   <!-- Modal -->
   <div class="modal fade" id="modal_search_filter" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -1337,7 +1340,7 @@
 
   <!-- Start of end of page -->
   <p><a href="#">Return to top of page</a></p>
-  <small class="fs-6 text-muted">Last updated: 03/06/2024</small>
+  <small class="fs-6 text-muted">Last updated: 11/07/2024</small>
   <br><br><br><br>
   <!-- End of end of page -->
 

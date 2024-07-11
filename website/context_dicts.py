@@ -73,15 +73,20 @@ def turn_set_into_lst_and_sort(set_of_courses_to_display, url_args):
         return get_arranged_lst(arrange_order, set_of_courses_to_display, url_args)
 
 def dicts_to_display():
-    return {'list_of_dicts': ['Jonatan Rasmussens passed courses: Programming, Data and Network',
-                              'Jonatan Rasmussens passed courses: Polytechnical Foundation',
-                              'Jonatan Rasmussens passed courses: Electives & Other']}
+    return {'list_of_dicts': ['Course sample']}
 
 def get_name_of_list(name_of_list):
     return {'list_of_dicts': [name_of_list]}
 
-def course_lists():
+def course_lists(): # Add dict name to dicts_to_display()
     return {
+        'Course sample': [
+            "02105", "02003", "02323", "02476", "34126", "02180", "42500", "01017",
+            "63852", "02450", "38106", "02402", "01901", "42620", "42893", "02393",
+            "62999", "27020", "01001", "34366", "02502", "25102", "02456", "01005",
+        ]
+    }
+    """ return {
         'Jonatan Rasmussens passed courses: Programming, Data and Network': [
             '02393', '02476', '02561', '02180', '02806', '02161', '34346',
             '34210', '34331', '34333', '34334', '02105', '01017', '02502',
@@ -94,7 +99,7 @@ def course_lists():
         'Jonatan Rasmussens passed courses: Electives & Other': [
             '63851', '38106', '42009', '10610', '10603', '41011', '41012'
         ]
-    }
+    } """
 
 def data():
     dct = { WebsiteConsts.name: name(),

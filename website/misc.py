@@ -7,12 +7,17 @@ from website.context_dicts import get_filter_dct
 
 misc = Blueprint('misc', __name__)
 
+@misc.route('/faq')
+def faq():
+    return render_template("faq.html")
+
+
 @misc.route('/test')
 def test():
     filter_dct = get_filter_dct()
-    for catagory in filter_dct:
-        for value in filter_dct[catagory]:
-            print(f'browse?{value}={catagory}')
+    #for catagory in filter_dct:
+    #    for value in filter_dct[catagory]:
+    #        print(f'browse?{value}={catagory}')
     return render_template("test.html")
 
 @misc.route('/wip')
