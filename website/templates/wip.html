@@ -1,0 +1,980 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block
+    content %}
+    <!-- Start of main title  -->
+    <br>
+    <br>
+    <h1>Experimenting with the layout and design (13-01-22)</h1>
+    <!-- End of main title -->
+
+
+    <!-- Start of modal -->
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal_search_filter">
+      Launch demo modal
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modal_search_filter" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Course filters:</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <h5>Popover in a modal</h5>
+            <p>This <a href="#" role="button" class="btn btn-secondary popover-test" title="Popover title"
+                data-content="Popover body content is set in this attribute.">button</a> triggers a popover on click.</p>
+            <hr>
+            <!-- Start of language checkbox -->
+            <b>Language:     </b>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" id="language_checkbox_01" value="option1" checked>
+              <label class="form-check-label" for="language_checkbox_01">Danish</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" id="language_checkbox_02" value="option2" checked>
+              <label class="form-check-label" for="language_checkbox_02">English</label>
+            </div>
+            <!-- End of search checkboxes -->
+            <hr>
+            <!-- Start of course type checkbox -->
+            <b>Course type:     </b>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" id="course_type_checkbox_01" value="option1" checked>
+              <label class="form-check-label" for="course_type_checkbox_01">BSc</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" id="course_type_checkbox_02" value="option2" checked>
+              <label class="form-check-label" for="course_type_checkbox_02">MSc</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" id="course_type_checkbox_03" value="option3">
+              <label class="form-check-label" for="course_type_checkbox_03">Ph.D.</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" id="course_type_checkbox_04" value="option4">
+              <label class="form-check-label" for="course_type_checkbox_04">BEng</label>
+            </div>
+            <!-- End of course type checkboxes -->
+            <hr>
+            <!-- Start of popup on click -->
+            <hr>
+            <h5>Tooltips in a modal</h5>
+            <p><a href="#" class="tooltip-test" title="Tooltip">This link</a> and <a href="#" class="tooltip-test"
+                title="Tooltip">that link</a> have tooltips on hover.</p>
+            <!-- End of popup on click -->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End of modal -->
+
+
+
+    <!-- Start of carousel -->
+    <section class="pt-5 pb-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-6">
+            <h3 class="mb-3">Carousel cards title </h3>
+          </div>
+          <div class="col-6 text-right">
+            <a class="btn btn-primary mb-3 mr-1" href="#carouselExampleIndicators2" role="button" data-slide="prev">
+              <i class="fa fa-arrow-left"></i>
+            </a>
+            <a class="btn btn-primary mb-3 " href="#carouselExampleIndicators2" role="button" data-slide="next">
+              <i class="fa fa-arrow-right"></i>
+            </a>
+          </div>
+          <div class="col-12">
+            <div id="carouselExampleIndicators2" class="carousel slide" data-ride="carousel" data-interval="false">
+
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <div class="row">
+
+                    <div class="col-md-4 mb-3 ">
+                      <div class="card" style="max-width: 10rem">
+                        <img class="img" alt="100%x280"
+                          src="https://www.dtubasen.dtu.dk/showimage.aspx?id=1968" width="100%">
+                        <div class="card-body">
+                          <h4 class="card-title">Special title treatment</h4>
+                          <div class="card-body">
+                            <h4 class="mb-2 text-truncate-line-2 "><a href="pages/course-single.html"
+                                class="text-inherit">01005 Mat
+                                1</a></h4>
+                            <!-- List -->
+                            <ul class="mb-3 list-inline">
+                              <li class="list-inline-item"></i>⏱️ 2h 30m</li>
+                              <li class="list-inline-item">
+                                <svg class="me-1 mt-n1" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                  xmlns="http://www.w3.org/2000/svg">
+                                  <rect x="3" y="8" width="2" height="6" rx="1" fill="#754FFE"></rect>
+                                  <rect x="7" y="5" width="2" height="9" rx="1" fill="#754FFE"></rect>
+                                  <rect x="11" y="2" width="2" height="12" rx="1" fill="#DBD8E9"></rect>
+                                </svg> Easy
+                              </li>
+                            </ul>
+                            <div class="lh-1">
+                              <span>
+                                <li class="list-inline-item"></i>⭐⭐⭐⭐⭐</li>
+                              </span>
+                              <span class="text-warning">4.5</span>
+                              <span class="fs-6 text-muted">(13,245)</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                      <div class="card">
+                        <img class="img-fluid" alt="100%x280"
+                          src="https://images.unsplash.com/photo-1517760444937-f6397edcbbcd?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjMyMDc0fQ&amp;s=42b2d9ae6feb9c4ff98b9133addfb698">
+                        <div class="card-body">
+                          <h4 class="card-title">Special title treatment</h4>
+                          <p class="card-text">With supporting text below as a natural lead-in to
+                            additional content.</p>
+
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div class="col-md-4 mb-3">
+                      <div class="card">
+                        <img class="img-fluid" alt="100%x280"
+                          src="https://images.unsplash.com/photo-1532712938310-34cb3982ef74?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjMyMDc0fQ&amp;s=3d2e8a2039c06dd26db977fe6ac6186a">
+                        <div class="card-body">
+                          <h4 class="card-title">Special title treatment</h4>
+                          <p class="card-text">With supporting text below as a natural lead-in to
+                            additional content.</p>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+                <div class="carousel-item">
+                  <div class="row">
+
+                    <div class="col-md-4 mb-3">
+                      <div class="card">
+                        <img class="img-fluid" alt="100%x280"
+                          src="https://images.unsplash.com/photo-1532771098148-525cefe10c23?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjMyMDc0fQ&amp;s=3f317c1f7a16116dec454fbc267dd8e4">
+                        <div class="card-body">
+                          <h4 class="card-title">Special title treatment</h4>
+                          <p class="card-text">With supporting text below as a natural lead-in to
+                            additional content.</p>
+
+                        </div>
+
+                      </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                      <div class="card">
+                        <img class="img-fluid" alt="100%x280"
+                          src="https://images.unsplash.com/photo-1532715088550-62f09305f765?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjMyMDc0fQ&amp;s=ebadb044b374504ef8e81bdec4d0e840">
+                        <div class="card-body">
+                          <h4 class="card-title">Special title treatment</h4>
+                          <p class="card-text">With supporting text below as a natural lead-in to
+                            additional content.</p>
+
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                      <div class="card">
+                        <img class="img-fluid" alt="100%x280"
+                          src="https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjMyMDc0fQ&amp;s=0754ab085804ae8a3b562548e6b4aa2e">
+                        <div class="card-body">
+                          <h4 class="card-title">Special title treatment</h4>
+                          <p class="card-text">With supporting text below as a natural lead-in to
+                            additional content.</p>
+
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="carousel-item">
+                  <div class="row">
+
+                    <div class="col-md-4 mb-3">
+                      <div class="card">
+                        <img class="img-fluid" alt="100%x280"
+                          src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjMyMDc0fQ&amp;s=ee8417f0ea2a50d53a12665820b54e23">
+                        <div class="card-body">
+                          <h4 class="card-title">Special title treatment</h4>
+                          <p class="card-text">With supporting text below as a natural lead-in to
+                            additional content.</p>
+
+                        </div>
+
+                      </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                      <div class="card">
+                        <img class="img-fluid" alt="100%x280"
+                          src="https://images.unsplash.com/photo-1532777946373-b6783242f211?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjMyMDc0fQ&amp;s=8ac55cf3a68785643998730839663129">
+                        <div class="card-body">
+                          <h4 class="card-title">Special title treatment</h4>
+                          <p class="card-text">With supporting text below as a natural lead-in to
+                            additional content.</p>
+
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                      <div class="card">
+                        <img class="img-fluid" alt="100%x280"
+                          src="https://images.unsplash.com/photo-1532763303805-529d595877c5?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjMyMDc0fQ&amp;s=5ee4fd5d19b40f93eadb21871757eda6">
+                        <div class="card-body">
+                          <h4 class="card-title">Special title treatment</h4>
+                          <p class="card-text">With supporting text below as a natural lead-in to
+                            additional content.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End of carousel -->
+
+    <!-- Start of carousel -->
+    <section class="pt-5 pb-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-6 text-left">
+            <a class="btn btn-primary mb-3 mr-1" href="#carouselResponsible" role="button" data-slide="prev">
+              <i class="fa fa-arrow-left"></i>
+            </a>
+            <a class="btn btn-primary mb-3 " href="#carouselResponsible" role="button" data-slide="next">
+              <i class="fa fa-arrow-right"></i>
+            </a>
+          </div>
+          <div class="col-12">
+            <div id="carouselResponsible" class="carousel slide" data-ride="carousel" data-interval="false">
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <div class="row">
+                    <div class="col-md-4 mb-3">
+                      <div class="card">
+                        <img class="img-fluid" alt="100%x280"
+                          src="https://images.unsplash.com/photo-1517760444937-f6397edcbbcd?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjMyMDc0fQ&amp;s=42b2d9ae6feb9c4ff98b9133addfb698">
+                        <div class="card-body">
+                          <h4 class="card-title">Special title treatment</h4>
+                          <p class="card-text">With supporting text below as a natural lead-in to
+                            additional content.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End of carousel -->
+
+    <br>
+
+    <table class="table table-sm">
+      <thead>
+        <tr>
+          <th style="width: 3%" scope="row">🎓</th>
+          <td class="align-top">BSc</td>
+          <td style="width: 3%" >🕗</th>
+          <td class="align-top">Tues 8-12</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">🎓</th>
+          <td class="align-top">BSc</td>
+          <td>📚</th>
+          <td class="align-top">Tues 8-12</td>
+        </tr>
+        <tr>
+          <th scope="row">🎓</th>
+          <td class="align-top">BSc</td>
+          <td>🕗</th>
+          <td class="align-top">Tues 8-12</td>
+        </tr>
+        <tr>
+          <th scope="row">🎓</th>
+          <td class="align-top">BSc</td>
+          <td>🕗</th>
+          <td class="align-top">Tues 8-12</td>
+        </tr>
+        <tr>
+          <th scope="row">🎓</th>
+          <td class="align-top">BSc</td>
+          <td>🕗</th>
+          <td class="align-top">Tues 8-12</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Start of card list -->
+    <section class="row row-cols-1 row-cols-xxl-3 g-4">
+      <div class="col">
+        <div class="card" style="max-width: 26rem">
+          <img src="{{ url_for('static', filename='assets/colors/purple.png') }}" width="100%" height="20"
+            class="d-inline-block align-top" alt="red-color" loading="lazy"
+            style="filter: invert(0) grayscale(0%) brightness(100%)" />
+          <div class="card-body">
+            <h5 class="card-title">Introduktion til indledende matematik ½</h5>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <!-- Start of basic info table -->
+                <table class="table table-sm table-borderless mb-0 px-0">
+                  <tbody>
+                    <tr>
+                      <th style="width: 7%" scope="row"></th>
+                      <td style="width: 8%" class="align-top"></td>
+                      <td style="width: 13%" class="align-top"></td>
+                      <th style="width: 7%" class="align-top"></th>
+                      <td style="width: 26%" class="align-top"></td>
+                      <td style="width: 4%" class="align-top"></td>
+                      <td style="width: 7%" class="align-top"></td>
+                      <td style="width: 28%" class="align-top"></td>
+                    </tr>
+                    <tr>
+                      <th scope="row" colspan="5">
+                        <hr class="bg-secondary border-2 border-top border-secondary mb-0 mt-0">
+                      </th>
+                      <th></th>
+                      <td colspan="2" rowspan="6">
+                        <img class="img" alt="100%x280"src="https://www.dtubasen.dtu.dk/showimage.aspx?id=1968" height="143" width="auto">
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">🎓</th>
+                      <td class="align-top" colspan="2">BSc</td>
+                      <th>🕗</th>
+                      <td class="align-top" colspan="2">Tues 8-12</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">🏅</th>
+                      <td class="align-top" colspan="2">20 pts</td>
+                      <th>📚</th>
+                      <td class="align-top" colspan="2">Oral exam</td>
+                    </tr>
+                    <tr>
+                      <th scope="row" colspan="5">
+                        <hr class="bg-secondary border-2 border-top border-secondary mb-0 mt-0">
+                      </th>
+                      <th></th>
+                    </tr>
+                    <tr>
+                      <th class="align-middle" scope="row">😰</th>
+                      <td class="align-middle">4.3 </td>
+                      <td class="align-middle" colspan="4"><img src="{{ url_for('static', filename='assets/ratings/' ~ '8' ~ '-skull.png') }}" height="26"></td>
+                    </tr>
+                    <tr>
+                      <th class="align-middle" scope="row">💡</th>
+                      <td class="align-middle">3.9 </td>
+                      <td class="align-middle" colspan="4"><img src="{{ url_for('static', filename='assets/ratings/' ~ '7' ~ '-star.png') }}" height="26"></td>
+                    </tr>
+                    <tr>
+                      <th class="align-middle" scope="row">🔥</th>
+                      <td class="align-middle">3.3 </td>
+                      <td class="align-middle" colspan="4"><img src="{{ url_for('static', filename='assets/ratings/' ~ '6' ~ '-star.png') }}" height="26"></td>
+                      <td class="align-middle" scope="row">✍️</td>
+                      <td class="align-middle" scope="row">10.1 GPA</td>
+                    </tr>
+                    <tr>
+                      <th class="align-middle" scope="row">👩🏻‍🏫</th>
+                      <td class="align-middle">3.3 </td>
+                      <td class="align-middle" colspan="4"><img src="{{ url_for('static', filename='assets/ratings/' ~ '6' ~ '-star.png') }}" height="26"></td>
+                      <td class="align-middle" scope="row">🍺</td>
+                      <td class="align-middle" scope="row">9% failed</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <!-- End of basic info table -->
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card" style="max-width: 26rem">
+          <img src="{{ url_for('static', filename='assets/colors/orange.png') }}" width="100%" height="20"
+            class="d-inline-block align-top" alt="red-color" loading="lazy"
+            style="filter: invert(0) grayscale(0%) brightness(100%)" />
+          <div class="card-body">
+            <h5 class="card-title">Introduktion til indledende matematik ½</h5>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <!-- Start of basic info table -->
+                <table class="table table-sm table-borderless mb-0 px-0">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <table class="table table-sm table-borderless mb-0 px-0">
+                          <tbody>
+                            <tr>
+                              <th scope="row"></th>
+                              <td class="align-top"></td>
+                              <td class="align-top"></td>
+                              <th class="align-top"></th>
+                              <td class="align-top"></td>
+                            </tr>
+                            <tr>
+                              <th scope="row" colspan="5">
+                                <hr class="bg-secondary border-2 border-top border-secondary mb-0 mt-0">
+                              </th>
+                              <th></th>
+                            </tr>
+                            <tr>
+                              <th scope="row">🎓</th>
+                              <td class="align-top" colspan="2">BSc/MSc</td>
+                              <th>🕗</th>
+                              <td class="align-top">Tues 8-12</td>
+                            </tr>
+                            <tr>
+                              <th scope="row">🏅</th>
+                              <td class="align-top" colspan="2">20 pts</td>
+                              <th>📚</th>
+                              <td class="align-top">Oral exam</td>
+                            </tr>
+                            <tr>
+                              <th scope="row" colspan="5">
+                                <hr class="bg-secondary border-2 border-top border-secondary mb-0 mt-0">
+                              </th>
+                              <th></th>
+                            </tr>
+                            <tr>
+                              <th class="align-middle" scope="row">😰</th>
+                              <td class="align-middle">4.3 </td>
+                              <td class="align-middle" colspan="3"><img src="{{ url_for('static', filename='assets/ratings/' ~ '8' ~ '-skull.png') }}" height="26"></td>
+                            </tr>
+                            <tr>
+                              <th class="align-middle" scope="row">💡</th>
+                              <td class="align-middle">3.9 </td>
+                              <td class="align-middle" colspan="3"><img src="{{ url_for('static', filename='assets/ratings/' ~ '7' ~ '-star.png') }}" height="26"></td>
+                            </tr>
+                            <tr>
+                              <th class="align-middle" scope="row">🔥</th>
+                              <td class="align-middle">3.3 </td>
+                              <td class="align-middle" colspan="3"><img src="{{ url_for('static', filename='assets/ratings/' ~ '6' ~ '-star.png') }}" height="26"></td>
+                            </tr>
+                            <tr>
+                              <th class="align-middle" scope="row">👩🏻‍🏫</th>
+                              <td class="align-middle">3.3 </td>
+                              <td class="align-middle" colspan="3"><img src="{{ url_for('static', filename='assets/ratings/' ~ '6' ~ '-star.png') }}" height="26"></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                      <td style="width: 32.5%" >
+                        <table>
+                          <tbody>
+                            <tr>
+                              <td colspan="2">
+                                <img class="img" alt="100%x280"src="https://www.dtubasen.dtu.dk/showimage.aspx?id=1968" height="143" width="auto">
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>✍️</td>
+                              <td>10.1 GPA</td>
+                            </tr>
+                            <tr>
+                              <td>🍺</td>
+                              <td>9% failed</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <!-- End of basic info table -->
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card" style="max-width: 26rem">
+          <img src="{{ url_for('static', filename='assets/colors/red.png') }}" width="100%" height="20"
+            class="d-inline-block align-top" alt="red-color" loading="lazy"
+            style="filter: invert(0) grayscale(0%) brightness(100%)" />
+          <div class="card-body">
+            <h5 class="card-title">Introduktion til indledende matematik ½</h5>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <!-- Start of basic info table -->
+                <table class="table table-sm table-borderless mb-3">
+                  <tbody>
+                    <tr>
+                      <th style="width: 7%" scope="row"></th>
+                      <td style="width: 8%" class="align-top"></td>
+                      <td style="width: 13%" class="align-top"></td>
+                      <th style="width: 7%" class="align-top"></th>
+                      <td style="width: 26%" class="align-top"></td>
+                      <td style="width: 4%" class="align-top"></td>
+                      <td style="width: 35%" class="align-top"></td>
+                    </tr>
+                    <tr>
+                      <th scope="row" colspan="5">
+                        <hr class="bg-secondary border-2 border-top border-secondary mb-0 mt-0">
+                      </th>
+                      <th></th>
+                      <td rowspan="6">
+                        <img class="img" alt="100%x280"src="https://www.dtubasen.dtu.dk/showimage.aspx?id=1968" width="100%">
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">🎓</th>
+                      <td class="align-top" colspan="2"><small>BSc/MSc</small></td>
+                      <th>🕗</th>
+                      <td class="align-top" colspan="2"><small>Tues 13-17</small></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">🏅</th>
+                      <td class="align-top" colspan="2"><small>7.5 pts</small></td>
+                      <th>📚</th>
+                      <td class="align-top" colspan="2"><small>Written exam</small></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">👩‍🎓</th>
+                      <td class="align-top" colspan="2"><small>1009 ppl</small></td>
+                      <th>📄</th>
+                      <td class="align-top" colspan="2"><small>10.3 <small class="fs-6 text-muted">(6.9% fail)</small></small></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">⭐</th>
+                      <td class="align-top" colspan="2"><small>4.3 stars</small></td>
+                      <th>☠️</th>
+                      <td class="align-top" colspan="2"><small>4.2 workload</small></td>
+                    </tr>
+                    <tr>
+                      <th scope="row" colspan="5">
+                        <hr class="bg-secondary border-2 border-top border-secondary mb-0 mt-0">
+                      </th>
+                      <th></th>
+                    </tr>
+                  </tbody>
+                </table>
+                <!-- End of basic info table -->
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <img src="{{ url_for('static', filename='assets/ratings/' ~ '8' ~ '-star.png') }}" width="100%">
+                      </td>
+                      <td style="width: 7%"></td>
+                      <td>
+                        <img src="{{ url_for('static', filename='assets/ratings/' ~ '7' ~ '-skull.png') }}" width="100%">
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card" style="max-width: 26rem">
+          <img src="{{ url_for('static', filename='assets/colors/red.png') }}" width="100%" height="20"
+            class="d-inline-block align-top" alt="red-color" loading="lazy"
+            style="filter: invert(0) grayscale(0%) brightness(100%)" />
+          <div class="card-body">
+            <h5 class="card-title">Introduktion til indledende matematik ½</h5>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <!-- Start of basic info table -->
+                <table class="table table-sm table-borderless mb-3">
+                  <tbody>
+                    <tr>
+                      <th style="width: 10%" class="align-top" scope="row"></th>
+                      <td style="width: 11%" class="align-top"></td>
+                      <td style="width: 40%" class="align-top"></td>
+                      <td style="width: 4%" class="align-top"></td>
+                      <td style="width: 35%" class="align-top"></td>
+                    </tr>
+                    <tr>
+                      <th scope="row" colspan="3">
+                        <hr class="bg-secondary border-2 border-top border-secondary mb-0 mt-0">
+                      </th>
+                      <th></th>
+                      <td rowspan="6">
+                        <img class="img" alt="100%x280"src="https://www.dtubasen.dtu.dk/showimage.aspx?id=1968" width="100%">
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">🎓</th>
+                      <td class="align-top" colspan="3"><small>BSc/MSc</small></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">🏅</th>
+                      <td class="align-top" colspan="3"><small>7.5 pts</small></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">🕗</th>
+                      <td class="align-top" colspan="3"><small>Tues 13-17</small></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">📄</th>
+                      <td class="align-top" colspan="3"><small>10.3 <small class="fs-6 text-muted">(6.9% fail)</small></small></td>
+                    </tr>
+                    <tr>
+                      <th scope="row" colspan="3">
+                        <hr class="bg-secondary border-2 border-top border-secondary mb-0 mt-0">
+                      </th>
+                      <th></th>
+                    </tr>
+                  </tbody>
+                </table>
+                <!-- End of basic info table -->
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <img src="{{ url_for('static', filename='assets/ratings/' ~ '8' ~ '-star.png') }}" width="100%">
+                      </td>
+                      <td style="width: 7%"></td>
+                      <td>
+                        <img src="{{ url_for('static', filename='assets/ratings/' ~ '7' ~ '-skull.png') }}" width="100%">
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card" style="max-width: 26rem">
+          <img src="{{ url_for('static', filename='assets/colors/red.png') }}" width="100%" height="20"
+            class="d-inline-block align-top" alt="red-color" loading="lazy"
+            style="filter: invert(0) grayscale(0%) brightness(100%)" />
+          <div class="card-body">
+            <h5 class="card-title">Introduktion til indledende matematik</h5>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <!-- Start of basic info table -->
+                <table class="table table-sm table-borderless mb-3 mt-0">
+                  <tbody>
+                    <tr>
+                      <th style="width: 10%" class="align-top" scope="row"></th>
+                      <td style="width: 14%" class="align-top"></td>
+                      <td style="width: 10%" class="align-top"></td>
+                      <td style="width: 14%" class="align-top"></td>
+                      <td style="width: 13%" class="align-top"></td>
+                      <td style="width: 4%" class="align-top"></td>
+                      <td style="width: 35%" class="align-top"></td>
+                    </tr>
+                    <tr>
+                      <th scope="row" colspan="5">
+                        <hr class="bg-secondary border-2 border-top border-secondary mb-0 mt-0">
+                      </th>
+                      <th></th>
+                      <td rowspan="6">
+                        <img class="img" alt="100%x280"src="https://www.dtubasen.dtu.dk/showimage.aspx?id=1968" width="100%">
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">🎓</th>
+                      <td class="align-top" colspan="5">BSc <small class="fs-6 text-muted">(DK)</small></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">📄</th>
+                      <td class="align-top" colspan="5">10.3</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">❌</th>
+                      <td class="align-top">4.5%</td>
+                      <th scope="row"></th>
+                      <td class="align-top"></td>
+                      <td class="align-top" style="text-align: right"><small class="fs-6 text-muted">(207)</small></td>
+                      <td></td>
+                      <tr>
+                        <th scope="row">🕗</th>
+                        <td class="align-top" colspan="5">E5A <small class="fs-6 text-muted">(Tues 13-17)</small></td>
+                      </tr>
+                    </tr>
+                    <tr>
+                      <th scope="row" colspan="5">
+                        <hr class="bg-secondary border-2 border-top border-secondary mb-0 mt-0">
+                      </th>
+                      <th></th>
+                    </tr>
+                  </tbody>
+                </table>
+                <!-- End of basic info table -->
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <img src="{{ url_for('static', filename='assets/ratings/' ~ '8' ~ '-star.png') }}" width="100%">
+                      </td>
+                      <td style="text-align: center; width: 7%"><small><small class="fs-6 text-muted" title="Warning: Low sample size (9 evaluations)">(9)</small></small><br></td></td>
+                      <td>
+                        <img src="{{ url_for('static', filename='assets/ratings/' ~ '7' ~ '-skull.png') }}" width="100%">
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card" style="max-width: 26rem">
+          <img src="{{ url_for('static', filename='assets/colors/red.png') }}" width="100%" height="20"
+            class="d-inline-block align-top" alt="red-color" loading="lazy"
+            style="filter: invert(0) grayscale(0%) brightness(100%)" />
+          <div class="card-body">
+            <h5 class="card-title">Introduktion til indledende matematik</h5>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <!-- Start of basic info table -->
+                <table class="table table-sm table-borderless mb-3 mt-0">
+                  <tbody>
+                    <tr>
+                      <th style="width: 10%" class="align-top" scope="row"></th>
+                      <td style="width: 14%" class="align-top"></td>
+                      <td style="width: 10%" class="align-top"></td>
+                      <td style="width: 14%" class="align-top"></td>
+                      <td style="width: 13%" class="align-top"></td>
+                      <td style="width: 4%" class="align-top"></td>
+                      <td style="width: 35%" class="align-top"></td>
+                    </tr>
+                    <tr>
+                      <th scope="row" colspan="5">
+                        <hr class="bg-secondary border-2 border-top border-secondary mb-0 mt-0">
+                      </th>
+                      <th></th>
+                      <td rowspan="6">
+                        <img class="img" alt="100%x280"src="https://www.dtubasen.dtu.dk/showimage.aspx?id=1968" width="100%">
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">🎓</th>
+                      <td class="align-top" colspan="5">BSc <small class="fs-6 text-muted">(DK)</small></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">👩‍🎓</th>
+                      <td class="align-top" colspan="5">60 students</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">📄</th>
+                      <td class="align-top" colspan="5">9.3 GPA</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">❌</th>
+                      <td class="align-top" colspan="5">4.5% failed</td>
+                    </tr>
+                    <tr>
+                      <th scope="row" colspan="5">
+                        <hr class="bg-secondary border-2 border-top border-secondary mb-0 mt-0">
+                      </th>
+                      <th></th>
+                    </tr>
+                  </tbody>
+                </table>
+                <!-- End of basic info table -->
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <img src="{{ url_for('static', filename='assets/ratings/' ~ '8' ~ '-star.png') }}" width="100%">
+                      </td>
+                      <td style="text-align: center; width: 7%"><small><small class="fs-6 text-muted" title="Warning: Low sample size (9 evaluations)">(9)</small></small><br></td></td>
+                      <td>
+                        <img src="{{ url_for('static', filename='assets/ratings/' ~ '7' ~ '-skull.png') }}" width="100%">
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card" style="max-width: 26rem">
+          <img src="{{ url_for('static', filename='assets/colors/red.png') }}" width="100%" height="20"
+            class="d-inline-block align-top" alt="red-color" loading="lazy"
+            style="filter: invert(0) grayscale(0%) brightness(100%)" />
+          <div class="card-body">
+            <h5 class="card-title">01001 Introduktion til indledende matematik og avanceret matematik</h5>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <!-- Start of basic info table -->
+                <table class="table table-sm table-borderless mb-3 mt-0">
+                  <tbody>
+                    <tr>
+                      <th style="width: 10%" class="align-top" scope="row"></th>
+                      <td style="width: 14%" class="align-top"></td>
+                      <td style="width: 10%" class="align-top"></td>
+                      <td style="width: 14%" class="align-top"></td>
+                      <td style="width: 13%" class="align-top"></td>
+                      <td style="width: 4%" class="align-top"></td>
+                      <td style="width: 35%" class="align-top"></td>
+                    </tr>
+                    <tr>
+                      <th scope="row" colspan="5">
+                        <hr class="bg-secondary border-2 border-top border-secondary mb-0 mt-0">
+                      </th>
+                      <th></th>
+                      <td rowspan="6">
+                        <img class="img" alt="100%x280"src="https://www.dtubasen.dtu.dk/showimage.aspx?id=1968" width="100%">
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">🎓</th>
+                      <td class="align-top" colspan="5">CyberTek <small class="fs-6 text-muted">(BSc)</small></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">👩‍🎓</th>
+                      <td class="align-top" colspan="5">60 students</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">❌</th>
+                      <td class="align-top" colspan="5">4% fail</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">🕗</th>
+                      <td class="align-top" colspan="5">Autumn <small class="fs-6 text-muted">(Tues 13-17)</small></td>
+                    </tr>
+                    <tr>
+                      <th scope="row" colspan="5">
+                        <hr class="bg-secondary border-2 border-top border-secondary mb-0 mt-0">
+                      </th>
+                      <th></th>
+                    </tr>
+                  </tbody>
+                </table>
+                <!-- End of basic info table -->
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <img src="{{ url_for('static', filename='assets/ratings/' ~ '8' ~ '-star.png') }}" width="100%">
+                      </td>
+                      <td style="text-align: center; width: 7%"><small><small class="fs-6 text-muted" title="Warning: Low sample size (9 evaluations)">(9)</small></small><br></td></td>
+                      <td>
+                        <img src="{{ url_for('static', filename='assets/ratings/' ~ '7' ~ '-skull.png') }}" width="100%">
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card" style="max-width: 26rem">
+          <img src="{{ url_for('static', filename='assets/colors/red.png') }}" width="100%" height="20"
+            class="d-inline-block align-top" alt="red-color" loading="lazy"
+            style="filter: invert(0) grayscale(0%) brightness(100%)" />
+          <div class="card-body">
+            <h6 class="card-title mb-0 ml-3 mr-0">01001 Introduktion til indledende matematik og avanceret matematik :)</h6>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <!-- Start of basic info table -->
+                <table class="table table-sm table-borderless mb-3">
+                  <tbody>
+                    <tr>
+                      <th style="width: 7%" scope="row"></th>
+                      <td style="width: 8%" class="align-top"></td>
+                      <td style="width: 13%" class="align-top"></td>
+                      <th style="width: 7%" class="align-top"></th>
+                      <td style="width: 26%" class="align-top"></td>
+                      <td style="width: 4%" class="align-top"></td>
+                      <td style="width: 35%" class="align-top"></td>
+                    </tr>
+                    <tr>
+                      <th scope="row" colspan="5">
+                        <hr class="bg-secondary border-2 border-top border-secondary mb-0 mt-0">
+                      </th>
+                      <th></th>
+                      <td rowspan="6">
+                        <img class="img" alt="100%x280"src="https://www.dtubasen.dtu.dk/showimage.aspx?id=1968" width="100%">
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">🎓</th>
+                      <td class="align-top" colspan="2"><small>BEng <small class="fs-6 text-muted">(DK)</small></small></td>
+                      <th>🕗</th>
+                      <td class="align-top" colspan="2"><small>Spring</small> <img src="{{ url_for('static', filename='assets/schedules/' ~ 'Multi_Unknown' ~ '_schedule.png') }}"></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">🏅</th>
+                      <td class="align-top" colspan="2"><small>7.5 pts</small></td>
+                      <th>📚</th>
+                      <td class="align-top" colspan="2"><small>Oral exam</small></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">👩‍🎓</th>
+                      <td class="align-top" colspan="2"><small>1009 ppl</small></td>
+                      <th>❌</th>
+                      <td class="align-top" colspan="2"><small>10.3 <small class="fs-6 text-muted">(0% fail)</small></small></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">⭐</th>
+                      <td class="align-top" colspan="2"><small>4.3<small class="fs-6 text-danger" title="Warning: Low sample size (9 evaluations)">(!)</small> stars <br></small></td>
+                      <th>☠️</th>
+                      <td class="align-top" colspan="2"><small>4.2 workload</small></td>
+                    </tr>
+                    <tr>
+                      <th scope="row" colspan="5">
+                        <hr class="bg-secondary border-2 border-top border-secondary mb-0 mt-0">
+                      </th>
+                      <th></th>
+                    </tr>
+                  </tbody>
+                </table>
+                <!-- End of basic info table -->
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <img src="{{ url_for('static', filename='assets/ratings/' ~ '8' ~ '-star.png') }}" width="100%">
+                      </td>
+                      <td style="text-align: center; width: 7%"><small><small class="fs-6 text-danger" title="Warning: Low sample size (9 evaluations)">(9)</small></small><br></td></td>
+                      <td>
+                        <img src="{{ url_for('static', filename='assets/ratings/' ~ '7' ~ '-skull.png') }}" width="100%">
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End of card list -->
+
+    <br>
+    <br>
+    {% endblock %}

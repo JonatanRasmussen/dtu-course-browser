@@ -1,0 +1,1328 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content%}
+
+<!-- Start of sub-navbar -->
+<br />
+<br />
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="/course/{{data.COURSE}}"><small>{{data.COURSE}}</small></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="https://kurser.dtu.dk/course/{{data.COURSE}}"><small><u></u>DTU's website</small></a>
+  </li>
+</ul>
+<!-- End of sub-navbar -->
+
+<!---->
+<!---->
+
+<!-- Start of course number and title -->
+<br />
+<br />
+<h5>{{data.COURSE}} {{data.NAME}}</h5>
+<!-- End of course number and title -->
+
+<!-- Start of card grid -->
+<div class="row row-cols-1 row-cols-xl-2 g-2">
+  <div class="col">
+    <!-- Start of first card -->
+    <div class="card bg-light" style="max-width: 36rem;">
+      <img src="{{ url_for('static', filename='assets/colors/grey.png') }}" width="100%" height="26"
+        class="card-img-top" alt="..." />
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <!-- Start of basic info table -->
+          <table class="table table-sm table-borderless mb-0">
+            <tbody>
+              <tr>
+                <th style="width: 33%" scope="row">Danish Title:</th>
+                <td class="align-top">{{data.DANISH_NAME}}</td>
+              </tr>
+              <tr>
+                <th style="width: 33%" scope="row">Language:</th>
+                <td class="align-top">{{data.LANGUAGE}}</td>
+              </tr>
+              <tr>
+                <th style="width: 33%" scope="row">ECTS-points:</th>
+                <td class="align-top">{{data.ECTS_POINTS}}</td>
+              </tr>
+              <tr>
+                <th style="width: 33%" scope="row">Course type:</th>
+                <td class="align-top">{{data.COURSE_TYPE}}</td>
+              </tr>
+              <tr>
+                <th style="width: 33%" scope="row">Sign-ups:</th>
+                <td class="align-top">{{data.STUDENTS_PER_SEMESTER}} students per semester</td>
+              </tr>
+              <tr>
+                <th style="width: 33%" scope="row">Schedule:</th>
+                <td class="align-top">{{data.TIME_OF_WEEK|safe}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- End of basic info table -->
+        </li>
+        <li class="list-group-item">
+          <!-- Start of grade table -->
+          <table class="table table-sm table-borderless mb-0">
+            <tbody>
+              {% if 0 < data.TOTAL_STUDENTS %}
+              <tr>
+                <th style="width: 33%" scope="row">Grades:   <small class="fs-6 text-muted" data-toggle="modal"
+                    data-target="#gradegraph_explainer" style="cursor: pointer;">[?]</small></th>
+                <td>
+                  <!-- Start of grade graph -->
+                  <figure class="mb-0 mt-1">
+                    <div class="graphic">
+                      <div class="row">
+                        <div class="chart">
+                          <!-- Start of pass grade -->
+                          {% if 0 < data.PASSED %}
+                          <span class="block" data-toggle="modal" data-target="#gradegraph_explainer"
+                            style="height: 16px; background-color: #01D93F; float: left; color: #01D93F00; position: relative; cursor: pointer;"
+                            title="Grade 'Passed'">
+                            <span class="value"
+                              style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.PASSED) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                          </span>
+                          <!-- End of pass grade -->
+                          {% endif %}
+                          <!-- Start of seven-step-grades -->
+                          {% if 0 < data.GRADE_12 + data.GRADE_10 + data.GRADE_7 + data.GRADE_4 + data.GRADE_02 + data.GRADE_00 + data.GRADE_MINUS_3 %}
+
+                          <span class="block" data-toggle="modal" data-target="#gradegraph_explainer"
+                            style="height: 16px; background-color: #244710; float: left; color: #24471000; position: relative; cursor: pointer;"
+                            title="Grade 12">
+                            <span class="value"
+                              style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_12) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                          </span>
+                          <span class="block" data-toggle="modal" data-target="#gradegraph_explainer"
+                            style="height: 16px; background-color: #1B791F; float: left; color: #1B791F00; position: relative; cursor: pointer;"
+                            title="Grade 10">
+                            <span class="value"
+                              style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_10) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                          </span>
+                          <span class="block" data-toggle="modal" data-target="#gradegraph_explainer"
+                            style="height: 16px; background-color: #01D93F; float: left; color: #01D93F00; position: relative; cursor: pointer;"
+                            title="Grade 7">
+                            <span class="value"
+                              style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_7) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                          </span>
+                          <span class="block" data-toggle="modal" data-target="#gradegraph_explainer"
+                            style="height: 16px; background-color: #FDBF02; float: left; color: #FDBF0200; position: relative; cursor: pointer;"
+                            title="Grade 4">
+                            <span class="value"
+                              style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_4) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                          </span>
+                          <span class="block" data-toggle="modal" data-target="#gradegraph_explainer"
+                            style="height: 16px; background-color: #FE7E03; float: left; color: #FE7E0300; position: relative; cursor: pointer;"
+                            title="Grade 02">
+                            <span class="value"
+                              style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_02) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                          </span>
+                          <span class="block" data-toggle="modal" data-target="#gradegraph_explainer"
+                            style="height: 16px; background-color: #D44B33; float: left; color: #D44B3300; position: relative; cursor: pointer;"
+                            title="Grade 00">
+                            <span class="value"
+                              style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_00) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                          </span>
+                          <span class="block" data-toggle="modal" data-target="#gradegraph_explainer"
+                            style="height: 16px; background-color: #8E1600; float: left; color: #8E160000; position: relative; cursor: pointer;"
+                            title="Grade -3">
+                            <span class="value"
+                              style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_MINUS_3) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                          </span>
+                          <!-- End of seven-step-grades -->
+                          {% endif %}
+                          <!-- Start of failed grade -->
+                          {% if 0 < data.FAILED + data.PASSED %}
+                          <span class="block" data-toggle="modal" data-target="#gradegraph_explainer"
+                            style="height: 16px; background-color: #8E1601; float: left; color: #8E160000; position: relative; cursor: pointer;"
+                            title="Grade 'Failed'">
+                            <span class="value"
+                              style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.FAILED) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                          </span>
+                          <!-- End of failed grade -->
+                          {% endif %}
+                          {% if 0 < data.ABSENT %}
+                          <span class="block" data-toggle="modal" data-target="#gradegraph_explainer"
+                            style="height: 16px; background-color: #989898; float: left; color: #98989800; position: relative; cursor: pointer;"
+                            title="Absent from exam">
+                            <span class="value"
+                              style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.ABSENT) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                          </span>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  </figure>
+                  <!-- End of grade graph -->
+                </td>
+              </tr>
+              {% endif %}
+            </tbody>
+          </table>
+          <table class="table table-sm table-borderless mb-0">
+            <tbody>
+              <tr>
+                <th style="width: 33%" scope="row">Average grade:</th>
+                <td style="width: 15%" class="align-top">{{data.AVERAGE_GRADE}}</td>
+                <td class="align-top"><small class="fs-6 text-muted">({{data.TOTAL_STUDENTS}} grades)</small></td>
+              </tr>
+              {% if 0 < data.TOTAL_STUDENTS %}
+              <tr>
+                <th style="width: 33%" scope="row">Failed students:</th>
+                <td style="width: 15%" class="align-top">{{data.PERCENT_FAILED}}%</td>
+                <td class="align-top"><small class="fs-6 text-muted">(+{{((100 * data.ABSENT) / data.TOTAL_STUDENTS)|round(1)}}% absent)</small></td>
+              </tr>
+              {% endif %}
+            </tbody>
+          </table>
+          <!-- End of grade table -->
+        </li>
+        <li class="list-group-item">
+          <table class="table table-sm table-borderless mb-0">
+            <tbody>
+              <tr>
+                <th class="align-middle" style="width: 33%" scope="row">Workload burden:</th>
+                <td class="align-middle" style="width: 15%" >{{data.WORKLOAD_AVERAGE_SCORE}}</td>
+                <td><img data-toggle="modal" data-target="#semester_breakdown" style="cursor: pointer" src="{{ url_for('static', filename='assets/ratings/' ~ data.WORKLOAD_TIER ~ '-skull.png') }}" height="36"></td>
+              </tr>
+              {% if 0 < data.LEARNING_VOTES %}
+              <tr>
+                <th style="width: 33%" scope="row">Overworked students:</th>
+                <td style="width: 15%" class="align-top">{{(((100 * data.WORKLOAD_4_STAR) / data.LEARNING_VOTES) + ((100 * data.WORKLOAD_5_STAR) / data.LEARNING_VOTES))|round(1)}}%</td>
+                <td class="align-top"><small class="fs-6 text-muted">({{((100 * data.WORKLOAD_4_STAR) / data.LEARNING_VOTES)|round(1)}}% mildly + {{((100 * data.WORKLOAD_5_STAR) / data.LEARNING_VOTES)|round(1)}}% severely)</small></td>
+              </tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </li>
+        <li class="list-group-item">
+          <!-- Start of old eval table -->
+          <table class="table table-sm table-borderless mb-0">
+            <tbody>
+              <tr>
+                <th style="width: 33%" scope="row">Average rating:</th>
+                <td style="width: 15%" class="align-top">{{data.RATING_AVERAGE_SCORE}}</td>
+                {% if 10 <= data.MOTIVATION_VOTES or 0 == data.MOTIVATION_VOTES %}
+                <td class="align-top"><small class="fs-6 text-muted">({{data.MOTIVATION_VOTES}} evaluations)</small></td>
+                {% else %}
+                <td class="align-top"><small class="fs-6 text-danger">({{data.MOTIVATION_VOTES}} evaluations) – low sample size!</small></td>
+                {% endif %}
+              </tr>
+              <tr>
+                <td class="align-middle" style="width: 33%" scope="row"><i>"I have learned a lot"</i>:</td>
+                <td class="align-middle" style="width: 15%" >{{data.LEARNING_AVERAGE_SCORE}}</td>
+                <td><img data-toggle="modal" data-target="#semester_breakdown" style="cursor: pointer" src="{{ url_for('static', filename='assets/ratings/' ~ data.LEARNING_TIER ~ '-star.png') }}" height="36"></td>
+              </tr>
+              <tr>
+                <td class="align-middle" style="width: 33%" scope="row"><i>"Motivating activities"</i>:</td>
+                <td class="align-middle" style="width: 15%" >{{data.MOTIVATION_AVERAGE_SCORE}}</td>
+                <td><img data-toggle="modal" data-target="#semester_breakdown" style="cursor: pointer" src="{{ url_for('static', filename='assets/ratings/' ~ data.MOTIVATION_TIER ~ '-star.png') }}" height="36"></td>
+              </tr>
+              <tr>
+                <td class="align-middle" style="width: 33%" scope="row"><i>"Access to feedback"</i>:</td>
+                <td class="align-middle" style="width: 15%" >{{data.FEEDBACK_AVERAGE_SCORE}}</td>
+                <td><img data-toggle="modal" data-target="#semester_breakdown" style="cursor: pointer" src="{{ url_for('static', filename='assets/ratings/' ~ data.FEEDBACK_TIER ~ '-star.png') }}" height="36"></td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- End of old eval table -->
+        </li>
+      </ul>
+      <div class="card-footer">
+        <small class="text-muted">Last updated: {{data.LAST_UPDATED}}</small>
+      </div>
+    </div>
+    <!-- End of first card -->
+  </div>
+  <div class="col">
+    <!-- Start of second card -->
+    <div class="card bg-light" style="max-width: 24rem;">
+      <img src="{{ url_for('static', filename='assets/colors/grey.png') }}" width="100%" height="26"
+        class="card-img-top" alt="..." />
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <table class="table table-sm table-borderless mb-0">
+            <tbody>
+              <tr>
+                <th style="width: 33%" scope="row">Responsible:</th>
+                <td class="align-top">{{data.MAIN_RESPONSIBLE_NAME}}</td>
+              </tr>
+              <tr>
+                <td style="width: 33%" scope="row">
+                  <small class="fs-6">
+                    <i>Courses</i>:
+                  </small>
+                  {% for course in data.MAIN_RESPONSIBLE_COURSES %}
+                  <br /><a href="{{ url_for('.route_to_course', course_number=course) }}"><small class="fs-6 text-muted"><u>{{course}}</u></small></a>
+                  {% endfor %}
+                </td>
+                <td class="align-top">
+                  {% if data.MAIN_RESPONSIBLE_PIC != 'NO_DATA' %}
+                  <img class="img-fluid" alt="100%x280" src="{{data.MAIN_RESPONSIBLE_PIC}}">
+                  {% endif %}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+        <li class="list-group-item">
+          <table class="table table-sm table-borderless mb-0">
+            <tbody>
+              <tr>
+                <th style="width: 33%" scope="row">Exam type:</th>
+                <td class="align-top">{{data.EXAM_TYPE}}</td>
+              </tr>
+              <tr>
+                <th style="width: 33%" scope="row">Hand-ins:</th>
+                <td class="align-top">{{data.ASSIGNMENTS}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+      </ul>
+      <div class="card-body">
+        <button type="button" class="btn btn-outline-dark"  data-toggle="modal" data-target="#gradegraph_explainer">Grade distribution</button>
+        <button type="button" class="btn btn-outline-dark"  data-toggle="modal" data-target="#semester_breakdown">Semester breakdown</button>
+      </div>
+      <ul class="list-group list-group-flush">
+        {% if data.CO_RESPONSIBLE_1_NAME != 'NO_DATA' %}
+        <li class="list-group-item">
+          <table class="table table-sm table-borderless mb-0">
+            <tbody>
+              <tr>
+                <th style="width: 33%" scope="row">Responsible:</th>
+                <td class="align-top">{{data.CO_RESPONSIBLE_1_NAME}}</td>
+              </tr>
+              <tr>
+                <td style="width: 33%" scope="row">
+                  <small class="fs-6">
+                    <i>Courses</i>:
+                  </small>
+                  {% for course in data.CO_RESPONSIBLE_1_COURSES %}
+                  <br /><a href="{{ url_for('.route_to_course', course_number=course) }}"><small class="fs-6 text-muted"><u>{{course}}</u></small></a>
+                  {% endfor %}
+                </td>
+                <td class="align-top">
+                  {% if data.CO_RESPONSIBLE_1_PIC != 'NO_DATA' %}
+                  <img class="img-fluid" alt="100%x280" src="{{data.CO_RESPONSIBLE_1_PIC}}">
+                  {% endif %}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+        {% endif %}
+        {% if data.CO_RESPONSIBLE_2_NAME != 'NO_DATA' %}
+        <li class="list-group-item">
+          <table class="table table-sm table-borderless mb-0">
+            <tbody>
+              <tr>
+                <th style="width: 33%" scope="row">Responsible:</th>
+                <td class="align-top">{{data.CO_RESPONSIBLE_2_NAME}}</td>
+              </tr>
+              <tr>
+                <td style="width: 33%" scope="row">
+                  <small class="fs-6">
+                    <i>Courses</i>:
+                  </small>
+                  {% for course in data.CO_RESPONSIBLE_2_COURSES %}
+                  <br /><a href="{{ url_for('.route_to_course', course_number=course) }}"><small class="fs-6 text-muted"><u>{{course}}</u></small></a>
+                  {% endfor %}
+                </td>
+                <td class="align-top">
+                  {% if data.CO_RESPONSIBLE_2_PIC != 'NO_DATA' %}
+                  <img class="img-fluid" alt="100%x280" src="{{data.CO_RESPONSIBLE_2_PIC}}">
+                  {% endif %}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+        {% endif %}
+        {% if data.CO_RESPONSIBLE_3_NAME != 'NO_DATA' %}
+        <li class="list-group-item">
+          <table class="table table-sm table-borderless mb-0">
+            <tbody>
+              <tr>
+                <th style="width: 33%" scope="row">Responsible:</th>
+                <td class="align-top">{{data.CO_RESPONSIBLE_3_NAME}}</td>
+              </tr>
+              <tr>
+                <td style="width: 33%" scope="row">
+                  <small class="fs-6">
+                    <i>Courses</i>:
+                  </small>
+                  {% for course in data.CO_RESPONSIBLE_3_COURSES %}
+                  <br /><a href="{{ url_for('.route_to_course', course_number=course) }}"><small class="fs-6 text-muted"><u>{{course}}</u></small></a>
+                  {% endfor %}
+                </td>
+                <td class="align-top">
+                  {% if data.CO_RESPONSIBLE_3_PIC != 'NO_DATA' %}
+                  <img class="img-fluid" alt="100%x280" src="{{data.CO_RESPONSIBLE_3_PIC}}">
+                  {% endif %}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+        {% endif %}
+        {% if data.CO_RESPONSIBLE_4_NAME != 'NO_DATA' %}
+        <li class="list-group-item">
+          <table class="table table-sm table-borderless mb-0">
+            <tbody>
+              <tr>
+                <th style="width: 33%" scope="row">Responsible:</th>
+                <td class="align-top">{{data.CO_RESPONSIBLE_4_NAME}}</td>
+              </tr>
+              <tr>
+                <td style="width: 33%" scope="row">
+                  <small class="fs-6">
+                    <i>Courses</i>:
+                  </small>
+                  {% for course in data.CO_RESPONSIBLE_4_COURSES %}
+                  <br /><a href="{{ url_for('.route_to_course', course_number=course) }}"><small class="fs-6 text-muted"><u>{{course}}</u></small></a>
+                  {% endfor %}
+                </td>
+                <td class="align-top">
+                  {% if data.CO_RESPONSIBLE_4_PIC != 'NO_DATA' %}
+                  <img class="img-fluid" alt="100%x280" src="{{data.CO_RESPONSIBLE_4_PIC}}">
+                  {% endif %}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+        {% endif %}
+      </ul>
+      <div class="card-footer">
+        <small class="text-muted">Last updated: {{data.LAST_UPDATED}}</small>
+      </div>
+    </div>
+    <!-- End of second card -->
+  </div>
+</div>
+<!-- End of card grid -->
+
+
+
+
+<!-- Start of additional information title -->
+<br />
+<br />
+<br />
+<h5>Additional information:</h5>
+<!-- End of additional information title -->
+
+<!-- Start of additional information -->
+<div class="row row-cols-1 row-cols-xl-1 g-1">
+  <div class="col">
+    <div class="card bg-light" style="max-width: 54rem;">
+      <img src="{{ url_for('static', filename='assets/colors/grey.png') }}" width="100%" height="26"
+        class="card-img-top" alt="..." />
+      <ul class="list-group list-group-flush">
+        {% if data.COURSE_DESCRIPTION != 'None' %}
+        <li class="list-group-item">
+          <table class="table table-sm table-borderless mb-0">
+            <tbody>
+              <tr>
+                <th class="align-top" style="width: 9rem" scope="row">Description:</th>
+                <td class="align-top">{{data.COURSE_DESCRIPTION|safe}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+        {% endif %}
+        {% if data.CAMPUS_RAW != 'None' %}
+        <li class="list-group-item">
+          <table class="table table-sm table-borderless mb-0">
+            <tbody>
+              <tr>
+                <th class="align-top" style="width: 9rem" scope="row">Location:</th>
+                <td class="align-top">{{data.CAMPUS_RAW|safe}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+        {% endif %}
+        {% if data.RECOMMENDED_PREREQUISITES != 'None' %}
+        <li class="list-group-item">
+          <table class="table table-sm table-borderless mb-0">
+            <tbody>
+              <tr>
+                <th class="align-top" style="width: 9rem" scope="row">Prerequisites:</th>
+                <td class="align-top">{{data.RECOMMENDED_PREREQUISITES|safe}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+        {% endif %}
+        {% if data.MANDATORY_PREREQUISITES != 'None' %}
+        <li class="list-group-item">
+          <table class="table table-sm table-borderless mb-0">
+            <tbody>
+              <tr>
+                <th class="align-top" style="width: 9rem" scope="row">Prerequisites:</th>
+                <td class="align-top">{{data.MANDATORY_PREREQUISITES|safe}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+        {% endif %}
+        {% if (data.MANDATORY_PREREQUISITES == 'None' and data.RECOMMENDED_PREREQUISITES == 'None') %}
+        <li class="list-group-item">
+          <table class="table table-sm table-borderless mb-0">
+            <tbody>
+              <tr>
+                <th class="align-top" style="width: 9rem" scope="row">Prerequisites:</th>
+                <td class="align-top">No prerequisites required</td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+        {% endif %}
+        {% if data.SCOPE_AND_FORM != 'None' %}
+        <li class="list-group-item">
+          <table class="table table-sm table-borderless mb-0">
+            <tbody>
+              <tr>
+                <th class="align-top" style="width: 9rem" scope="row">Scope and form:</th>
+                <td class="align-top">{{data.SCOPE_AND_FORM|safe}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+        {% endif %}
+        {% if data.STUDY_LINES != 'Not linked to any study lines<br />Unknown data value' %}
+        <li class="list-group-item">
+          <table class="table table-sm table-borderless mb-0">
+            <tbody>
+              <tr>
+                <th class="align-top" style="width: 9rem" scope="row">Study lines:</th>
+                <td class="align-top">{{data.STUDY_LINES|safe}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+        {% endif %}
+        {% if data.HOME_PAGE != 'None' %}
+        <li class="list-group-item">
+          <table class="table table-sm table-borderless mb-0">
+            <tbody>
+              <tr>
+                <th class="align-top" style="width: 9rem" scope="row">Webpage:</th>
+                <td class="align-top">{{data.HOME_PAGE|safe}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+        {% endif %}
+        {% if data.EXAM_TYPE_RAW != 'None' %}
+        <li class="list-group-item">
+          <table class="table table-sm table-borderless mb-0">
+            <tbody>
+              <tr>
+                <th class="align-top" style="width: 9rem" scope="row">Exam info:</th>
+                <td class="align-top">{{data.EXAM_TYPE_RAW|safe}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+        {% endif %}
+        {% if data.EXAM_AID_RAW != 'None' %}
+        <li class="list-group-item">
+          <table class="table table-sm table-borderless mb-0">
+            <tbody>
+              <tr>
+                <th class="align-top" style="width: 9rem" scope="row">Aid:</th>
+                <td class="align-top">{{data.EXAM_AID_RAW|safe}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+        {% endif %}
+        {% if data.EXAM_DURATION != 'None' %}
+        <li class="list-group-item">
+          <table class="table table-sm table-borderless mb-0">
+            <tbody>
+              <tr>
+                <th class="align-top" style="width: 9rem" scope="row">Duration:</th>
+                <td class="align-top">{{data.EXAM_DURATION|safe}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+        {% endif %}
+        {% if data.OBJECTIVES != 'None' %}
+        <li class="list-group-item">
+          <table class="table table-sm table-borderless mb-0">
+            <tbody>
+              <tr>
+                <th class="align-top" style="width: 9rem" scope="row">Objectives:</th>
+                <td class="align-top">{{data.LEARNING_OBJECTIVES|safe}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+        {% endif %}
+        {% if data.COURSE_CONTENT != 'None' %}
+        <li class="list-group-item">
+          <table class="table table-sm table-borderless mb-0">
+            <tbody>
+              <tr>
+                <th class="align-top" style="width: 9rem" scope="row">Content:</th>
+                <td class="align-top">{{data.COURSE_CONTENT|safe}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+        {% endif %}
+        {% if data.REMARKS != 'None' %}
+        <li class="list-group-item">
+          <table class="table table-sm table-borderless mb-0">
+            <tbody>
+              <tr>
+                <th class="align-top" style="width: 9rem" scope="row">Teacher's note:</th>
+                <td class="align-top">{{data.REMARKS|safe}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+        {% endif %}
+      </ul>
+      <div class="card-footer">
+        <small class="text-muted">Last updated: {{data.LAST_UPDATED}}</small>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of additional information -->
+
+<!-- Start of modal: semester breakdown -->
+<div class="modal fade" id="semester_breakdown" tabindex="-1" role="dialog"
+  aria-labelledby="semester_breakdown_label" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="semester_breakdown_id">Semester breakdown</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        The average grade for {{data.COURSE}} (semester overview):
+        <table class="table table-sm table-striped mt-2 mb-0">
+          <thead>
+            <tr>
+              <th></th>
+              <th class="align-top">Grade</td>
+              <th class="align-top">Failed</td>
+              <th class="align-top">Students</td>
+            </tr>
+          </thead>
+          <tbody>
+            {% if (0.05 * data.TOTAL_STUDENTS) < data.F18_TOTAL_STUDENTS %}
+            <tr>
+              <th style="width: 33%" scope="row">Spring 2018</th>
+              <td class="align-top">{{data.F18_AVERAGE_GRADE}}</td>
+              <td class="align-top">{{data.F18_PERCENT_FAILED}}%</td>
+              <td class="align-top">{{data.F18_TOTAL_STUDENTS}}</td>
+            </tr>
+            {% endif %}
+            {% if (0.05 * data.TOTAL_STUDENTS) < data.E18_TOTAL_STUDENTS %}
+            <tr>
+              <th style="width: 33%" scope="row">Autumn 2018</th>
+              <td class="align-top">{{data.E18_AVERAGE_GRADE}}</td>
+              <td class="align-top">{{data.E18_PERCENT_FAILED}}%</td>
+              <td class="align-top">{{data.E18_TOTAL_STUDENTS}}</td>
+            </tr>
+            {% endif %}
+            {% if (0.05 * data.TOTAL_STUDENTS) < data.F19_TOTAL_STUDENTS %}
+            <tr>
+              <th style="width: 33%" scope="row">Spring 2019</th>
+              <td class="align-top">{{data.F19_AVERAGE_GRADE}}</td>
+              <td class="align-top">{{data.F19_PERCENT_FAILED}}%</td>
+              <td class="align-top">{{data.F19_TOTAL_STUDENTS}}</td>
+            </tr>
+            {% endif %}
+            {% if (0.05 * data.TOTAL_STUDENTS) < data.E19_TOTAL_STUDENTS %}
+            <tr>
+              <th style="width: 33%" scope="row">Autumn 2019</th>
+              <td class="align-top">{{data.E19_AVERAGE_GRADE}}</td>
+              <td class="align-top">{{data.E19_PERCENT_FAILED}}%</td>
+              <td class="align-top">{{data.E19_TOTAL_STUDENTS}}</td>
+            </tr>
+            {% endif %}
+            {% if (0.05 * data.TOTAL_STUDENTS) < data.F20_TOTAL_STUDENTS %}
+            <tr>
+              <th style="width: 33%" scope="row">Spring 2020</th>
+              <td class="align-top">{{data.F20_AVERAGE_GRADE}}</td>
+              <td class="align-top">{{data.F20_PERCENT_FAILED}}%</td>
+              <td class="align-top">{{data.F20_TOTAL_STUDENTS}}</td>
+            </tr>
+            {% endif %}
+            {% if (0.05 * data.TOTAL_STUDENTS) < data.E20_TOTAL_STUDENTS %}
+            <tr>
+              <th style="width: 33%" scope="row">Autumn 2020</th>
+              <td class="align-top">{{data.E20_AVERAGE_GRADE}}</td>
+              <td class="align-top">{{data.E20_PERCENT_FAILED}}%</td>
+              <td class="align-top">{{data.E20_TOTAL_STUDENTS}}</td>
+            </tr>
+            {% endif %}
+            {% if (0.05 * data.TOTAL_STUDENTS) < data.F21_TOTAL_STUDENTS %}
+            <tr>
+              <th style="width: 33%" scope="row">Spring 2021</th>
+              <td class="align-top">{{data.F21_AVERAGE_GRADE}}</td>
+              <td class="align-top">{{data.F21_PERCENT_FAILED}}%</td>
+              <td class="align-top">{{data.F21_TOTAL_STUDENTS}}</td>
+            </tr>
+            {% endif %}
+            {% if (0.05 * data.TOTAL_STUDENTS) < data.E21_TOTAL_STUDENTS %}
+            <tr>
+              <th style="width: 33%" scope="row">Autumn 2021</th>
+              <td class="align-top">{{data.E21_AVERAGE_GRADE}}</td>
+              <td class="align-top">{{data.E21_PERCENT_FAILED}}%</td>
+              <td class="align-top">{{data.E21_TOTAL_STUDENTS}}</td>
+            </tr>
+            {% endif %}
+            {% if (0.05 * data.TOTAL_STUDENTS) < data.F22_TOTAL_STUDENTS %}
+            <tr>
+              <th style="width: 33%" scope="row">Spring 2022</th>
+              <td class="align-top">{{data.F22_AVERAGE_GRADE}}</td>
+              <td class="align-top">{{data.F22_PERCENT_FAILED}}%</td>
+              <td class="align-top">{{data.F22_TOTAL_STUDENTS}}</td>
+            </tr>
+            {% endif %}
+            {% if (0.05 * data.TOTAL_STUDENTS) < data.E22_TOTAL_STUDENTS %}
+            <tr>
+              <th style="width: 33%" scope="row">Autumn 2022</th>
+              <td class="align-top">{{data.E22_AVERAGE_GRADE}}</td>
+              <td class="align-top">{{data.E22_PERCENT_FAILED}}%</td>
+              <td class="align-top">{{data.E22_TOTAL_STUDENTS}}</td>
+            </tr>
+            {% endif %}
+            {% if (0.05 * data.TOTAL_STUDENTS) < data.F23_TOTAL_STUDENTS %}
+            <tr>
+              <th style="width: 33%" scope="row">Spring 2023</th>
+              <td class="align-top">{{data.F23_AVERAGE_GRADE}}</td>
+              <td class="align-top">{{data.F23_PERCENT_FAILED}}%</td>
+              <td class="align-top">{{data.F23_TOTAL_STUDENTS}}</td>
+            </tr>
+            {% endif %}
+            {% if (0.05 * data.TOTAL_STUDENTS) < data.E23_TOTAL_STUDENTS %}
+            <tr>
+              <th style="width: 33%" scope="row">Autumn 2023</th>
+              <td class="align-top">{{data.E23_AVERAGE_GRADE}}</td>
+              <td class="align-top">{{data.E23_PERCENT_FAILED}}%</td>
+              <td class="align-top">{{data.E23_TOTAL_STUDENTS}}</td>
+            </tr>
+            {% endif %}
+            {% if (0.05 * data.TOTAL_STUDENTS) < data.F24_TOTAL_STUDENTS %}
+            <tr>
+              <th style="width: 33%" scope="row">Spring 2024</th>
+              <td class="align-top">{{data.F24_AVERAGE_GRADE}}</td>
+              <td class="align-top">{{data.F24_PERCENT_FAILED}}%</td>
+              <td class="align-top">{{data.F24_TOTAL_STUDENTS}}</td>
+            </tr>
+            {% endif %}
+          </tbody>
+          {% if (0.05 * data.TOTAL_STUDENTS) < data.TOTAL_STUDENTS %}
+          <tfoot>
+            <tr>
+              <th style="width: 33%" scope="row">All semesters</th>
+              <td class="align-top">{{data.AVERAGE_GRADE}}</td>
+              <td class="align-top">{{data.PERCENT_FAILED}}%</td>
+              <td class="align-top">{{data.TOTAL_STUDENTS}}</td>
+            </tr>
+          </tfoot>
+          {% endif %}
+        </table>
+
+        <br>
+        The evaluation ratings for {{data.COURSE}} (semester overview):
+        <br>
+        Category A: <i>"Course workload"</i>
+        <br>
+        Category B: <i>"I have learned a lot"</i>
+        <br>
+        Category C: <i>"Motivating activities"</i>
+        <br>
+        Category D: <i>"Access to feedback"</i>
+        <table class="table table-sm table-striped mt-2 mb-0">
+          <thead>
+            <tr>
+              <th></th>
+              <th class="align-top">A</td>
+              <th class="align-top">B</td>
+              <th class="align-top">C</td>
+              <th class="align-top">D</td>
+              <th class="align-top">Votes</td>
+            </tr>
+          </thead>
+          <tbody>
+            {% if 0 < data.F18_LEARNING_VOTES %}
+            <tr>
+              <th style="width: 33%" scope="row">Spring 2018</th>
+              <td class="align-top">{{data.F18_WORKLOAD_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.F18_LEARNING_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.F18_MOTIVATION_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.F18_FEEDBACK_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.F18_LEARNING_VOTES}}</td>
+            </tr>
+            {% endif %}
+            {% if 0 < data.E18_LEARNING_VOTES %}
+            <tr>
+              <th style="width: 33%" scope="row">Autumn 2018</th>
+              <td class="align-top">{{data.E18_WORKLOAD_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.E18_LEARNING_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.E18_MOTIVATION_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.E18_FEEDBACK_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.E18_LEARNING_VOTES}}</td>
+            </tr>
+            {% endif %}
+            {% if 0 < data.F19_LEARNING_VOTES %}
+            <tr>
+              <th style="width: 33%" scope="row">Spring 2019</th>
+              <td class="align-top">{{data.F19_WORKLOAD_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.F19_LEARNING_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.F19_MOTIVATION_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.F19_FEEDBACK_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.F19_LEARNING_VOTES}}</td>
+            </tr>
+            {% endif %}
+            {% if 0 < data.E19_LEARNING_VOTES %}
+            <tr>
+              <th style="width: 33%" scope="row">Autumn 2019</th>
+              <td class="align-top">{{data.E19_WORKLOAD_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.E19_LEARNING_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.E19_MOTIVATION_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.E19_FEEDBACK_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.E19_LEARNING_VOTES}}</td>
+            </tr>
+            {% endif %}
+            {% if 0 < data.F20_LEARNING_VOTES %}
+            <tr>
+              <th style="width: 33%" scope="row">Spring 2020</th>
+              <td class="align-top">{{data.F20_WORKLOAD_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.F20_LEARNING_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.F20_MOTIVATION_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.F20_FEEDBACK_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.F20_LEARNING_VOTES}}</td>
+            </tr>
+            {% endif %}
+            {% if 0 < data.E20_LEARNING_VOTES %}
+            <tr>
+              <th style="width: 33%" scope="row">Autumn 2020</th>
+              <td class="align-top">{{data.E20_WORKLOAD_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.E20_LEARNING_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.E20_MOTIVATION_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.E20_FEEDBACK_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.E20_LEARNING_VOTES}}</td>
+            </tr>
+            {% endif %}
+            {% if 0 < data.F21_LEARNING_VOTES %}
+            <tr>
+              <th style="width: 33%" scope="row">Spring 2021</th>
+              <td class="align-top">{{data.F21_WORKLOAD_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.F21_LEARNING_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.F21_MOTIVATION_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.F21_FEEDBACK_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.F21_LEARNING_VOTES}}</td>
+            </tr>
+            {% endif %}
+            {% if 0 < data.E21_LEARNING_VOTES %}
+            <tr>
+              <th style="width: 33%" scope="row">Autumn 2021</th>
+              <td class="align-top">{{data.E21_WORKLOAD_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.E21_LEARNING_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.E21_MOTIVATION_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.E21_FEEDBACK_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.E21_LEARNING_VOTES}}</td>
+            </tr>
+            {% endif %}
+            {% if 0 < data.F22_LEARNING_VOTES %}
+            <tr>
+              <th style="width: 33%" scope="row">Spring 2022</th>
+              <td class="align-top">{{data.F22_WORKLOAD_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.F22_LEARNING_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.F22_MOTIVATION_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.F22_FEEDBACK_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.F22_LEARNING_VOTES}}</td>
+            </tr>
+            {% endif %}
+            {% if 0 < data.E22_LEARNING_VOTES %}
+            <tr>
+              <th style="width: 33%" scope="row">Autumn 2022</th>
+              <td class="align-top">{{data.E22_WORKLOAD_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.E22_LEARNING_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.E22_MOTIVATION_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.E22_FEEDBACK_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.E22_LEARNING_VOTES}}</td>
+            </tr>
+            {% endif %}
+            {% if 0 < data.F23_LEARNING_VOTES %}
+            <tr>
+              <th style="width: 33%" scope="row">Spring 2023</th>
+              <td class="align-top">{{data.F23_WORKLOAD_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.F23_LEARNING_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.F23_MOTIVATION_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.F23_FEEDBACK_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.F23_LEARNING_VOTES}}</td>
+            </tr>
+            {% endif %}
+            {% if 0 < data.E23_LEARNING_VOTES %}
+            <tr>
+              <th style="width: 33%" scope="row">Autumn 2023</th>
+              <td class="align-top">{{data.E23_WORKLOAD_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.E23_LEARNING_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.E23_MOTIVATION_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.E23_FEEDBACK_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.E23_LEARNING_VOTES}}</td>
+            </tr>
+            {% endif %}
+            {% if 0 < data.F24_LEARNING_VOTES %}
+            <tr>
+              <th style="width: 33%" scope="row">Spring 2024</th>
+              <td class="align-top">{{data.F24_WORKLOAD_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.F24_LEARNING_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.F24_MOTIVATION_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.F24_FEEDBACK_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.F24_LEARNING_VOTES}}</td>
+            </tr>
+            {% endif %}
+          </tbody>
+          {% if 0 < data.LEARNING_VOTES %}
+          <tfoot>
+            <tr>
+              <th style="width: 33%" scope="row">All semesters</th>
+              <td class="align-top">{{data.WORKLOAD_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.LEARNING_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.MOTIVATION_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.FEEDBACK_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{data.LEARNING_VOTES}}</td>
+            </tr>
+          </tfoot>
+          {% endif %}
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of modal: gradegraph explainer -->
+
+
+<!-- Start of modal: gradegraph explainer -->
+<div class="modal fade" id="gradegraph_explainer" tabindex="-1" role="dialog"
+  aria-labelledby="gradegraph_explainer_label" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Grade distribution</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        The stacked bar chart visualizes the grade distribution for {{data.COURSE}}. Each grade is color-coded based on
+        the table below:
+        <table class="table table-sm mt-2 mb-0">
+          <thead>
+            <tr>
+              <th style="width: 6em" scope="row">
+                <div
+                  style="content: ''; margin-right: .5em; display: inline-block; width: 10px; height: 10px; background-color: #FFFFFF;">
+                </div> Grade</th>
+              <th colspan="2">Distribution</th>
+              <th style="width: 3em"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Start of pass grades -->
+            {% if 0 < data.PASSED %}
+            <tr>
+              <td scope="row">
+                <div
+                  style="content: ''; margin-right: .5em; display: inline-block; width: 10px; height: 10px; background-color: #01D93F;">
+                </div> <i>"Pass"</i></th>
+              <td style="width: 4em">{{((100 * data.PASSED) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</td>
+              <td>
+                <figure class="mb-0 mt-1">
+                  <div class="graphic">
+                    <div class="row">
+                      <div class="chart">
+                        <span class="block"
+                        style="height: 18px; background-color: #01D93F; float: left; color: #01D93F00; position: relative;"
+                        title="Pass">
+                          <span class="value"
+                            style="font-size: x-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.PASSED) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </figure>
+              </td>
+              <td style="width: 3em"><small class="fs-6 text-muted">({{data.PASSED}})</small></td>
+            </tr>
+            <!-- End of pass grades -->
+            {% endif %}
+            <!-- Start of seven_step_grades -->
+            {% if 0 < data.GRADE_12 + data.GRADE_10 + data.GRADE_7 + data.GRADE_4 + data.GRADE_02 + data.GRADE_00 + data.GRADE_MINUS_3 %}
+            <tr>
+              <td scope="row">
+                <div
+                  style="content: ''; margin-right: .5em; display: inline-block; width: 10px; height: 10px; background-color: #244710;">
+                </div> 12</th>
+              <td style="width: 4em">{{((100 * data.GRADE_12) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</td>
+              <td>
+                <figure class="mb-0 mt-1">
+                  <div class="graphic">
+                    <div class="row">
+                      <div class="chart">
+                        <span class="block"
+                          style="height: 18px; background-color: #244710; float: left; color: #24471000; position: relative;"
+                          title="Grade 12">
+                          <span class="value"
+                            style="font-size: x-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_12) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </figure>
+              </td>
+              <td style="width: 3em"><small class="fs-6 text-muted">({{data.GRADE_12}})</small></td>
+            </tr>
+            <tr>
+              <td scope="row">
+                <div
+                  style="content: ''; margin-right: .5em; display: inline-block; width: 10px; height: 10px; background-color: #1B791F;">
+                </div> 10</th>
+              <td style="width: 4em">{{((100 * data.GRADE_10) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</td>
+              <td>
+                <figure class="mb-0 mt-1">
+                  <div class="graphic">
+                    <div class="row">
+                      <div class="chart">
+                        <span class="block"
+                        style="height: 18px; background-color: #1B791F; float: left; color: #1B791F00; position: relative;"
+                        title="Grade 10">
+                          <span class="value"
+                            style="font-size: x-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_10) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </figure>
+              </td>
+              <td style="width: 3em"><small class="fs-6 text-muted">({{data.GRADE_10}})</small></td>
+            </tr>
+            <tr>
+              <td scope="row">
+                <div
+                  style="content: ''; margin-right: .5em; display: inline-block; width: 10px; height: 10px; background-color: #01D93F;">
+                </div> 7</th>
+              <td style="width: 4em">{{((100 * data.GRADE_7) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</td>
+              <td>
+                <figure class="mb-0 mt-1">
+                  <div class="graphic">
+                    <div class="row">
+                      <div class="chart">
+                        <span class="block"
+                        style="height: 18px; background-color: #01D93F; float: left; color: #01D93F00; position: relative;"
+                        title="Grade 7">
+                          <span class="value"
+                            style="font-size: x-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_7) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </figure>
+              </td>
+              <td style="width: 3em"><small class="fs-6 text-muted">({{data.GRADE_7}})</small></td>
+            </tr>
+            <tr>
+              <td scope="row">
+                <div
+                  style="content: ''; margin-right: .5em; display: inline-block; width: 10px; height: 10px; background-color: #FDBF02;">
+                </div> 4</th>
+              <td style="width: 4em">{{((100 * data.GRADE_4) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</td>
+              <td>
+                <figure class="mb-0 mt-1">
+                  <div class="graphic">
+                    <div class="row">
+                      <div class="chart">
+                        <span class="block"
+                        style="height: 18px; background-color: #FDBF02; float: left; color: #FDBF0200; position: relative;"
+                        title="Grade 4">
+                          <span class="value"
+                            style="font-size: x-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_4) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </figure>
+              </td>
+              <td style="width: 3em"><small class="fs-6 text-muted">({{data.GRADE_4}})</small></td>
+            </tr>
+            <tr>
+              <td scope="row">
+                <div
+                  style="content: ''; margin-right: .5em; display: inline-block; width: 10px; height: 10px; background-color: #FE7E03;">
+                </div> 02</th>
+              <td style="width: 4em">{{((100 * data.GRADE_02) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</td>
+              <td>
+                <figure class="mb-0 mt-1">
+                  <div class="graphic">
+                    <div class="row">
+                      <div class="chart">
+                        <span class="block"
+                        style="height: 18px; background-color: #FE7E03; float: left; color: #FE7E0300; position: relative;"
+                        title="Grade 02">
+                          <span class="value"
+                            style="font-size: x-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_02) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </figure>
+              </td>
+              <td style="width: 3em"><small class="fs-6 text-muted">({{data.GRADE_02}})</small></td>
+            </tr>
+            <tr>
+              <td scope="row">
+                <div
+                  style="content: ''; margin-right: .5em; display: inline-block; width: 10px; height: 10px; background-color: #D44B33;">
+                </div> 00</th>
+              <td style="width: 4em">{{((100 * data.GRADE_00) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</td>
+              <td>
+                <figure class="mb-0 mt-1">
+                  <div class="graphic">
+                    <div class="row">
+                      <div class="chart">
+                        <span class="block"
+                        style="height: 18px; background-color: #D44B33; float: left; color: #D44B3300; position: relative;"
+                        title="Grade 00">
+                          <span class="value"
+                            style="font-size: x-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_00) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </figure>
+              </td>
+              <td style="width: 3em"><small class="fs-6 text-muted">({{data.GRADE_00}})</small></td>
+            </tr>
+            <tr>
+              <td scope="row">
+                <div
+                  style="content: ''; margin-right: .5em; display: inline-block; width: 10px; height: 10px; background-color: #8E1600;">
+                </div> -3</th>
+              <td style="width: 4em">{{((100 * data.GRADE_MINUS_3) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</td>
+              <td>
+                <figure class="mb-0 mt-1">
+                  <div class="graphic">
+                    <div class="row">
+                      <div class="chart">
+                        <span class="block"
+                        style="height: 18px; background-color: #8E1600; float: left; color: #8E160000; position: relative;"
+                        title="Grade -3">
+                          <span class="value"
+                            style="font-size: x-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_MINUS_3) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </figure>
+              </td>
+              <td style="width: 3em"><small class="fs-6 text-muted">({{data.GRADE_MINUS_3}})</small></td>
+            </tr>
+            <!-- End of seven_step_grades -->
+            {% endif %}
+            <!-- Start of fail grades -->
+            {% if 0 < data.FAILED + data.PASSED %}
+            <tr>
+              <td scope="row">
+                <div
+                  style="content: ''; margin-right: .5em; display: inline-block; width: 10px; height: 10px; background-color: #8E1600;">
+                </div> <i>"Fail"</i></th>
+              <td style="width: 4em">{{((100 * data.FAILED) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</td>
+              <td>
+                <figure class="mb-0 mt-1">
+                  <div class="graphic">
+                    <div class="row">
+                      <div class="chart">
+                        <span class="block"
+                        style="height: 18px; background-color: #8E1600; float: left; color: #8E160000; position: relative;"
+                        title="Fail">
+                          <span class="value"
+                            style="font-size: x-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.FAILED) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </figure>
+              </td>
+              <td style="width: 3em"><small class="fs-6 text-muted">({{data.FAILED}})</small></td>
+            </tr>
+            <!-- End of fail grades -->
+            {% endif %}
+            <!-- Start of absent grade -->
+            {% if 0 < data.ABSENT %}
+            <tr>
+              <td scope="row">
+                <div
+                  style="content: ''; margin-right: .5em; display: inline-block; width: 10px; height: 10px; background-color: #989898;">
+                </div> Absent</th>
+              <td style="width: 4em">{{((100 * data.ABSENT) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</td>
+              <td>
+                <figure class="mb-0 mt-1">
+                  <div class="graphic">
+                    <div class="row">
+                      <div class="chart">
+                        <span class="block"
+                        style="height: 18px; background-color: #989898; float: left; color: #8E160000; position: relative;"
+                        title="Absent from exam">
+                          <span class="value"
+                            style="font-size: x-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.ABSENT) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </figure>
+              </td>
+              <td style="width: 3em"><small class="fs-6 text-muted">({{data.ABSENT}})</small></td>
+            </tr>
+            <!-- End of absent grade -->
+            {% endif %}
+          </tbody>
+          <tfoot>
+            <tr>
+              <th scope="row">
+                <div
+                  style="content: ''; margin-right: .5em; display: inline-block; width: 10px; height: 10px; background-color: #ffffff;">
+                </div> Total</th>
+                <td style="width: 4em"></td>
+                <td>
+                <!-- Start of grade graph -->
+                <figure class="mb-0 mt-1">
+                  <div class="graphic">
+                    <div class="row">
+                      <div class="chart">
+                        <!-- Start of pass grade -->
+                        {% if 0 < data.PASSED %}
+                        <span class="block"
+                        style="height: 18px; background-color: #01D93F; float: left; color: #01D93F00; position: relative; cursor: pointer;"
+                        title="Grade 'Passed'">
+                          <span class="value"
+                            style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.PASSED) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                          </span>
+                        </span>
+                        <!-- End of pass grade -->
+                        {% endif %}
+                        <!-- Start of seven-step-grades -->
+                        {% if 0 < data.GRADE_12 + data.GRADE_10 + data.GRADE_7 + data.GRADE_4 + data.GRADE_02 + data.GRADE_00 + data.GRADE_MINUS_3 %}
+                        <span class="block"
+                          style="height: 18px; background-color: #244710; float: left; color: #24471000; position: relative; cursor: pointer;"
+                          title="Grade 12">
+                          <span class="value"
+                            style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_12) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                        </span>
+                        <span class="block"
+                          style="height: 18px; background-color: #1B791F; float: left; color: #1B791F00; position: relative; cursor: pointer;"
+                          title="Grade 10">
+                          <span class="value"
+                            style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_10) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                        </span>
+                        <span class="block"
+                          style="height: 18px; background-color: #01D93F; float: left; color: #01D93F00; position: relative; cursor: pointer;"
+                          title="Grade 7">
+                          <span class="value"
+                            style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_7) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                        </span>
+                        <span class="block"
+                          style="height: 18px; background-color: #FDBF02; float: left; color: #FDBF0200; position: relative; cursor: pointer;"
+                          title="Grade 4">
+                          <span class="value"
+                            style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_4) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                        </span>
+                        <span class="block"
+                          style="height: 18px; background-color: #FE7E03; float: left; color: #FE7E0300; position: relative; cursor: pointer;"
+                          title="Grade 02">
+                          <span class="value"
+                            style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_02) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                        </span>
+                        <span class="block"
+                          style="height: 18px; background-color: #D44B33; float: left; color: #D44B3300; position: relative; cursor: pointer;"
+                          title="Grade 00">
+                          <span class="value"
+                            style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_00) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                        </span>
+                        <span class="block"
+                          style="height: 18px; background-color: #8E1600; float: left; color: #8E160000; position: relative; cursor: pointer;"
+                          title="Grade -3">
+                          <span class="value"
+                            style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_MINUS_3) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                        </span>
+                        <!-- End of seven-step-grades -->
+                        {% endif %}
+                        <!-- Start of failed grade -->
+                        {% if 0 < data.FAILED %}
+                        <span class="block"
+                        style="height: 18px; background-color: #8E1600; float: left; color: #8E160000; position: relative; cursor: pointer;"
+                        title="Grade 'Failed'">
+                          <span class="value"
+                            style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.FAILED) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                          </span>
+                        </span>
+                        <!-- End of failed grade -->
+                        {% endif %}
+                        {% if 0 < data.ABSENT %}
+                        <span class="block"
+                          style="height: 18px; background-color: #989898; float: left; color: #98989800; position: relative; cursor: pointer;"
+                          title="Absent from exam">
+                          <span class="value"
+                            style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.ABSENT) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                        </span>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </figure>
+                <!-- End of grade graph -->
+              </td>
+              <td style="width: 3em"><small class="fs-6 text-muted">({{data.TOTAL_STUDENTS}})</small></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of modal: gradegraph explainer -->
+
+<!-- Start of custom javascripts -->
+<script src="{{ url_for('static', filename='assets/dist/js/gradegraph.js') }}"></script>
+<!-- End of custom javascripts -->
+
+<br>
+<br>
+<br>
+
+{% endblock %}
+

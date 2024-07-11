@@ -1,0 +1,13 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block
+    content %}
+<!-- Start of 404 error page  -->
+<br><br><br><br>
+
+<h1 class="display-4">🤔 Error! Course not found in database! 🤔</h1>
+<br>
+<p class="lead">Search result must be a 5-digit course number.</p>
+<p class="lead"><a class="text-decoration-none" href="https://kurser.dtu.dk/course/{{course}}">Alternatively, look up course {{course}} on DTU's official website.</a></p>
+<br>
+<!-- End of 404 error page -->
+
+{% endblock %}

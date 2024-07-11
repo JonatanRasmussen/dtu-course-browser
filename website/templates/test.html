@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="" />
+  <meta name="author" content="Jonatan Rasmussen" />
+  <title>DTU Course Browser</title>
+
+  <!-- Bootstrap core CSS -->
+  <!--
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  -->
+
+  <!-- CSS only -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" />
+
+  <!--
+  <script type="text/javascript"
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>    src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+  -->
+
+  <!-- Popper js (enables dropdown menus) -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+
+  <!-- Bootstrap javascripts -->
+  <script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <!-- Newer versions, will break stuff so for now they are not activated
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script type="text/javascript"
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>    src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+  -->
+
+  <!-- Custom colors for navbar -->
+  <style>
+    /* Custom colors for navbar */
+    .navbar-custom {
+    background-color: rgb(153, 0, 0);
+    }
+    .navbar-custom .navbar-brand,
+    .navbar-custom .navbar-text {
+    color: white;
+    }
+
+    /* Dropdown submenu 1 of 4 */
+    .navbar-nav li:hover > ul.dropdown-menu {
+      display: block;
+    }
+    /* Dropdown submenu 2 of 4 */
+    .dropdown-submenu {
+        position:relative;
+    }
+    /* Dropdown submenu 3 of 4 */
+    .dropdown-submenu>.dropdown-menu {
+        top:0;
+        left:100%;
+        margin-top:-6px;
+    }
+    /* Dropdown submenu 4 of 4: rotate caret on hover */
+    .dropdown-menu > li > a:hover:after {
+        text-decoration: underline;
+        transform: rotate(-90deg);
+    }
+  </style>
+
+</head>
+<body>
+  <!-- Start of navbar -->
+  <nav class="navbar navbar-expand-md navbar-dark navbar-custom" aria-label="NavbarLabel">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <img src="{{ url_for('static', filename='assets/brand/DTU_logo_white.svg') }}" width="26" height="39"
+          class="d-inline-block align-top" alt="Bootstrap" loading="lazy"
+          style="filter: invert(1) grayscale(0%) brightness(100%)" />
+      </a>
+      <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="navbar-collapse collapse" id="navbarMenu">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-toggle="collapse" data-target="#filterConfigurations" aria-expanded="false" aria-controls="filterConfigurations">Filters</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+          </li>
+          <!-- Dropdown start -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Dropdown
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><a class="dropdown-item" href="#">Action</a></li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="http://google.com">Google</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Submenu</a></li>
+                  <li><a class="dropdown-item" href="#">Submenu0</a></li>
+                  <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Submenu 1</a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="#">Subsubmenu1</a></li>
+                      <li><a class="dropdown-item" href="#">Subsubmenu1</a></li>
+                    </ul>
+                  </li>
+                  <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Submenu 2</a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="#">Subsubmenu2</a></li>
+                      <li><a class="dropdown-item" href="#">Subsubmenu2</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <!-- Dropdown end -->
+        </ul>
+        <form method="POST">
+          <input class="form-control" type="text" id="search_field_input" name="search_field_input" placeholder="Search"
+            aria-label="Search" />
+        </form>
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="/random">Random</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- End of navbar -->
+  <!-- Start of filter box -->
+  <div class="collapse" id="filterConfigurations">
+    <div class="card card-body">
+      Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+      <form method="get" action="/browse">
+        <!-- <input type="text" name="MSC_HCAI" value="" id="keyword" />
+        <input type="submit"> -->
+        <input type="submit">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="sevenstep" value="gradetype" id="flexCheckDefault">
+          <label class="form-check-label" for="flexCheckDefault">
+            Sevenstep
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="passfail" value="gradetype" id="flexCheckChecked" checked>
+          <label class="form-check-label" for="flexCheckChecked">
+            Pass/Fail
+          </label>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- End of filter box -->
+
+  <h1>Hello World!</h1>
+
+</body>
+
+</html>

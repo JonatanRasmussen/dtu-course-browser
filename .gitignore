@@ -1,7 +1,16 @@
+# Warning: This .gitignore contains a lot of random
+# stuff that I just copy-pasted from another project
+
+# Logs
+logs/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
+
+# VSCode
+.vscode
 
 # C extensions
 *.so

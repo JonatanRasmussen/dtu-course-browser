@@ -1,0 +1,12 @@
+{% extends "base.html" %} {% block title %}Login{% endblock %} {% block
+    content %}
+    <h1>This is the login page</h1>
+    {{ text }}
+    {{ "user is " + user}}
+    {% if is_cool == True %}
+    and they are cool
+    {% elif %}
+    and they are not cool
+    {% endif %}
+
+    {% endblock %}
