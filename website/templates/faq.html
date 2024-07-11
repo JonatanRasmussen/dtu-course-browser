@@ -65,7 +65,7 @@
 
         <div class="faq-section">
             <h2>How do you calculate the 5-skull workload?</h2>
-            <p>Grade statistics does NOT influence workload score. I use the evaluation question "5 ECTS points are equivalent to 9 hours of study per week (45 for 3-week courses). The time I have spent on this course is: (Much more, More, Neutral, Less, Much less)". I map these answers to the numbers 5-1, with 5 being high workload and 1 being low workload. "More" and "Much more" are considered "Overworked student" and "Severely overworked student", respectively. HOWEVER, unlike the 5-star rating, almost every single DTU course sits somewhere in the range from 2.5-3.5 if you just take the average. So I use this code to exaggerate the deviation from center-value 3: <code>evaluation_average = 3 + (evaluation_average - 3) * float(2 - (abs((evaluation_average - 3) / 2)))</code>.</p>
+            <p>Grade statistics does NOT influence workload score. I use the evaluation question "5 ECTS points are equivalent to 9 hours of study per week (45 for 3-week courses). The time I have spent on this course is: (Much more, More, Neutral, Less, Much less)". I map these answers to the numbers 5-1, with 5 being high workload and 1 being low workload. "More" and "Much more" are considered "Overworked student" and "Severely overworked student", respectively. HOWEVER, unlike the 5-star rating, almost every single DTU course sits somewhere in the range from 2.5-3.5 if you just take the workload average. So I use this code to exaggerate the deviation from center-value 3: <code>exaggerated_evaluation_average = 3 + (evaluation_average - 3) * float(2 - (abs((evaluation_average - 3) / 2)))</code>.</p>
         </div>
 
         <div class="faq-section">
