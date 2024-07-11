@@ -19,7 +19,7 @@
         </div>
 
         <div class="faq-section">
-            <h2>How do I use the website?</h2>
+            <h2>How do I use this website?</h2>
             <p>In the 'Home' tab, use the filter to get whatever courses you are interested in. Click on any Course Card to see in-depth data for that specific course.</p>
         </div>
 
@@ -50,17 +50,22 @@
 
         <div class="faq-section">
             <h2>Can I get your raw data file(s)?</h2>
-            <p>Take a look at my GitHub, for example, go here to download all the data as one huge CSV: <a href="https://github.com/JonatanRasmussen/dtu-course-browser/tree/main/website/static/csv_files" target="_blank">CSV Files</a>.</p>
+            <p>You can find the data on my GitHub. From here, it is possible to download all the data as one huge CSV: <a href="https://github.com/JonatanRasmussen/dtu-course-browser/tree/main/website/static/csv_files" target="_blank">CSV Files</a>.</p>
+        </div>
+
+        <div class="faq-section">
+          <h2>You seem to be missing data for some courses?</h2>
+          <p>That should generally not be the case, as I am confident in the completeness and correctness of my scraped data. I'm not aware of any missing data myself, but do keep in mind that only courses available during 2023-2024 (soon 2024-2025) are available. Old courses that are no longer offered at DTU are not included in my data. Data for brand new courses might also not be available yet. I also might be missing data for August exams if I happened to scrape the data in late July, and so on. If the course has changed its course number, my website is unable to detect data belonging to the old course number. In very rare cases, grades for a specific semester might be missing due to getting mistaken as a re-exam. This only happens if a semester has very few students compared to the other semesters.</p>
         </div>
 
         <div class="faq-section">
             <h2>How do you calculate the 5-star ratings?</h2>
-            <p>Each course has public evaluation data for each semester. The evaluation includes the following questions: "I have learned a lot", "Motivating activities", and "Access to feedback". For each question, you can answer "Strongly agree", "Agree", "Neutral", "Disagree", or "Strongly disagree". I map these answers to the numbers 1-5, and then calculate an average. These three questions each count for 1/3 (⅓) of the total rating for the course. This is a made-up ranking system that is not endorsed by DTU.</p>
+            <p>Each course has public evaluation data for each semester. The evaluation includes the following questions: "I have learned a lot", "Motivating activities", and "Access to feedback". For each question, you can answer "Strongly agree", "Agree", "Neutral", "Disagree", or "Strongly disagree". I map these answers to the numbers 1-5, and then calculate an average. These three evaluation questions each count for 1/3 (⅓) of the total rating for the course. This is a made-up ranking system that is not endorsed by DTU.</p>
         </div>
 
         <div class="faq-section">
             <h2>How do you calculate the 5-skull workload?</h2>
-            <p>I use the evaluation question "5 ECTS points are equivalent to 9 hours of study per week (45 for 3-week courses). The time I have spent on this course is: (Much more, More, Neutral, Less, Much less)". I map these answers to the numbers 5-1, with 5 being high workload and 1 being low workload. "More" and "Much more" are considered "Overworked student" and "Severely overworked student", respectively. HOWEVER, unlike the 5-star rating, almost every single DTU course sits somewhere in the range from 2.5-3.5 if you just take the average. So I use this code to exaggerate the deviation from center-value 3: <code>evaluation_average = 3 + (evaluation_average - 3) * float(2 - (abs((evaluation_average - 3) / 2)))</code>.</p>
+            <p>Grade statistics does NOT influence workload score. I use the evaluation question "5 ECTS points are equivalent to 9 hours of study per week (45 for 3-week courses). The time I have spent on this course is: (Much more, More, Neutral, Less, Much less)". I map these answers to the numbers 5-1, with 5 being high workload and 1 being low workload. "More" and "Much more" are considered "Overworked student" and "Severely overworked student", respectively. HOWEVER, unlike the 5-star rating, almost every single DTU course sits somewhere in the range from 2.5-3.5 if you just take the average. So I use this code to exaggerate the deviation from center-value 3: <code>evaluation_average = 3 + (evaluation_average - 3) * float(2 - (abs((evaluation_average - 3) / 2)))</code>.</p>
         </div>
 
         <div class="faq-section">
