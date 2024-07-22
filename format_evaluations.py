@@ -45,6 +45,7 @@ def format_evaluations(scraped_evals, course_number, course_semesters, file_name
             # true_average is a number between 1-5 (center value is 3)
             evaluation_average = float(evaluation_weighted / votes)
 
+            """ # THE FOLLOWING CODE HAS BEEN DISABLED DUE TO MAKING DATA MISLEADING
             # For workload, the deviation from center value 3 is exaggerated (up to a factor 2)
             # The scores 2.9 and 3.1 are converted to ~2.8 and ~3.2 (factor 1.95 because they are close to center value 3)
             # The scores 2.0 and 4.0 are converted to 1.5 and 4.5 (factor 1.5 because they are far from center value 3)
@@ -55,6 +56,7 @@ def format_evaluations(scraped_evals, course_number, course_semesters, file_name
                 converted_average = float((evaluation_average - 3) * deviation_factor)
                 evaluation_average = 3 + converted_average
             #evaluation_average = round(float(((evaluation_weighted / votes) - 3) * low_sample_size_factor + 3), 2)
+            """
 
             # Finally, we round the value to 2 decimal places
             evaluation_average = round(evaluation_average, Config.data_decimal_precision)

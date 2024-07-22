@@ -1,0 +1,1 @@
+This code is not used in the project. It should have never been committed to github. It shows my failed attempts at throwing away all my ugly code and rewriting the project from scratch. However, this was way too much effort. If it ain't broke, don't fix it. Many, many hours were wasted here.

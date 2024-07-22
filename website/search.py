@@ -10,10 +10,10 @@ def submit_search_field(search_field_input):
         flash('Error: An empty search is not valid!', category='error')
         return redirect(url_for('course_database.route_to_course', course_number='invalid_search'))
     elif len(search) < 5:
-        flash('Error: Your search must be 5 characters long! Search for a valid course number.', category='error')
+        flash('Error: Your search input must be exactly 5 characters long! Please search a valid course number.', category='error')
         return redirect(url_for('course_database.route_to_course', course_number='invalid_search'))
     elif len(search) > 5:
-        flash('Error: Search length exceeded the 5 character limit! Search a valid course number instead.', category='error')
+        flash('Error: Search length exceeded the 5 character limit! Please search a valid course number instead.', category='error')
         return redirect(url_for('course_database.route_to_course', course_number='invalid_search'))
     else:
         #flash(f'Searching: {search_field_input}', category='success')

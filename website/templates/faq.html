@@ -10,26 +10,26 @@
         class="d-inline-block align-top" alt="Bootstrap" loading="lazy" />
         <div class="faq-section">
             <h2>Who are you?</h2>
-            <p>I am Jonatan Rasmussen (s183649), a Danish DTU student studying Human-Centered AI (MSc). This website is my hobby project. I am not paid by, or affiliated with, DTU's administration.</p>
+            <p>I am Jonatan Rasmussen, a danish student studying Human-Centered AI (MSc) at DTU. This website is my hobby project. I am not paid by, or affiliated with, DTU's administration.</p>
         </div>
 
         <div class="faq-section">
             <h2>What is this site?</h2>
-            <p>This website contains public course data for DTU's courses. It also offers more in-depth filter options than the official DTU websites as well as evaluation summaries and overviews.</p>
+            <p>This website contains public course data for DTU's courses. It also offers more in-depth search filters than the official DTU websites as well as evaluation summaries and overviews.</p>
         </div>
 
         <div class="faq-section">
             <h2>How do I use this website?</h2>
-            <p>In the 'Home' tab, use the filter to get whatever courses you are interested in. Click on any Course Card to see in-depth data for that specific course.</p>
+            <p>In the 'Home' tab, use the filter to search for whichever courses you are interested in. Click on any Course Card to see in-depth data for that specific course.</p>
         </div>
 
         <div class="faq-section">
             <h2>Why did you make this?</h2>
-            <p>I started the project back in 2019 because I liked the DTUCourseAnalyzer Chrome extension but its data was out of date (yes, even back in 2019 it used outdated data). Back then I was also new to programming, so it was a fun personal project. Initially, I just wanted to collect all the data in a big spreadsheet. Over time however, I collected more and more data and I wanted to make it browsable via a website. It is my goal that people can use this site to find and discover high-quality elective courses.</p>
+            <p>I started the project back in 2019 because I liked the DTUCourseAnalyzer Chrome extension but its data was out of date (yes, even back in 2019 it used outdated data). Back then I was also new to programming, so it was a fun personal project. Initially, I just wanted to collect all the data in a big spreadsheet. Over time however, I collected more and more data and I wanted to make it browsable via a website. It is my goal that people can use this site to find and discover high-quality courses.</p>
         </div>
 
         <div class="faq-section">
-            <h2>How long did this take to make?</h2>
+            <h2>How long did it take to make this project?</h2>
             <p>200 hours would be my rough estimate.</p>
         </div>
 
@@ -59,13 +59,13 @@
         </div>
 
         <div class="faq-section">
-            <h2>How do you calculate the 5-star ratings?</h2>
-            <p>Each course has public evaluation data for each semester. The evaluation includes the following questions: "I have learned a lot", "Motivating activities", and "Access to feedback". For each question, you can answer "Strongly agree", "Agree", "Neutral", "Disagree", or "Strongly disagree". I map these answers to the numbers 1-5, and then calculate an average. These three evaluation questions each count for 1/3 (⅓) of the total rating for the course. This is a made-up ranking system that is not endorsed by DTU.</p>
+          <h2>How do you calculate the 5-star ratings?</h2>
+          <p>Each course has public evaluation data for each semester. The evaluation includes the following questions: "I have learned a lot", "The learning activities motivate me", and "I've had the opportunity to get feedback on my performance". For each question, you can answer "Strongly disagree", "Disagree", "Neutral", "Agree", or "Strongly Agree". I map these answers to the numbers 1-5, and then calculate an average. These three evaluation questions each count for 1/3 (⅓) of the total rating for the course. This is a made-up ranking system that is not endorsed by DTU. Additionally, it should be noted that a given course rating is NOT affected by the rating of other courses. I do not calculate course percentiles. For example, 3 stars simply indicate that the average evaluation rating is in the interval [2.75, 3.25]. 3.5 stars indicate a rating in the interval [3.25, 3.75] and so on. The color of the rating is hardcoded to match the number of stars, with 4.0 being green, 3.5 being yellow and 3.0 being orange. In my opinion, courses that fail to average positive evaluation results (4.0 or higher) have room for improvement. And any course that fails to average neutral evaluation results (3.0 or higher) does not belong at an "Elite" university.</p>
         </div>
 
         <div class="faq-section">
-            <h2>How do you calculate the 5-skull workload?</h2>
-            <p>Grade statistics does NOT influence workload score. I use the evaluation question "5 ECTS points are equivalent to 9 hours of study per week (45 for 3-week courses). The time I have spent on this course is: (Much more, More, Neutral, Less, Much less)". I map these answers to the numbers 5-1, with 5 being high workload and 1 being low workload. "More" and "Much more" are considered "Overworked student" and "Severely overworked student", respectively. HOWEVER, unlike the 5-star rating, almost every single DTU course sits somewhere in the range from 2.5-3.5 if you just take the workload average. So I use this code to exaggerate the deviation from center-value 3: <code>exaggerated_evaluation_average = 3 + (evaluation_average - 3) * float(2 - (abs((evaluation_average - 3) / 2)))</code>.</p>
+          <h2>How do you calculate the 5-skull workload?</h2>
+          <p>Grade statistics does NOT influence workload score. Instead I use the evaluation question "5 ECTS credits correspond to 9 hours per week for the 13-week period (45 hours per week for the 3-week period). The time I have spent on this course is: (Much less, Less, Equal, More, Much more)". I map these answers to the numbers 1-5, with 1 being low workload and 5 being high workload. "More" and "Much more" are considered "Overworked student" and "Severely overworked student", respectively. Just like the 5-star ratings, this is a made-up ranking system that is not endorsed by DTU.</p>
         </div>
 
         <div class="faq-section">
@@ -89,13 +89,13 @@
         </div>
 
         <div class="faq-section">
-            <h2>Give me a fun fact</h2>
+            <h2>Give me a fun fact!</h2>
             <p>I'm the creator of the YouTube video <a href="https://www.youtube.com/watch?v=fUqA4bgRa5w" target="_blank">Best of Mat 1</a>, currently sitting at 12,000+ views.</p>
         </div>
 
         <div class="faq-section">
             <h2>Show me something cool!</h2>
-            <p>Sure, try to manually type the URL subpage <a href="/wip" target="_blank">/wip</a> for a behind-the-scenes sneak peek!</p>
+            <p>Sure, take a look at the subpage <a href="/wip" target="_blank">/wip</a> for a behind-the-scenes sneak peek of the website design process!</p>
         </div>
 
         <div class="faq-section">
