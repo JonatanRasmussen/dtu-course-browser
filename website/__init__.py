@@ -1,14 +1,24 @@
-
-
 # Imports
 from flask import Flask
-# Helper functions and global constants
+import os
 
+# Helper functions and global constants
 
 def create_app():
     app = Flask(__name__)
     app.static_folder = 'static'
-    app.config['SECRET_KEY'] = 'cookiecutter24470763'
+
+    # Try to load SECRET_KEY from secretkey.txt
+    try:
+        with open('secretkey.txt', 'r') as f:
+            secret_key = f.read().strip()
+    except FileNotFoundError:
+        secret_key = 'default_secret_key'
+        print()
+        print("Custom warning: secretkey.txt file not found. Using default secret key.")
+        print()
+
+    app.config['SECRET_KEY'] = secret_key
 
     from .views import views
     app.register_blueprint(views, url_prefix='/')

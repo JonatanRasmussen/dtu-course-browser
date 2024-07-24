@@ -1,6 +1,9 @@
 # Warning: This .gitignore contains a lot of random
 # stuff that I just copy-pasted from another project
 
+# Secrets
+secretkey.txt
+
 # Logs
 logs/
 
@@ -8,6 +11,7 @@ logs/
 __pycache__/
 *.py[cod]
 *$py.class
+tempCodeRunnerFile.py
 
 # VSCode
 .vscode

@@ -46,6 +46,7 @@ def scrape_grades(course_numbers, course_semesters, file_name):
             df_found = True
             table_containing_grades = table_containing_grades.set_index('Karakter')
             table_containing_grades = table_containing_grades.iloc[:,0]
+
             scraped_dict = table_containing_grades.to_dict()
             scraped_dict = {str(k): v for k, v in scraped_dict.items()}
             scraped_dict = {k.capitalize(): v for k, v in scraped_dict.items()}
@@ -58,6 +59,13 @@ def scrape_grades(course_numbers, course_semesters, file_name):
         if scraped_dict == {} and df_found == True:
             message = f"{file_name}: {course}_{exam_periods[i]} Grades found on url but dict is empty (url: {url})"
             Utils.logger(message, "Error", FileNameConsts.scrape_log_name)
+
+        # Quick and dirty fix for "02" becoming "2" and "00" becoming "0" if "Ej mødt" grade is missing
+        if "0" in scraped_dict:
+            scraped_dict["00"] = scraped_dict.pop("0")
+        if "2" in scraped_dict:
+            scraped_dict["02"] = scraped_dict.pop("2")
+
         return scraped_dict
 
 
@@ -153,7 +161,7 @@ def scrape_grades(course_numbers, course_semesters, file_name):
 if __name__ == "__main__":
     # Variables and initialization
     COURSE_NUMBERS = Utils.get_course_numbers()
-    #COURSE_NUMBERS = ['01005', '01017']
+    #COURSE_NUMBERS = ['30015', '01017']
 
     course_semesters = Config.course_semesters
     grade_df_name = FileNameConsts.grade_df

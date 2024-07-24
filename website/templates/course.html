@@ -602,7 +602,7 @@
 <!-- Start of modal: semester breakdown -->
 <div class="modal fade" id="semester_breakdown" tabindex="-1" role="dialog"
   aria-labelledby="semester_breakdown_label" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="semester_breakdown_id">Semester breakdown</h5>
@@ -622,110 +622,16 @@
             </tr>
           </thead>
           <tbody>
-            {% if (0.05 * data.TOTAL_STUDENTS) < data.F18_TOTAL_STUDENTS %}
-            <tr>
-              <th style="width: 33%" scope="row">Spring 2018</th>
-              <td class="align-top">{{data.F18_AVERAGE_GRADE}}</td>
-              <td class="align-top">{{data.F18_PERCENT_FAILED}}%</td>
-              <td class="align-top">{{data.F18_TOTAL_STUDENTS}}</td>
-            </tr>
-            {% endif %}
-            {% if (0.05 * data.TOTAL_STUDENTS) < data.E18_TOTAL_STUDENTS %}
-            <tr>
-              <th style="width: 33%" scope="row">Autumn 2018</th>
-              <td class="align-top">{{data.E18_AVERAGE_GRADE}}</td>
-              <td class="align-top">{{data.E18_PERCENT_FAILED}}%</td>
-              <td class="align-top">{{data.E18_TOTAL_STUDENTS}}</td>
-            </tr>
-            {% endif %}
-            {% if (0.05 * data.TOTAL_STUDENTS) < data.F19_TOTAL_STUDENTS %}
-            <tr>
-              <th style="width: 33%" scope="row">Spring 2019</th>
-              <td class="align-top">{{data.F19_AVERAGE_GRADE}}</td>
-              <td class="align-top">{{data.F19_PERCENT_FAILED}}%</td>
-              <td class="align-top">{{data.F19_TOTAL_STUDENTS}}</td>
-            </tr>
-            {% endif %}
-            {% if (0.05 * data.TOTAL_STUDENTS) < data.E19_TOTAL_STUDENTS %}
-            <tr>
-              <th style="width: 33%" scope="row">Autumn 2019</th>
-              <td class="align-top">{{data.E19_AVERAGE_GRADE}}</td>
-              <td class="align-top">{{data.E19_PERCENT_FAILED}}%</td>
-              <td class="align-top">{{data.E19_TOTAL_STUDENTS}}</td>
-            </tr>
-            {% endif %}
-            {% if (0.05 * data.TOTAL_STUDENTS) < data.F20_TOTAL_STUDENTS %}
-            <tr>
-              <th style="width: 33%" scope="row">Spring 2020</th>
-              <td class="align-top">{{data.F20_AVERAGE_GRADE}}</td>
-              <td class="align-top">{{data.F20_PERCENT_FAILED}}%</td>
-              <td class="align-top">{{data.F20_TOTAL_STUDENTS}}</td>
-            </tr>
-            {% endif %}
-            {% if (0.05 * data.TOTAL_STUDENTS) < data.E20_TOTAL_STUDENTS %}
-            <tr>
-              <th style="width: 33%" scope="row">Autumn 2020</th>
-              <td class="align-top">{{data.E20_AVERAGE_GRADE}}</td>
-              <td class="align-top">{{data.E20_PERCENT_FAILED}}%</td>
-              <td class="align-top">{{data.E20_TOTAL_STUDENTS}}</td>
-            </tr>
-            {% endif %}
-            {% if (0.05 * data.TOTAL_STUDENTS) < data.F21_TOTAL_STUDENTS %}
-            <tr>
-              <th style="width: 33%" scope="row">Spring 2021</th>
-              <td class="align-top">{{data.F21_AVERAGE_GRADE}}</td>
-              <td class="align-top">{{data.F21_PERCENT_FAILED}}%</td>
-              <td class="align-top">{{data.F21_TOTAL_STUDENTS}}</td>
-            </tr>
-            {% endif %}
-            {% if (0.05 * data.TOTAL_STUDENTS) < data.E21_TOTAL_STUDENTS %}
-            <tr>
-              <th style="width: 33%" scope="row">Autumn 2021</th>
-              <td class="align-top">{{data.E21_AVERAGE_GRADE}}</td>
-              <td class="align-top">{{data.E21_PERCENT_FAILED}}%</td>
-              <td class="align-top">{{data.E21_TOTAL_STUDENTS}}</td>
-            </tr>
-            {% endif %}
-            {% if (0.05 * data.TOTAL_STUDENTS) < data.F22_TOTAL_STUDENTS %}
-            <tr>
-              <th style="width: 33%" scope="row">Spring 2022</th>
-              <td class="align-top">{{data.F22_AVERAGE_GRADE}}</td>
-              <td class="align-top">{{data.F22_PERCENT_FAILED}}%</td>
-              <td class="align-top">{{data.F22_TOTAL_STUDENTS}}</td>
-            </tr>
-            {% endif %}
-            {% if (0.05 * data.TOTAL_STUDENTS) < data.E22_TOTAL_STUDENTS %}
-            <tr>
-              <th style="width: 33%" scope="row">Autumn 2022</th>
-              <td class="align-top">{{data.E22_AVERAGE_GRADE}}</td>
-              <td class="align-top">{{data.E22_PERCENT_FAILED}}%</td>
-              <td class="align-top">{{data.E22_TOTAL_STUDENTS}}</td>
-            </tr>
-            {% endif %}
-            {% if (0.05 * data.TOTAL_STUDENTS) < data.F23_TOTAL_STUDENTS %}
-            <tr>
-              <th style="width: 33%" scope="row">Spring 2023</th>
-              <td class="align-top">{{data.F23_AVERAGE_GRADE}}</td>
-              <td class="align-top">{{data.F23_PERCENT_FAILED}}%</td>
-              <td class="align-top">{{data.F23_TOTAL_STUDENTS}}</td>
-            </tr>
-            {% endif %}
-            {% if (0.05 * data.TOTAL_STUDENTS) < data.E23_TOTAL_STUDENTS %}
-            <tr>
-              <th style="width: 33%" scope="row">Autumn 2023</th>
-              <td class="align-top">{{data.E23_AVERAGE_GRADE}}</td>
-              <td class="align-top">{{data.E23_PERCENT_FAILED}}%</td>
-              <td class="align-top">{{data.E23_TOTAL_STUDENTS}}</td>
-            </tr>
-            {% endif %}
-            {% if (0.05 * data.TOTAL_STUDENTS) < data.F24_TOTAL_STUDENTS %}
-            <tr>
-              <th style="width: 33%" scope="row">Spring 2024</th>
-              <td class="align-top">{{data.F24_AVERAGE_GRADE}}</td>
-              <td class="align-top">{{data.F24_PERCENT_FAILED}}%</td>
-              <td class="align-top">{{data.F24_TOTAL_STUDENTS}}</td>
-            </tr>
-            {% endif %}
+          {% for semester, semester_data in semesters.items() %}
+          {% if semester_data.TOTAL_STUDENTS and (0.05 * data.TOTAL_STUDENTS) < semester_data.TOTAL_STUDENTS %}
+          <tr>
+            <th style="width: 33%" scope="row">{{semester_data.SEMESTER_NAME}}</th>
+            <td class="align-top">{{semester_data.AVERAGE_GRADE}}</td>
+            <td class="align-top">{{semester_data.PERCENT_FAILED}}%</td>
+            <td class="align-top">{{semester_data.TOTAL_STUDENTS}}</td>
+          </tr>
+          {% endif %}
+          {% endfor %}
           </tbody>
           {% if (0.05 * data.TOTAL_STUDENTS) < data.TOTAL_STUDENTS %}
           <tfoot>
@@ -761,136 +667,18 @@
             </tr>
           </thead>
           <tbody>
-            {% if 0 < data.F18_LEARNING_VOTES %}
+            {% for semester, semester_data in semesters.items() %}
+            {% if 0 < semester_data.LEARNING_VOTES %}
             <tr>
-              <th style="width: 33%" scope="row">Spring 2018</th>
-              <td class="align-top">{{data.F18_WORKLOAD_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.F18_LEARNING_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.F18_MOTIVATION_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.F18_FEEDBACK_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.F18_LEARNING_VOTES}}</td>
+              <th style="width: 33%" scope="row">{{semester_data.SEMESTER_NAME}}</th>
+              <td class="align-top">{{semester_data.WORKLOAD_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{semester_data.LEARNING_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{semester_data.MOTIVATION_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{semester_data.FEEDBACK_AVERAGE_SCORE}}</td>
+              <td class="align-top">{{semester_data.LEARNING_VOTES}}</td>
             </tr>
             {% endif %}
-            {% if 0 < data.E18_LEARNING_VOTES %}
-            <tr>
-              <th style="width: 33%" scope="row">Autumn 2018</th>
-              <td class="align-top">{{data.E18_WORKLOAD_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.E18_LEARNING_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.E18_MOTIVATION_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.E18_FEEDBACK_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.E18_LEARNING_VOTES}}</td>
-            </tr>
-            {% endif %}
-            {% if 0 < data.F19_LEARNING_VOTES %}
-            <tr>
-              <th style="width: 33%" scope="row">Spring 2019</th>
-              <td class="align-top">{{data.F19_WORKLOAD_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.F19_LEARNING_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.F19_MOTIVATION_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.F19_FEEDBACK_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.F19_LEARNING_VOTES}}</td>
-            </tr>
-            {% endif %}
-            {% if 0 < data.E19_LEARNING_VOTES %}
-            <tr>
-              <th style="width: 33%" scope="row">Autumn 2019</th>
-              <td class="align-top">{{data.E19_WORKLOAD_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.E19_LEARNING_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.E19_MOTIVATION_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.E19_FEEDBACK_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.E19_LEARNING_VOTES}}</td>
-            </tr>
-            {% endif %}
-            {% if 0 < data.F20_LEARNING_VOTES %}
-            <tr>
-              <th style="width: 33%" scope="row">Spring 2020</th>
-              <td class="align-top">{{data.F20_WORKLOAD_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.F20_LEARNING_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.F20_MOTIVATION_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.F20_FEEDBACK_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.F20_LEARNING_VOTES}}</td>
-            </tr>
-            {% endif %}
-            {% if 0 < data.E20_LEARNING_VOTES %}
-            <tr>
-              <th style="width: 33%" scope="row">Autumn 2020</th>
-              <td class="align-top">{{data.E20_WORKLOAD_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.E20_LEARNING_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.E20_MOTIVATION_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.E20_FEEDBACK_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.E20_LEARNING_VOTES}}</td>
-            </tr>
-            {% endif %}
-            {% if 0 < data.F21_LEARNING_VOTES %}
-            <tr>
-              <th style="width: 33%" scope="row">Spring 2021</th>
-              <td class="align-top">{{data.F21_WORKLOAD_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.F21_LEARNING_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.F21_MOTIVATION_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.F21_FEEDBACK_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.F21_LEARNING_VOTES}}</td>
-            </tr>
-            {% endif %}
-            {% if 0 < data.E21_LEARNING_VOTES %}
-            <tr>
-              <th style="width: 33%" scope="row">Autumn 2021</th>
-              <td class="align-top">{{data.E21_WORKLOAD_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.E21_LEARNING_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.E21_MOTIVATION_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.E21_FEEDBACK_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.E21_LEARNING_VOTES}}</td>
-            </tr>
-            {% endif %}
-            {% if 0 < data.F22_LEARNING_VOTES %}
-            <tr>
-              <th style="width: 33%" scope="row">Spring 2022</th>
-              <td class="align-top">{{data.F22_WORKLOAD_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.F22_LEARNING_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.F22_MOTIVATION_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.F22_FEEDBACK_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.F22_LEARNING_VOTES}}</td>
-            </tr>
-            {% endif %}
-            {% if 0 < data.E22_LEARNING_VOTES %}
-            <tr>
-              <th style="width: 33%" scope="row">Autumn 2022</th>
-              <td class="align-top">{{data.E22_WORKLOAD_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.E22_LEARNING_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.E22_MOTIVATION_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.E22_FEEDBACK_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.E22_LEARNING_VOTES}}</td>
-            </tr>
-            {% endif %}
-            {% if 0 < data.F23_LEARNING_VOTES %}
-            <tr>
-              <th style="width: 33%" scope="row">Spring 2023</th>
-              <td class="align-top">{{data.F23_WORKLOAD_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.F23_LEARNING_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.F23_MOTIVATION_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.F23_FEEDBACK_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.F23_LEARNING_VOTES}}</td>
-            </tr>
-            {% endif %}
-            {% if 0 < data.E23_LEARNING_VOTES %}
-            <tr>
-              <th style="width: 33%" scope="row">Autumn 2023</th>
-              <td class="align-top">{{data.E23_WORKLOAD_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.E23_LEARNING_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.E23_MOTIVATION_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.E23_FEEDBACK_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.E23_LEARNING_VOTES}}</td>
-            </tr>
-            {% endif %}
-            {% if 0 < data.F24_LEARNING_VOTES %}
-            <tr>
-              <th style="width: 33%" scope="row">Spring 2024</th>
-              <td class="align-top">{{data.F24_WORKLOAD_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.F24_LEARNING_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.F24_MOTIVATION_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.F24_FEEDBACK_AVERAGE_SCORE}}</td>
-              <td class="align-top">{{data.F24_LEARNING_VOTES}}</td>
-            </tr>
-            {% endif %}
+            {% endfor %}
           </tbody>
           {% if 0 < data.LEARNING_VOTES %}
           <tfoot>
@@ -918,7 +706,7 @@
 <!-- Start of modal: gradegraph explainer -->
 <div class="modal fade" id="gradegraph_explainer" tabindex="-1" role="dialog"
   aria-labelledby="gradegraph_explainer_label" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Grade distribution</h5>

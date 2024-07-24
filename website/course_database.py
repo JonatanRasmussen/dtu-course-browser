@@ -7,7 +7,9 @@ import random
 from flask import Blueprint, render_template, request, redirect, url_for
 # Helper functions and global constants
 from .search import submit_search_field
+from website.global_constants.website_consts import WebsiteConsts
 from website.global_constants.file_name_consts import FileNameConsts
+from website.global_constants.config import Config
 
 course_database = Blueprint('course_database', __name__)
 
@@ -34,10 +36,22 @@ def route_to_course(course_number):
             desired_course = random.sample(list(course_set), 1)[0]
 
         data = df.loc[desired_course].to_dict()
+
+        # Initialize semester-specific course data
+        semesters = {}
+        for semester in Config.course_semesters:
+            semester_name = f"{'Autumn' if semester[0] == 'E' else 'Spring'} {int(semester[1:]) + 2000}"
+            semester_data = {WebsiteConsts.semester_name: semester_name}
+            semesters[semester] = semester_data
+            for key in data:
+                if semester in key:
+                    renamed_key = key.replace(semester+"_", "")
+                    semester_data[renamed_key] = data[key]
+
+        # This fixes a bug related to numpy/pkl incorrectly handling None-values
         for key in data:
             if (isinstance(data[key], float) and math.isnan(data[key])):
                 data[key] = 'None'
-        extra_data = {'score': 'test123'}
 
         # When the dataframe was constructed from a pickle,
         # lists were accidentally converted to strings. Now converting them back...
@@ -46,7 +60,7 @@ def route_to_course(course_number):
             data[data_column_headers[k]] = list(data[data_column_headers[k]].split("<br />"))
 
         # If course exists, route to course page. If not, route to 404 not found
-        return render_template("course.html", data=data, extra_data=extra_data)
+        return render_template("course.html", data=data, semesters=semesters)
     else:
         return render_template("404_invalid_course.html", course=course_number)
 

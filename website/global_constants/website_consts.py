@@ -84,3 +84,4 @@ class WebsiteConsts:
     exam_project = "Exam project"
 
     # Course page
+    semester_name = "SEMESTER_NAME"
