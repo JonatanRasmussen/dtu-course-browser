@@ -1,0 +1,8 @@
+# I am using Python 3.11.7, older versions may or may not work.
+Flask==3.0.3                # Required for website_launch.py
+pandas==2.2.2               # Required for website_launch.py
+selenium==4.21.0            # Required for main.py – Not required for website_launch.py
+webdriver-manager==4.0.1    # Required for main.py – Not required for website_launch.py
+beautifulsoup4==4.12.3      # Required for main.py – Not required for website_launch.py
+lxml==5.2.2                 # Required for main.py – Not required for website_launch.py
+requests==2.31.0            # Required for main.py – Not required for website_launch.py

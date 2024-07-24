@@ -1,7 +1,15 @@
-# Website link
+# DTU Course Analyzer
+
+## Website link
 [(Link to Website)](https://dtucourseanalyzer.pythonanywhere.com)
 
-# About this GitHub repo
+## How to run the website locally
+1. Clone/Download the repository. Ensure you have Python installed.
+2. Pip install the python modules listed in requirements.txt (Python 3.11.7 or later is recommended).
+3. Run website_launch.py and then visit http://127.0.0.1:5000 in your webbrowser.
+4. (OPTIONAL) The repository already contains scraped data. To re-scrape the data from DTU's servers, run main.py
+
+## About this GitHub repo
 This repository contains all the code related to my hobby project, the "DTU Course Analyzer" website (not to be confused with the [Google Chrome Extension of the same name](https://chromewebstore.google.com/detail/dtu-course-analyzer/bimhgdngikcnelkhjindmdghndfmdcde)). I started the project several years and have only recently made it public.  While the code is open-source, this was always intended to be a solo project. Be aware that if you delve into the code, you may find it complex and challenging to understand. The repository hasn't been "cleaned" for public consumption, so you should expect to find numerous leftover files with no real purpose. Most of the code was written when I was new to programming – if I were to start the project today, I would have organized things differently. Nevertheless, the code works and behaves as intended, and I've refactored and maintained it to make scraping and updating the data as straightforward as possible (for me at least). Simply run main.py to scrape the data and launch a local version of the website. For now I consider the project to be finished. However, I plan on keeping the site updated with the most recent data. If the website receives a lot of traffic, I'll consider improving its performance.
 
 # Copy-paste of Website's FAQ section
