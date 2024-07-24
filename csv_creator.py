@@ -192,6 +192,8 @@ def write_csv_columns_to_json(name_and_path_of_csv):
             for key in dct:
                 if dct[key] == GradeConsts.pass_fail:
                     dct[key] = WebsiteConsts.shortened_pass_fail
+                elif dct[key] == GradeConsts.grade_none:
+                    dct[key] = WebsiteConsts.shortened_no_grades
                 elif dct[key] == EvalConsts.no_evaluations:
                     dct[key] = WebsiteConsts.shortened_no_evaluations
                 else:

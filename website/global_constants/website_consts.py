@@ -76,6 +76,7 @@ class WebsiteConsts:
     # Format info rename values
     no_data = "No data"
     shortened_no_evaluations = "–"
+    shortened_no_grades = "–"
     shortened_pass_fail = "P/F"
     shortened_autumn = "Fall"
     shortened_written_oral = "Oral exam"

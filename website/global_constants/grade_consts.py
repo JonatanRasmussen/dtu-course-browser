@@ -19,6 +19,6 @@ class GradeConsts:
     students_per_semester = "STUDENTS_PER_SEMESTER"
     semesters_total = "TOTAL_SEMESTERS"
     pass_fail = "Pass/Fail"
-    grade_none = 0
+    grade_none = "No data"
     list_of_grades = [grade_12, grade_10, grade_7, grade_4, grade_02, grade_00,
                       grade_minus_3, grade_passed, grade_failed, grade_absent]
