@@ -47,6 +47,9 @@ def format_study_line_scrape(string_of_study_lines, study_lines_dct, course_numb
         # Absolutely mongoloid IT department at DTU using non-breaking space &nbsp; (this bug took 3 hours to track down)
         scraped_data = scraped_data.replace(" "," ")
 
+        # Replace double comma
+        scraped_data = scraped_data.replace("MSc,, ","MSc, ")
+
         # Removing the corrupt '??' value and replacing '&' character
         scraped_data = scraped_data.replace("??","") # 01005 is odd
         scraped_data = scraped_data.replace("&","and") # D&I is odd
@@ -76,6 +79,7 @@ def format_study_line_scrape(string_of_study_lines, study_lines_dct, course_numb
         # In a similar vain to BSc Sustainable Energy, (2024/2025) Dunno what this is
         scraped_data = scraped_data.replace("Mandatory Courses","")
         scraped_data = scraped_data.replace("Mandatory courses","")
+        scraped_data = scraped_data.replace("1. semester (optag før E24)","")
 
         # 2024/2025 this is very cursed
         scraped_data = scraped_data.replace("General competence course (BSc)","BSc,")
@@ -88,11 +92,18 @@ def format_study_line_scrape(string_of_study_lines, study_lines_dct, course_numb
         scraped_data = scraped_data.replace("Projects and general subjects,","BSc,")
         scraped_data = scraped_data.replace("Projects and General Subjects ,","BSc,")
         scraped_data = scraped_data.replace("Projects (BSc),","BSc,")
+        scraped_data = scraped_data.replace("Projects (BSc)","BSc,")
+        scraped_data = scraped_data.replace("Elective MSc course (BSc),","BSc,")
+        scraped_data = scraped_data.replace("Elective MSc course (BSc)","BSc,")
         scraped_data = scraped_data.replace("Elective courses,","BEng,")
+        scraped_data = scraped_data.replace("Elective course (B Eng),","BEng,")
+        scraped_data = scraped_data.replace("Mandatory course (B Eng),","BEng,")
         scraped_data = scraped_data.replace("Polytechnical foundation (BSc),","BSc,")
         scraped_data = scraped_data.replace("Polytechnical foundation (MSc)","MSc,")
         scraped_data = scraped_data.replace("Programme specific course (BSc),","BSc,")
         scraped_data = scraped_data.replace("Programme specific course (MSc)","MSc,")
+        scraped_data = scraped_data.replace("Programme-specific course (MSc)","MSc,")
+        scraped_data = scraped_data.replace("Programme-specific course (MSc)","MSc,")
 
         scraped_data = scraped_data.replace("Technological specialization course (MSc)","MSc,")
         scraped_data = scraped_data.replace("Technological Specialization course (MSc)","MSc,") # Capitalization error at (MSc) Bioinformatics and Systems Biology
@@ -146,9 +157,22 @@ def format_study_line_scrape(string_of_study_lines, study_lines_dct, course_numb
         scraped_data = scraped_data.replace("BSc, Physics and Nanotechnology","BSc, Engineering Physics")
         scraped_data = scraped_data.replace("BSc, Artificiel Intelligence and Data","BSc, Artificial Intelligence and Data")
         scraped_data = scraped_data.replace("echnology Core Courses, Artificiel Intelligence and Data", "BSc, Artificial Intelligence and Data")
+        scraped_data = scraped_data.replace("BEng, HealthcareTechnology","BEng, Healthcare Technology")
+        scraped_data = scraped_data.replace("BEng, Softwaretechnology","BEng, Software Technology")
 
 
+        # 2025/2026 Renaming study lines to match "official" list (https://www.dtu.dk/english/education/bachelor-beng-and-bsc-/bsc/programmes-in-danish/life-science-engineering)
+        scraped_data = scraped_data.replace("MSc,, ","MSc, ")
+        scraped_data = scraped_data.replace("MSc, Transportation and Logistics","MSc, Transport and Logistics")
+        scraped_data = scraped_data.replace("MSc, Earth and Space Physics Engineering","MSc, Earth and Space Physics and Engineering")
+        scraped_data = scraped_data.replace("MSc, Bioinformatics","MSc, Bioinformatics and Systems Biology")
+        scraped_data = scraped_data.replace("MSc, Technology Entreneurship","MSc, Technology Entrepreneurship")
+        scraped_data = scraped_data.replace("MSc, Human-Centered Artificial Intelligence","MSc, Human Centered Artificial Intelligence")
+        scraped_data = scraped_data.replace("MSc, Bioinformatics and Systems Biology and Systems Biology", "MSc, Bioinformatics and Systems Biology")
+        scraped_data = scraped_data.replace("MSc, MSc. Eng., Architectural Engineering","MSc, Architectural Engineering")
 
+        # Replace double comma
+        scraped_data = scraped_data.replace("MSc,, ","MSc, ")
 
         # Remove white spaces at start and end of string
         scraped_data = scraped_data.strip()

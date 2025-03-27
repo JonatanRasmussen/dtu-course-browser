@@ -31,6 +31,7 @@ class WebsiteConsts:
     # Json dict names
     json_number = "course_numbers"
     json_name_english = "course_english_names"
+    json_course_data = "course_data"
     json_course_ects = "course_ects"
     json_course_type = "course_type"
     json_course_language = "course_language"
@@ -86,3 +87,7 @@ class WebsiteConsts:
 
     # Course page
     semester_name = "SEMESTER_NAME"
+
+    # Last updated
+    last_updated = "last_updated"
+    current_year = "current_year"

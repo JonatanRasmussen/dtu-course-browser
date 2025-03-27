@@ -221,6 +221,21 @@ def write_csv_columns_to_json(name_and_path_of_csv):
                     dct[key] = WebsiteConsts.exam_project
         return dct
 
+    def create_dct_for_json(df, column):
+        """Load a column from csv as dictionary and return it"""
+
+        def turn_to_float(item):
+            if (column == GradeConsts.grade_average) or (column == GradeConsts.percent_failed) or (column == EvalConsts.workload_average_score) or (column == EvalConsts.rating_average_score) or (column == EvalConsts.learning_average_score) or (column == EvalConsts.motivation_average_score) or (column == EvalConsts.feedback_average_score):
+                if isinstance(item, str):
+                    return -0.1
+            elif (column == InfoConsts.main_responsible_pic.key_df):
+                return str(item)
+            return item
+
+        dct = df.to_dict()[column]
+        dct_data = rename_dct_value(dct, column)
+        sorted_dct = dict(sorted(dct_data.items(), key=lambda item: turn_to_float(item[1]))) # Be careful, this line will do absolutely nothing WITHOUT RAISING A WARNING if dct_data contains a mix of strings and numbers
+        return sorted_dct
 
     def save_dct_as_json(df, column, json_name):
         """Load a column from csv as dictionary and save it as json"""
@@ -241,7 +256,6 @@ def write_csv_columns_to_json(name_and_path_of_csv):
             json.dump(sorted_dct, fp)
         print(f"The dictionary {json_name}.json has been saved...")
 
-
     # Load in data frame from csv
     df = pd.read_csv(name_and_path_of_csv, dtype={'COURSE': str}, low_memory=False)
 
@@ -252,6 +266,7 @@ def write_csv_columns_to_json(name_and_path_of_csv):
     df = df.set_index(COURSE)
 
     # All the json files that must be created
+    """
     save_dct_as_json(df, InfoConsts.name_english, WebsiteConsts.json_name_english)
     save_dct_as_json(df, InfoConsts.ects_points.key_df, WebsiteConsts.json_course_ects)
     save_dct_as_json(df, InfoConsts.course_type.key_df, WebsiteConsts.json_course_type)
@@ -271,6 +286,34 @@ def write_csv_columns_to_json(name_and_path_of_csv):
     save_dct_as_json(df, EvalConsts.learning_average_score, WebsiteConsts.json_course_eval_learning)
     save_dct_as_json(df, EvalConsts.motivation_average_score, WebsiteConsts.json_course_eval_motivation)
     save_dct_as_json(df, EvalConsts.feedback_average_score, WebsiteConsts.json_course_eval_feedback)
+    """
+
+    data_dct = {
+        WebsiteConsts.json_name_english: create_dct_for_json(df, InfoConsts.name_english),
+        WebsiteConsts.json_course_ects: create_dct_for_json(df, InfoConsts.ects_points.key_df),
+        WebsiteConsts.json_course_type: create_dct_for_json(df, InfoConsts.course_type.key_df),
+        WebsiteConsts.json_course_language: create_dct_for_json(df, InfoConsts.language.key_df),
+        WebsiteConsts.json_course_season: create_dct_for_json(df, InfoConsts.semester_period.key_df),
+        WebsiteConsts.json_course_schedule: create_dct_for_json(df, InfoConsts.time_of_week.key_df),
+        WebsiteConsts.json_course_signups: create_dct_for_json(df, GradeConsts.students_per_semester),
+        WebsiteConsts.json_course_grade: create_dct_for_json(df, GradeConsts.grade_average),
+        WebsiteConsts.json_course_fail: create_dct_for_json(df, GradeConsts.percent_failed),
+        WebsiteConsts.json_course_exam: create_dct_for_json(df, InfoConsts.exam_type.key_df),
+        WebsiteConsts.json_course_workload: create_dct_for_json(df, EvalConsts.workload_average_score),
+        WebsiteConsts.json_course_rating: create_dct_for_json(df, EvalConsts.rating_average_score),
+        WebsiteConsts.json_course_workload_tier: create_dct_for_json(df, EvalConsts.workload_tier),
+        WebsiteConsts.json_course_rating_tier: create_dct_for_json(df, EvalConsts.rating_tier),
+        WebsiteConsts.json_course_votes: create_dct_for_json(df, EvalConsts.motivation_votes),
+        WebsiteConsts.json_course_responsible: create_dct_for_json(df, InfoConsts.main_responsible_pic.key_df),
+        WebsiteConsts.json_course_eval_learning: create_dct_for_json(df, EvalConsts.learning_average_score),
+        WebsiteConsts.json_course_eval_motivation: create_dct_for_json(df, EvalConsts.motivation_average_score),
+        WebsiteConsts.json_course_eval_feedback: create_dct_for_json(df, EvalConsts.feedback_average_score)
+    }
+    json_name = WebsiteConsts.json_course_data
+    path_and_file_name = FileNameConsts.path_of_pkl + json_name + '.json'
+    with open(path_and_file_name, 'w') as fp:
+        json.dump(data_dct, fp)
+    print(f"The dictionary {json_name}.json has been saved...")
 
 def csv_creator_main():
     """ Clean, format and parse the scraped_data into a csv used by my website """
@@ -320,13 +363,36 @@ def csv_creator_main():
     print("Creating csv file: "+name_and_path_of_csv)
     print()
     csv_creator(COURSE_NUMBERS, COURSE_NAMES, name_and_path_of_csv, name_and_path_of_pkl, PREMADE_COLUMNS)
+    print()
 
     # Create extended csv
     PREMADE_COLUMNS = []
     path_name_extended_csv = FileNameConsts.path_of_csv + FileNameConsts.extended_csv_name + ".csv"
     path_name_extended_pkl = FileNameConsts.path_of_pkl + FileNameConsts.extended_pkl_name + ".pkl"
-    csv_creator(COURSE_NUMBERS, COURSE_NAMES, path_name_extended_csv, path_name_extended_pkl, PREMADE_COLUMNS)
     print("Creating extended csv file: "+path_name_extended_csv)
+    print()
+    csv_creator(COURSE_NUMBERS, COURSE_NAMES, path_name_extended_csv, path_name_extended_pkl, PREMADE_COLUMNS)
+    print()
+
+    # Create planner csv
+    COLUMNS_TO_COPY_OVER = [COURSE, NAME, InfoConsts.danish_name.key_df, InfoConsts.language.key_df, InfoConsts.ects_points.key_df,
+                            InfoConsts.course_type.key_df, InfoConsts.exam_type.key_df, InfoConsts.time_of_week.key_df,
+                            InfoConsts.course_duration.key_df, InfoConsts.exam_aid.key_df, InfoConsts.examiner.key_df, InfoConsts.assignments.key_df,
+                            InfoConsts.grade_type.key_df, InfoConsts.location.key_df, InfoConsts.semester_period.key_df,
+                            InfoConsts.main_responsible_name.key_df, InfoConsts.co_responsible_1_name.key_df, InfoConsts.co_responsible_2_name.key_df,
+                            InfoConsts.co_responsible_3_name.key_df, InfoConsts.co_responsible_4_name.key_df, InfoConsts.study_lines.key_df,
+                            GradeConsts.grade_average, GradeConsts.percent_passed, GradeConsts.students_total, EvalConsts.workload_average_score,
+                            EvalConsts.learning_average_score, EvalConsts.motivation_average_score, EvalConsts.feedback_average_score]
+    path_name_planner_csv = FileNameConsts.path_of_csv + FileNameConsts.planner_csv + ".csv"
+    df_extended = pd.read_csv(path_name_extended_csv, dtype={'COURSE': str}, low_memory=False)
+    df_planner = df_extended[COLUMNS_TO_COPY_OVER]
+    df_planner[InfoConsts.time_of_week.key_df] = df_planner[InfoConsts.time_of_week.key_df].str.split(InfoConsts.separator_html)
+    df_planner[InfoConsts.study_lines.key_df] = df_planner[InfoConsts.study_lines.key_df].str.split(InfoConsts.separator_html)
+
+    print("Creating extended csv file: "+path_name_planner_csv)
+    print()
+    df_planner.to_csv(path_name_planner_csv, index = False, header=True)
+    print(df_planner)
     print()
 
     # Success!

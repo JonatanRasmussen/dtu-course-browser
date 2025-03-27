@@ -15,8 +15,14 @@ course_database = Blueprint('course_database', __name__)
 
 #for i in range (0, len(course_number_lst)):
 
-name_and_path_of_pkl = FileNameConsts.path_of_pkl + FileNameConsts.name_of_pkl + ".pkl"
-df = pd.read_pickle(name_and_path_of_pkl)
+try:
+    # Fix for when this code is being run at pythonanywhere.com
+    pythonanywhere_name_and_path_of_pkl = FileNameConsts.pythonanywherecom_path_of_pkl + FileNameConsts.name_of_pkl + ".pkl"
+    df = pd.read_pickle(pythonanywhere_name_and_path_of_pkl)
+except FileNotFoundError:
+    # Relative path used when localhosting
+    name_and_path_of_pkl = FileNameConsts.path_of_pkl + FileNameConsts.name_of_pkl + ".pkl"
+    df = pd.read_pickle(name_and_path_of_pkl)
 course_set = set(df.COURSE) #Course variable is given in URL
 
 @course_database.route('/course/<string:course_number>', methods=['GET', 'POST'])

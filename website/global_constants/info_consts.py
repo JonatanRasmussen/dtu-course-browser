@@ -483,6 +483,7 @@ class InfoConsts:
                     "BEng, Chemical Engineering and International Business",
                     "BEng, Chemical and Bio Engineering",
                     "BEng, Civil Engineering",
+                    "BEng, Computer Engineering", ##
                     "BEng, Electrical Energy Technology",
                     "BEng, Electrical Engineering",
                     "BEng, Fisheries Technology",
@@ -494,6 +495,7 @@ class InfoConsts:
                     "BEng, Manufacturing and Management",
                     "BEng, Mechanical Engineering",
                     "BEng, Mobility, Transport and Logistics",
+                    "BEng, Naval Architecture and Offshore Engineering", ##
                     "BEng, Process and Innovation",
                     "BEng, Software Technology",
                     "BSc, Architectural Engineering",
@@ -547,12 +549,13 @@ class InfoConsts:
                     "MSc, Mechanical Engineering",
                     "MSc, Ocean Engineering",
                     "MSc, Petroleum Engineering", #
-
                     "MSc, Pharmaceutical Design and Engineering",
                     "MSc, Photonics", #
                     "MSc, Physics and Nanotechnology", #
                     "MSc, Quantitative Biology and Disease Modelling", #
-                    "MSc, Sustainable Energy",
+                    "MSc, Sustainable Energy", #DELETE
+                    "MSc, Sustainable Energy Systems",
+                    "MSc, Sustainable Energy Technologies",
                     "MSc, Sustainable Fisheries and Aquaculture",
                     "MSc, Transport and Logistics", #
                     "MSc, Technology Entrepreneurship",

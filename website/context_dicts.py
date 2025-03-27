@@ -5,18 +5,48 @@ import json
 # Helper functions and global constants
 from website.global_constants.website_consts import WebsiteConsts
 from website.global_constants.file_name_consts import FileNameConsts
+from website.global_constants.config import Config
 
+def load_course_data_dct_json_file(nested_dct_name):
+    """Load json file containing all the data"""
+    file_name = WebsiteConsts.json_course_data
+    try:
+        pythonanywhere_dct_name = FileNameConsts.pythonanywherecom_path_of_pkl + file_name + '.json'
+        with open(pythonanywhere_dct_name) as f:
+            dct = json.load(f)
+        if nested_dct_name in dct:
+            return dct[nested_dct_name]
+        else:
+            return {}
+    except FileNotFoundError:
+        dct_name = FileNameConsts.path_of_pkl + file_name + '.json'
+        try:
+            with open(dct_name) as f:
+                dct = json.load(f)
+            if nested_dct_name in dct:
+                return dct[nested_dct_name]
+            else:
+                return {}
+        except: # return empty dict if no file found
+            print(f"Error: Dictionary with file name {file_name} was not found in {FileNameConsts.path_of_pkl}")
+            return {}
 
 def load_dct_from_json_file(file_name):
     """Load in dictionary from json file"""
-    dct_name = FileNameConsts.path_of_pkl + file_name + '.json'
     try:
-        with open(dct_name) as f:
+        pythonanywhere_dct_name = FileNameConsts.pythonanywherecom_path_of_pkl + file_name + '.json'
+        with open(pythonanywhere_dct_name) as f:
             dct = json.load(f)
         return dct
-    except: # return empty dict if no file found
-        print(f"Error: Dictionary with file name {file_name} was not found in {FileNameConsts.path_of_pkl}")
-        return {}
+    except FileNotFoundError:
+        try:
+            dct_name = FileNameConsts.path_of_pkl + file_name + '.json'
+            with open(dct_name) as f:
+                dct = json.load(f)
+            return dct
+        except: # return empty dict if no file found
+            print(f"Error: Dictionary with file name {file_name} was not found in {FileNameConsts.path_of_pkl}")
+            return {}
 
 def create_filtered_list_from_url_args(url_args):
     filter_dct = get_filter_dct()
@@ -63,7 +93,8 @@ def turn_set_into_lst_and_sort(set_of_courses_to_display, url_args):
         # Valid url args
         sorting_catagory = url_args[sort_by]
         json_file_name = sorting_catagory
-        dct = load_dct_from_json_file(json_file_name)
+        #dct = load_dct_from_json_file(json_file_name)
+        dct = load_course_data_dct_json_file(json_file_name)
         arrange_order = list(dct)
         if (sorting_catagory in sorting_keys):
             if (sorting_keys_as_dct[sorting_catagory]): #Boolean, decides if list should be reversed
@@ -78,13 +109,22 @@ def dicts_to_display():
 def get_name_of_list(name_of_list):
     return {'list_of_dicts': [name_of_list]}
 
-def course_lists(): # Add dict name to dicts_to_display()
+def course_lists(course_data): # Add dict name to dicts_to_display()
+    all_courses = [
+        "02105", "02003", "02456", "02476", "34126", "02180", "42500", "88383",
+        "63852", "02450", "38106", "02402", "42620", "42893", "02393",
+        "62999", "27020", "01001", "34366", "25102", "10605",
+    ]
+
+    # Filter courses to only include those that exist in course_data
+    filtered_courses = [course_id for course_id in all_courses if course_id in course_data[WebsiteConsts.name]]
+
+    if len(all_courses) != len(filtered_courses):
+        missing_courses = [course_id for course_id in all_courses if course_id not in course_data[WebsiteConsts.name]]
+        print("Update course sample in context dicts. Missing courses:", missing_courses)
+
     return {
-        'Course sample': [
-            "02105", "02003", "02456", "02476", "34126", "02180", "42500", "88383",
-            "63852", "02450", "38106", "02402", "01901", "42620", "42893", "02393",
-            "62999", "27020", "01001", "34366", "02502", "25102", "02323", "01005",
-        ]
+        'Course sample': filtered_courses
     }
     """ return {
         'Jonatan Rasmussens passed courses: Programming, Data and Network': [
@@ -100,6 +140,10 @@ def course_lists(): # Add dict name to dicts_to_display()
             '63851', '38106', '42009', '10610', '10603', '41011', '41012'
         ]
     } """
+
+def last_updated_dct():
+    return {WebsiteConsts.last_updated: Config.website_last_updated,
+            WebsiteConsts.current_year: Config.website_current_year}
 
 def data():
     dct = { WebsiteConsts.name: name(),
@@ -176,7 +220,8 @@ def courses():
 
 def name():
     json_file_name = WebsiteConsts.json_name_english
-    dct = load_dct_from_json_file(json_file_name)
+    #dct = load_dct_from_json_file(json_file_name)
+    dct = load_course_data_dct_json_file(json_file_name)
     return dct
     #return {'01005': 'Matematik 1',
     #        '01035': 'Grundlæggende kemi',
@@ -184,92 +229,110 @@ def name():
 
 def ects():
     json_file_name = WebsiteConsts.json_course_ects
-    dct = load_dct_from_json_file(json_file_name)
+    #dct = load_dct_from_json_file(json_file_name)
+    dct = load_course_data_dct_json_file(json_file_name)
     return dct
 
 def course_type():
     json_file_name = WebsiteConsts.json_course_type
-    dct = load_dct_from_json_file(json_file_name)
+    #dct = load_dct_from_json_file(json_file_name)
+    dct = load_course_data_dct_json_file(json_file_name)
     return dct
 
 def language():
     json_file_name = WebsiteConsts.json_course_language
-    dct = load_dct_from_json_file(json_file_name)
+    #dct = load_dct_from_json_file(json_file_name)
+    dct = load_course_data_dct_json_file(json_file_name)
     return dct
 
 def season():
     json_file_name = WebsiteConsts.json_course_season
-    dct = load_dct_from_json_file(json_file_name)
+    #dct = load_dct_from_json_file(json_file_name)
+    dct = load_course_data_dct_json_file(json_file_name)
     return dct
 
 def schedule():
     json_file_name = WebsiteConsts.json_course_schedule
-    dct = load_dct_from_json_file(json_file_name)
+    #dct = load_dct_from_json_file(json_file_name)
+    dct = load_course_data_dct_json_file(json_file_name)
     return dct
 
 def signups():
     json_file_name = WebsiteConsts.json_course_signups
-    dct = load_dct_from_json_file(json_file_name)
+    #dct = load_dct_from_json_file(json_file_name)
+    dct = load_course_data_dct_json_file(json_file_name)
     return dct
 
 def grade():
     json_file_name = WebsiteConsts.json_course_grade
-    dct = load_dct_from_json_file(json_file_name)
+    #dct = load_dct_from_json_file(json_file_name)
+    dct = load_course_data_dct_json_file(json_file_name)
     return dct
 
 def fail():
     json_file_name = WebsiteConsts.json_course_fail
-    dct = load_dct_from_json_file(json_file_name)
+    #dct = load_dct_from_json_file(json_file_name)
+    dct = load_course_data_dct_json_file(json_file_name)
     return dct
 
 def exam():
     json_file_name = WebsiteConsts.json_course_exam
-    dct = load_dct_from_json_file(json_file_name)
+    #dct = load_dct_from_json_file(json_file_name)
+    dct = load_course_data_dct_json_file(json_file_name)
     return dct
 
 def workload():
     json_file_name = WebsiteConsts.json_course_workload
-    dct = load_dct_from_json_file(json_file_name)
+    #dct = load_dct_from_json_file(json_file_name)
+    dct = load_course_data_dct_json_file(json_file_name)
     return dct
 
 def rating():
     json_file_name = WebsiteConsts.json_course_rating
-    dct = load_dct_from_json_file(json_file_name)
+    #dct = load_dct_from_json_file(json_file_name)
+    dct = load_course_data_dct_json_file(json_file_name)
     return dct
 
 def workload_tier():
     json_file_name = WebsiteConsts.json_course_workload_tier
-    dct = load_dct_from_json_file(json_file_name)
+    #dct = load_dct_from_json_file(json_file_name)
+    dct = load_course_data_dct_json_file(json_file_name)
     return dct
 
 def rating_tier():
     json_file_name = WebsiteConsts.json_course_rating_tier
-    dct = load_dct_from_json_file(json_file_name)
+    #dct = load_dct_from_json_file(json_file_name)
+    dct = load_course_data_dct_json_file(json_file_name)
     return dct
 
 def votes():
     json_file_name = WebsiteConsts.json_course_votes
-    dct = load_dct_from_json_file(json_file_name)
+    #dct = load_dct_from_json_file(json_file_name)
+    dct = load_course_data_dct_json_file(json_file_name)
     return dct
 
 def responsible():
     json_file_name = WebsiteConsts.json_course_responsible
-    dct = load_dct_from_json_file(json_file_name)
+    #dct = load_dct_from_json_file(json_file_name)
+    dct = load_course_data_dct_json_file(json_file_name)
     return dct
 
 def eval_learning():
     json_file_name = WebsiteConsts.json_course_eval_learning
-    dct = load_dct_from_json_file(json_file_name)
+    #dct = load_dct_from_json_file(json_file_name)
+    dct = load_course_data_dct_json_file(json_file_name)
     return dct
 
 def eval_motivation():
     json_file_name = WebsiteConsts.json_course_eval_motivation
-    dct = load_dct_from_json_file(json_file_name)
+    #dct = load_dct_from_json_file(json_file_name)
+    dct = load_course_data_dct_json_file(json_file_name)
     return dct
 
 def eval_feedback():
     json_file_name = WebsiteConsts.json_course_eval_feedback
-    dct = load_dct_from_json_file(json_file_name)
+    #dct = load_dct_from_json_file(json_file_name)
+    dct = load_course_data_dct_json_file(json_file_name)
     return dct
 
 

@@ -157,7 +157,7 @@ def format_info(scraped_info, course_number, info_name):
                     testy = testy.replace("General competence course (MSc)", "GENERAL COMPETENCE ")
                     print(testy) """ # NEVER FORGET THIS ABSOLUTE DEGENERACY OF CHASING DOWN A ' ' using non-breaking space &nbsp;
                     if lst_of_study_lines[k] not in values:
-                        print(f'Warning, {course_number}: "{lst_of_study_lines[k]}" was not recognized as a study line. Go to line ~630 and manually update list')
+                        print(f'Warning, {course_number}: "{lst_of_study_lines[k]}" was not recognized as a study line. Go to line ~500 of info_consts.py and manually update list')
 
             # Check if all expected values in SCRAPED_INFO_DICT[key] was found
             if len(values) == 0:

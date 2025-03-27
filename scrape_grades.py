@@ -9,6 +9,7 @@ from website.global_constants.config import Config
 from website.global_constants.file_name_consts import FileNameConsts
 from website.global_constants.grade_consts import GradeConsts
 
+#
 
 def scrape_grades(course_numbers, course_semesters, file_name):
     """Scrape grades for a given set of courses and semesters"""
@@ -41,19 +42,30 @@ def scrape_grades(course_numbers, course_semesters, file_name):
         try:
             # We assunme that if pd.read_html finds a table, the url contain grades
             df = pd.read_html(url, header=0)
-            # These grades are loaded into a dictionary based on the following code
-            table_containing_grades = df[2]
-            df_found = True
-            table_containing_grades = table_containing_grades.set_index('Karakter')
-            table_containing_grades = table_containing_grades.iloc[:,0]
+            if len(df) >= 3:
+                # These grades are loaded into a dictionary based on the following code
+                table_containing_grades = df[2]
+                df_found = True
+                table_containing_grades = table_containing_grades.set_index('Karakter')
+                table_containing_grades = table_containing_grades.iloc[:,0]
 
-            scraped_dict = table_containing_grades.to_dict()
-            scraped_dict = {str(k): v for k, v in scraped_dict.items()}
-            scraped_dict = {k.capitalize(): v for k, v in scraped_dict.items()}
+                scraped_dict = table_containing_grades.to_dict()
+                scraped_dict = {str(k): v for k, v in scraped_dict.items()}
+                scraped_dict = {k.capitalize(): v for k, v in scraped_dict.items()}
+
+                Utils.logger(f"Scraped data for {url}: {scraped_dict}", "Log", FileNameConsts.scrape_log_name)
+            elif len(df) == 2:
+                scraped_dict = {}
+                Utils.logger(f"Scraped data for {url}: {scraped_dict} Grades are not public due to there being 3 or fewer grades", "Log", FileNameConsts.scrape_log_name)
+            else:
+                scraped_dict = {}
+                Utils.logger(f"Scraped data for {url}: {scraped_dict} Not enough tables. Expected at least 3, got {len(df)}", "Warning", FileNameConsts.scrape_log_name)
 
         # If url is invalid (no table found), then return an empty dict
-        except (urllib.error.HTTPError, IndexError):
+        except (urllib.error.HTTPError, IndexError) as e:
+            Utils.logger(f"Scraped data for {url}: Grade page returns 404 and likely does not exist", "Log", FileNameConsts.scrape_log_name)
             scraped_dict = {}
+
 
         # If the following ever happens it probably means that DTU has updated their website and I have to re-write my code
         if scraped_dict == {} and df_found == True:

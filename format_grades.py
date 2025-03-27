@@ -156,7 +156,7 @@ def format_grades(scraped_grades, course_number, course_semesters, file_name):
         for grade in GradeConsts.list_of_grades:
 
             key = semester+'_'+str(grade)
-            if (key in scraped_grades) and (scraped_grades[key] != Config.data_null_value):
+            if (key in scraped_grades) and (scraped_grades[key] != Config.data_null_value) and (scraped_grades[key] != GradeConsts.grade_none):
                 grade_count_all_semesters[grade] += int(scraped_grades[key])
                 grade_count_this_semester[grade] += int(scraped_grades[key])
 

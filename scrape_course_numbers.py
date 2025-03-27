@@ -18,9 +18,9 @@ def scrape_course_numbers():
         return date_str
 
     # The following url contains a list of all DTU courses
-    print('Beginning the course number scrape...')
-    driver = Utils.launch_selenium()
     years = transform_date(Config.course_years)
+    print(f'Beginning the course number scrape for {years}...')
+    driver = Utils.launch_selenium()
     url = "https://kurser.dtu.dk/search?CourseCode=&SearchKeyword=&Department=1&Department=10&Department=12&Department=13&Department=22&Department=23&Department=24&Department=25&Department=26&Department=27&Department=28&Department=29&Department=30&Department=33&Department=34&Department=36&Department=38&Department=41&Department=42&Department=46&Department=47&Department=59&Department=IHK&Department=83&CourseType=&TeachingLanguage=&Volume="+years
     html_raw = Utils.access_url_via_selenium(url, driver)
 

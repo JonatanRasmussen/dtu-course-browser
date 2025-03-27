@@ -5,17 +5,22 @@ import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
 
 # Imports
+import time
 import bs4 as bs
 import urllib.request
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import StaleElementReferenceException
 # Helper functions and global constants
 from utils import Utils
 from website.global_constants.eval_consts import EvalConsts
 from website.global_constants.file_name_consts import FileNameConsts
+import json
 
 def scrape_evaluations(course_numbers, file_name):
     """Scrape grades for a given set of courses and href digits"""
-
 
     def scrape_url(url):
         """ Get page source from url, split it at /n and return it as list.
@@ -35,7 +40,6 @@ def scrape_evaluations(course_numbers, file_name):
         # Empty indexes in the list are removed
         scraped_html = list(filter(lambda a: a != '', scraped_html))
         return scraped_html
-
 
     def get_course_number_and_period(scraped_html):
         """ The scraped_html contains evaluations for an unknown season/period.
@@ -60,7 +64,6 @@ def scrape_evaluations(course_numbers, file_name):
             Utils.logger(message, 'Error', FileNameConsts.scrape_log_name)
         return [course_number, course_period]
 
-
     def extract_evaluation_data(scraped_data, course_period):
         """ Extract evaluations from scrapedData and return them as dict
             Note that this is some old and ugly code that I have not bothered to clean up"""
@@ -75,33 +78,25 @@ def scrape_evaluations(course_numbers, file_name):
         lst_questions = []
         if age_of_evaluation_data == 'after Sep-2019':
             lst_questions.append('jeg har lært meget i dette kursus.')
-            #lstQuestions.append('- [Se Kursets Læringsmål]')
             lst_questions.append('undervisningsaktiviteterne motiverer mig til at arbejde med stoffet.')
             lst_questions.append('jeg i løbet af kurset har haft mulighed for at få feedback på, hvordan jeg fagligt klarer mig på kurset.')
-            #lstQuestions.append('det generelt har været klart for mig, hvad der forventes af mig i øvelser, projektarbejde og lignende.')
             lst_questions.append('Jeg mener, at den tid jeg har brugt på kurset er')
             answers_to_first_questions = 'Helt uenig'
             answers_to_last_questions = 'Meget mindre'
 
         else: # evaluationDate == 'before Sep-2019':
             lst_questions.append('Jeg synes, at jeg lærer meget i dette kursus')
-            #lstQuestions.append('Jeg synes, at undervisningsforløbet lægger op til min aktive deltagelse')
             lst_questions.append('Jeg synes, at undervisningsmaterialet er godt')
             lst_questions.append('Jeg synes, at underviseren/underviserne i løbet af kurset har gjort det klart for mig, hvor jeg står fagligt set')
-            #lstQuestions.append('Jeg synes, at underviseren/underviserne skaber en god sammenhæng mellem de forskellige undervisningsaktiviteter')
             lst_questions.append('5 point er normeret til 9t./uge (45 t./uge i treugers-perioden). Jeg mener, at min arbejdsindsats i kurset er')
-            #lstQuestions.append('Jeg mener, at kursusbeskrivelsens forudsætningskrav er')
-            #lstQuestions.append('Samlet set synes jeg, at kurset er godt')
             answers_to_first_questions = 'Helt enig'
             answers_to_last_questions = 'Meget mindre'
 
         # I have rephrased the questions as a single word (for the dict)
         lst_rephrased_questions = []
         lst_rephrased_questions.append(str(course_period)+'_'+EvalConsts.learning)
-        #lstRephrasedQuestions.append(str(course_period)+'_'+'Opfyldelse af læringsmål')
         lst_rephrased_questions.append(str(course_period)+'_'+EvalConsts.motivation)
         lst_rephrased_questions.append(str(course_period)+'_'+EvalConsts.feedback)
-        #lstRephrasedQuestions.append(str(course_period)+'_'+'Klarhed omkring forventninger')
         lst_rephrased_questions.append(str(course_period)+'_'+EvalConsts.workload)
 
         eval_dict = {}
@@ -153,8 +148,31 @@ def scrape_evaluations(course_numbers, file_name):
             eval_dict[lst_rephrased_questions[i]] = eval_values
         return eval_dict
 
+    """
+    def at_least_one_href_found(driver):
+        hrefs = driver.find_elements(By.PARTIAL_LINK_TEXT, '')
+        return any(href.get_attribute("href").startswith('https://evaluering.dtu.dk/kursus/') for href in hrefs)
+    """
 
-#%% Start of main script
+    def at_least_one_href_found(driver):
+        max_attempts = 3
+        for attempt in range(max_attempts):
+            try:
+                # Get fresh elements each attempt
+                hrefs = driver.find_elements(By.PARTIAL_LINK_TEXT, '')
+                return any(
+                    href.get_attribute("href") is not None and
+                    href.get_attribute("href").startswith('https://evaluering.dtu.dk/kursus/')
+                    for href in hrefs
+                )
+            except StaleElementReferenceException:
+                if attempt < max_attempts - 1:
+                    time.sleep(1.5)
+                    continue
+                else:
+                    Utils.logger("StaleElement error", "Warning", FileNameConsts.scrape_log_name)
+                    return False
+        return False
 
     # Constants that specifies how Selenium can find the correct elements
     URL = 'https://evaluering.dtu.dk/CourseSearch'
@@ -171,13 +189,18 @@ def scrape_evaluations(course_numbers, file_name):
     for course in course_numbers:
         df_row = {df_index: course}
 
-        # In order to scrape the evaluations, we must first obtain the url for a given set of evaluations
-        # This is done by going to 'https://evaluering.dtu.dk/CourseSearch' and, for each course, searching for all evaluations
-        # This will return a list of href elements, each of which links to an evaluation for the specified course
         evaluation_urls = []
         driver.get(URL)
         driver.find_element(By.XPATH, COURSE_INPUT).send_keys(course)
         driver.find_element(By.XPATH, SEARCH_SUBMIT).click()
+
+        timeout_after = 3 #seconds
+        try:
+            # Wait a small amount of time for at least one href link to be found
+            WebDriverWait(driver, timeout_after).until(at_least_one_href_found)
+        except TimeoutException:
+            # If no href is found before timeout, log that no evaluation links exists
+            Utils.logger(f"No evaluation links exists for course {course}", "Log", FileNameConsts.scrape_log_name)
 
         hrefs = driver.find_elements(By.PARTIAL_LINK_TEXT, '')
         for href in hrefs:
@@ -185,6 +208,8 @@ def scrape_evaluations(course_numbers, file_name):
             if len(href_as_string) >= 33 and href_as_string[0:33] == 'https://evaluering.dtu.dk/kursus/':
                 evaluation_urls.append(href_as_string)
 
+        # Log the search page results
+        Utils.logger(f"Search page for course {course}: Found {len(evaluation_urls)} evaluation links", "Log", FileNameConsts.scrape_log_name)
 
         # Loop through each evaluation for specified course
         for eval_url in evaluation_urls:
@@ -198,8 +223,12 @@ def scrape_evaluations(course_numbers, file_name):
                 Utils.logger(message, 'Error', FileNameConsts.scrape_log_name)
                 continue
 
-            # Extract studente evaluation data from scrapedData
+            # Extract student evaluation data from scrapedData
             semester_data = extract_evaluation_data(page_source, course_period)
+
+            # Log the scraped data for each evaluation page
+            Utils.logger(f"Scraped data for {eval_url}: Course: {scraped_course_number}, Period: {course_period}, Data: {json.dumps(semester_data)}", "Log", FileNameConsts.scrape_log_name)
+
             # If extraction failed, the returned dict will be empty
             df_row.update(semester_data)
 
@@ -223,10 +252,9 @@ def scrape_evaluations(course_numbers, file_name):
     print(f"Sample output: {df}")
     print()
 
-
 #%%
 if __name__ == "__main__":
-        # Variables and initialization
+    # Variables and initialization
     COURSE_NUMBERS = Utils.get_course_numbers()
     #COURSE_NUMBERS = ['01005', '02105']
 
