@@ -21,6 +21,9 @@ This repository contains all the code related to my hobby project, the "DTU Cour
 # Copy-paste of Website's FAQ section
 <img src="website/static/assets/brand/me.png" alt="Brand Image" width="180">
 
+## Website link
+[(Link to Website)](https://dtucourseanalyzer.pythonanywhere.com)
+
 ## Who are you?
 I am Jonatan Rasmussen, a danish student studying Human-Centered AI (MSc) at DTU. This website is my hobby project. I am not paid by, or affiliated with, DTU's administration.
 
