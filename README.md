@@ -1,7 +1,7 @@
 # DTU Course Analyzer
 
 ## Website link
-[(Link to Website)](https://dtucourseanalyzer.pythonanywhere.com)
+[(Link to Website)](https://dtucourseanalyzer.pythonanywhere.com).
 This is a hobby project. It is not part of any course work at DTU.
 
 ## How to run the website locally
