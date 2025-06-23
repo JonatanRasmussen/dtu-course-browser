@@ -1,3 +1,4 @@
+'''
 #%%
 
 # Imports
@@ -8,7 +9,7 @@ from website.global_constants.config import Config
 from scrape_course_numbers import scrape_course_numbers
 from scrape_evaluations import scrape_evaluations
 from scrape_grades import scrape_grades
-from scrape_info import scrape_info
+from scrape_info_old import scrape_info
 
 def run_all_scrape_scripts():
     """ Run all the scrape scripts. Some of them uses Selenium Webbrowser """
@@ -32,3 +33,4 @@ def run_all_scrape_scripts():
 #%%
 if __name__ == "__main__":
     run_all_scrape_scripts()
+'''

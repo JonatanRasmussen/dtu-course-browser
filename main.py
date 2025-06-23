@@ -1,5 +1,5 @@
-from scrape_masterscript import run_all_scrape_scripts
-from csv_creator import csv_creator_main
+from scrape_all import run_all_scrape_scripts
+from csv_creator import CsvCreator
 from website_launch import website_launch_main
 #%%
 if __name__ == "__main__":
@@ -9,7 +9,7 @@ if __name__ == "__main__":
 
     # Take data from scraped_data folder and clean+format+parse it.
     # Then, save it as csv file to website/static folder
-    csv_creator_main() # This requires scraped_data, obtained via the above code
+    CsvCreator.csv_creator_main() # This requires scraped_data, obtained via the above code
 
     # Launch website, using data from the csv file created above
     website_launch_main()

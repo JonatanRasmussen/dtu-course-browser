@@ -1,7 +1,5 @@
 #%%
 
-# Imports
-# Helper functions and global constants
 from utils import Utils
 from website.global_constants.file_name_consts import FileNameConsts
 from website.global_constants.config import Config

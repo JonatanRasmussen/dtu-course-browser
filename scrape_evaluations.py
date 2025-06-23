@@ -1,27 +1,90 @@
 #%%
 
-# These two imports will fix ssl.SSLCertVerificationError
-import ssl
-ssl._create_default_https_context = ssl._create_unverified_context
-
-# Imports
 import time
 import bs4 as bs
 import urllib.request
+import ssl  # These imports will fix ssl.SSLCertVerificationError
+ssl._create_default_https_context = ssl._create_unverified_context  # pylint: disable=protected-access
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import StaleElementReferenceException
-# Helper functions and global constants
+# TO FIX CHROMEDRIVER, GO TO https://chromedriver.chromium.org/downloads
+# AND PLACE NEW VERSION IN C:\Program Files (x86)\ChromeDriver
+
 from utils import Utils
 from website.global_constants.eval_consts import EvalConsts
 from website.global_constants.file_name_consts import FileNameConsts
 import json
 
-def scrape_evaluations(course_numbers, file_name):
-    """Scrape grades for a given set of courses and href digits"""
 
+class EvalScraper:
+
+    @staticmethod
+    def quick_test_scrape_for_debugging_please_ignore():
+        """ Do a quick scrape to see if the code works."""
+        course_numbers = ['01001', '02402']  # Example of valid courses for the below semesters
+        course_semesters = ['F23', 'E23', 'F24']  # Example of valid semesters
+        file_name = "scraped_evals_test"
+        EvalScraper.scrape_evaluations(course_numbers, course_semesters, file_name)
+
+    @staticmethod
+    def scrape_evaluations(course_numbers, course_semesters, file_name):
+        """Scrape grades for a given set of courses and href digits"""
+        print('Webscrape of evaluations will now begin...')
+        df, lst_of_column_names, df_index = Utils.initialize_df(course_semesters, EvalConsts.list_of_evals)
+        driver = Utils.launch_selenium()
+        iteration_count = 0
+        for course in course_numbers:
+            df_row = {df_index: course}
+            evaluation_urls = EvalScraper.use_selenium_to_find_eval_urls(driver, course)
+            for eval_url in evaluation_urls:
+                page_source = EvalScraper.scrape_url(eval_url)
+                semester = EvalScraper.parse_semester_from_page_source(page_source, course, file_name)
+                if semester in course_semesters:
+                    semester_eval_data = EvalScraper.extract_evaluation_data(page_source, semester, course, file_name)
+                    df_row.update(semester_eval_data)  # If extraction failed, the returned dict will be empty
+            df = Utils.add_dict_to_df(df_row, lst_of_column_names, df)  # Concatenate dict to dataframe as a new row
+            iteration_count += 1  # Print current course to console so user can track the progress
+            if iteration_count % 10 == 0 or iteration_count == 1:
+                Utils.print_progress(iteration_count, course_numbers, df_row, file_name)
+        if len(file_name) != 0:
+            Utils.save_scraped_df(df, file_name)  # Save all grades as .pkl
+            Utils.save_df_as_csv(df, file_name)  # Save all grades as .csv
+        driver.quit()
+        print()  # Webscrape for all courses and semesters has been completed
+        print('Webscrape of evaluations is now completed! Check log for details.')
+        df.set_index(df_index, inplace=True, drop=True)
+        print(f"Sample output: {df}")
+        print()
+        return df
+
+    @staticmethod
+    def use_selenium_to_find_eval_urls(driver, course):
+        """Use the driver to search for all evaluations for a given course."""
+        evaluation_urls = []
+        driver.get('https://evaluering.dtu.dk/CourseSearch')
+        driver.find_element(By.XPATH, '//*[@id="CourseCodeTextbox"]').send_keys(course)
+        driver.find_element(By.XPATH, '//*[@id="SearchButton"]').click()
+        timeout_after = 3 #seconds
+        try:
+            # Wait a small amount of time for at least one href link to be found
+            WebDriverWait(driver, timeout_after).until(EvalScraper.at_least_one_href_found)
+        except TimeoutException:
+            # If no href is found before timeout, log that no evaluation links exists
+            Utils.logger(f"No evaluation links exists for course {course}", "Log", FileNameConsts.scrape_log_name)
+        hrefs = driver.find_elements(By.PARTIAL_LINK_TEXT, '')
+        for href in hrefs:
+            href_as_string = href.get_attribute("href")
+            if len(href_as_string) >= 33 and href_as_string[0:33] == 'https://evaluering.dtu.dk/kursus/':
+                evaluation_urls.append(href_as_string)
+        # Log the search page results
+        Utils.logger(f"Search page for course {course}: Found {len(evaluation_urls)} evaluation links", "Log", FileNameConsts.scrape_log_name)
+        return evaluation_urls
+
+
+    @staticmethod
     def scrape_url(url):
         """ Get page source from url, split it at /n and return it as list.
             Note that this is some old and ugly code that I have not bothered to clean up"""
@@ -41,7 +104,8 @@ def scrape_evaluations(course_numbers, file_name):
         scraped_html = list(filter(lambda a: a != '', scraped_html))
         return scraped_html
 
-    def get_course_number_and_period(scraped_html):
+    @staticmethod
+    def parse_semester_from_page_source(scraped_html, expected_course, file_name):
         """ The scraped_html contains evaluations for an unknown season/period.
             The season/period can be Summer, Winter, F20, E20, Jan, Jun, Jul or Aug.
             Summer, Jun, Jul and Aug is converted to F20. Winter and Jan is converted to E20.
@@ -62,9 +126,14 @@ def scrape_evaluations(course_numbers, file_name):
         else: # Period format is invalid
             message = f"{file_name}, {course_number}: Semester format unknown"
             Utils.logger(message, 'Error', FileNameConsts.scrape_log_name)
-        return [course_number, course_period]
+            course_period = 'X00'
+        if course_number != expected_course:  # Check that the extracted course number matches course[k]
+            message = f"{file_name}, {expected_course}: Wrong course number ({course_number})"
+            Utils.logger(message, 'Error', FileNameConsts.scrape_log_name)
+        return course_period
 
-    def extract_evaluation_data(scraped_data, course_period):
+    @staticmethod
+    def extract_evaluation_data(scraped_data, semester, course, file_name):
         """ Extract evaluations from scrapedData and return them as dict
             Note that this is some old and ugly code that I have not bothered to clean up"""
         # In Sep-2019, the old evaluation questions were replaced by new ones
@@ -94,10 +163,10 @@ def scrape_evaluations(course_numbers, file_name):
 
         # I have rephrased the questions as a single word (for the dict)
         lst_rephrased_questions = []
-        lst_rephrased_questions.append(str(course_period)+'_'+EvalConsts.learning)
-        lst_rephrased_questions.append(str(course_period)+'_'+EvalConsts.motivation)
-        lst_rephrased_questions.append(str(course_period)+'_'+EvalConsts.feedback)
-        lst_rephrased_questions.append(str(course_period)+'_'+EvalConsts.workload)
+        lst_rephrased_questions.append(str(semester)+'_'+EvalConsts.learning)
+        lst_rephrased_questions.append(str(semester)+'_'+EvalConsts.motivation)
+        lst_rephrased_questions.append(str(semester)+'_'+EvalConsts.feedback)
+        lst_rephrased_questions.append(str(semester)+'_'+EvalConsts.workload)
 
         eval_dict = {}
         # For each question, create a list containing the student responses
@@ -130,7 +199,7 @@ def scrape_evaluations(course_numbers, file_name):
                 return {} # Error
             # 2 of 2: Is sum of evalValues == 'x besvarelser' in scrapedData?
             try:
-                response_count = int(str(scraped_data[index_of_question+index_lst[5]]).split(' ')[0])
+                response_count = int(str(scraped_data[index_of_question+index_lst[5]]).split(' ', maxsplit=1)[0])
                 if sum(eval_values) != response_count and course != '01005': # 01005 is bugged for some reason
                     message = f"{file_name}, {course}: Data bugged: {sum(eval_values)} != {response_count} (i={i})"
                     # Sometimes the 'x besvarelser' is slightly off
@@ -139,13 +208,15 @@ def scrape_evaluations(course_numbers, file_name):
                     else:
                         Utils.logger(message, 'Error', FileNameConsts.scrape_log_name)
                         return {} # Error
-            except: # sum(eval_values) must not contain strings
+            except (ValueError, TypeError, IndexError): # sum(eval_values) must not contain strings
                 message = f"{file_name}, {course}: sum(evalValues) failed, (i={i}), {eval_values}"
                 Utils.logger(message, 'Error', FileNameConsts.scrape_log_name)
                 return {} # Error
 
             # Both tests were passed - Adding answers to dictionary
             eval_dict[lst_rephrased_questions[i]] = eval_values
+        message = f"Scraped data for Course: {course} in term {semester}, Data: {json.dumps(eval_dict)}"
+        Utils.logger(message, "Log", FileNameConsts.scrape_log_name)  # Log the scraped data for each evaluation page
         return eval_dict
 
     """
@@ -154,6 +225,7 @@ def scrape_evaluations(course_numbers, file_name):
         return any(href.get_attribute("href").startswith('https://evaluering.dtu.dk/kursus/') for href in hrefs)
     """
 
+    @staticmethod
     def at_least_one_href_found(driver):
         max_attempts = 3
         for attempt in range(max_attempts):
@@ -174,90 +246,7 @@ def scrape_evaluations(course_numbers, file_name):
                     return False
         return False
 
-    # Constants that specifies how Selenium can find the correct elements
-    URL = 'https://evaluering.dtu.dk/CourseSearch'
-    COURSE_INPUT = '//*[@id="CourseCodeTextbox"]'
-    SEARCH_SUBMIT = '//*[@id="SearchButton"]'
-
-    # Begin the webscrape and initialize the data frame
-    df, lst_of_column_names, df_index = Utils.initialize_df(EvalConsts.list_of_evals)
-    driver = Utils.launch_selenium()
-
-    # Loop through all courses
-    print('Webscrape of evaluations will now begin...')
-    iteration_count = 0
-    for course in course_numbers:
-        df_row = {df_index: course}
-
-        evaluation_urls = []
-        driver.get(URL)
-        driver.find_element(By.XPATH, COURSE_INPUT).send_keys(course)
-        driver.find_element(By.XPATH, SEARCH_SUBMIT).click()
-
-        timeout_after = 3 #seconds
-        try:
-            # Wait a small amount of time for at least one href link to be found
-            WebDriverWait(driver, timeout_after).until(at_least_one_href_found)
-        except TimeoutException:
-            # If no href is found before timeout, log that no evaluation links exists
-            Utils.logger(f"No evaluation links exists for course {course}", "Log", FileNameConsts.scrape_log_name)
-
-        hrefs = driver.find_elements(By.PARTIAL_LINK_TEXT, '')
-        for href in hrefs:
-            href_as_string = href.get_attribute("href")
-            if len(href_as_string) >= 33 and href_as_string[0:33] == 'https://evaluering.dtu.dk/kursus/':
-                evaluation_urls.append(href_as_string)
-
-        # Log the search page results
-        Utils.logger(f"Search page for course {course}: Found {len(evaluation_urls)} evaluation links", "Log", FileNameConsts.scrape_log_name)
-
-        # Loop through each evaluation for specified course
-        for eval_url in evaluation_urls:
-            page_source = scrape_url(eval_url)
-
-            # Extract course number and course period from scraped data
-            scraped_course_number, course_period = get_course_number_and_period(page_source)
-            # Check that the extracted course number matches course[k]
-            if scraped_course_number != course:
-                message = f"{file_name}, {course_numbers[course]}: Wrong course number ({scraped_course_number})"
-                Utils.logger(message, 'Error', FileNameConsts.scrape_log_name)
-                continue
-
-            # Extract student evaluation data from scrapedData
-            semester_data = extract_evaluation_data(page_source, course_period)
-
-            # Log the scraped data for each evaluation page
-            Utils.logger(f"Scraped data for {eval_url}: Course: {scraped_course_number}, Period: {course_period}, Data: {json.dumps(semester_data)}", "Log", FileNameConsts.scrape_log_name)
-
-            # If extraction failed, the returned dict will be empty
-            df_row.update(semester_data)
-
-        # Concatenate dict to dataframe as a new row
-        df = Utils.add_dict_to_df(df_row, lst_of_column_names, df)
-
-        # Print current course to console so user can track the progress
-        iteration_count += 1
-        if iteration_count % 10 == 0 or iteration_count == 1:
-            Utils.print_progress(iteration_count, course_numbers, df_row, file_name)
-
-    # Save all evaluations as df
-    Utils.save_scraped_df(df, file_name)
-    Utils.save_df_as_csv(df, file_name)
-
-    # End of program
-    driver.quit
-    # Webscrape for all courses and semesters has been completed
-    print()
-    print('Webscrape of evaluations is now completed! Check log for details.')
-    df.set_index(df_index, inplace=True, drop=True)
-    print(f"Sample output: {df}")
-    print()
 
 #%%
 if __name__ == "__main__":
-    # Variables and initialization
-    COURSE_NUMBERS = Utils.get_course_numbers()
-    #COURSE_NUMBERS = ['01005', '02105']
-
-    eval_df_name = FileNameConsts.eval_df
-    scrape_evaluations(COURSE_NUMBERS, eval_df_name)
+    EvalScraper.quick_test_scrape_for_debugging_please_ignore()

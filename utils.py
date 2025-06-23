@@ -45,10 +45,9 @@ class Utils:
     def launch_selenium():
         """Initialize selenium webdriver and return driver"""
         options = Options()
-        options.add_argument("--log-level=3")
-        options.add_argument('--disable-logging')
-        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-        #driver = webdriver.Chrome(PATH, options=options)
+        options.add_experimental_option('excludeSwitches', ['enable-logging'])
+        service = Service(ChromeDriverManager().install(), log_path=os.devnull)
+        driver = webdriver.Chrome(service=service, options=options)
         return driver
 
     @staticmethod
@@ -85,32 +84,19 @@ class Utils:
         return combined_list
 
     @staticmethod
-    def initialize_df(list_of_possible_elements):
+    def initialize_df(semesters, list_of_possible_elements):
         """Create empty pandas data frame with given column names and 0 rows"""
         df_index = FileNameConsts.df_index
-        lst_of_column_names = Utils.generate_columns(Config.course_semesters, list_of_possible_elements)
+        lst_of_column_names = Utils.generate_columns(semesters, list_of_possible_elements)
         df_columns = {}
         for column_name in lst_of_column_names:
             df_columns[column_name] = []
         df = pd.DataFrame(data = df_columns)
         return [df, lst_of_column_names, df_index]
 
-    def extract_year_range_from_semester(semester):
-        term_code = semester[0]
-        year_suffix = int(semester[1:])
-        year = 2000 + year_suffix
-        if term_code == DtuConsts.dtu_term_autumn:  # 'E'
-            start_year = year
-        elif term_code == DtuConsts.dtu_term_spring:  # 'F'
-            start_year = year - 1
-        else:
-            raise ValueError(f"Invalid term code '{term_code}' in term '{semester}'")
-        year_range = f"{start_year}-{start_year + 1}"
-        return year_range
-
     @staticmethod
     def extract_unique_year_ranges(semesters):
-        """Convert semesters like ['E23', 'F24', 'E24'] into a list of academic year ranges like ['2023-2024', '2024-2025']."""
+        """Convert a list of semesters like ['E23', 'F24', 'E24'] into a list of academic years like ['2023-2024', '2024-2025']."""
         if isinstance(semesters, str):
             semesters = [semesters]
         year_ranges = set()
@@ -118,6 +104,36 @@ class Utils:
             year_range = Utils.extract_year_range_from_semester(semester)
             year_ranges.add(year_range)
         return sorted(year_ranges)  # sorted for consistency
+
+    @staticmethod
+    def extract_year_range_from_semester(semester):
+        """Convert a single semester such as 'E23' into its corresponding academic year, such as '2023-2024'."""
+        term_code = semester[0]
+        year_suffix = int(semester[1:])
+        year = 2000 + year_suffix
+        if term_code == 'E':  #Autumn / Efteraar
+            start_year = year
+        elif term_code == 'F':  #Spring / Foraar
+            start_year = year - 1
+        else:
+            raise ValueError(f"Invalid term code '{term_code}' in term '{semester}'")
+        year_range = f"{start_year}-{start_year + 1}"
+        return year_range
+
+    @staticmethod
+    def exam_period_from_semester(course_semesters):
+        """ Convert each semester in a list to its corresponding exam period,
+            'F18' becomes 'Summer-2018', and
+            'E20' becomes 'Winter-2020', etc. """
+        exam_periods = []
+        for semester in course_semesters:
+            if semester[0] == 'F':  # F is foraar, and "Summer" is its exam period
+                exam_periods.append('Summer-20'+str(semester[-2:]))
+            elif semester[0] == 'E':  # E is efteraar, and "Winter" is its exam period
+                exam_periods.append('Winter-20'+str(semester[-2:]))
+            else:  # This is not supposed to ever happen
+                raise ValueError(f"Invalid semester: {course_semesters}")
+        return exam_periods
 
     @staticmethod
     def get_archived_course_numbers(academic_year):
@@ -224,6 +240,7 @@ class Utils:
         file_location = f'{folder_name}/{file_name}.json'
         with open(file_location, 'w') as fp:
             json.dump(dct, fp)
+        print(f'Output has been saved at {file_location}.json')
 
     @staticmethod
     def save_scraped_df(df, file_name):
@@ -256,39 +273,39 @@ class Utils:
         return df
 
     @staticmethod
-    def logger(message, type = 'info', log_file_name = 'unspecified'):
+    def logger(message, logtype = 'info', log_file_name = 'unspecified'):
         """Log message in log file. Also prints message unless type is 'log'"""
 
-        if type.lower() != 'none':
+        if logtype.lower() != 'none':
             Utils.create_folder(FileNameConsts.log_folder_name+'/'+log_file_name)
             logging.basicConfig(filename=FileNameConsts.log_folder_name+'/'+log_file_name+'.log',
                                 format='(%(asctime)s) %(levelname)s: %(message)s',
                                 level=logging.INFO)
 
         # Print message to console (format varies based on 'type')
-        if type.lower() == 'info':
+        if logtype.lower() == 'info':
             print(message)
-        elif type.lower() == 'log':
+        elif logtype.lower() == 'log':
             pass
-        elif type.lower() == 'none':
+        elif logtype.lower() == 'none':
             pass
         else:
-            print(f'{type.capitalize()}: {message}')
+            print(f'{logtype.capitalize()}: {message}')
 
         # Write message to log file (severity status based on 'type')
-        if type.lower() == 'debug':
+        if logtype.lower() == 'debug':
             logging.debug(message)
-        elif type.lower() == 'info' or type.lower() == 'log':
+        elif logtype.lower() == 'info' or logtype.lower() == 'log':
             logging.info(message)
-        elif type.lower() == 'warning':
+        elif logtype.lower() == 'warning':
             logging.warning(message)
-        elif type.lower() == 'error':
+        elif logtype.lower() == 'error':
             logging.error(message)
-        elif type.lower() == 'critical':
+        elif logtype.lower() == 'critical':
             logging.critical(message)
-        elif type.lower() == 'print':
+        elif logtype.lower() == 'print':
             pass
-        elif type.lower() == 'none':
+        elif logtype.lower() == 'none':
             pass
         else:
             #logging.debug(f'{message} (INVALID LOG TYPE!)')

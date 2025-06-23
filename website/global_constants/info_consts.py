@@ -662,6 +662,18 @@ class InfoConsts:
     remarks = _remarks()
 
     @staticmethod
+    def _highlighted_message():
+        key_raw = DtuConsts.dtu_highlighted_message  # In this case, NOT decided by DTU's website
+        key_df = "HIGHLIGHTED_MESSAGE"
+        key_url = "highlighted_message"
+        values_raw = []  # Decided by DTU's website
+        values_df = []
+        values_url = []
+        add_raw = False
+        return Info(key_raw, key_df, key_url, values_raw, values_df, values_url, add_raw)
+    highlighted_message = _highlighted_message()
+
+    @staticmethod
     def _last_updated():
         key_raw = DtuConsts.dtu_last_updated  # Decided by DTU's website
         key_df = "LAST_UPDATED"
@@ -926,6 +938,7 @@ class InfoConsts:
                       learning_objectives,
                       course_content,
                       remarks,
+                      highlighted_message,
                       last_updated,
                       scope_and_form,
                       exam_duration,

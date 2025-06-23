@@ -1,3 +1,4 @@
+'''
 #%%
 
 # Imports
@@ -15,7 +16,7 @@ from website.global_constants.file_name_consts import FileNameConsts
 from website.global_constants.info_consts import InfoConsts
 
 # TO FIX CHROMEDRIVER, GO TO https://chromedriver.chromium.org/downloads
-# AND PLACE NEW VERSION IN C:\Program Files (x86)\ChromeDriver
+# AND PLACE NEW VERSION IN C:/Program Files (x86)/ChromeDriver
 
 
 def scrape_info(course_numbers, academic_year, file_name):
@@ -184,7 +185,7 @@ def scrape_info(course_numbers, academic_year, file_name):
         # Scrape highlighted message
         try:
             start = '<div class="row"><div class="col-xs-12">'
-            end = '<div class=</div></div><div class="row"><div class="col-md-6 col-sm-12 col-xs-12">'
+            end = '<'
             if start in page_source:
                 course_remarks = scrape_from_page_source(page_source, start, end)
             else:
@@ -249,8 +250,9 @@ def scrape_info(course_numbers, academic_year, file_name):
 #%%
 if __name__ == "__main__":
     # Variables and initialization
-    COURSE_NUMBERS = Utils.get_course_numbers()
-    #COURSE_NUMBERS = ['01005', '01017']
+    #COURSE_NUMBERS = Utils.get_course_numbers()
+    COURSE_NUMBERS = ['01001', '02402']
 
-    info_df_name = FileNameConsts.info_df
+    info_df_name = FileNameConsts.info_df+"_test"
     scrape_info(COURSE_NUMBERS, Config.course_years, info_df_name)
+'''
