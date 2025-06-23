@@ -62,13 +62,13 @@ def scrape_grades(course_numbers, course_semesters, file_name):
                 Utils.logger(f"Scraped data for {url}: {scraped_dict} Not enough tables. Expected at least 3, got {len(df)}", "Warning", FileNameConsts.scrape_log_name)
 
         # If url is invalid (no table found), then return an empty dict
-        except (urllib.error.HTTPError, IndexError) as e:
+        except (urllib.error.HTTPError, IndexError) as _:
             Utils.logger(f"Scraped data for {url}: Grade page returns 404 and likely does not exist", "Log", FileNameConsts.scrape_log_name)
             scraped_dict = {}
 
 
         # If the following ever happens it probably means that DTU has updated their website and I have to re-write my code
-        if scraped_dict == {} and df_found == True:
+        if scraped_dict == {} and df_found is True:
             message = f"{file_name}: {course}_{exam_periods[i]} Grades found on url but dict is empty (url: {url})"
             Utils.logger(message, "Error", FileNameConsts.scrape_log_name)
 
@@ -154,7 +154,8 @@ def scrape_grades(course_numbers, course_semesters, file_name):
 
         # Print current course to console so user can track the progress
         iteration_count += 1
-        Utils.print_progress(iteration_count, course_numbers, df_row, file_name)
+        if iteration_count % 50 == 0 or iteration_count == 1:
+            Utils.print_progress(iteration_count, course_numbers, df_row, file_name)
 
 
     # Save all grades as df
@@ -175,6 +176,6 @@ if __name__ == "__main__":
     COURSE_NUMBERS = Utils.get_course_numbers()
     #COURSE_NUMBERS = ['30015', '01017']
 
-    course_semesters = Config.course_semesters
+    COURSE_SEMESTERS = Config.course_semesters
     grade_df_name = FileNameConsts.grade_df
-    scrape_grades(COURSE_NUMBERS, course_semesters, grade_df_name)
+    scrape_grades(COURSE_NUMBERS, COURSE_SEMESTERS, grade_df_name)

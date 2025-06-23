@@ -18,13 +18,12 @@ from website.global_constants.info_consts import InfoConsts
 # AND PLACE NEW VERSION IN C:\Program Files (x86)\ChromeDriver
 
 
-def scrape_info(course_numbers, file_name):
+def scrape_info(course_numbers, academic_year, file_name):
     """Scrape the info screen for a course"""
 
-
-    def get_course_info_page_source(course_number):
+    def get_course_info_page_source(course_number, academic_year):
         """Open course's info page with webdriver and return the page source"""
-        url = 'https://kurser.dtu.dk/course/'+str(Config.course_years)+course_number
+        url = 'https://kurser.dtu.dk/course/'+str(academic_year)+course_number
         driver.get(url)
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.NAME, "viewport")))
         page_source = driver.page_source
@@ -96,14 +95,14 @@ def scrape_info(course_numbers, file_name):
     driver = Utils.launch_selenium()
 
     # Loop through all courses
-    print('Webscrape of evaluations will now begin...')
+    print('Webscrape of info will now begin...')
     iteration_count = 0
     for course in course_numbers:
         df_row = {df_index: course}
 
         # Scrape all info inside the dataframe found on the webpage
         try:
-            page_source = get_course_info_page_source(course)
+            page_source = get_course_info_page_source(course, academic_year)
             html_io = StringIO(page_source)
             html_df = pd.read_html(html_io)
             # DEPRACATED html_df = pd.read_html(page_source)
@@ -182,12 +181,27 @@ def scrape_info(course_numbers, file_name):
         except:
             pass
 
-        # Scrape course responsibles page source
+        # Scrape highlighted message
         try:
-            page_source_responsibles = get_course_responsible_page_source(course)
+            start = '<div class="row"><div class="col-xs-12">'
+            end = '<div class=</div></div><div class="row"><div class="col-md-6 col-sm-12 col-xs-12">'
+            if start in page_source:
+                course_remarks = scrape_from_page_source(page_source, start, end)
+            else:
+                course_remarks = DtuConsts.dtu_no_highlighted_message
+            df_row[DtuConsts.dtu_highlighted_message] = course_remarks
         except:
-            message = f"{file_name}, {course}: Timeout when loading URL for course responsibles"
-            Utils.logger(message, "Error", FileNameConsts.scrape_log_name)
+            pass
+
+        if academic_year == Config.course_years:
+            # Scrape course responsibles page source
+            try:
+                page_source_responsibles = get_course_responsible_page_source(course)
+            except:
+                message = f"{file_name}, {course}: Timeout when loading URL for course responsibles"
+                Utils.logger(message, "Error", FileNameConsts.scrape_log_name)
+        else:
+            page_source_responsibles = ""
 
         # Scrape main responsible
         try:
@@ -216,7 +230,8 @@ def scrape_info(course_numbers, file_name):
 
         # Print current course to console so user can track the progress
         iteration_count += 1
-        Utils.print_progress(iteration_count, course_numbers, df_row, file_name)
+        if iteration_count % 50 == 0 or iteration_count == 1:
+            Utils.print_progress(iteration_count, course_numbers, df_row, file_name)
 
     # Save all info as df
     Utils.save_scraped_df(df, file_name)
@@ -238,4 +253,4 @@ if __name__ == "__main__":
     #COURSE_NUMBERS = ['01005', '01017']
 
     info_df_name = FileNameConsts.info_df
-    scrape_info(COURSE_NUMBERS, info_df_name)
+    scrape_info(COURSE_NUMBERS, Config.course_years, info_df_name)

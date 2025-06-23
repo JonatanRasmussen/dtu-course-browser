@@ -56,6 +56,7 @@ def csv_creator(course_numbers, course_names, name_and_path_of_csv, name_and_pat
         data_dct = {**formatted_grades_dct, **formatted_evals_dct, **formatted_info_dct}
 
         # Create list with column names, this will be the data frame columns
+        column_names = []
         if i == 0:
             if premade_columns == []:
                 column_names = [COURSE] + [NAME] + list(data_dct.keys())

@@ -18,6 +18,7 @@ from selenium.webdriver.support import expected_conditions as EC
 # Helper functions and global constants
 from website.global_constants.config import Config
 from website.global_constants.file_name_consts import FileNameConsts
+from website.global_constants.dtu_consts import DtuConsts
 
 class Utils:
     """A collection of various functions that are used across the project"""
@@ -94,9 +95,58 @@ class Utils:
         df = pd.DataFrame(data = df_columns)
         return [df, lst_of_column_names, df_index]
 
+    def extract_year_range_from_semester(semester):
+        term_code = semester[0]
+        year_suffix = int(semester[1:])
+        year = 2000 + year_suffix
+        if term_code == DtuConsts.dtu_term_autumn:  # 'E'
+            start_year = year
+        elif term_code == DtuConsts.dtu_term_spring:  # 'F'
+            start_year = year - 1
+        else:
+            raise ValueError(f"Invalid term code '{term_code}' in term '{semester}'")
+        year_range = f"{start_year}-{start_year + 1}"
+        return year_range
+
+    @staticmethod
+    def extract_unique_year_ranges(semesters):
+        """Convert semesters like ['E23', 'F24', 'E24'] into a list of academic year ranges like ['2023-2024', '2024-2025']."""
+        if isinstance(semesters, str):
+            semesters = [semesters]
+        year_ranges = set()
+        for semester in semesters:
+            year_range = Utils.extract_year_range_from_semester(semester)
+            year_ranges.add(year_range)
+        return sorted(year_ranges)  # sorted for consistency
+
+    @staticmethod
+    def get_archived_course_numbers(academic_year):
+        """Open JSON file with archived course numbers and return the course names for {semester} as a list"""
+        with open(FileNameConsts.scraped_data_folder_name+'/'+FileNameConsts.archived_courses_json+'.json') as f:
+            nested_course_dict = json.load(f)
+        return nested_course_dict.get(academic_year, {})
+
+    @staticmethod
+    def get_archived_course_names(academic_year):
+        """Open JSON file with archived course names and return the course names for {semester} as a list"""
+        with open(FileNameConsts.scraped_data_folder_name+'/'+FileNameConsts.archived_courses_json+'.json') as f:
+            nested_course_dict = json.load(f)
+        return list(nested_course_dict.get(academic_year, {}).values())
+
+    @staticmethod
+    def get_all_archived_course_numbers():
+        """Return a list of all unique course numbers across all semesters in the archived data."""
+        path = f"{FileNameConsts.scraped_data_folder_name}/{FileNameConsts.archived_courses_json}.json"
+        with open(path) as f:
+            nested_course_dict = json.load(f)
+        course_number_set = set()
+        for inner_dict in nested_course_dict.values():
+            course_number_set.update(inner_dict.keys())
+        return sorted(course_number_set)
+
     @staticmethod
     def get_course_numbers():
-        """Open JSON file with course numbers and return them as a list"""
+        """Open JSON file with {current_year} course numbers and return them as a list"""
         with open(FileNameConsts.scraped_data_folder_name+'/'+FileNameConsts.course_number_json+'.json') as f:
             course_dict = json.load(f)
         course_numbers = list(course_dict.keys())
@@ -104,7 +154,7 @@ class Utils:
 
     @staticmethod
     def get_course_names():
-        """Open JSON file with course names and return them as a list"""
+        """Open JSON file with {current_year} course names and return them as a list"""
         with open(FileNameConsts.scraped_data_folder_name+'/'+FileNameConsts.course_number_json+'.json') as f:
             course_dict = json.load(f)
         course_names = list(course_dict.values())

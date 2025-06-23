@@ -1,6 +1,10 @@
 
 
 class DtuConsts:
+    # DTU terms
+    dtu_term_spring = "F"  # Foraar in danish
+    dtu_term_autumn = "E"  # Efteraar in danish
+
     # DTU-variables, these MUST match the row indexes on dtu course base
     dtu_aid = "Aid"
     dtu_content = "Content"
@@ -28,6 +32,7 @@ class DtuConsts:
     dtu_recommended_prerequisites = "Recommended Academic prerequisites"
     dtu_registration_sigh_up = "Registration Sign up"
     dtu_remarks = "Remarks"
+    dtu_highlighted_message = "Highlighted Message"
     dtu_responsible = "Responsible"
     dtu_schedule = "Schedule"
     dtu_scope_and_form = "Scope and form"
@@ -49,6 +54,7 @@ class DtuConsts:
     dtu_pic_of_co_responsible_4 = "Co responsible pic 4"
     dtu_no_data_for_responsible = "NO_DATA"
     dtu_no_remarks = "None"
+    dtu_no_highlighted_message = "None"
 
 
     # DTU-values, these MUST match the values found on dtu course base

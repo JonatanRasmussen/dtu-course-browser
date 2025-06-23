@@ -237,7 +237,8 @@ def scrape_evaluations(course_numbers, file_name):
 
         # Print current course to console so user can track the progress
         iteration_count += 1
-        Utils.print_progress(iteration_count, course_numbers, df_row, file_name)
+        if iteration_count % 10 == 0 or iteration_count == 1:
+            Utils.print_progress(iteration_count, course_numbers, df_row, file_name)
 
     # Save all evaluations as df
     Utils.save_scraped_df(df, file_name)
