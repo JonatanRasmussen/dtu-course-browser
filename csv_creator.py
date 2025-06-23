@@ -28,6 +28,10 @@ NAME = InfoConsts.name_english
 class CsvCreator:
 
     @staticmethod
+    def format_all():
+        pass
+
+    @staticmethod
     def csv_creator_main():
         """ Clean, format and parse the scraped_data into a csv used by my website """
         # Variables and initialization

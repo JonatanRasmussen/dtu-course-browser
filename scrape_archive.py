@@ -34,7 +34,7 @@ class ArchiveScraper:
             course_numbers_by_academic_year[academic_year] = course_number_and_names
             print(f'Finished scraping course numbers for academic year {academic_year} ({len(course_number_and_names)} courses found)')  # Print current academic year to console so user can track the progress
         if len(file_name) != 0:
-            ArchiveScraper._save_dct_as_json(file_name, course_numbers_by_academic_year)  # Save all scraped courses as a JSON file
+            Utils.save_dct_as_json(file_name, course_numbers_by_academic_year)  # Save all scraped courses as a JSON file
         return course_numbers_by_academic_year
 
     @staticmethod

@@ -10,7 +10,10 @@ class Config:
     website_current_year = "2025"
     website_last_updated = "27/03/2025"
 
-    # feature flags
+    # Selenium toggle on/off
+    selenium_is_enabled = True
+
+    # feature flags for scraping
     feature_flag_scrape_archive = True
     feature_flag_scrape_evals = True
     feature_flag_scrape_grades = True

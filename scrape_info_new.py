@@ -29,23 +29,22 @@ class InfoScraper:
     @staticmethod
     def scrape_info(course_numbers, academic_year, file_name):
         """Scrape DTU Course Base for course info such as language, schedule, ects, learning objectives etc."""
-        print('Webscrape of info will now begin...')
+        print(f'Webscrape of info will now begin for academic year {academic_year}...')
         df_index = FileNameConsts.df_index  # Begin the webscrape and initialize the data frame
         df_columns = {}
         lst_of_column_names = [df_index] + InfoConsts.scrape_info_column_names
         for column_name in lst_of_column_names:
             df_columns[column_name] = []
         df = pd.DataFrame(data = df_columns)
-        session = requests.Session()  # Initialize a single Session object for the entire scrape
 
         iteration_count = 0
         for course in course_numbers:
             df_row = {df_index: course}
             # Scrape all info inside and outside the dataframe found on the webpage
-            page_source_1 = InfoScraper._fetch_course_info_page_source(session, course, academic_year, file_name)
-            df_row.update(InfoScraper._parse_primary_df(page_source_1, course, file_name))  #  Parse all info located inside the dataframe
+            page_source_1 = InfoScraper._fetch_course_info_page_source(course, academic_year, file_name)
+            df_row.update(InfoScraper._parse_primary_df(page_source_1, course, academic_year, file_name))  #  Parse all info located inside the dataframe
             df_row.update(InfoScraper._parse_info_not_in_primary_df(page_source_1, course, file_name))  #  Parse all info located outside the dataframe
-            page_source_2 = InfoScraper._fetch_course_responsible_page_source(session, course, file_name)
+            page_source_2 = InfoScraper._fetch_course_responsible_page_source(course, file_name)
             df_row.update(InfoScraper._scrape_course_responsibles(page_source_2))  #  Parse all info related to teachers and course responsibles
             df = Utils.add_dict_to_df(df_row, lst_of_column_names, df)  # Concatenate dict to dataframe as a new row
             iteration_count += 1  # Print current course to console so user can track the progress
@@ -62,13 +61,14 @@ class InfoScraper:
         return df
 
     @staticmethod
-    def _fetch_course_info_page_source(session, course, academic_year, file_name):
+    def _fetch_course_info_page_source(course, academic_year, file_name):
         """Open course's info page with a session to handle cookies."""
         # Scrape all info inside and outside the dataframe found on the webpage
         try:
             url = f'https://kurser.dtu.dk/course/{academic_year}/{course}'
             # The first request "primes" the session and gets the necessary cookie.
             # The server returns the JS reload page, which we can ignore.
+            session = requests.Session()  # Initialize a single Session object for the entire scrape
             session.get(url, timeout=10, headers={"Accept-Language": "en"})
             # The second request sends the cookie back, and the server returns the real content.
             response = session.get(url, timeout=10, headers={"Accept-Language": "en"})
@@ -85,15 +85,17 @@ class InfoScraper:
         return page_source
 
     @staticmethod
-    def _fetch_course_responsible_page_source(session, course, file_name):
+    def _fetch_course_responsible_page_source(course, file_name):
         """Open course's info page with a session to handle cookies."""
         # Scrape course responsibles page source
         try:
             url = f'https://kurser.dtu.dk/course/{course}/info'
             # Same two-step process as in get_course_info_page_source()
+            session = requests.Session()  # Initialize a single Session object for the entire scrape
             session.get(url, timeout=10, headers={"Accept-Language": "en"})
             response = session.get(url, timeout=10, headers={"Accept-Language": "en"})
             response.raise_for_status()
+            print(response.text)
             return response.text
         except requests.exceptions.RequestException:
             message = f"{file_name}, {course}: Timeout when loading URL for course responsibles"
@@ -101,13 +103,18 @@ class InfoScraper:
             return ""
 
     @staticmethod
-    def _parse_primary_df(page_source, course, file_name):
+    def _parse_primary_df(page_source, course, academic_year, file_name):
         """Format the info inside the 'Course information' dataframe into a dict"""
         primary_info_dct = {}
         if len(page_source) == 0:
             return primary_info_dct
-        html_io = StringIO(page_source)
-        html_df = pd.read_html(html_io)
+        try:
+            html_io = StringIO(page_source)
+            html_df = pd.read_html(html_io)
+        except ValueError:
+            message = f"{file_name}, {course}: missing df in page_source, ensure {course} exists in {academic_year}"
+            Utils.logger(message, 'Warning', FileNameConsts.scrape_log_name)
+            return primary_info_dct
         if len(html_df) != 3:  # The current version of the dtu website contains a df of length 3
             message = f"{file_name}, {course}: len(df) is {str(len(html_df))} instead of 3"
             Utils.logger(message, 'Warning', FileNameConsts.scrape_log_name)

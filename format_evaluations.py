@@ -75,14 +75,14 @@ class EvalFormatter:
                                 course_eval_raw[RATING][str(k+1)] += eval_data[k]
 
                 # Merge renamed data and statistics for each eval type into one dict
-                semester_eval_stats = EvalFormatter.create_statistics_dict(semester_eval_raw[EVAL_TYPES[j]], course_semesters[i]+'_'+EVAL_TYPES[j]+'_')
+                semester_eval_stats = EvalFormatter._create_statistics_dict(semester_eval_raw[EVAL_TYPES[j]], course_semesters[i]+'_'+EVAL_TYPES[j]+'_')
                 semester_evaluations = {**semester_evaluations, **semester_eval_stats}
                 semester_eval_raw[EVAL_TYPES[j]] = Utils.rename_dict_keys(semester_eval_raw[EVAL_TYPES[j]], course_semesters[i]+'_'+EVAL_TYPES[j]+'_', '_'+STAR)
                 semester_evaluations = {**semester_evaluations, **semester_eval_raw[EVAL_TYPES[j]]}
 
         for j in range (0, len(EVAL_TYPES)):
             # Merge raw data and statistics for entire course into one dict
-            course_eval_stats = EvalFormatter.create_statistics_dict(course_eval_raw[EVAL_TYPES[j]], EVAL_TYPES[j]+'_')
+            course_eval_stats = EvalFormatter._create_statistics_dict(course_eval_raw[EVAL_TYPES[j]], EVAL_TYPES[j]+'_')
             course_evaluations = {**course_evaluations, **course_eval_stats}
             course_eval_raw[EVAL_TYPES[j]] = Utils.rename_dict_keys(course_eval_raw[EVAL_TYPES[j]], EVAL_TYPES[j]+'_', '_'+STAR)
             course_evaluations = {**course_evaluations, **course_eval_raw[EVAL_TYPES[j]]}
@@ -93,7 +93,7 @@ class EvalFormatter:
         return evaluations
 
     @staticmethod
-    def find_evaluation_average(eval_dct):
+    def _find_evaluation_average(eval_dct):
         """Calculate and return averages for evaluations in a dict"""
 
         # Count scores and weight them (1-star ratings = *1, 5-star = *5)
@@ -128,7 +128,7 @@ class EvalFormatter:
         return evaluation_average
 
     @staticmethod
-    def evaluation_upvotes(eval_dct):
+    def _evaluation_upvotes(eval_dct):
         """Return percentage of students that rated positive / negative"""
 
         # Calculate likes / dislikes
@@ -170,11 +170,11 @@ class EvalFormatter:
 
 
     @staticmethod
-    def create_statistics_dict(eval_dct, semester_and_q):
+    def _create_statistics_dict(eval_dct, semester_and_q):
         """Merge average evaluation and percentages into stat_dict"""
         votes = sum(eval_dct.values())
-        average_score = EvalFormatter.find_evaluation_average(eval_dct)
-        upvote_ratio = EvalFormatter.evaluation_upvotes(eval_dct)
+        average_score = EvalFormatter._find_evaluation_average(eval_dct)
+        upvote_ratio = EvalFormatter._evaluation_upvotes(eval_dct)
         tier = EvalFormatter.decide_group(average_score)
         stat_dict = {semester_and_q+VOTES: votes, semester_and_q+AVERAGE_SCORE: average_score, semester_and_q+UPVOTE_RATIO: upvote_ratio, semester_and_q+TIER: tier}
         return stat_dict

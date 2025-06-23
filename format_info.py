@@ -37,7 +37,7 @@ class InfoFormatter:
         info_to_format = InfoConsts.info_to_format
 
         for info_catagory in info_to_format:
-            formatted_info = InfoFormatter.look_for_info(
+            formatted_info = InfoFormatter._look_for_info(
                 scraped_info,
                 course_number,
                 info_name,
@@ -51,7 +51,7 @@ class InfoFormatter:
 
         # ECTS-oddity (TO-DO: fix this)
         ECTS_POINTS = InfoConsts.ects_points.key_df
-        formatted_info[ECTS_POINTS] = InfoFormatter.ects_add_decimal_point(formatted_info[ECTS_POINTS])
+        formatted_info[ECTS_POINTS] = InfoFormatter._ects_add_decimal_point(formatted_info[ECTS_POINTS])
 
         #institute = get_institute_from_number(course_number)
         #formatted_info[InfoConsts.institute] = institute
@@ -60,8 +60,13 @@ class InfoFormatter:
         return formatted_info
 
     @staticmethod
-    def ects_add_decimal_point(ects_points):
+    def _ects_add_decimal_point(ects_points):
         """Add missing decimal point that gets removed during ECTS scrape"""
+        # It is assumed that no courses are greater than 20 ECTS.
+        # In case this assumption is wrong, a bug will happen. Too bad!
+        # We assume the decimal point has gone missing. Divide by 10 to compensate.
+        # This is not an edge case, all decimal ects values have their decimal point missing?!?!
+        # I don't know why and I don't care enough to implement a proper fix. Sad trumpet noise...
         try:
             if int(ects_points) > 21:
                 ects_points = str(float(int(ects_points) / 10))
@@ -70,7 +75,7 @@ class InfoFormatter:
         return ects_points
 
     @staticmethod
-    def is_start_of_string_equal(key_value, potential_value, key):
+    def _is_start_of_string_equal(key_value, potential_value, key):
         """Return boolean value 'True' if one string is contained in the other"""
         key_value = str(key_value)
         potential_value = str(potential_value)
@@ -125,7 +130,7 @@ class InfoFormatter:
         return False
 
     @staticmethod
-    def look_for_info(scraped_info, course_number, info_name, formatted_info, key, key_renamed, values, values_renamed, add_raw):
+    def _look_for_info(scraped_info, course_number, info_name, formatted_info, key, key_renamed, values, values_renamed, add_raw):
         """If values[i] is in scraped info, add it to formatted_info dict"""
 
         keys_expected_to_hold_a_known_value = [
@@ -182,7 +187,7 @@ class InfoFormatter:
                 lst_of_study_lines = format_study_line_scrape(scraped_info[key], {})
             for i in range(0, len(values)):
                 # Check each of the expected values and see if they match what's in the scraped dict (if yes, append them to the output string)
-                if InfoFormatter.is_start_of_string_equal(scraped_info[key], values[i], key) or (values[i] in lst_of_study_lines):
+                if InfoFormatter._is_start_of_string_equal(scraped_info[key], values[i], key) or (values[i] in lst_of_study_lines):
                     formatted_info[values_renamed[i]] = 1
                     boolean_value_count += 1
                     lst_of_booleans.append(str(values_renamed[i]))
@@ -219,7 +224,7 @@ class InfoFormatter:
 
         # Institute is decided based on course number rather than scraped data
         elif key_renamed == InfoConsts.institute.key_df:
-            institute = InfoFormatter.get_institute_from_number(course_number, info_name)
+            institute = InfoFormatter._get_institute_from_number(course_number, info_name)
             formatted_info[key_renamed] = institute
             for i in range(0, len(values_renamed)):
                 if institute == values_renamed[i]:
@@ -254,7 +259,7 @@ class InfoFormatter:
         return formatted_info
 
     @staticmethod
-    def get_institute_from_number(course_number, info_name):
+    def _get_institute_from_number(course_number, info_name):
         """Categorize institute from first two digits in course number"""
         department_dct = InfoConsts.institute
         department_dct = dict(zip(InfoConsts.institute.values_raw, InfoConsts.institute.values_df))

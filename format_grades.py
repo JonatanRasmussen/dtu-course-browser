@@ -67,7 +67,7 @@ class GradeFormatter:
                     grade_count_this_semester[grade] += int(scraped_grades[key])
 
             # Merge grades and grade statistics for each semester into one dict
-            semester_grade_stats = GradeFormatter.create_statistics_dict(grade_count_this_semester, semester+'_')
+            semester_grade_stats = GradeFormatter._create_statistics_dict(grade_count_this_semester, semester+'_')
             semester_grades = {**semester_grades, **semester_grade_stats}
 
             # Rename dictionary keys from GRADE_XX to SEMESTER_GRADE_XX
@@ -75,19 +75,19 @@ class GradeFormatter:
             semester_grades = {**semester_grades, **grade_count_this_semester}
 
         # Merge raw data and statistics for entire course into one dict
-        course_grade_stats = GradeFormatter.create_statistics_dict(grade_count_all_semesters, '')
+        course_grade_stats = GradeFormatter._create_statistics_dict(grade_count_all_semesters, '')
         course_grades = {**course_grades, **course_grade_stats}
         course_grades = {**course_grades, **grade_count_all_semesters}
 
         # Merge semester-specific and non-semester-specific data into one dict
-        enrolled_dct = GradeFormatter.number_of_semesters(semester_grades, course_semesters)
+        enrolled_dct = GradeFormatter._number_of_semesters(semester_grades, course_semesters)
         grades = {**course_grades, **enrolled_dct}
         grades = {**grades, **semester_grades}
 
         return grades
 
     @staticmethod
-    def find_grade_average(grade_count):
+    def _find_grade_average(grade_count):
         """Calculate and return average value of grades in a dict"""
         NUMERIC_GRADES = [GRADE_12, GRADE_10, GRADE_7, GRADE_4, GRADE_02, GRADE_00, GRADE_MINUS_3]
         PASS_FAIL_GRADES = [PASSED, FAILED, ABSENT]
@@ -116,7 +116,7 @@ class GradeFormatter:
         return grade_average
 
     @staticmethod
-    def exam_percentage_passed(grade_count):
+    def _exam_percentage_passed(grade_count):
         """Return percentage of students that passed the exam"""
         PASSED_GRADES = [GRADE_12, GRADE_10, GRADE_7, GRADE_4, GRADE_02, PASSED]
         FAILED_GRADES = [GRADE_00, GRADE_MINUS_3, FAILED]
@@ -147,14 +147,14 @@ class GradeFormatter:
         return (passed_exam_percent, failed_exam_percent, dropout_exam_percent)
 
     @staticmethod
-    def create_statistics_dict(grade_count, semester):
+    def _create_statistics_dict(grade_count, semester):
         """ Performs a total of 3 calculations and returns the results as a dictionary:
             A) Find total number of students by summing up all the grades,
             B) Calculate the average grade,
             C) Calculate the percent of students passed / failed / absent"""
         number_of_students = sum(grade_count.values())
-        grade_average = GradeFormatter.find_grade_average(grade_count)
-        passed, failed, absent = GradeFormatter.exam_percentage_passed(grade_count)
+        grade_average = GradeFormatter._find_grade_average(grade_count)
+        passed, failed, absent = GradeFormatter._exam_percentage_passed(grade_count)
         stat_dict = {semester+TOTAL_STUDENTS: number_of_students,
                      semester+AVERAGE_GRADE: grade_average,
                      semester+PERCENT_PASSED: passed,
@@ -163,7 +163,7 @@ class GradeFormatter:
         return stat_dict
 
     @staticmethod
-    def number_of_semesters(dct, course_semesters):
+    def _number_of_semesters(dct, course_semesters):
         """ Get number of semesters based on grades assigned at each exam period
             Note: the datatype 'list' is used to track amount of students for each semester """
         lst_of_number_of_students = []
@@ -198,7 +198,6 @@ class GradeFormatter:
                 enrolled = int(round(float(sum(lst_of_number_of_real_semesters)/semesters)))
             stat_dct = {STUDENTS_PER_SEMESTER: enrolled, TOTAL_SEMESTERS: semesters}
             return stat_dct
-
 
 
 #%%

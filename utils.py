@@ -136,6 +136,13 @@ class Utils:
         return exam_periods
 
     @staticmethod
+    def convert_float_to_int(value):
+        """Simple float-to-int converter. If input is not a float, return it and do nothing."""
+        if isinstance(value, float):
+            return int(value)
+        return value
+
+    @staticmethod
     def get_archived_course_numbers(academic_year):
         """Open JSON file with archived course numbers and return the course names for {semester} as a list"""
         with open(FileNameConsts.scraped_data_folder_name+'/'+FileNameConsts.archived_courses_json+'.json') as f:
@@ -221,16 +228,6 @@ class Utils:
         new_df_row = pd.DataFrame(data = df_input)
         df = pd.concat([df, new_df_row], ignore_index=True)
         return df
-
-    """
-    @staticmethod
-    def save_df_as_csv(file_name, df_index, df):
-        "Save dataframe as csv file on harddisk in location specified by file_name"
-        folder_name = FileNameConsts.scraped_data_folder_name
-        Utils.create_folder(folder_name)
-        file_location = f'{folder_name}/{file_name}.csv'
-        df.set_index(df_index, inplace=True, drop=False)
-        df.to_csv(file_location, index = False, header=True)"""
 
     @staticmethod
     def save_dct_as_json(file_name, dct):

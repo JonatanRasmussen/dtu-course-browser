@@ -17,7 +17,7 @@ class GradeScraper:
         course_numbers = ['01001', '02402']  # Example of valid courses for the below semesters
         course_semesters = ['F23', 'E23', 'F24']  # Example of valid semesters
         file_name = "scraped_grades_test"
-        GradeScraper.scrape_archive(course_numbers, course_semesters, file_name)
+        GradeScraper.scrape_grades(course_numbers, course_semesters, file_name)
 
     @staticmethod
     def scrape_grades(course_numbers, course_semesters, file_name):
@@ -43,6 +43,7 @@ class GradeScraper:
         print()  # Webscrape for all courses and semesters has been completed
         print('Webscrape of grades is now completed! Check log for details.')
         df.set_index(df_index, inplace=True, drop=True)
+        df = df.applymap(Utils.convert_float_to_int)
         print(f"Sample output: {df}")
         print()
         return df
@@ -70,14 +71,17 @@ class GradeScraper:
                 Utils.logger(f"Scraped data for {url}: {scraped_dict}", "Log", FileNameConsts.scrape_log_name)
             elif len(df) == 2:
                 scraped_dict = {}
-                Utils.logger(f"Scraped data for {url}: {scraped_dict} Grades are not public due to there being 3 or fewer grades", "Log", FileNameConsts.scrape_log_name)
+                message = f"Scraped data for {url}: {scraped_dict} Grades are not public due to there being 3 or fewer grades"
+                Utils.logger(message, "Log", FileNameConsts.scrape_log_name)
             else:
                 scraped_dict = {}
-                Utils.logger(f"Scraped data for {url}: {scraped_dict} Not enough tables. Expected at least 3, got {len(df)}", "Warning", FileNameConsts.scrape_log_name)
+                message = f"Scraped data for {url}: {scraped_dict} Not enough tables. Expected at least 3, got {len(df)}"
+                Utils.logger(message, "Warning", FileNameConsts.scrape_log_name)
 
         # If url is invalid (no table found), then return an empty dict
         except (urllib.error.HTTPError, IndexError) as _:
-            Utils.logger(f"Scraped data for {url}: Grade page returns 404 and likely does not exist", "Log", FileNameConsts.scrape_log_name)
+            message = f"Scraped data for {url}: Grade page returns 404 and likely does not exist"
+            Utils.logger(message, "Log", FileNameConsts.scrape_log_name)
             scraped_dict = {}
 
         # If the following ever happens it probably means that DTU has updated their website and I have to re-write my code
