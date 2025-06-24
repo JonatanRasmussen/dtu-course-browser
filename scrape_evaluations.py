@@ -45,7 +45,6 @@ class EvalScraper:
                 evaluation_urls = EvalScraper._use_selenium_to_find_eval_urls(driver, course)
             else:
                 evaluation_urls = EvalScraper._use_requests_to_find_eval_urls(course, file_name)
-                print(evaluation_urls)
             for eval_url in evaluation_urls:
                 page_source = EvalScraper._scrape_url(eval_url)
                 semester = EvalScraper.parse_semester_from_page_source(page_source, course, file_name)
@@ -93,6 +92,28 @@ class EvalScraper:
 
     @staticmethod
     def _use_requests_to_find_eval_urls(course, file_name):
+        """ Search for all evaluations for a given course and return their urls"""
+        # Scrape page source of course info, as this page contain links to the 5 most recent evaluations
+        try:
+            search_url = "https://evaluering.dtu.dk/CourseSearch"
+            payload = {'courseNumber': course, 'termUid': "", 'SearchButton': 'Søg'} # 'Søg' is the value of the submit button
+            session = requests.Session()
+            response = session.post(search_url, data=payload, timeout=10, headers={"Accept-Language": "en"})
+            response.raise_for_status() # Raise an error for bad status codes (like 404 or 500)
+        except requests.exceptions.RequestException:
+            message = f"{file_name}, {course}: Timeout when loading URL for course responsibles"
+            Utils.logger(message, "Error", FileNameConsts.scrape_log_name)
+            return []
+        lst_of_split_html = response.text.split('href="/kursus/')
+        href_urls = []
+        for split_html in lst_of_split_html:
+            potential_href = split_html[6:12]
+            if potential_href.isdigit():
+                href_urls.append(f"https://evaluering.dtu.dk/kursus/{course}/{split_html[6:12]}")
+        return href_urls
+
+    @staticmethod
+    def _use_requests_and_info_page_to_find_eval_urls(course, file_name):
         """ Open course's info page with a session to handle cookies
             and return up to 5 most recent evaluations for a given course."""
         # Scrape page source of course info, as this page contain links to the 5 most recent evaluations
@@ -114,8 +135,6 @@ class EvalScraper:
             if potential_href.isdigit():
                 href_urls.append(f"https://evaluering.dtu.dk/kursus/{course}/{split_html[6:12]}")
         return href_urls
-
-
 
     @staticmethod
     def _scrape_url(url):

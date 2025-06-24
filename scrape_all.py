@@ -74,18 +74,23 @@ class AllInOneScraper:
             # archived course numbers (course code + course title for each course for each academic year)
             if Config.feature_flag_scrape_archive and not academic_year_is_a_repeat:
                 archive_file_name = f"{FileNameConsts.archived_courses_json}_{current_academic_year[0:4]}_{current_academic_year[5:9]}"
-                ArchiveScraper.scrape_archive(single_semester_lst, archive_file_name)
+                nested_dict = ArchiveScraper.scrape_archive(single_semester_lst, archive_file_name)
 
-            # evals (course evaluations)
-            course_numbers = ArchiveScraper.scrape_course_numbers_for_semesters(single_semester_lst)
-            if Config.feature_flag_scrape_evals:
-                eval_df_name = f"{FileNameConsts.eval_df}_{semester}"
-                EvalScraper.scrape_evaluations(course_numbers, single_semester_lst, eval_df_name)
+                # Get course_numbers from scraped archive
+                unique_course_numbers = set()
+                for inner_dict in nested_dict.values():
+                    unique_course_numbers.update(inner_dict.keys())
+                course_numbers = sorted(unique_course_numbers)
 
             # grades
             if Config.feature_flag_scrape_grades:
                 grade_df_name = f"{FileNameConsts.grade_df}_{semester}"
                 GradeScraper.scrape_grades(course_numbers, single_semester_lst, grade_df_name)
+
+            # evals (course evaluations)
+            if Config.feature_flag_scrape_evals:
+                eval_df_name = f"{FileNameConsts.eval_df}_{semester}"
+                EvalScraper.scrape_evaluations(course_numbers, single_semester_lst, eval_df_name)
 
             # info (Language / Schedule / ECTS / Location / Learning Objectives etc. from DTU Course Base)
             if Config.feature_flag_scrape_info and not academic_year_is_a_repeat:
@@ -109,3 +114,4 @@ class AllInOneScraper:
 #%%
 if __name__ == "__main__":
     AllInOneScraper.quick_test_scrape_for_debugging_please_ignore()
+    AllInOneScraper.run_all_scrape_scripts_one_semester_at_a_time()

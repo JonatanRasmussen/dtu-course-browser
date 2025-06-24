@@ -11,7 +11,7 @@ class Config:
     website_last_updated = "27/03/2025"
 
     # Selenium toggle on/off
-    selenium_is_enabled = True
+    selenium_is_enabled = False
 
     # feature flags for scraping
     feature_flag_scrape_archive = True
