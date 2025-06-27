@@ -8,7 +8,7 @@ from website.global_constants.config import Config
 from scrape_archive import ArchiveScraper
 from scrape_evaluations import EvalScraper
 from scrape_grades import GradeScraper
-from scrape_info_new import InfoScraper
+from scrape_info import InfoScraper
 
 class AllInOneScraper:
 
@@ -115,3 +115,4 @@ class AllInOneScraper:
 if __name__ == "__main__":
     AllInOneScraper.quick_test_scrape_for_debugging_please_ignore()
     AllInOneScraper.run_all_scrape_scripts_one_semester_at_a_time()
+    AllInOneScraper.run_all_scrape_scripts()

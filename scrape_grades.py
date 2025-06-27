@@ -1,9 +1,10 @@
 #%%
 
-# Imports
 import pandas as pd
 import urllib
-# Helper functions and global constants
+import requests
+from requests.exceptions import Timeout, RequestException
+
 from utils import Utils
 from website.global_constants.file_name_consts import FileNameConsts
 from website.global_constants.grade_consts import GradeConsts
@@ -30,12 +31,12 @@ class GradeScraper:
             df_row = {df_index: course}
             for i in range (0, len(exam_periods)):  # Loop through all semesters for each course
                 url = f'https://karakterer.dtu.dk/Histogram/1/{course}/{exam_periods[i]}'
-                scraped_grades_dct = GradeScraper._scrape_grades_if_url_exists(url, course, exam_periods[i], file_name)  # If the exam period exists, attempt to scrape grades
+                scraped_grades_dct = GradeScraper._scrape_grades_if_url_exists(url, course, exam_periods[i], file_name, False)  # If the exam period exists, attempt to scrape grades
                 single_semester_dict = GradeScraper._format_scraped_dict(scraped_grades_dct, course, course_semesters[i], file_name)  # Add grades to dictionary if url exists
                 df_row.update(single_semester_dict)
             df = Utils.add_dict_to_df(df_row, lst_of_column_names, df)  # Concatenate dict to dataframe as a new row
             iteration_count += 1  # Print current course to console so user can track the progress
-            if iteration_count % 50 == 0 or iteration_count == 1:
+            if iteration_count % 50 == 0 or iteration_count == 1 or iteration_count == 2:
                 Utils.print_progress(iteration_count, course_numbers, df_row, file_name)
         if len(file_name) != 0:
             Utils.save_scraped_df(df, file_name)  # Save all grades as .pkl
@@ -49,7 +50,7 @@ class GradeScraper:
         return df
 
     @staticmethod
-    def _scrape_grades_if_url_exists(url, course, exam_period, file_name):
+    def _scrape_grades_if_url_exists(url, course, exam_period, file_name, is_timeout):
         """ Pandas grabs the raw html of the specified url and attempts to extract any tables it can find. If the url links to
             a valid exam period for the course, 3 tables will be found (the 3rd table contains the grades), and the grades are
             formatted into a dict. If the url contains 0 tables, the exam period is invalid and an empty dict is returned instead."""
@@ -79,7 +80,9 @@ class GradeScraper:
                 Utils.logger(message, "Warning", FileNameConsts.scrape_log_name)
 
         # If url is invalid (no table found), then return an empty dict
-        except (urllib.error.HTTPError, IndexError) as _:
+        except (urllib.error.HTTPError, IndexError, requests.exceptions.RequestException):
+            if not is_timeout:  # Try one more time
+                return GradeScraper._scrape_grades_if_url_exists(url, course, exam_period, file_name, True)
             message = f"Scraped data for {url}: Grade page returns 404 and likely does not exist"
             Utils.logger(message, "Log", FileNameConsts.scrape_log_name)
             scraped_dict = {}

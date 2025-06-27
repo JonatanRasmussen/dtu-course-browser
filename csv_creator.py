@@ -1,11 +1,8 @@
 #%%
 
-# Imports
 import pandas as pd
 import json
-from pandas.io.parsers import read_csv
-# Helper functions and global constants
-from filter_list_creator import filter_dct_to_json
+
 from format_evaluations import EvalFormatter
 from format_grades import GradeFormatter
 from format_info import InfoFormatter
@@ -13,6 +10,7 @@ from format_study_lines import create_teacher_course_lst
 from utils import Utils
 from website.global_constants import website_consts
 from website.global_constants.config import Config
+from website.global_constants.csv_columns_consts import CsvColumnConsts
 from website.global_constants.eval_consts import EvalConsts
 from website.global_constants.file_name_consts import FileNameConsts
 from website.global_constants.grade_consts import GradeConsts
@@ -20,398 +18,149 @@ from website.global_constants.info_consts import InfoConsts
 from website.global_constants.website_consts import WebsiteConsts
 
 
-# Initialization
-COURSE = FileNameConsts.df_index
-NAME = InfoConsts.name_english
-
-
 class CsvCreator:
 
     @staticmethod
-    def format_all():
-        pass
+    def quick_test_for_debugging_please_ignore():
+        """ Do a quick formatting test to see if the code works."""
+        GradeFormatter.quick_test_for_debugging_please_ignore()
+        EvalFormatter.quick_test_for_debugging_please_ignore()
+        InfoFormatter.quick_test_for_debugging_please_ignore()
 
     @staticmethod
-    def csv_creator_main():
-        """ Clean, format and parse the scraped_data into a csv used by my website """
-        # Variables and initialization
-        COURSE_NUMBERS = Utils.get_course_numbers()
-        COURSE_NAMES = Utils.get_course_names()
-        #COURSE_NUMBERS = ['02402']
+    def load_course_dict_from_disk_and_create_csv():
+        with open(FileNameConsts.scraped_data_folder_name+'/'+FileNameConsts.course_number_json+'.json') as f:
+            course_dict = json.load(f)
+        CsvCreator.create_csv(course_dict)
 
-        # Define columns in the smaller of the two CSV-files
-        PREMADE_COLUMNS = CsvCreator.create_columns_for_non_extended_csv()
+    @staticmethod
+    def create_csv(course_dict):
+        """ Clean, format and parse the scraped_data into a csv and other files used by my website """
+
         name_and_path_of_csv = FileNameConsts.path_of_csv + FileNameConsts.name_of_csv + ".csv"
         name_and_path_of_pkl = FileNameConsts.path_of_pkl + FileNameConsts.name_of_pkl + ".pkl"
-        print("Creating csv file: "+name_and_path_of_csv)
         print()
-        CsvCreator.csv_creator(COURSE_NUMBERS, COURSE_NAMES, name_and_path_of_csv, name_and_path_of_pkl, PREMADE_COLUMNS)
+        print("Part 1 of 3: Creating csv file with specified columns: "+name_and_path_of_csv)
         print()
+        premade_columns = CsvColumnConsts.PREMADE_COLUMNS
+        premade_columns_df = CsvCreator._build_combined_df(course_dict, name_and_path_of_csv, premade_columns)
+        print(f"Success! Saving df {name_and_path_of_csv} to both csv and pickle format...")
+        premade_columns_df.to_csv(name_and_path_of_csv, index = False, header=True)
+        premade_columns_df.to_pickle(name_and_path_of_pkl)
 
-        # Create extended csv
-        PREMADE_COLUMNS = []
-        path_name_extended_csv = FileNameConsts.path_of_csv + FileNameConsts.extended_csv_name + ".csv"
-        path_name_extended_pkl = FileNameConsts.path_of_pkl + FileNameConsts.extended_pkl_name + ".pkl"
-        print("Creating extended csv file: "+path_name_extended_csv)
+        name_and_path_of_extended_csv = FileNameConsts.path_of_csv + FileNameConsts.extended_csv_name + ".csv"
+        name_and_path_of_extended_pkl = FileNameConsts.path_of_csv + FileNameConsts.extended_pkl_name + ".pkl"
         print()
-        CsvCreator.csv_creator(COURSE_NUMBERS, COURSE_NAMES, path_name_extended_csv, path_name_extended_pkl, PREMADE_COLUMNS)
+        print("Part 2 of 3: Creating extended csv file with all columns: "+name_and_path_of_extended_csv)
         print()
+        no_premade_columns = []
+        all_columns_df = CsvCreator._build_combined_df(course_dict, name_and_path_of_extended_csv, no_premade_columns)
+        print()
+        print(f"Success! Saving df {name_and_path_of_csv} to both csv and pickle format...")
+        all_columns_df.to_csv(name_and_path_of_extended_csv, index = False, header=True)
+        all_columns_df.to_pickle(name_and_path_of_extended_pkl)
 
-        # Create planner csv
-        COLUMNS_TO_COPY_OVER = [COURSE, NAME, InfoConsts.danish_name.key_df, InfoConsts.language.key_df, InfoConsts.ects_points.key_df,
-                                InfoConsts.course_type.key_df, InfoConsts.exam_type.key_df, InfoConsts.time_of_week.key_df,
-                                InfoConsts.course_duration.key_df, InfoConsts.exam_aid.key_df, InfoConsts.examiner.key_df, InfoConsts.assignments.key_df,
-                                InfoConsts.grade_type.key_df, InfoConsts.location.key_df, InfoConsts.semester_period.key_df,
-                                InfoConsts.main_responsible_name.key_df, InfoConsts.co_responsible_1_name.key_df, InfoConsts.co_responsible_2_name.key_df,
-                                InfoConsts.co_responsible_3_name.key_df, InfoConsts.co_responsible_4_name.key_df, InfoConsts.study_lines.key_df,
-                                GradeConsts.grade_average, GradeConsts.percent_passed, GradeConsts.students_total, EvalConsts.workload_average_score,
-                                EvalConsts.learning_average_score, EvalConsts.motivation_average_score, EvalConsts.feedback_average_score]
-        path_name_planner_csv = FileNameConsts.path_of_csv + FileNameConsts.planner_csv + ".csv"
-        df_extended = pd.read_csv(path_name_extended_csv, dtype={'COURSE': str}, low_memory=False)
-        df_planner = df_extended[COLUMNS_TO_COPY_OVER]
-        df_planner[InfoConsts.time_of_week.key_df] = df_planner[InfoConsts.time_of_week.key_df].str.split(InfoConsts.separator_html)
-        df_planner[InfoConsts.study_lines.key_df] = df_planner[InfoConsts.study_lines.key_df].str.split(InfoConsts.separator_html)
-
-        print("Creating extended csv file: "+path_name_planner_csv)
         print()
-        df_planner.to_csv(path_name_planner_csv, index = False, header=True)
-        print(df_planner)
+        print("Part 3 of 3: Creating json files used for website search and filter functionality...")
         print()
+        if premade_columns != []:
+            #save specific columns as json dct that are used by the website
+            WebsiteConsts.create_website_data_dct(premade_columns_df)  # Use premade column df
+        else:
+            print()
+            CsvCreator._filter_dct_to_json(all_columns_df)  # Use all columns df
+            print()
 
         # Success!
         print("Success! Program will now terminate.")
 
     @staticmethod
-    def csv_creator(course_numbers, course_names, name_and_path_of_csv, name_and_path_of_pkl, premade_columns):
+    def _build_combined_df(course_dict, file_name, premade_columns):
         """Create and save .csv file with data for all courses"""
-
-        # Open scraped grades df
-        grade_df_location = FileNameConsts.grade_df
-        grade_df = Utils.load_scraped_df(grade_df_location)
-
-        # Open scraped evals df
-        eval_df_location = FileNameConsts.eval_df
-        eval_df = Utils.load_scraped_df(eval_df_location)
-
-        # Open scraped info df
-        info_df_location = FileNameConsts.info_df
-        info_df = Utils.load_scraped_df(info_df_location)
-        info_file_name = FileNameConsts.info_format
-
+        course_numbers = list(course_dict.keys())
+        course_names = list(course_dict.values())
+        grade_df = Utils.load_scraped_df(FileNameConsts.grade_df)
+        eval_df = Utils.load_scraped_df(FileNameConsts.eval_df)
+        info_df = Utils.load_scraped_df(FileNameConsts.info_df)
         # Adding data dicts to the data frame, one course at a time
         semesters = Config.course_semesters
+        column_names = []  # Create list with column names, this will be the data frame columns
         for i in range (0, len(course_numbers)):
-            scraped_grades = grade_df.loc[course_numbers[i]].to_dict()
-            scraped_evals = eval_df.loc[course_numbers[i]].to_dict()
-            scraped_info = info_df.loc[course_numbers[i]].to_dict()
-            formatted_grades_dct = GradeFormatter.format_grades(scraped_grades, semesters)
-            formatted_evals_dct = EvalFormatter.format_evaluations(scraped_evals, semesters)
-            formatted_info_dct = InfoFormatter.format_info(scraped_info, course_numbers[i], info_file_name)
-
-            data_dct = {**formatted_grades_dct, **formatted_evals_dct, **formatted_info_dct}
-
-            # Create list with column names, this will be the data frame columns
-            column_names = []
-            if i == 0:
-                if premade_columns == []:
-                    column_names = [COURSE] + [NAME] + list(data_dct.keys())
+            grades_formatted_dct = GradeFormatter.format_grades(grade_df, course_numbers[i], semesters)
+            evals_formatted_dct = EvalFormatter.format_evaluations(eval_df, course_numbers[i], semesters)
+            info_formatted_dct = InfoFormatter.format_info(info_df, course_numbers[i])
+            data_dct = {**grades_formatted_dct, **evals_formatted_dct, **info_formatted_dct}
+            if i == 0:  # Initialize columns
+                if premade_columns == []:  # Create a column for all keys in data_dct if no premade columns exist
+                    column_names = [FileNameConsts.df_index] + [InfoConsts.name_english] + list(data_dct.keys())
                 else:
-                    column_names = [COURSE] + [NAME] + premade_columns
-            # Create a dictionary with one value for each column in the data frame
-            df_input = {COURSE: [str(course_numbers[i])], NAME: [str(course_names[i])]}
-            for j in range(2, len(column_names)):
-                if str(column_names[j]) in data_dct:
-                    df_input[str(column_names[j])] = [data_dct[column_names[j]]]
-                else:
-                    df_input[str(column_names[j])] = [None]
-
-            # On first loop, create df, then add a new row to data frame on each loop
-            if i == 0:
+                    column_names = [FileNameConsts.df_index] + [InfoConsts.name_english] + premade_columns
+            for i in range (0, len(course_numbers)):
+                # Insert each value from data_dct into the matching column in the df.
+                df_input = {FileNameConsts.df_index: [str(course_numbers[i])], InfoConsts.name_english: [str(course_names[i])]}
+                for j in range(2, len(column_names)):  # 2 because first two columns are COURSE and NAME
+                    if str(column_names[j]) in data_dct:
+                        df_input[str(column_names[j])] = [data_dct[column_names[j]]]
+                    else:
+                        df_input[str(column_names[j])] = [None]
+            if i == 0:  # On first loop, create df, then add a new row to data frame on each loop
                 df = pd.DataFrame(data = df_input)
             else:
                 new_df_row = pd.DataFrame(data = df_input)
                 df = pd.concat([df, new_df_row], ignore_index=True)
-
-            #df = df.append(new_csv_row, ignore_index=True)
-
-            # Display progress to user
-            Utils.display_progress(i, course_numbers, name_and_path_of_csv, 50)
-
-        # Set course ID as df index
-        print("Success! Setting course ID as df index...")
-        df = df.copy() # df is copied to 'fix fragmentation', which prevents a pandas PerformanceWarning
-        df.set_index(COURSE, inplace=True, drop=False)
+            Utils.display_progress(i, course_numbers, file_name, 50)  # Display progress to user
+        CsvCreator.build_df(course_numbers, course_names, file_name, premade_columns, data_dct)
+        df = df.copy() # df is copied to 'fix fragmentation', which prevents an annoying pandas PerformanceWarning that is polluting the terminal
+        df.set_index(FileNameConsts.df_index, inplace=True, drop=False)  # Set course ID as df index
         print(df)
-
-        # Append columns containing each responsibles' course list
-        print('Finishing the csv...')
         if (InfoConsts.main_responsible_name.key_df) in premade_columns or premade_columns == []:
-            df = create_teacher_course_lst(df, course_numbers)
-
-        # Save data frame to CSV
-        print()
-        print(f'csv file {name_and_path_of_csv} has been succesfully created')
-        df.to_csv(name_and_path_of_csv, index = False, header=True)
-        print(df)
-
-        # Save CSV file as pickle and also save specific columns as json dct
-        CsvCreator.read_csv_to_pickle(name_and_path_of_csv, name_and_path_of_pkl)
-        if premade_columns != []:
-            CsvCreator.write_csv_columns_to_json(name_and_path_of_csv)
-        else:
-            print()
-            filter_dct_to_json()
-            print()
+            df = create_teacher_course_lst(df, course_numbers)  # Append columns containing each responsibles' course list. Must be done after rest of the df is finalized
+        return df
 
     @staticmethod
-    def read_csv_to_pickle(name_and_path_of_csv, name_and_path_of_pkl):
-        """Turn csv file into dataframe pickle with help from Pandas"""
-        # This pickle is the database that gets accessed whenever any specific course page is accessed via the website.
-
-        # Load in data frame from csv
-        print("Loading csv with Pandas...")
-        df = pd.read_csv(name_and_path_of_csv, dtype={'COURSE': str}, low_memory=False)
-
-        # Set course ID as df index
-        print("Success! Setting course ID as df index...")
-        df.set_index(COURSE, inplace=True, drop=False)
-
-        # Save data frame to pickle file
-        print("Success! Saving data frame to pickle format...")
-        df.to_pickle(name_and_path_of_pkl)
-        #df_extra.to_pickle("static/database/course_df_extra.pkl")
-
-
-    @staticmethod
-    def write_csv_columns_to_json(name_and_path_of_csv):
-        """Turn csv columns into dictionary files stored as jsons"""
-        # This jsons are the database that gets accessed whenever the "discovery" page (home page) is loaded.
-
-        def rename_dct_value(dct, column):
-            """Loop through dct and rename certain values so they fit the cards on the home page"""
-            if column == InfoConsts.course_type.key_df:
-                for key in dct:
-                    if dct[key] == InfoConsts.bsc + InfoConsts.separator_plus + InfoConsts.msc:
-                        dct[key] = InfoConsts.bsc+"/"+InfoConsts.msc
-                    elif dct[key] == InfoConsts.deltidsmaster:
-                        dct[key] = InfoConsts.msc
-                    elif dct[key] == InfoConsts.deltidsdiplom:
-                        dct[key] = InfoConsts.beng
-            elif column == InfoConsts.semester_period.key_df:
-                for key in dct:
-                    if dct[key] == "Autumn":
-                        dct[key] = WebsiteConsts.shortened_autumn
-                    elif dct[key] == InfoConsts.not_yet_assigned_value or dct[key] == InfoConsts.unknown_value:
-                        dct[key] = WebsiteConsts.no_data
-                    elif dct[key] == "January" or dct[key] == "June" or dct[key] == "July" or dct[key] == "August" or dct[key] == "Spring":
-                        pass
+    def _filter_dct_to_json(df):
+        """ Create and save a nested dict dct used for website filter functionality.
+            Each inner dict covers a filter category, such as "Language" or "Schedule"
+            For example, the nested dict for "Language" contains the keys "Danish" and "English"
+            The value for each of those keys is a list of all the danish courses and english courses
+            To access the list of all courses in english, access filter_dct[Language][English] """
+        filter_dct = {}
+        # Add columns used for website filtering, one by one
+        info_lst = InfoConsts.info_to_format
+        for info in info_lst:
+            if info.values_df != []:
+                lst_of_column_names = list(dict.fromkeys(info.values_df))
+                translated_lst_of_column_names = info.values_url
+                dct_of_column_names = {}
+                for column_name in lst_of_column_names:
+                    # Transpose a df column into a dct with courses as key and sort it by value
+                    if column_name in df:
+                        dct = df.set_index(FileNameConsts.df_index)[column_name].to_dict()
                     else:
-                        dct[key] = WebsiteConsts.multiple_timeslots
-            elif column == InfoConsts.time_of_week.key_df:
-                for key in dct: # Do not touch these, it will break stuff
-                    if dct[key] == "E1A (Autumn, Mon 8-12)" or dct[key] == "F1A (Spring, Mon 8-12)":
-                        dct[key] = "Mon_8_12" # Do not touch these, it will break stuff
-                    elif dct[key] == "E1B (Autumn, Thurs 13-17)" or dct[key] == "F1B (Spring, Thurs 13-17)":
-                        dct[key] = "Thurs_13_17"
-                    elif dct[key] == "E2A (Autumn, Mon 13-17)" or dct[key] == "F2A (Spring, Mon 13-17)":
-                        dct[key] = "Mon_13_17"
-                    elif dct[key] == "E2B (Autumn, Thurs 8-12)" or dct[key] == "F2B (Spring, Thurs 8-12)":
-                        dct[key] = "Thurs_8_12"
-                    elif dct[key] == "E3A (Autumn, Tues 8-12)" or dct[key] == "F3A (Spring, Tues 8-12)":
-                        dct[key] = "Tues_8_12"
-                    elif dct[key] == "E3B (Autumn, Fri 13-17)" or dct[key] == "F3B (Spring, Fri 13-17)":
-                        dct[key] = "Fri_13_17"
-                    elif dct[key] == "E4A (Autumn, Tues 13-17)" or dct[key] == "F4A (Spring, Tues 13-17)":
-                        dct[key] = "Tues_13_17"
-                    elif dct[key] == "E4B (Autumn, Fri 8-12)" or dct[key] == "F4B (Spring, Fri 8-12)":
-                        dct[key] = "Fri_8_12"
-                    elif dct[key] == "E5A (Autumn, Wed 8-12)" or dct[key] == "F5A (Spring, Wed 8-12)":
-                        dct[key] = "Wed_8_12"
-                    elif dct[key] == "E5B (Autumn, Wed 13-17)" or dct[key] == "F5B (Spring, Wed 13-17)":
-                        dct[key] = "Wed_13_17"
-                    elif dct[key] == "E7 (Autumn, Tues 18-22)" or dct[key] == "F7 (Spring, Tues 18-22)":
-                        dct[key] = "Tues_18_22"
-                    elif dct[key] == "E1A (Autumn, Mon 8-12)<br />E1B (Autumn, Thurs 13-17)" or dct[key] == "F1A (Spring, Mon 8-12)<br />F1B (Spring, Thurs 13-17)":
-                        dct[key] = "Multi_Mon_8_12_Thurs_13_17"
-                    elif dct[key] == "E2A (Autumn, Mon 13-17)<br />E2B (Autumn, Thurs 8-12)" or dct[key] == "F2A (Spring, Mon 13-17)<br />F2B (Spring, Thurs 8-12)":
-                        dct[key] = "Multi_Mon_13_17_Thurs_8_12"
-                    elif dct[key] == "E3A (Autumn, Tues 8-12)<br />E3B (Autumn, Fri 13-17)" or dct[key] == "F3A (Spring, Tues 8-12)<br />F3B (Spring, Fri 13-17)":
-                        dct[key] = "Multi_Tues_8_12_Fri_13_17"
-                    elif dct[key] == "E4A (Autumn, Tues 13-17)<br />E4B (Autumn, Fri 8-12)" or dct[key] == "F4A (Spring, Tues 13-17)<br />F4B (Spring, Fri 8-12)":
-                        dct[key] = "Multi_Tues_13_17_Fri_8_12"
-                    elif dct[key] == "E5A (Autumn, Wed 8-12)<br />E5B (Autumn, Wed 13-17)" or dct[key] == "F5A (Spring, Wed 8-12)<br />F5B (Spring, Wed 13-17)":
-                        dct[key] = "Multi_Wed_8_12_Wed_13_17"
-                    else:
-                        dct[key] = WebsiteConsts.multiple_unknowns
-            elif column == GradeConsts.grade_average or column == EvalConsts.workload_average_score or column == EvalConsts.rating_average_score or column == EvalConsts.learning_average_score or column == EvalConsts.motivation_average_score or column == EvalConsts.feedback_average_score:
-                for key in dct:
-                    if dct[key] == GradeConsts.pass_fail:
-                        dct[key] = WebsiteConsts.shortened_pass_fail
-                    elif dct[key] == GradeConsts.grade_none:
-                        dct[key] = WebsiteConsts.shortened_no_grades
-                    elif dct[key] == EvalConsts.no_evaluations:
-                        dct[key] = WebsiteConsts.shortened_no_evaluations
-                    else:
-                        try:
-                            dct[key] = round(float(dct[key]), 1)
-                        except (ValueError, TypeError):
-                            print(f"Warning: {dct[key]} was expected to be numeric, yet it could not be rounded!")
-            elif column == GradeConsts.percent_failed:
-                for key in dct:
-                    if dct[key] == GradeConsts.grade_none:
-                        dct[key] = "0"
-                    else:
-                        try:
-                            if float(dct[key]) < 10:
-                                dct[key] = round(float(dct[key]), 1)
-                            else:
-                                dct[key] = int(round(float(dct[key]), 0))
-                        except (ValueError, TypeError):
-                            print(f"Warning: {dct[key]} was expected to be numeric, yet it could not be rounded!")
-            elif column == InfoConsts.exam_type.key_df:
-                for key in dct:
-                    if dct[key] == InfoConsts.exam_both:
-                        dct[key] = WebsiteConsts.shortened_written_oral
-                    elif (dct[key] == InfoConsts.exam_none) or (dct[key] == InfoConsts.unknown_value):
-                        dct[key] = WebsiteConsts.exam_project
-            return dct
-
-        def create_dct_for_json(df, column):
-            """Load a column from csv as dictionary and return it"""
-
-            def turn_to_float(item):
-                if (column == GradeConsts.grade_average) or (column == GradeConsts.percent_failed) or (column == EvalConsts.workload_average_score) or (column == EvalConsts.rating_average_score) or (column == EvalConsts.learning_average_score) or (column == EvalConsts.motivation_average_score) or (column == EvalConsts.feedback_average_score):
-                    if isinstance(item, str):
-                        return -0.1
-                elif (column == InfoConsts.main_responsible_pic.key_df):
-                    return str(item)
-                return item
-
-            dct = df.to_dict()[column]
-            dct_data = rename_dct_value(dct, column)
-            sorted_dct = dict(sorted(dct_data.items(), key=lambda item: turn_to_float(item[1]))) # Be careful, this line will do absolutely nothing WITHOUT RAISING A WARNING if dct_data contains a mix of strings and numbers
-            return sorted_dct
-
-        def save_dct_as_json(df, column, json_name):
-            """Load a column from csv as dictionary and save it as json"""
-
-            def turn_to_float(item):
-                if (column == GradeConsts.grade_average) or (column == GradeConsts.percent_failed) or (column == EvalConsts.workload_average_score) or (column == EvalConsts.rating_average_score) or (column == EvalConsts.learning_average_score) or (column == EvalConsts.motivation_average_score) or (column == EvalConsts.feedback_average_score):
-                    if isinstance(item, str):
-                        return -0.1
-                elif (column == InfoConsts.main_responsible_pic.key_df):
-                    return str(item)
-                return item
-
-            dct = df.to_dict()[column]
-            dct_data = rename_dct_value(dct, column)
-            sorted_dct = dict(sorted(dct_data.items(), key=lambda item: turn_to_float(item[1]))) # Be careful, this line will do absolutely nothing WITHOUT RAISING A WARNING if dct_data contains a mix of strings and numbers
-            path_and_file_name = FileNameConsts.path_of_pkl + json_name + '.json'
-            with open(path_and_file_name, 'w') as fp:
-                json.dump(sorted_dct, fp)
-            print(f"The dictionary {json_name}.json has been saved...")
-
-        # Load in data frame from csv
-        df = pd.read_csv(name_and_path_of_csv, dtype={'COURSE': str}, low_memory=False)
-
-        # Save course json before setting course column as df index
-        save_dct_as_json(df, FileNameConsts.df_index, WebsiteConsts.json_number)
-
-        # Set index
-        df = df.set_index(COURSE)
-
-        # All the json files that must be created
-        """
-        save_dct_as_json(df, InfoConsts.name_english, WebsiteConsts.json_name_english)
-        save_dct_as_json(df, InfoConsts.ects_points.key_df, WebsiteConsts.json_course_ects)
-        save_dct_as_json(df, InfoConsts.course_type.key_df, WebsiteConsts.json_course_type)
-        save_dct_as_json(df, InfoConsts.language.key_df, WebsiteConsts.json_course_language)
-        save_dct_as_json(df, InfoConsts.semester_period.key_df, WebsiteConsts.json_course_season)
-        save_dct_as_json(df, InfoConsts.time_of_week.key_df, WebsiteConsts.json_course_schedule)
-        save_dct_as_json(df, GradeConsts.students_per_semester, WebsiteConsts.json_course_signups)
-        save_dct_as_json(df, GradeConsts.grade_average, WebsiteConsts.json_course_grade)
-        save_dct_as_json(df, GradeConsts.percent_failed, WebsiteConsts.json_course_fail)
-        save_dct_as_json(df, InfoConsts.exam_type.key_df, WebsiteConsts.json_course_exam)
-        save_dct_as_json(df, EvalConsts.workload_average_score, WebsiteConsts.json_course_workload)
-        save_dct_as_json(df, EvalConsts.rating_average_score, WebsiteConsts.json_course_rating)
-        save_dct_as_json(df, EvalConsts.workload_tier, WebsiteConsts.json_course_workload_tier)
-        save_dct_as_json(df, EvalConsts.rating_tier, WebsiteConsts.json_course_rating_tier)
-        save_dct_as_json(df, EvalConsts.motivation_votes, WebsiteConsts.json_course_votes)
-        save_dct_as_json(df, InfoConsts.main_responsible_pic.key_df, WebsiteConsts.json_course_responsible)
-        save_dct_as_json(df, EvalConsts.learning_average_score, WebsiteConsts.json_course_eval_learning)
-        save_dct_as_json(df, EvalConsts.motivation_average_score, WebsiteConsts.json_course_eval_motivation)
-        save_dct_as_json(df, EvalConsts.feedback_average_score, WebsiteConsts.json_course_eval_feedback)
-        """
-
-        data_dct = {
-            WebsiteConsts.json_name_english: create_dct_for_json(df, InfoConsts.name_english),
-            WebsiteConsts.json_course_ects: create_dct_for_json(df, InfoConsts.ects_points.key_df),
-            WebsiteConsts.json_course_type: create_dct_for_json(df, InfoConsts.course_type.key_df),
-            WebsiteConsts.json_course_language: create_dct_for_json(df, InfoConsts.language.key_df),
-            WebsiteConsts.json_course_season: create_dct_for_json(df, InfoConsts.semester_period.key_df),
-            WebsiteConsts.json_course_schedule: create_dct_for_json(df, InfoConsts.time_of_week.key_df),
-            WebsiteConsts.json_course_signups: create_dct_for_json(df, GradeConsts.students_per_semester),
-            WebsiteConsts.json_course_grade: create_dct_for_json(df, GradeConsts.grade_average),
-            WebsiteConsts.json_course_fail: create_dct_for_json(df, GradeConsts.percent_failed),
-            WebsiteConsts.json_course_exam: create_dct_for_json(df, InfoConsts.exam_type.key_df),
-            WebsiteConsts.json_course_workload: create_dct_for_json(df, EvalConsts.workload_average_score),
-            WebsiteConsts.json_course_rating: create_dct_for_json(df, EvalConsts.rating_average_score),
-            WebsiteConsts.json_course_workload_tier: create_dct_for_json(df, EvalConsts.workload_tier),
-            WebsiteConsts.json_course_rating_tier: create_dct_for_json(df, EvalConsts.rating_tier),
-            WebsiteConsts.json_course_votes: create_dct_for_json(df, EvalConsts.motivation_votes),
-            WebsiteConsts.json_course_responsible: create_dct_for_json(df, InfoConsts.main_responsible_pic.key_df),
-            WebsiteConsts.json_course_eval_learning: create_dct_for_json(df, EvalConsts.learning_average_score),
-            WebsiteConsts.json_course_eval_motivation: create_dct_for_json(df, EvalConsts.motivation_average_score),
-            WebsiteConsts.json_course_eval_feedback: create_dct_for_json(df, EvalConsts.feedback_average_score)
-        }
-        json_name = WebsiteConsts.json_course_data
+                        # Raise an error if column_name does not exist as a column in df
+                        message = f"Filter list creator; {column_name} not found in df!"
+                        Utils.logger(message, "warning", FileNameConsts.format_log_name)
+                        dct = {}
+                    # For each course in df's column_name, if value == 1, append it to list
+                    lst_of_courses_with_val_1 = []
+                    for course in dct.keys():
+                        if dct[course] == 1:
+                            lst_of_courses_with_val_1.append(course)
+                    column_name_translations = dict(zip(lst_of_column_names, translated_lst_of_column_names))
+                    # Make sure values_df is the same length as values_url, otherwise the translation above will fail
+                    if len(lst_of_column_names) != len(translated_lst_of_column_names):
+                        print(f"Error, {len(lst_of_column_names)} != {len(translated_lst_of_column_names)}: Go to info_consts file and ensure that values_df is the same length as values_url. First element: {lst_of_column_names[0]}, {translated_lst_of_column_names[0]}")
+                    translated_column_name = column_name_translations[column_name]
+                    dct_of_column_names[translated_column_name] = lst_of_courses_with_val_1
+                filter_dct[info.key_url] = dct_of_column_names
+        # save as JSON
+        json_name  = WebsiteConsts.json_filter_dct
         path_and_file_name = FileNameConsts.path_of_pkl + json_name + '.json'
         with open(path_and_file_name, 'w') as fp:
-            json.dump(data_dct, fp)
+            json.dump(filter_dct, fp)
         print(f"The dictionary {json_name}.json has been saved...")
-
-    @staticmethod
-    def create_columns_for_non_extended_csv():
-        """Create table columns used for the non-extended / non-one-hot encoded csv file"""
-        # Define columns in the smaller of the two CSV-files
-        BASIC_COLUMNS = [InfoConsts.danish_name.key_df, InfoConsts.language.key_df, InfoConsts.ects_points.key_df, InfoConsts.course_type.key_df,
-                        GradeConsts.students_per_semester, InfoConsts.semester_period.key_df, InfoConsts.exam_type.key_df,
-                        InfoConsts.assignments.key_df, InfoConsts.time_of_week.key_df, InfoConsts.last_updated.key_df]
-
-        GRADE_COLUMNS = [GradeConsts.grade_12, GradeConsts.grade_10, GradeConsts.grade_7, GradeConsts.grade_4, GradeConsts.grade_02,
-                        GradeConsts.grade_00, GradeConsts.grade_minus_3, GradeConsts.grade_passed, GradeConsts.grade_failed,
-                        GradeConsts.grade_absent, GradeConsts.grade_average, GradeConsts.students_total, GradeConsts.percent_passed,
-                        GradeConsts.percent_failed, GradeConsts.percent_absent]
-
-        EVAL_COLUMNS = [EvalConsts.rating_tier, EvalConsts.rating_average_score, EvalConsts.rating_votes,
-                        EvalConsts.learning_tier, EvalConsts.learning_average_score, EvalConsts.learning_votes,
-                        EvalConsts.motivation_tier, EvalConsts.motivation_average_score, EvalConsts.motivation_votes,
-                        EvalConsts.feedback_tier, EvalConsts.feedback_average_score, EvalConsts.feedback_votes,
-                        EvalConsts.workload_tier, EvalConsts.workload_average_score, EvalConsts.workload_votes, EvalConsts.workload_4_star, EvalConsts.workload_5_star]
-
-        RESPONSIBLE_COLUMNS =  [InfoConsts.main_responsible_name.key_df, InfoConsts.main_responsible_pic.key_df,
-                                InfoConsts.co_responsible_1_name.key_df, InfoConsts.co_responsible_1_pic.key_df,
-                                InfoConsts.co_responsible_2_name.key_df, InfoConsts.co_responsible_2_pic.key_df,
-                                InfoConsts.co_responsible_3_name.key_df, InfoConsts.co_responsible_3_pic.key_df,
-                                InfoConsts.co_responsible_4_name.key_df, InfoConsts.co_responsible_4_pic.key_df]
-
-        CONTENT_COLUMNS =  [InfoConsts.course_description.key_df, InfoConsts.scope_and_form.key_df, (InfoConsts.exam_type.key_df)+'_'+InfoConsts.raw_key,
-                            (InfoConsts.exam_aid.key_df)+'_'+InfoConsts.raw_key, (InfoConsts.location.key_df)+'_'+InfoConsts.raw_key, InfoConsts.time_of_week_updated.key_df,
-                            InfoConsts.exam_duration.key_df, InfoConsts.home_page.key_df, InfoConsts.learning_objectives.key_df, InfoConsts.course_content.key_df, InfoConsts.remarks.key_df,
-                            InfoConsts.recommended_prerequisites.key_df, InfoConsts.mandatory_prerequisites.key_df, InfoConsts.study_lines.key_df, GradeConsts.semesters_total, InfoConsts.institute.key_df]
-
-        SEMESTER_ELEMENTS = [GradeConsts.students_total, GradeConsts.grade_average, GradeConsts.percent_failed,
-                            GradeConsts.grade_12, GradeConsts.grade_10, GradeConsts.grade_7, GradeConsts.grade_4, GradeConsts.grade_02, GradeConsts.grade_00, GradeConsts.grade_minus_3,
-                            EvalConsts.learning_votes, EvalConsts.workload_average_score, EvalConsts.learning_average_score,
-                            EvalConsts.motivation_average_score, EvalConsts.feedback_average_score]
-
-        SEMESTER_COLUMNS = Utils.generate_columns(Config.course_semesters, SEMESTER_ELEMENTS, add_index = False)
-
-        # Create CSV file
-        PREMADE_COLUMNS = BASIC_COLUMNS + GRADE_COLUMNS + EVAL_COLUMNS + RESPONSIBLE_COLUMNS + CONTENT_COLUMNS + SEMESTER_COLUMNS # If adding a new column_name, be sure to add it to format info script as well!
-        return PREMADE_COLUMNS
-
 
 #%%
 if __name__ == "__main__":
-    CsvCreator.csv_creator_main()
+    #CsvCreator.quick_test_for_debugging_please_ignore()
+    CsvCreator.load_course_dict_from_disk_and_create_csv()

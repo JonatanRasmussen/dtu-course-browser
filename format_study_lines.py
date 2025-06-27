@@ -1,9 +1,8 @@
 #%%
 
-# Imports
 import pandas as pd
 from utils import Utils
-# Helper functions and global constants
+
 from website.global_constants.file_name_consts import FileNameConsts
 from website.global_constants.info_consts import InfoConsts
 

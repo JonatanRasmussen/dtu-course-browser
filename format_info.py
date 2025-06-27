@@ -1,8 +1,6 @@
 #%%
 
-# Imports
-# Helper functions and global constants
-from scrape_info_new import InfoScraper
+from scrape_info import InfoScraper
 from format_study_lines import format_study_line_scrape
 from utils import Utils
 from website.global_constants.config import Config
@@ -20,19 +18,19 @@ class InfoFormatter:
         file_name = ""  # This prevents scraped data from being saved to disk
         df = InfoScraper.scrape_info(course_numbers, academic_year, file_name)
         iteration_count = 0
-        for course in course_numbers:
-            scraped_info = df.loc[course].to_dict()
-            formatted_info = InfoFormatter.format_info(scraped_info, course, FileNameConsts.info_format)
+        for course_number in course_numbers:
+            formatted_info = InfoFormatter.format_info(df, course_number)
             print(formatted_info)
             Utils.display_progress(iteration_count, course_numbers, FileNameConsts.info_format, 200)
             iteration_count += 1 # iteration_count must be incremented AFTER display progress
 
 
     @staticmethod
-    def format_info(scraped_info, course_number, info_name):
+    def format_info(df, course_number):
         """Return formatted scraped info"""
 
         # Initialize dict containing formatted info
+        scraped_info = df.loc[course_number].to_dict()
         formatted_info = {}
         info_to_format = InfoConsts.info_to_format
 
@@ -40,7 +38,6 @@ class InfoFormatter:
             formatted_info = InfoFormatter._look_for_info(
                 scraped_info,
                 course_number,
-                info_name,
                 formatted_info,
                 info_catagory.key_raw,
                 info_catagory.key_df,
@@ -130,7 +127,7 @@ class InfoFormatter:
         return False
 
     @staticmethod
-    def _look_for_info(scraped_info, course_number, info_name, formatted_info, key, key_renamed, values, values_renamed, add_raw):
+    def _look_for_info(scraped_info, course_number, formatted_info, key, key_renamed, values, values_renamed, add_raw):
         """If values[i] is in scraped info, add it to formatted_info dict"""
 
         keys_expected_to_hold_a_known_value = [
@@ -197,7 +194,7 @@ class InfoFormatter:
 
             # Print a warning if an element in the scraped study line list was not recognized
             if key_renamed == InfoConsts.study_lines.key_df and len(lst_of_study_lines) != boolean_value_count:
-                message = f"{info_name}, {course_number}: {len(lst_of_study_lines) - boolean_value_count} unknown study line(s)"
+                message = f"{FileNameConsts.info_format}, {course_number}: {len(lst_of_study_lines) - boolean_value_count} unknown study line(s)"
                 Utils.logger(message, "warning", FileNameConsts.format_log_name)
                 for k in range(0, len(lst_of_study_lines)):
                     if lst_of_study_lines[k] not in values:
@@ -207,7 +204,7 @@ class InfoFormatter:
             if len(values) == 0:
                 formatted_info[key_renamed] = str(scraped_info[key])
                 if log_type.lower() != 'none':
-                    message = f"{info_name}, {course_number}: '{key_renamed}' = '{scraped_info[key]}'"
+                    message = f"{FileNameConsts.info_format}, {course_number}: '{key_renamed}' = '{scraped_info[key]}'"
                     #Utils.logger(message, "log", FileNameConsts.format_log_name)
             elif boolean_value_count == 0:
                 if key_renamed == InfoConsts.study_lines.key_df:
@@ -219,23 +216,23 @@ class InfoFormatter:
                     lst_of_booleans.append(InfoConsts.unspecified_schedule)
                 else:
                     lst_of_booleans.append(InfoConsts.unknown_value)
-                message = f"{info_name}, {course_number}: {key_renamed}'s boolean sum is 0"
+                message = f"{FileNameConsts.info_format}, {course_number}: {key_renamed}'s boolean sum is 0"
                 Utils.logger(message, log_type, FileNameConsts.format_log_name)
 
         # Institute is decided based on course number rather than scraped data
         elif key_renamed == InfoConsts.institute.key_df:
-            institute = InfoFormatter._get_institute_from_number(course_number, info_name)
+            institute = InfoFormatter._get_institute_from_number(course_number)
             formatted_info[key_renamed] = institute
             for i in range(0, len(values_renamed)):
                 if institute == values_renamed[i]:
                     formatted_info[values_renamed[i]] = 1
                     boolean_value_count += 1
             if boolean_value_count == 0:
-                print(f"{info_name}, {course_number}: {key_renamed}'s bool sum 0")
+                print(f"{FileNameConsts.info_format}, {course_number}: {key_renamed}'s bool sum 0")
 
         # If key was not found in scraped_info_dict:
         else:
-            message = f"{info_name}, {course_number}: {key_renamed} not found in info_scrape"
+            message = f"{FileNameConsts.info_format}, {course_number}: {key_renamed} not found in info_scrape"
             Utils.logger(message, log_type, FileNameConsts.format_log_name)
 
         # Combine lst_of_booleans into string
@@ -259,7 +256,7 @@ class InfoFormatter:
         return formatted_info
 
     @staticmethod
-    def _get_institute_from_number(course_number, info_name):
+    def _get_institute_from_number(course_number):
         """Categorize institute from first two digits in course number"""
         department_dct = InfoConsts.institute
         department_dct = dict(zip(InfoConsts.institute.values_raw, InfoConsts.institute.values_df))
@@ -268,7 +265,7 @@ class InfoFormatter:
             department = department_dct[first_two_digits]
         else:
             department = "Partner University"
-            message = f"{info_name}, {course_number}: Institute {first_two_digits} is unknown"
+            message = f"{FileNameConsts.info_format}, {course_number}: Institute {first_two_digits} is unknown"
             Utils.logger(message, "warning", FileNameConsts.format_log_name)
         return department
 

@@ -6,14 +6,6 @@ import os
 import json
 import pandas as pd
 import requests
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.by import By
-from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.support import expected_conditions as EC
 
 # Helper functions and global constants
 from website.global_constants.config import Config
@@ -40,29 +32,6 @@ class Utils:
         dct = Utils.replace_spaces_in_dict_keys(dct)
         dct = Utils.replace_commas_in_dict_keys(dct)
         return dct
-
-    @staticmethod
-    def launch_selenium():
-        """Initialize selenium webdriver and return driver"""
-        options = Options()
-        options.add_experimental_option('excludeSwitches', ['enable-logging'])
-        service = Service(ChromeDriverManager().install(), log_path=os.devnull)
-        driver = webdriver.Chrome(service=service, options=options)
-        return driver
-
-    @staticmethod
-    def access_url_via_selenium(url, driver):
-        """Return page source from url. Return an empty string if 10-second timeout"""
-        driver.get(url)
-        try:
-            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.NAME, "viewport")))
-            page_source = driver.page_source
-            return page_source
-        except TimeoutException:
-            message = f"{FileNameConsts.scrape_log_name}, Timeout exception at url: {url}"
-            Utils.logger(message, 'Error', FileNameConsts.scrape_log_name)
-            empty_string = ''
-            return empty_string
 
     @staticmethod
     def access_url_via_requests_get(url):
@@ -237,7 +206,7 @@ class Utils:
         file_location = f'{folder_name}/{file_name}.json'
         with open(file_location, 'w') as fp:
             json.dump(dct, fp)
-        print(f'Output has been saved at {file_location}.json')
+        print(f'Output has been saved at {file_location}')
 
     @staticmethod
     def save_scraped_df(df, file_name):
@@ -266,6 +235,16 @@ class Utils:
         file_location = f'{folder_name}/{file_name}.pkl'
         df_index = FileNameConsts.df_index
         df = pd.read_pickle(file_location)
+        df.set_index(df_index, inplace=True, drop=False)
+        return df
+
+    @staticmethod
+    def load_scraped_csv(file_name):
+        """Load in df from specified CSV location and return it"""
+        folder_name = FileNameConsts.scraped_data_folder_name
+        file_location = f'{folder_name}/{file_name}.csv'
+        df_index = FileNameConsts.df_index
+        df = pd.read_csv(file_location)
         df.set_index(df_index, inplace=True, drop=False)
         return df
 

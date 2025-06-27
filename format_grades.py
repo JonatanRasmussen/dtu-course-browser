@@ -1,7 +1,5 @@
 #%%
 
-# Imports
-# Helper functions and global constants
 from scrape_grades import GradeScraper
 from utils import Utils
 from website.global_constants.config import Config
@@ -40,18 +38,18 @@ class GradeFormatter:
         file_name = ""  # This prevents scraped data from being saved to disk
         df = GradeScraper.scrape_grades(course_numbers, course_semesters, file_name)
         iteration_count = 0
-        for course in course_numbers:
-            scraped_grades = df.loc[course].to_dict()
-            formatted_grades = GradeFormatter.format_grades(scraped_grades, course_semesters)
+        for course_number in course_numbers:
+            formatted_grades = GradeFormatter.format_grades(df, course_number, course_semesters)
             print(formatted_grades)
             Utils.display_progress(iteration_count, course_numbers, FileNameConsts.grade_format, 200)  # Display progress to user
             iteration_count += 1 # iteration_count must be incremented AFTER display progress
 
     @staticmethod
-    def format_grades(scraped_grades, course_semesters):
+    def format_grades(df, course_number, course_semesters):
         """Return formatted scraped grades and calculate statistics"""
 
         # Initialization
+        scraped_grades = df.loc[course_number].to_dict()
         grade_count_all_semesters = {GRADE_12: 0, GRADE_10: 0, GRADE_7: 0, GRADE_4: 0, GRADE_02: 0, GRADE_00: 0, GRADE_MINUS_3: 0, PASSED: 0, FAILED: 0, ABSENT: 0}
         course_grades = {}
         semester_grades = {}

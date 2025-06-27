@@ -1,7 +1,5 @@
 #%%
 
-# Imports
-# Helper functions and global constants
 from scrape_evaluations import EvalScraper
 from utils import Utils
 from website.global_constants.config import Config
@@ -38,17 +36,17 @@ class EvalFormatter:
         file_name = ""  # This prevents scraped data from being saved to disk
         df = EvalScraper.scrape_evaluations(course_numbers, course_semesters, file_name)
         iteration_count = 0
-        for course in course_numbers:
-            scraped_evals = df.loc[course].to_dict()
-            formatted_evals = EvalFormatter.format_evaluations(scraped_evals, course_semesters)
+        for course_number in course_numbers:
+            formatted_evals = EvalFormatter.format_evaluations(df, course_number, course_semesters)
             print(formatted_evals)
-            Utils.display_progress(iteration_count, course, FileNameConsts.eval_format, 200)
+            Utils.display_progress(iteration_count, course_number, FileNameConsts.eval_format, 200)
             iteration_count += 1 # iteration_count must be incremented AFTER display progress
 
     @staticmethod
-    def format_evaluations(scraped_evals, course_semesters):
+    def format_evaluations(df, course_number, course_semesters):
         """Return formatted scraped evaluations and calculate statistics"""
         # Initialization
+        scraped_evals = df.loc[course_number].to_dict()
         course_eval_raw = {}
         for k in range (0, len(EVAL_TYPES)):
             course_eval_raw[EVAL_TYPES[k]] = {SCORE_1: 0, SCORE_2: 0, SCORE_3: 0, SCORE_4: 0, SCORE_5: 0}
@@ -93,6 +91,16 @@ class EvalFormatter:
         return evaluations
 
     @staticmethod
+    def _create_statistics_dict(eval_dct, semester_and_q):
+        """Merge average evaluation and percentages into stat_dict"""
+        votes = sum(eval_dct.values())
+        average_score = EvalFormatter._find_evaluation_average(eval_dct)
+        upvote_ratio = EvalFormatter._evaluation_upvotes(eval_dct)
+        tier = EvalFormatter._decide_group(average_score)
+        stat_dict = {semester_and_q+VOTES: votes, semester_and_q+AVERAGE_SCORE: average_score, semester_and_q+UPVOTE_RATIO: upvote_ratio, semester_and_q+TIER: tier}
+        return stat_dict
+
+    @staticmethod
     def _find_evaluation_average(eval_dct):
         """Calculate and return averages for evaluations in a dict"""
 
@@ -124,7 +132,6 @@ class EvalFormatter:
 
             # Finally, we round the value to 2 decimal places
             evaluation_average = round(evaluation_average, Config.data_decimal_precision)
-
         return evaluation_average
 
     @staticmethod
@@ -143,7 +150,7 @@ class EvalFormatter:
         return upvote_ratio
 
     @staticmethod
-    def decide_group(average_score):
+    def _decide_group(average_score):
         """Put average_score into a group between 0 and 9"""
         tier = 0
         if average_score == NO_EVALUATIONS:
@@ -167,17 +174,6 @@ class EvalFormatter:
         else:
             tier = 9
         return tier
-
-
-    @staticmethod
-    def _create_statistics_dict(eval_dct, semester_and_q):
-        """Merge average evaluation and percentages into stat_dict"""
-        votes = sum(eval_dct.values())
-        average_score = EvalFormatter._find_evaluation_average(eval_dct)
-        upvote_ratio = EvalFormatter._evaluation_upvotes(eval_dct)
-        tier = EvalFormatter.decide_group(average_score)
-        stat_dict = {semester_and_q+VOTES: votes, semester_and_q+AVERAGE_SCORE: average_score, semester_and_q+UPVOTE_RATIO: upvote_ratio, semester_and_q+TIER: tier}
-        return stat_dict
 
 
 #%%

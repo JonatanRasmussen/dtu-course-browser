@@ -3,6 +3,7 @@ import json
 import os
 from bs4 import BeautifulSoup, Tag
 
+from website.global_constants.file_name_consts import FileNameConsts
 from utils import Utils
 
 class ArchiveScraper:
@@ -29,8 +30,8 @@ class ArchiveScraper:
             # The course code subpages are '01', '02', '10', and so on. The page for course code '01' has all the 01xxx courses, and so on.
             # Luckily, all course code subpages that exists for a given academic year is listed on the 'main page'.
             # By iterating over each course code subpage, we can obtain a complete dict of each course available during a given academic year
-            course_codes = ArchiveScraper._scrape_course_codes_from_main_page(academic_year)  # All course codes available for the given year (e.g., '01', '02', '10')
-            course_number_and_names = ArchiveScraper._scrape_course_code_subpages(academic_year, course_codes)  # All courses across each course code (01xxx, 02xxx, 10xxx, etc.)
+            course_codes = ArchiveScraper._scrape_course_codes_from_main_page(academic_year, False)  # All course codes available for the given year (e.g., '01', '02', '10')
+            course_number_and_names = ArchiveScraper._scrape_course_code_subpages(academic_year, course_codes, False)  # All courses across each course code (01xxx, 02xxx, 10xxx, etc.)
             course_numbers_by_academic_year[academic_year] = course_number_and_names
             print(f'Finished scraping course numbers for academic year {academic_year} ({len(course_number_and_names)} courses found)')  # Print current academic year to console so user can track the progress
         if len(file_name) != 0:
@@ -48,47 +49,60 @@ class ArchiveScraper:
         return sorted(unique_course_numbers)
 
     @staticmethod
-    def _scrape_course_codes_from_main_page(academic_year):
+    def _scrape_course_codes_from_main_page(academic_year, is_timeout):
         """Fetch the HTML of the main DTU course archive page for a given academic year."""
-        # An academic year is for example '2024-2025'
-        url = f"https://kurser.dtu.dk/archive/{academic_year}"
-        response = requests.get(url, timeout=10, headers={"Accept-Language": "en"})
-        response.raise_for_status()
-        page_source = response.text
-        # Now parse the page source to obtain the course codes
-        split_at = "</strong>"
-        last_page_source_table = page_source.split(split_at)[-1]
-        soup = BeautifulSoup(last_page_source_table, 'html.parser')
-        course_codes = []
-        table = soup.find('table', class_='table')
-        if isinstance(table, Tag):
-            for a_tag in table.find_all('a'):
-                if isinstance(a_tag, Tag):
-                    code = a_tag.text.strip()
-                    course_codes.append(code)
-        return course_codes
-
-    @staticmethod
-    def _scrape_course_code_subpages(academic_year, course_codes):
-        """Fetch the HTML for each course code's subpage within an academic year."""
-        course_number_and_names = {}
-        for code in course_codes:
-            url = f"https://kurser.dtu.dk/archive/{academic_year}/coursecode/{code}"
+        try:
+            # An academic year is for example '2024-2025'
+            url = f"https://kurser.dtu.dk/archive/{academic_year}"
             response = requests.get(url, timeout=10, headers={"Accept-Language": "en"})
-            subpage_page_sources = response.text
-            # Now parse out each course for the course code (e.g. all 01xxx courses for course code '01')
-            soup = BeautifulSoup(subpage_page_sources, 'html.parser')
+            response.raise_for_status()
+            page_source = response.text
+            # Now parse the page source to obtain the course codes
+            split_at = "</strong>"
+            last_page_source_table = page_source.split(split_at)[-1]
+            soup = BeautifulSoup(last_page_source_table, 'html.parser')
+            course_codes = []
             table = soup.find('table', class_='table')
             if isinstance(table, Tag):
-                rows = table.find_all('tr')[1:]  # Skip header
-                for row in rows:
-                    if isinstance(row, Tag):
-                        columns = row.find_all('td')
-                        if len(columns) == 2:
-                            course_number = columns[0].text.strip()
-                            course_name = columns[1].text.strip()
-                            course_number_and_names[course_number] = course_name
-        return course_number_and_names
+                for a_tag in table.find_all('a'):
+                    if isinstance(a_tag, Tag):
+                        code = a_tag.text.strip()
+                        course_codes.append(code)
+            return course_codes
+        except requests.exceptions.RequestException:
+            if not is_timeout:  # Try one more time
+                return ArchiveScraper._scrape_course_codes_from_main_page(academic_year, True)
+            message = f"{FileNameConsts.scrape_log_name}, {academic_year}: Timeout when loading URL for course codes."
+            Utils.logger(message, "Error", FileNameConsts.scrape_log_name)
+
+
+    @staticmethod
+    def _scrape_course_code_subpages(academic_year, course_codes, is_timeout):
+        """Fetch the HTML for each course code's subpage within an academic year."""
+        try:
+            course_number_and_names = {}
+            for code in course_codes:
+                url = f"https://kurser.dtu.dk/archive/{academic_year}/coursecode/{code}"
+                response = requests.get(url, timeout=10, headers={"Accept-Language": "en"})
+                subpage_page_sources = response.text
+                # Now parse out each course for the course code (e.g. all 01xxx courses for course code '01')
+                soup = BeautifulSoup(subpage_page_sources, 'html.parser')
+                table = soup.find('table', class_='table')
+                if isinstance(table, Tag):
+                    rows = table.find_all('tr')[1:]  # Skip header
+                    for row in rows:
+                        if isinstance(row, Tag):
+                            columns = row.find_all('td')
+                            if len(columns) == 2:
+                                course_number = columns[0].text.strip()
+                                course_name = columns[1].text.strip()
+                                course_number_and_names[course_number] = course_name
+            return course_number_and_names
+        except requests.exceptions.RequestException:
+            if not is_timeout:  # Try one more time
+                return ArchiveScraper._scrape_course_code_subpages(academic_year, course_codes, True)
+            message = f"{FileNameConsts.scrape_log_name}, {academic_year}: Timeout when loading URL for course codes."
+            Utils.logger(message, "Error", FileNameConsts.scrape_log_name)
 
 
 #%%

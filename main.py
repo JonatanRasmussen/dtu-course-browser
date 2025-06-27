@@ -9,7 +9,7 @@ if __name__ == "__main__":
 
     # Take data from scraped_data folder and clean+format+parse it.
     # Then, save it as csv file to website/static folder
-    CsvCreator.csv_creator_main() # This requires scraped_data, obtained via the above code
+    CsvCreator.load_course_dict_from_disk_and_create_csv() # This requires scraped_data, obtained via the above code
 
     # Launch website, using data from the csv file created above
     website_launch_main()

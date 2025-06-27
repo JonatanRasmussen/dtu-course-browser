@@ -4,15 +4,7 @@ import time
 import bs4 as bs
 import urllib.request
 import requests
-import ssl  # These imports will fix ssl.SSLCertVerificationError
-ssl._create_default_https_context = ssl._create_unverified_context  # pylint: disable=protected-access
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException
-from selenium.common.exceptions import StaleElementReferenceException
-# TO FIX CHROMEDRIVER, GO TO https://chromedriver.chromium.org/downloads
-# AND PLACE NEW VERSION IN C:\Program Files (x86)\ChromeDriver
+from requests.exceptions import Timeout, RequestException
 
 from utils import Utils
 from website.global_constants.config import Config
@@ -36,30 +28,28 @@ class EvalScraper:
         """Scrape grades for a given set of courses and href digits"""
         print('Webscrape of evaluations will now begin...')
         df, lst_of_column_names, df_index = Utils.initialize_df(course_semesters, EvalConsts.list_of_evals)
-        if Config.selenium_is_enabled:
-            driver = Utils.launch_selenium()
         iteration_count = 0
         for course in course_numbers:
             df_row = {df_index: course}
-            if Config.selenium_is_enabled:
-                evaluation_urls = EvalScraper._use_selenium_to_find_eval_urls(driver, course)
-            else:
-                evaluation_urls = EvalScraper._use_requests_to_find_eval_urls(course, file_name)
-            for eval_url in evaluation_urls:
-                page_source = EvalScraper._scrape_url(eval_url)
-                semester = EvalScraper.parse_semester_from_page_source(page_source, course, file_name)
-                if semester in course_semesters:
-                    semester_eval_data = EvalScraper.extract_evaluation_data(page_source, semester, course, file_name)
+            search_page_source = EvalScraper._search_for_eval_urls(course, file_name, False)
+            evaluation_urls = EvalScraper._parse_eval_urls(search_page_source, course, file_name)
+            for semester in course_semesters:
+                if semester in evaluation_urls:
+                    evaluation_url = evaluation_urls[semester]
+                    if evaluation_url != "":  # This is the intended behavior and works 99.9% of the time.
+                        uncut_source = urllib.request.urlopen(evaluation_url).read()
+                        page_source = EvalScraper._format_eval_page_source(uncut_source)
+                    else:  # Very rarely, _parse_eval_urls will return a dict key with an empty string as value
+                        page_source = EvalScraper._format_eval_page_source(search_page_source)  # Edge case for search page being a redirect to the eval page if exactly 1 search result is returned
+                    semester_eval_data = EvalScraper._extract_evaluation_data(page_source, semester, course, file_name)
                     df_row.update(semester_eval_data)  # If extraction failed, the returned dict will be empty
             df = Utils.add_dict_to_df(df_row, lst_of_column_names, df)  # Concatenate dict to dataframe as a new row
             iteration_count += 1  # Print current course to console so user can track the progress
-            if iteration_count % 10 == 0 or iteration_count == 1:
+            if iteration_count % 50 == 0 or iteration_count == 1 or iteration_count == 2:
                 Utils.print_progress(iteration_count, course_numbers, df_row, file_name)
         if len(file_name) != 0:
             Utils.save_scraped_df(df, file_name)  # Save all grades as .pkl
             Utils.save_df_as_csv(df, file_name)  # Save all grades as .csv
-        if Config.selenium_is_enabled:
-            driver.quit()
         print()  # Webscrape for all courses and semesters has been completed
         print('Webscrape of evaluations is now completed! Check log for details.')
         df.set_index(df_index, inplace=True, drop=True)
@@ -68,31 +58,8 @@ class EvalScraper:
         return df
 
     @staticmethod
-    def _use_selenium_to_find_eval_urls(driver, course):
-        """Use the driver to search for all evaluations for a given course."""
-        evaluation_urls = []
-        driver.get('https://evaluering.dtu.dk/CourseSearch')
-        driver.find_element(By.XPATH, '//*[@id="CourseCodeTextbox"]').send_keys(course)
-        driver.find_element(By.XPATH, '//*[@id="SearchButton"]').click()
-        timeout_after = 3 #seconds
-        try:
-            # Wait a small amount of time for at least one href link to be found
-            WebDriverWait(driver, timeout_after).until(EvalScraper.at_least_one_href_found)
-        except TimeoutException:
-            # If no href is found before timeout, log that no evaluation links exists
-            Utils.logger(f"No evaluation links exists for course {course}", "Log", FileNameConsts.scrape_log_name)
-        hrefs = driver.find_elements(By.PARTIAL_LINK_TEXT, '')
-        for href in hrefs:
-            href_as_string = href.get_attribute("href")
-            if len(href_as_string) >= 33 and href_as_string[0:33] == 'https://evaluering.dtu.dk/kursus/':
-                evaluation_urls.append(href_as_string)
-        # Log the search page results
-        Utils.logger(f"Search page for course {course}: Found {len(evaluation_urls)} evaluation links", "Log", FileNameConsts.scrape_log_name)
-        return evaluation_urls
-
-    @staticmethod
-    def _use_requests_to_find_eval_urls(course, file_name):
-        """ Search for all evaluations for a given course and return their urls"""
+    def _search_for_eval_urls(course, file_name, is_timeout):
+        """Search for all evaluations for a given course and return the page source"""
         # Scrape page source of course info, as this page contain links to the 5 most recent evaluations
         try:
             search_url = "https://evaluering.dtu.dk/CourseSearch"
@@ -100,49 +67,52 @@ class EvalScraper:
             session = requests.Session()
             response = session.post(search_url, data=payload, timeout=10, headers={"Accept-Language": "en"})
             response.raise_for_status() # Raise an error for bad status codes (like 404 or 500)
+            return response.text
         except requests.exceptions.RequestException:
+            if not is_timeout:  # Try one more time
+                return EvalScraper._search_for_eval_urls(course, file_name, True)
             message = f"{file_name}, {course}: Timeout when loading URL for course responsibles"
             Utils.logger(message, "Error", FileNameConsts.scrape_log_name)
-            return []
-        lst_of_split_html = response.text.split('href="/kursus/')
-        href_urls = []
-        for split_html in lst_of_split_html:
-            potential_href = split_html[6:12]
-            if potential_href.isdigit():
-                href_urls.append(f"https://evaluering.dtu.dk/kursus/{course}/{split_html[6:12]}")
-        return href_urls
+            return ""
 
     @staticmethod
-    def _use_requests_and_info_page_to_find_eval_urls(course, file_name):
-        """ Open course's info page with a session to handle cookies
-            and return up to 5 most recent evaluations for a given course."""
-        # Scrape page source of course info, as this page contain links to the 5 most recent evaluations
-        try:
-            url = f'https://kurser.dtu.dk/course/{course}/info'
-            # Same two-step process as in get_course_info_page_source()
-            session = requests.Session()  # Initialize a single Session object for the entire scrape
-            session.get(url, timeout=10, headers={"Accept-Language": "en"})
-            response = session.get(url, timeout=10, headers={"Accept-Language": "en"})
-            response.raise_for_status()
-        except requests.exceptions.RequestException:
-            message = f"{file_name}, {course}: Timeout when loading URL for course responsibles"
-            Utils.logger(message, "Error", FileNameConsts.scrape_log_name)
-            return []
-        lst_of_split_html = response.text.split('https://evaluering.dtu.dk/kursus/')
-        href_urls = []
-        for split_html in lst_of_split_html:
-            potential_href = split_html[6:12]
-            if potential_href.isdigit():
-                href_urls.append(f"https://evaluering.dtu.dk/kursus/{course}/{split_html[6:12]}")
+    def _parse_eval_urls(page_source, course, file_name):
+        """Parse out all evaluation urls from search page source. If page source"""
+        # Searching for urls works a bit odd. If the search only returns a single evaluation...
+        # ...rather than displaying it as a list with a single element, it instead takes you
+        # directly to its evaluation page. We must counteract this somehow
+        href_urls = {}
+        lst_of_split_html = page_source.split('href="/kursus/')
+        if len(lst_of_split_html) >= 2:  # There are 2 or more evaluation urls for our search
+            for split_html in lst_of_split_html:
+                potential_href = split_html[6:12]
+                if potential_href.isdigit():
+                    url_with_href_digits = f"https://evaluering.dtu.dk/kursus/{course}/{split_html[6:12]}"
+                    term_part = split_html.split('<div class="Term">')[1]
+                    term = term_part.split('</div>')[0].strip()
+                    if (term[0] == 'F' or term[0] == 'E') and term[2:4].isdigit():
+                        formatted_term = f"{term[0]}{term[2:4]}"
+                        href_urls[formatted_term] = url_with_href_digits
+            return href_urls
+        elif "Ingen kurser matchede s" in page_source:  #  There are 0 evaluation urls for our search
+            pass
+        elif "Der er 6 undervisningsperioder:" in page_source:  # There is 1 evaluation url in search and it seems we got redirected to it
+            formatted_page_source = EvalScraper._format_eval_page_source(page_source)
+            parsed_term = EvalScraper._parse_semester_from_page_source(formatted_page_source, course, file_name)
+            href_urls[parsed_term] = ""
+        else:
+            message = f"{file_name}, {course}: Eval urls could not be parsed for ({course})"
+            Utils.logger(message, 'Error', FileNameConsts.scrape_log_name)
         return href_urls
 
+
+
     @staticmethod
-    def _scrape_url(url):
+    def _format_eval_page_source(page_source):
         """ Get page source from url, split it at /n and return it as list.
             Note that this is some old and ugly code that I have not bothered to clean up"""
         # Load page source from url
-        source = urllib.request.urlopen(url).read()
-        soup = bs.BeautifulSoup(source,'lxml')
+        soup = bs.BeautifulSoup(page_source,'lxml')
         scraped_html = ''
         # A string containing the 'Results' section of the web page is created
         for paragraph in soup.find_all(id='Results'):
@@ -157,7 +127,7 @@ class EvalScraper:
         return scraped_html
 
     @staticmethod
-    def parse_semester_from_page_source(scraped_html, expected_course, file_name):
+    def _parse_semester_from_page_source(scraped_html, expected_course, file_name):
         """ The scraped_html contains evaluations for an unknown season/period.
             The season/period can be Summer, Winter, F20, E20, Jan, Jun, Jul or Aug.
             Summer, Jun, Jul and Aug is converted to F20. Winter and Jan is converted to E20.
@@ -185,7 +155,7 @@ class EvalScraper:
         return course_period
 
     @staticmethod
-    def extract_evaluation_data(scraped_data, semester, course, file_name):
+    def _extract_evaluation_data(scraped_data, semester, course, file_name):
         """ Extract evaluations from scrapedData and return them as dict
             Note that this is some old and ugly code that I have not bothered to clean up"""
         # In Sep-2019, the old evaluation questions were replaced by new ones
@@ -270,34 +240,6 @@ class EvalScraper:
         message = f"Scraped data for Course: {course} in term {semester}, Data: {json.dumps(eval_dict)}"
         Utils.logger(message, "Log", FileNameConsts.scrape_log_name)  # Log the scraped data for each evaluation page
         return eval_dict
-
-    """
-    def at_least_one_href_found(driver):
-        hrefs = driver.find_elements(By.PARTIAL_LINK_TEXT, '')
-        return any(href.get_attribute("href").startswith('https://evaluering.dtu.dk/kursus/') for href in hrefs)
-    """
-
-    @staticmethod
-    def at_least_one_href_found(driver):
-        max_attempts = 3
-        for attempt in range(max_attempts):
-            try:
-                # Get fresh elements each attempt
-                hrefs = driver.find_elements(By.PARTIAL_LINK_TEXT, '')
-                return any(
-                    href.get_attribute("href") is not None and
-                    href.get_attribute("href").startswith('https://evaluering.dtu.dk/kursus/')
-                    for href in hrefs
-                )
-            except StaleElementReferenceException:
-                if attempt < max_attempts - 1:
-                    time.sleep(1.5)
-                    continue
-                else:
-                    Utils.logger("StaleElement error", "Warning", FileNameConsts.scrape_log_name)
-                    return False
-        return False
-
 
 #%%
 if __name__ == "__main__":
