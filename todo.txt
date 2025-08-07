@@ -1,8 +1,0 @@
-Change "Summary statistics: " to "Summary statistics: (1521 courses)
-Add missing study lines
-Modify courses shown on frontpage
-Add JonatanRasmussen github / linkedin
-Scrape and Add the red study adm text
-Investigate missing 00 grades for 30015
-Add faq page
-On 404 page, link to a default course page / give an example of a valid search

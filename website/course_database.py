@@ -5,6 +5,7 @@ import pandas as pd
 import math
 import random
 from flask import Blueprint, render_template, request, redirect, url_for
+from website.context_dicts import last_updated_dct
 # Helper functions and global constants
 from .search import submit_search_field
 from website.global_constants.website_consts import WebsiteConsts
@@ -68,7 +69,7 @@ def route_to_course(course_number):
         # If course exists, route to course page. If not, route to 404 not found
         return render_template("course.html", data=data, semesters=semesters)
     else:
-        return render_template("404_invalid_course.html", course=course_number)
+        return render_template("404_invalid_course.html", course=course_number, last_update=last_updated_dct())
 
 @course_database.route('/random/', methods=['GET'])
 def route_to_random():

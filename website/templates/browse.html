@@ -89,7 +89,7 @@ content %}
   <div class="col">
     <div class="card bg-light h-100" style="max-width: 26rem;">
       <div class="card-header">
-        Summary statistics:
+        Summary statistics ({{course_lists[category]|length}} course{% if course_lists[category]|length != 1 %}s{% endif %}):
       </div>
       <ul class="list-group list-group-flush">
         <li class="list-group-item">
