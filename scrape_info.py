@@ -39,7 +39,7 @@ class InfoScraper:
             df_row = {df_index: course}
             # Scrape all info inside and outside the dataframe found on the webpage
             page_source_1 = InfoScraper._fetch_course_info_page_source(course, academic_year, file_name, False)
-            df_row.update(InfoScraper._parse_primary_df(page_source_1, course, academic_year, file_name))  #  Parse all info located inside the dataframe
+            df_row.update(InfoScraper._parse_primary_df(page_source_1, course, academic_year, file_name, False))  #  Parse all info located inside the dataframe
             df_row.update(InfoScraper._parse_info_not_in_primary_df(page_source_1, course, file_name))  #  Parse all info located outside the dataframe
             page_source_2 = InfoScraper._fetch_course_responsible_page_source(course, file_name, False)
             df_row.update(InfoScraper._scrape_course_responsibles(page_source_2))  #  Parse all info related to teachers and course responsibles
@@ -103,7 +103,7 @@ class InfoScraper:
             return ""
 
     @staticmethod
-    def _parse_primary_df(page_source, course, academic_year, file_name):
+    def _parse_primary_df(page_source, course, academic_year, file_name, is_timeout):
         """Format the info inside the 'Course information' dataframe into a dict"""
         primary_info_dct = {}
         if len(page_source) == 0:
@@ -112,6 +112,9 @@ class InfoScraper:
             html_io = StringIO(page_source)
             html_df = pd.read_html(html_io)
         except ValueError:
+            if not is_timeout:  # Try one more time
+                new_page_source = InfoScraper._fetch_course_info_page_source(course, academic_year, file_name, True)
+                return InfoScraper._parse_primary_df(new_page_source, course, academic_year, file_name, True)
             message = f"{file_name}, {course}: missing df in page_source, ensure {course} exists in {academic_year}"
             Utils.logger(message, 'Warning', FileNameConsts.scrape_log_name)
             return primary_info_dct
@@ -196,7 +199,7 @@ class InfoScraper:
 
         # Scrape highlighted message (this is the optional "red text" at the top of the page)
         start = '<div class="row"><div class="col-xs-12">'
-        end = '<'
+        end = '</'
         highlighted_message = InfoScraper._parse_from_page_source(page_source, start, end)
         if not highlighted_message:
             highlighted_message = DtuConsts.dtu_no_highlighted_message

@@ -27,10 +27,10 @@ CO_RESPONSIBLE_3_COURSES = InfoConsts.co_responsible_3_courses
 CO_RESPONSIBLE_4_COURSES = InfoConsts.co_responsible_4_courses
 
 
-def format_study_line_scrape(string_of_study_lines, study_lines_dct, course_number='12345', type='list'):
+def format_study_line_scrape(string_of_study_lines, study_lines_dct, course_number='12345', format_type='list'):
     """Take a string of study lines and turn it into a formatted list"""
 
-    if type=='list':
+    if format_type=='list':
         study_lines_dct = {}
 
     #string_to_become_lst = (string_of_study_lines.split(";"))[0].split("'")  #Delete this
@@ -169,6 +169,10 @@ def format_study_line_scrape(string_of_study_lines, study_lines_dct, course_numb
         scraped_data = scraped_data.replace("MSc, Human-Centered Artificial Intelligence","MSc, Human Centered Artificial Intelligence")
         scraped_data = scraped_data.replace("MSc, Bioinformatics and Systems Biology and Systems Biology", "MSc, Bioinformatics and Systems Biology")
         scraped_data = scraped_data.replace("MSc, MSc. Eng., Architectural Engineering","MSc, Architectural Engineering")
+        scraped_data = scraped_data.replace("BSc, BSc in Architectural Engineering","BSc, Architectural Engineering")
+        scraped_data = scraped_data.replace("BEng, Naval Architecture and Maritime Engineering","BEng, Naval Architecture and Offshore Engineering")
+
+
 
         # Replace double comma
         scraped_data = scraped_data.replace("MSc,, ","MSc, ")
@@ -212,7 +216,7 @@ def create_teacher_dct(df, course_numbers):
         teacher_4_lst = list(teacher_4_raw_dct.values())
         teacher_5_raw_dct = df[CO_RESPONSIBLE_4_NAME].to_dict()
         teacher_5_lst = list(teacher_5_raw_dct.values())
-    except:
+    except KeyError:
         print('Error: it seems that the columns containing the first five course responsibles does not exist in df')
 
     # Creating a dict of all teachers featuring a list of their courses
@@ -247,7 +251,7 @@ def create_teacher_course_lst(df, course_numbers):
         linked_courses_lst = []
         try:
             responsible_dct = df[column_names[k]].to_dict()
-        except:
+        except KeyError:
             print(f'Error: {column_names[k]} is not a column in df')
         for i in range (0, len(course_numbers)):
             course_responsible = responsible_dct[course_numbers[i]]
@@ -267,14 +271,14 @@ def create_lst_of_study_lines(df, course_numbers):
     try:
         study_lines_scraped_nested_dct = df[STUDY_LINES].to_dict()
         scraped_study_lines = list(study_lines_scraped_nested_dct.values())
-    except:
+    except KeyError:
         print('Error: it seems that STUDY_LINES column in df does not exist')
 
     # The column STUDY_LINES is a string containing a list of study lines
     study_lines_dct = {}
     for i in range(0, len(course_numbers)):
         # The string of study lines are formatted and turned into a list:
-        study_lines_dct = format_study_line_scrape(scraped_study_lines[i], study_lines_dct, course_numbers[i], type='dict')
+        study_lines_dct = format_study_line_scrape(scraped_study_lines[i], study_lines_dct, course_numbers[i], format_type='dict')
 
     # We now have a list of all study lines across all course numbers
     study_lines_complete_lst = sorted(list(study_lines_dct.keys()))
@@ -292,11 +296,11 @@ def create_lst_of_study_lines(df, course_numbers):
 if __name__ == "__main__":
     # Read existing df
 
-    df = pd.read_pickle(FileNameConsts.path_of_pkl+FileNameConsts.name_of_pkl+".pkl")
-    course_numbers = Utils.get_course_numbers()
+    DF = pd.read_pickle(FileNameConsts.path_of_pkl+FileNameConsts.name_of_pkl+".pkl")
+    COURSE_NUMBERS = Utils.get_course_numbers()
 
     # FUNCTIONALITY 1: PRINT LIST OF STUDY LINES
-    study_lines_dct = create_lst_of_study_lines(df, course_numbers)
+    create_lst_of_study_lines(DF, COURSE_NUMBERS)
 
 
     # FUNCTIONALITY 2: CREATE TEACHERS' COURSES LIST

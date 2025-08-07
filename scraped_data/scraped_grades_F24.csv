@@ -1,0 +1,1705 @@
+COURSE,F24_GRADE_12,F24_GRADE_10,F24_GRADE_7,F24_GRADE_4,F24_GRADE_02,F24_GRADE_00,F24_GRADE_MINUS_3,F24_PASSED,F24_FAILED,F24_ABSENT
+01001,0.0,0.0,11.0,19.0,9.0,0.0,0.0,0.0,24.0,8.0
+01002,82.0,220.0,265.0,204.0,41.0,0.0,0.0,0.0,198.0,101.0
+01003,0.0,0.0,4.0,5.0,3.0,0.0,0.0,0.0,7.0,No data
+01004,29.0,42.0,59.0,29.0,4.0,0.0,0.0,0.0,36.0,16
+01005,0.0,9.0,18.0,34.0,4.0,0.0,0.0,0.0,34.0,16
+01006,0.0,0.0,1.0,1.0,1.0,0.0,0.0,0.0,6.0,1
+01015,0.0,0.0,0.0,5.0,0.0,0.0,0.0,0.0,2.0,No data
+01017,0.0,1.0,4.0,5.0,7.0,2.0,0.0,No data,No data,No data
+01018,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+01019,0,0,1,2,0,1,0,No data,No data,2
+01020,No data,No data,No data,No data,No data,No data,No data,65,15,6
+01025,0,1,1,1,0,2,0,No data,No data,No data
+01034,0,0,4,4,6,1,0,No data,No data,2
+01035,7,17,26,22,13,17,1,No data,No data,8
+01037,19,34,41,40,28,57,3,No data,No data,9
+01125,11,18,4,0,1,0,0,No data,No data,No data
+01227,2,5,4,2,1,3,1,No data,No data,1
+01237,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+01238,7,6,4,0,3,1,0,No data,No data,No data
+01257,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+01325,3,13,11,9,8,5,0,No data,No data,1
+01405,13,2,2,1,0,0,0,No data,No data,No data
+01410,2,5,14,22,17,9,6,0,9,1
+01415,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+01418,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+01426,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+01527,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+01617,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+01621,2,1,3,1,0,2,0,No data,No data,No data
+01622,5,4,5,0,0,0,0,No data,No data,1
+01666,44,3,4,0,0,1,0,No data,No data,2
+01715,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+01716,No data,No data,No data,No data,No data,No data,No data,10,0,No data
+01901,18,57,70,74,51,88,73,No data,No data,71
+01904,1,1,0,2,4,1,0,No data,No data,2
+01910,0,2,1,1,0,1,1,No data,No data,8
+01915,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+01920,48,91,129,119,98,132,73,No data,No data,86
+02002,10,16,19,27,51,47,5,No data,No data,14
+02003,3,3,6,7,5,11,2,No data,No data,4
+02100,1,1,2,3,1,4,0,No data,No data,No data
+02104,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02105,83,104,118,57,22,71,6,No data,No data,29
+02110,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02112,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02113,12,3,0,0,0,0,0,No data,No data,No data
+02114,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02116,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02118,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02122,37,12,15,7,0,0,0,No data,No data,No data
+02123,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02128,No data,No data,No data,No data,No data,No data,No data,28,0,2
+02132,4,0,0,2,0,0,0,No data,No data,1
+02135,28,36,19,10,5,3,0,No data,No data,5
+02138,0,2,1,2,0,1,1,No data,No data,No data
+02139,5,15,12,9,10,10,2,No data,No data,10
+02141,5,15,40,37,20,18,3,No data,No data,9
+02143,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02148,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02155,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02156,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02157,1,5,3,1,8,3,1,No data,No data,6
+02158,1,1,0,1,1,2,0,No data,No data,1
+02159,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02160,17,39,18,1,0,1,0,No data,No data,3
+02161,8,27,28,26,9,0,0,No data,No data,14
+02162,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02170,47,60,42,11,4,5,0,No data,No data,4
+02180,41,64,98,54,8,1,0,No data,No data,16
+02182,18,29,15,0,0,1,0,No data,No data,2
+02191,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02192,20,39,6,0,0,0,0,No data,No data,No data
+02193,0,95,31,6,0,0,0,No data,No data,4
+02195,2,10,13,5,1,4,0,No data,No data,9
+02196,3,2,6,6,6,3,0,No data,No data,4
+02201,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02203,0,0,2,0,3,0,0,No data,No data,No data
+02204,12,10,0,0,0,0,0,No data,No data,No data
+02205,3,5,7,5,1,6,3,No data,No data,3
+02209,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02211,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02214,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02223,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02224,8,13,11,4,4,1,0,No data,No data,No data
+02226,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02232,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02233,38,65,53,52,16,11,0,No data,No data,6
+02234,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02238,14,19,16,20,10,1,3,No data,No data,20
+02239,0,4,3,3,4,0,0,No data,No data,1
+02242,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02244,24,64,47,21,11,1,0,No data,No data,3
+02245,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02246,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02247,46,22,12,11,16,2,1,No data,No data,9
+02249,1,1,3,4,4,1,0,No data,No data,No data
+02255,23,25,27,8,4,0,0,No data,No data,4
+02256,10,10,6,1,1,3,1,No data,No data,2
+02257,9,12,10,6,2,0,1,0,0,No data
+02258,0,0,2,1,0,1,0,No data,No data,No data
+02263,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02266,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02267,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02268,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02269,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02282,22,9,15,15,11,14,7,No data,No data,10
+02285,15,43,72,25,10,0,0,No data,No data,9
+02287,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02289,0,0,2,1,0,1,1,No data,No data,No data
+02291,17,46,97,52,47,12,6,No data,No data,17
+02314,1,1,0,2,2,0,0,No data,No data,2
+02316,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02317,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02318,6,4,5,4,5,1,0,No data,No data,4
+02320,1,1,6,1,3,8,4,0,2,4
+02321,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02322,13,16,25,18,6,8,9,No data,No data,8
+02323,8,15,33,25,18,27,5,No data,No data,6
+02324,10,13,30,22,2,17,0,No data,No data,16
+02326,16,21,46,18,19,39,2,No data,No data,25
+02327,21,23,25,23,11,18,10,No data,No data,14
+02332,0,3,1,0,0,1,0,No data,No data,1
+02335,0,1,3,2,1,0,0,No data,No data,No data
+02346,1,4,18,31,48,32,9,No data,No data,16
+02362,5,1,9,7,7,2,0,No data,No data,9
+02363,5,21,22,33,7,2,0,No data,No data,6
+02369,0,0,0,2,4,1,0,No data,No data,1
+02393,No data,No data,No data,No data,No data,No data,No data,19,2,1
+02402,57,105,121,62,30,59,20,No data,No data,13
+02403,13,35,41,22,13,29,11,No data,No data,13
+02405,3,2,1,1,1,8,0,No data,No data,No data
+02407,0,1,1,2,0,0,0,No data,No data,No data
+02409,2,3,0,0,1,3,0,No data,No data,1
+02411,14,24,43,21,9,20,11,No data,No data,7
+02413,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02417,47,70,58,3,2,0,3,No data,No data,7
+02418,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02421,3,2,0,8,4,5,3,No data,No data,No data
+02424,1,1,1,1,2,1,0,No data,No data,2
+02425,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02427,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02429,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02431,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02435,48,42,31,14,4,2,0,No data,No data,No data
+02441,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02443,No data,No data,No data,No data,No data,No data,No data,186,0,5
+02445,24,27,14,5,2,1,0,No data,No data,No data
+02450,31,81,120,102,53,97,36,No data,No data,67
+02455,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02456,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02458,2,1,1,3,2,2,0,No data,No data,1
+02460,15,20,35,13,4,3,0,1,0,6
+02461,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02462,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02463,13,20,20,5,2,2,0,No data,No data,4
+02464,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02465,14,15,27,18,11,14,4,No data,No data,18
+02466,10,22,18,12,0,2,0,No data,No data,1
+02467,3,8,16,6,4,0,0,No data,No data,1
+02471,1,2,3,0,0,1,0,2,0,No data
+02476,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02477,29,22,32,22,25,29,6,No data,No data,31
+02492,No data,No data,No data,No data,No data,No data,No data,8,2,No data
+02501,28,24,15,11,5,5,0,No data,No data,2
+02502,18,37,103,29,13,8,3,No data,No data,26
+02504,13,21,27,15,12,12,0,No data,No data,13
+02506,7,24,30,12,1,1,0,No data,No data,3
+02509,6,5,1,2,0,0,0,No data,No data,No data
+02510,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02516,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02525,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02526,34,23,23,14,2,2,0,No data,No data,No data
+02561,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02562,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02563,7,10,5,5,1,0,0,No data,No data,No data
+02566,10,5,3,6,0,0,0,No data,No data,No data
+02580,7,7,14,4,3,2,0,No data,No data,4
+02582,10,40,40,28,3,0,0,No data,No data,7
+02586,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02601,58,36,23,17,2,13,0,No data,No data,13
+02610,0,1,1,0,3,1,0,No data,No data,2
+02612,33,20,7,13,8,0,0,No data,No data,5
+02613,15,33,41,14,11,3,1,No data,No data,10
+02614,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02616,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02619,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02623,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02624,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02635,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02686,4,4,3,3,0,1,0,No data,No data,5
+02687,16,5,11,0,0,0,0,No data,No data,1
+02689,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02805,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02806,22,56,88,32,1,0,0,No data,No data,6
+02807,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02808,5,24,21,0,0,0,0,No data,No data,2
+02809,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02830,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02840,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02841,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02901,No data,No data,No data,No data,No data,No data,No data,38,2,4
+02910,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02913,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02935,No data,No data,No data,No data,No data,No data,No data,19,2,3
+02940,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02941,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02946,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02949,No data,No data,No data,No data,No data,No data,No data,15,0,6
+02953,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02955,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02960,No data,No data,No data,No data,No data,No data,No data,20,0,3
+02975,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02979,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02980,No data,No data,No data,No data,No data,No data,No data,24,1,No data
+02981,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02982,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02985,No data,No data,No data,No data,No data,No data,No data,49,0,No data
+02G01,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02G02,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02G03,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02G04,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02G05,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02G06,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02G07,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02G08,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02G09,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+02G10,1,2,2,0,0,0,0,No data,No data,No data
+10020,25,40,55,46,23,16,2,No data,No data,12
+10022,20,21,35,24,11,6,0,No data,No data,5
+10024,23,29,44,23,4,3,1,No data,No data,6
+10031,12,17,15,5,2,0,0,No data,No data,11
+10033,9,28,21,16,12,10,1,No data,No data,7
+10034,20,33,30,11,0,2,0,0,2,2
+10035,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10036,0,0,0,1,2,1,0,No data,No data,No data
+10037,No data,No data,No data,No data,No data,No data,No data,80,0,3
+10041,0,1,2,2,0,1,0,No data,No data,1
+10050,10,13,15,14,24,16,7,No data,No data,6
+10054,5,7,10,10,4,15,2,No data,No data,6
+10060,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10063,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10065,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10080,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10102,5,4,8,7,10,11,0,No data,No data,2
+10104,3,5,14,8,2,5,0,No data,No data,3
+10112,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10122,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10200,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10208,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10209,No data,No data,No data,No data,No data,No data,No data,9,0,No data
+10240,No data,No data,No data,No data,No data,No data,No data,188,1,5
+10255,1,1,3,0,0,0,0,No data,No data,No data
+10260,10,15,15,5,1,5,0,No data,No data,No data
+10302,6,6,7,0,0,0,0,No data,No data,No data
+10303,9,5,4,3,0,4,0,No data,No data,2
+10304,2,4,3,4,0,1,0,No data,No data,1
+10306,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10314,5,1,0,1,0,2,0,No data,No data,5
+10315,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10316,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10317,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10318,0,2,1,1,1,0,0,No data,No data,No data
+10321,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10325,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10326,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10331,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10333,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10337,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10339,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10346,6,5,6,2,0,0,0,No data,No data,2
+10350,No data,No data,No data,No data,No data,No data,No data,36,0,No data
+10380,7,12,6,7,1,0,0,No data,No data,6
+10384,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10385,6,4,6,9,4,12,4,No data,No data,9
+10386,No data,No data,No data,No data,No data,No data,No data,25,0,2
+10387,No data,No data,No data,No data,No data,No data,No data,7,0,No data
+10400,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10401,3,2,3,2,1,0,0,No data,No data,1
+10402,3,5,4,0,0,0,0,No data,No data,No data
+10405,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10411,4,7,10,6,4,2,0,No data,No data,No data
+10413,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10420,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10506,No data,No data,No data,No data,No data,No data,No data,6,0,No data
+10507,No data,No data,No data,No data,No data,No data,No data,8,0,1
+10508,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10509,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10511,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10512,No data,No data,No data,No data,No data,No data,No data,6,0,No data
+10514,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10515,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10519,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10520,No data,No data,No data,No data,No data,No data,No data,4,0,No data
+10521,No data,No data,No data,No data,No data,No data,No data,7,0,1
+10530,No data,No data,No data,No data,No data,No data,No data,106,0,No data
+10540,No data,No data,No data,No data,No data,No data,No data,81,0,6
+10550,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10590,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10603,No data,No data,No data,No data,No data,No data,No data,16,2,3
+10605,No data,No data,No data,No data,No data,No data,No data,9,0,No data
+10610,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10720,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10721,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10722,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10730,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10731,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10732,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10750,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10850,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10851,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10852,No data,No data,No data,No data,No data,No data,No data,11,0,No data
+10855,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10862,No data,No data,No data,No data,No data,No data,No data,8,0,No data
+10870,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10871,3,1,0,0,0,0,0,No data,No data,No data
+10916,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+10935,1,0,1,1,2,0,0,No data,No data,1
+12000,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12003,14,24,4,0,0,0,0,No data,No data,No data
+12100,No data,No data,No data,No data,No data,No data,No data,134,1,No data
+12102,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12104,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12109,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12110,2,9,3,3,3,0,0,No data,No data,1
+12111,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12121,2,9,7,1,0,0,0,No data,No data,No data
+12122,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12124,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12130,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12132,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12134,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12139,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12143,27,25,21,6,0,0,0,No data,No data,No data
+12145,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12202,14,17,18,14,10,5,0,No data,No data,3
+12203,10,14,7,0,0,0,0,No data,No data,No data
+12205,8,37,38,23,10,0,0,No data,No data,5
+12211,No data,No data,No data,No data,No data,No data,No data,15,0,17
+12227,1,25,20,3,0,0,0,No data,No data,1
+12228,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12231,No data,No data,No data,No data,No data,No data,No data,11,0,No data
+12237,9,23,23,4,1,5,3,No data,No data,No data
+12238,4,8,11,1,0,1,0,No data,No data,1
+12240,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12245,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12250,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12320,2,6,13,11,2,2,0,No data,No data,2
+12330,1,6,8,4,2,3,1,No data,No data,1
+12331,No data,No data,No data,No data,No data,No data,No data,10,0,No data
+12336,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12345,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12350,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12360,9,25,28,5,0,0,0,No data,No data,2
+12361,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12362,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12363,0,3,5,2,0,0,0,No data,No data,No data
+12410,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12411,3,13,12,16,5,4,0,No data,No data,1
+12412,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12415,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12421,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12422,10,10,20,6,3,2,0,No data,No data,2
+12423,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12430,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12431,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12432,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12451,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12452,2,8,4,0,0,0,0,No data,No data,No data
+12550,0,3,11,11,16,10,6,No data,No data,2
+12551,10,14,37,21,32,50,65,No data,No data,32
+12552,0,15,5,6,1,1,0,No data,No data,4
+12601,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12603,5,5,14,15,12,14,1,No data,No data,18
+12604,9,17,8,9,2,0,1,No data,No data,No data
+12605,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12611,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12612,3,2,12,6,5,5,0,No data,No data,3
+12614,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12701,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12772,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12773,11,50,29,2,0,0,0,No data,No data,1
+12774,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12821,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12831,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12832,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12836,4,3,3,2,0,1,0,No data,No data,3
+12854,2,5,5,0,0,0,0,No data,No data,No data
+12859,3,12,11,0,0,0,0,No data,No data,No data
+12902,No data,No data,No data,No data,No data,No data,No data,19,0,No data
+12911,No data,No data,No data,No data,No data,No data,No data,22,0,2
+12919,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12920,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12936,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12940,No data,No data,No data,No data,No data,No data,No data,21,0,5
+12941,No data,No data,No data,No data,No data,No data,No data,7,0,6
+12950,No data,No data,No data,No data,No data,No data,No data,104,0,No data
+12951,No data,No data,No data,No data,No data,No data,No data,106,0,4
+12952,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+12953,No data,No data,No data,No data,No data,No data,No data,45,0,4
+12954,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22000,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22001,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22002,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22003,2,11,9,8,1,2,0,No data,No data,5
+22004,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22005,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22050,11,19,40,13,7,9,1,No data,No data,2
+22051,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22052,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22053,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22054,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22057,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22060,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22061,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22100,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22101,No data,No data,No data,No data,No data,No data,No data,12,0,2
+22102,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22107,No data,No data,No data,No data,No data,No data,No data,12,0,No data
+22111,1,2,0,3,2,0,0,No data,No data,No data
+22112,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22113,No data,No data,No data,No data,No data,No data,No data,17,2,No data
+22115,19,5,4,0,3,3,0,No data,No data,1
+22117,13,44,19,5,0,0,0,1,0,2
+22123,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22125,6,6,5,9,1,2,0,No data,No data,4
+22126,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22140,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22145,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22160,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22161,No data,No data,No data,No data,No data,No data,No data,6,1,No data
+22163,No data,No data,No data,No data,No data,No data,No data,38,13,5
+22175,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22179,9,10,2,0,0,0,0,No data,No data,1
+22180,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22201,11,15,7,0,1,0,0,No data,No data,No data
+22202,22,24,37,9,10,3,0,No data,No data,1
+22203,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22205,No data,No data,No data,No data,No data,No data,No data,20,0,No data
+22206,No data,No data,No data,No data,No data,No data,No data,7,3,No data
+22207,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22208,0,0,2,0,7,1,0,No data,No data,3
+22210,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22211,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22230,14,34,20,4,2,0,0,No data,No data,2
+22231,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22232,No data,No data,No data,No data,No data,No data,No data,20,0,No data
+22235,16,41,56,28,3,2,0,No data,No data,3
+22236,11,25,20,1,0,0,0,No data,No data,No data
+22237,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22281,2,15,41,19,2,4,0,No data,No data,3
+22282,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22283,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22284,5,20,20,5,1,1,0,No data,No data,4
+22285,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22400,52,39,15,3,1,0,0,No data,No data,No data
+22403,No data,No data,No data,No data,No data,No data,No data,19,0,No data
+22435,0,0,2,1,0,1,0,No data,No data,No data
+22437,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22438,0,0,0,2,3,2,0,No data,No data,1
+22439,2,7,8,27,15,47,6,No data,No data,6
+22446,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22481,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22485,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22486,No data,No data,No data,No data,No data,No data,No data,4,0,No data
+22487,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22506,4,2,6,5,1,1,0,No data,No data,4
+22507,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22508,No data,No data,No data,No data,No data,No data,No data,26,0,No data
+22510,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22511,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22512,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22513,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22525,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22530,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22600,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22602,3,8,9,1,3,1,1,No data,No data,1
+22603,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22604,No data,No data,No data,No data,No data,No data,No data,4,0,No data
+22610,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22611,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22612,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22652,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22656,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22680,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22681,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+22800,No data,No data,No data,No data,No data,No data,No data,14,0,No data
+23101,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+23102,1,13,21,8,0,0,0,0,1,No data
+23205,0,2,0,2,1,0,0,No data,No data,No data
+23206,1,5,4,1,3,0,0,No data,No data,No data
+23210,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+23212,6,8,4,1,0,0,0,No data,No data,1
+23214,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+23216,0,11,6,3,0,0,0,No data,No data,7
+23220,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+23255,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+23256,4,19,9,6,0,0,0,No data,No data,No data
+23257,4,10,3,2,0,0,0,No data,No data,No data
+23258,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+23260,1,1,0,0,2,0,0,No data,No data,No data
+23261,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+23262,9,9,4,2,1,1,0,No data,No data,No data
+23263,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+23272,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+23301,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+23302,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+23360,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+23511,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+23520,2,5,1,0,0,0,0,No data,No data,No data
+23521,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+23522,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+23531,4,9,14,0,0,0,0,No data,No data,No data
+23532,1,16,13,0,0,0,0,No data,No data,No data
+23552,No data,No data,No data,No data,No data,No data,No data,30,0,1
+23564,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+23662,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+23711,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+23732,1,0,1,0,3,3,0,No data,No data,No data
+23832,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+23837,No data,No data,No data,No data,No data,No data,No data,17,0,No data
+23839,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+23841,No data,No data,No data,No data,No data,No data,No data,7,0,1
+23842,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+23901,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+23902,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+23925,0,0,1,1,1,1,0,No data,No data,1
+23926,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+23932,4,7,17,14,13,7,2,No data,No data,2
+23936,11,8,3,2,0,0,0,No data,No data,No data
+23937,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+23952,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+23953,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+23963,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+23982,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+23F11,2,0,0,2,0,0,0,No data,No data,No data
+23F12,1,2,1,0,0,0,0,No data,No data,No data
+23F13,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+23F14,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+23F15,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+23F16,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25102,No data,No data,No data,No data,No data,No data,No data,18,2,No data
+25104,1,16,27,6,0,0,0,No data,No data,2
+25105,11,12,11,6,1,0,0,No data,No data,2
+25106,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25107,0,1,1,0,0,0,0,27,4,No data
+25108,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25201,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25202,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25203,0,1,3,0,0,0,0,No data,No data,No data
+25204,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25205,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25206,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25207,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25208,0,12,10,0,2,0,2,No data,No data,No data
+25209,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25210,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25211,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25212,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25302,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25303,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25310,6,10,6,2,3,0,0,No data,No data,No data
+25311,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25312,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25313,1,2,1,1,0,0,0,No data,No data,No data
+25314,2,4,3,0,0,0,0,No data,No data,No data
+25315,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25316,3,1,4,0,2,0,0,No data,No data,No data
+25317,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25318,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25321,1,4,1,1,0,0,0,No data,No data,No data
+25322,No data,No data,No data,No data,No data,No data,No data,4,0,No data
+25323,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25324,15,2,0,0,0,0,0,No data,No data,No data
+25325,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25326,3,1,2,1,0,0,0,No data,No data,No data
+25327,4,5,2,0,4,0,0,No data,No data,1
+25328,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25331,No data,No data,No data,No data,No data,No data,No data,8,0,No data
+25334,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25335,0,1,3,1,0,0,0,No data,No data,No data
+25336,2,4,4,1,0,0,0,No data,No data,3
+25340,18,3,0,0,0,1,0,No data,No data,No data
+25341,5,8,0,0,0,0,0,No data,No data,No data
+25342,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25343,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25344,11,6,0,0,0,0,0,No data,No data,No data
+25345,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25346,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25347,12,1,2,2,0,0,0,No data,No data,No data
+25348,No data,No data,No data,No data,No data,No data,No data,5,0,No data
+25349,1,2,2,0,0,0,0,No data,No data,No data
+25350,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25616,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25617,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25618,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25619,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25621,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25622,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25801,No data,No data,No data,No data,No data,No data,No data,4,0,No data
+25803,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25805,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25807,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25808,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25809,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25811,No data,No data,No data,No data,No data,No data,No data,7,0,2
+25812,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25813,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25814,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25815,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25816,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25817,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25818,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25819,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25820,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25821,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25822,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25823,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25824,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25825,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25826,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25827,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25829,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25830,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25831,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+25832,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+26001,0,0,1,1,1,1,0,No data,No data,No data
+26002,No data,No data,No data,No data,No data,No data,No data,16,1,No data
+26003,No data,No data,No data,No data,No data,No data,No data,48,0,No data
+26004,No data,No data,No data,No data,No data,No data,No data,16,11,1
+26008,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+26010,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+26020,1,1,1,5,4,8,1,No data,No data,1
+26021,15,30,35,29,11,23,0,No data,No data,12
+26022,52,83,102,60,53,75,6,No data,No data,27
+26050,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+26124,4,14,7,11,3,6,1,No data,No data,6
+26125,2,7,11,1,0,0,0,No data,No data,No data
+26127,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+26130,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+26134,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+26171,0,2,2,1,0,3,0,No data,No data,2
+26173,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+26174,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+26200,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+26201,0,0,3,0,0,1,0,No data,No data,1
+26211,3,8,31,22,22,22,1,No data,No data,5
+26220,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+26222,1,1,2,5,4,1,0,No data,No data,2
+26225,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+26231,3,6,3,4,1,4,0,No data,No data,1
+26236,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+26245,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+26255,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+26261,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+26263,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+26271,8,13,43,22,11,22,4,No data,No data,10
+26280,4,3,2,0,0,0,0,No data,No data,No data
+26290,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+26300,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+26317,15,7,4,8,2,8,0,No data,No data,10
+26371,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+26374,No data,No data,No data,No data,No data,No data,No data,41,0,1
+26400,52,27,32,33,23,51,19,No data,No data,29
+26407,No data,No data,No data,No data,No data,No data,No data,16,0,No data
+26411,0,3,1,5,1,1,0,No data,No data,2
+26416,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+26422,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+26426,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+26428,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+26433,0,0,0,1,0,2,2,No data,No data,No data
+26436,0,2,1,0,1,0,0,No data,No data,No data
+26438,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+26444,6,10,8,2,7,0,0,No data,No data,No data
+26446,5,9,14,8,3,8,2,No data,No data,2
+26455,No data,No data,No data,No data,No data,No data,No data,5,0,No data
+26471,3,2,12,19,7,29,10,No data,No data,6
+26474,No data,No data,No data,No data,No data,No data,No data,5,0,No data
+26510,5,3,8,0,0,0,0,No data,No data,No data
+26620,No data,No data,No data,No data,No data,No data,No data,33,0,1
+26701,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+26702,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+26800,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+26932,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+26933,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+26944,No data,No data,No data,No data,No data,No data,No data,20,0,No data
+26970,No data,No data,No data,No data,No data,No data,No data,4,0,No data
+26991,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+27002,0,2,1,0,1,0,0,No data,No data,1
+27016,No data,No data,No data,No data,No data,No data,No data,6,0,No data
+27020,40,89,77,84,58,26,0,No data,No data,6
+27022,25,28,37,34,20,37,9,No data,No data,18
+27023,No data,No data,No data,No data,No data,No data,No data,93,0,No data
+27026,0,0,5,1,3,4,0,No data,No data,1
+27027,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+27034,21,21,14,14,9,1,1,No data,No data,1
+27035,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+27051,15,18,10,12,6,7,0,No data,No data,5
+27062,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+27070,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+27075,57,15,2,4,5,0,0,No data,No data,2
+27101,No data,No data,No data,No data,No data,No data,No data,76,2,No data
+27220,17,21,3,1,0,0,0,No data,No data,2
+27230,4,0,0,0,1,2,0,No data,No data,No data
+27246,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+27247,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+27255,8,8,4,0,0,0,0,No data,No data,1
+27325,0,12,6,4,0,0,0,No data,No data,No data
+27330,4,2,3,1,0,0,0,No data,No data,1
+27410,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+27419,24,26,14,9,1,0,0,No data,No data,9
+27422,44,19,6,0,0,4,0,No data,No data,2
+27423,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+27430,9,16,33,23,22,19,0,No data,No data,6
+27432,No data,No data,No data,No data,No data,No data,No data,28,0,No data
+27455,5,13,19,11,8,17,1,No data,No data,2
+27460,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+27470,24,26,27,12,2,0,0,No data,No data,No data
+27472,8,2,0,0,0,0,0,No data,No data,No data
+27510,3,7,28,14,0,1,0,No data,No data,No data
+27665,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+27691,No data,No data,No data,No data,No data,No data,No data,22,0,3
+27692,No data,No data,No data,No data,No data,No data,No data,15,0,No data
+27800,No data,No data,No data,No data,No data,No data,No data,10,0,No data
+27801,No data,No data,No data,No data,No data,No data,No data,7,0,No data
+27820,No data,No data,No data,No data,No data,No data,No data,12,0,No data
+27823,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+27828,4,0,0,0,0,0,0,1,0,No data
+27832,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+27838,No data,No data,No data,No data,No data,No data,No data,37,0,No data
+27839,No data,No data,No data,No data,No data,No data,No data,41,0,No data
+27845,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28010,13,21,19,10,2,0,2,No data,No data,2
+28012,0,0,1,2,0,0,4,No data,No data,3
+28016,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28020,12,12,2,9,9,2,12,No data,No data,No data
+28022,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28025,3,4,15,4,4,9,3,No data,No data,2
+28121,1,3,2,1,0,0,0,No data,No data,No data
+28123,28,35,2,0,0,0,0,No data,No data,No data
+28125,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28140,1,1,1,0,3,0,1,No data,No data,1
+28150,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28157,13,16,9,0,0,0,0,No data,No data,No data
+28160,7,4,7,3,3,7,3,No data,No data,2
+28212,10,14,15,2,5,4,7,No data,No data,5
+28213,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28214,2,5,0,1,0,0,0,No data,No data,1
+28216,1,1,4,6,2,0,0,No data,No data,No data
+28217,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28221,9,3,0,0,0,0,0,No data,No data,No data
+28233,0,3,4,1,1,4,0,No data,No data,1
+28242,0,1,0,2,1,0,0,No data,No data,No data
+28244,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28271,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28311,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28315,0,1,3,3,0,0,0,No data,No data,1
+28316,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28322,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28342,2,6,7,15,10,9,2,No data,No data,3
+28344,0,9,16,6,0,1,0,0,1,3
+28345,4,25,35,16,4,3,0,No data,No data,3
+28346,3,17,0,0,0,0,0,No data,No data,No data
+28350,11,40,7,0,0,0,0,No data,No data,2
+28352,1,14,22,1,0,0,0,0,3,3
+28361,26,30,12,0,0,7,0,No data,No data,1
+28412,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28420,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28423,1,4,4,3,2,1,0,No data,No data,2
+28434,17,22,10,3,0,2,0,No data,No data,7
+28443,7,15,7,0,0,0,0,No data,No data,No data
+28451,3,18,10,3,0,0,0,No data,No data,1
+28455,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28485,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28515,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28530,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28720,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28737,0,6,0,0,0,0,0,No data,No data,No data
+28745,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28761,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28811,4,3,0,0,0,0,0,No data,No data,No data
+28831,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28845,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28850,21,65,39,6,1,0,0,No data,No data,No data
+28852,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28855,7,37,64,9,2,0,0,0,2,2
+28857,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28864,No data,No data,No data,No data,No data,No data,No data,18,1,No data
+28870,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28871,4,7,9,9,1,0,0,No data,No data,1
+28872,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28885,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28905,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28908,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28909,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28917,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28923,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28927,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28928,1,1,1,2,0,0,0,No data,No data,No data
+28930,No data,No data,No data,No data,No data,No data,No data,5,0,No data
+28932,No data,No data,No data,No data,No data,No data,No data,9,0,No data
+28933,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+28934,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+29902,No data,No data,No data,No data,No data,No data,No data,6,0,No data
+29903,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+29905,No data,No data,No data,No data,No data,No data,No data,11,0,No data
+29906,No data,No data,No data,No data,No data,No data,No data,21,0,No data
+30010,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+30015,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+30020,23,17,13,2,2,0,0,No data,No data,2
+30021,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+30032,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+30035,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+30081,No data,No data,No data,No data,No data,No data,No data,35,1,2
+30082,5,9,9,5,1,0,0,No data,No data,9
+30100,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+30110,20,9,2,0,0,0,0,No data,No data,No data
+30120,7,18,11,3,0,2,0,0,1,4
+30131,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+30142,0,4,6,2,3,0,0,No data,No data,4
+30150,5,7,1,1,0,0,0,No data,No data,1
+30160,4,9,7,7,8,3,2,No data,No data,6
+30202,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+30220,11,4,3,1,0,1,0,No data,No data,1
+30230,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+30300,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+30310,6,10,13,4,1,0,0,No data,No data,2
+30320,28,0,2,1,1,0,0,No data,No data,1
+30330,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+30340,7,6,4,5,6,2,1,No data,No data,3
+30350,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+30400,0,0,1,0,2,1,0,No data,No data,No data
+30405,4,5,3,11,6,11,1,No data,No data,8
+30415,0,0,0,0,0,2,3,No data,No data,No data
+30420,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+30428,2,1,9,4,5,3,0,No data,No data,1
+30430,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+30510,No data,No data,No data,No data,No data,No data,No data,16,0,No data
+30530,14,19,16,1,2,0,0,No data,No data,1
+30531,20,39,40,5,11,0,0,0,11,No data
+30540,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+30545,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+30552,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+30554,11,7,3,1,2,2,1,No data,No data,No data
+30561,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+30564,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+30574,4,9,3,0,0,0,0,No data,No data,1
+30710,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+30720,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+30745,8,3,3,0,0,0,0,No data,No data,No data
+30752,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+30755,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+30757,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+30760,7,12,1,0,0,0,0,No data,No data,1
+30790,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+30794,5,0,2,5,0,0,0,0,1,No data
+30857,7,22,5,0,0,0,0,No data,No data,No data
+30911,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+30970,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34019,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34020,7,9,9,7,4,4,1,No data,No data,2
+34021,6,5,2,0,2,0,1,No data,No data,No data
+34023,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34024,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34029,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34031,0,3,4,3,5,1,0,No data,No data,No data
+34032,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34034,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34038,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34041,2,2,4,5,0,2,0,No data,No data,3
+34042,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34043,3,1,1,1,0,0,0,No data,No data,2
+34046,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34051,4,1,1,1,1,0,0,No data,No data,1
+34052,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34053,3,1,0,2,1,0,0,No data,No data,2
+34060,5,5,2,1,0,2,0,No data,No data,No data
+34061,2,2,2,2,0,1,0,No data,No data,2
+34091,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34092,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34094,No data,No data,No data,No data,No data,No data,No data,4,0,No data
+34120,0,2,1,0,0,1,0,No data,No data,No data
+34121,3,1,1,1,2,1,0,No data,No data,1
+34126,No data,No data,No data,No data,No data,No data,No data,6,0,No data
+34127,3,4,1,0,1,0,0,No data,No data,No data
+34129,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34130,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34153,5,3,1,1,1,6,0,No data,No data,5
+34156,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34190,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34192,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34193,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34194,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34210,3,2,2,3,3,3,0,No data,No data,3
+34220,6,9,3,5,1,0,0,No data,No data,7
+34229,2,10,2,0,0,0,0,0,2,No data
+34230,0,0,0,2,1,0,1,No data,No data,1
+34240,2,2,1,3,1,0,0,No data,No data,2
+34241,No data,No data,No data,No data,No data,No data,No data,12,1,No data
+34249,3,5,4,0,0,0,0,0,1,No data
+34250,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34251,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34269,3,4,5,1,0,0,0,No data,No data,3
+34290,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34302,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34313,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34315,4,23,31,19,0,0,0,No data,No data,No data
+34318,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34322,1,3,6,1,0,0,0,No data,No data,1
+34323,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34324,0,2,5,6,5,3,2,No data,No data,7
+34325,1,2,3,1,0,0,0,No data,No data,No data
+34331,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34332,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34333,1,5,7,4,2,1,0,No data,No data,10
+34334,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34338,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34343,5,6,1,4,3,4,0,No data,No data,6
+34345,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34346,9,19,10,3,3,0,0,No data,No data,2
+34349,5,18,21,10,1,0,0,No data,No data,No data
+34351,1,6,8,6,1,1,0,No data,No data,No data
+34359,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34365,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34366,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34367,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34368,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34369,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34370,7,14,9,5,0,0,1,No data,No data,No data
+34371,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34373,No data,No data,No data,No data,No data,No data,No data,33,2,No data
+34430,15,9,15,8,4,1,0,No data,No data,3
+34440,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34451,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34492,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34495,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34539,No data,No data,No data,No data,No data,No data,No data,14,1,No data
+34540,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34541,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34551,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34552,18,72,25,5,1,0,2,No data,No data,No data
+34553,6,6,0,0,0,0,0,No data,No data,No data
+34590,5,10,8,0,0,0,0,No data,No data,4
+34600,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34601,No data,No data,No data,No data,No data,No data,No data,92,1,10
+34602,No data,No data,No data,No data,No data,No data,No data,44,0,4
+34620,No data,No data,No data,No data,No data,No data,No data,103,1,No data
+34630,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34652,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34653,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34654,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34655,10,14,15,8,3,0,0,No data,No data,No data
+34656,No data,No data,No data,No data,No data,No data,No data,33,0,1
+34657,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34658,No data,No data,No data,No data,No data,No data,No data,4,0,No data
+34659,No data,No data,No data,No data,No data,No data,No data,9,0,1
+34690,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34720,30,5,6,4,0,0,0,No data,No data,No data
+34721,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34722,3,6,18,14,6,6,0,No data,No data,12
+34723,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34724,No data,No data,No data,No data,No data,No data,No data,42,2,1
+34745,0,0,1,4,0,0,0,No data,No data,2
+34746,9,6,6,1,0,1,0,No data,No data,No data
+34748,3,6,12,3,0,0,0,No data,No data,1
+34752,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34753,1,2,2,2,2,0,0,No data,No data,No data
+34755,19,35,43,12,2,1,0,No data,No data,No data
+34757,No data,No data,No data,No data,No data,No data,No data,45,0,No data
+34759,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34760,8,44,20,0,0,0,0,No data,No data,1
+34761,1,1,0,0,0,0,0,110,4,4
+34762,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34763,No data,No data,No data,No data,No data,No data,No data,37,2,No data
+34791,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34792,No data,No data,No data,No data,No data,No data,No data,5,1,No data
+34840,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34844,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34846,7,15,10,0,0,0,0,No data,No data,1
+34847,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34848,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34850,8,10,13,6,1,1,1,No data,No data,3
+34860,4,5,9,4,1,3,0,No data,No data,6
+34865,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34867,0,9,2,0,0,0,0,No data,No data,No data
+34870,0,1,2,0,0,2,0,No data,No data,No data
+34871,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34880,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+34895,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+38001,16,61,27,0,0,0,0,No data,No data,4
+38102,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+38103,24,58,27,5,0,0,0,0,1,No data
+38104,8,37,8,0,0,0,0,No data,No data,No data
+38105,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+38106,No data,No data,No data,No data,No data,No data,No data,410,14,No data
+38107,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+38108,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+38109,No data,No data,No data,No data,No data,No data,No data,11,0,No data
+38110,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+38111,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+38201,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+38202,14,25,5,0,0,0,0,No data,No data,No data
+38203,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+38204,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+38301,No data,No data,No data,No data,No data,No data,No data,13,0,1
+38302,No data,No data,No data,No data,No data,No data,No data,31,0,No data
+38303,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+38799,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41000,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41011,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41012,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41013,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41015,1,1,1,1,1,1,0,No data,No data,2
+41020,34,29,0,0,0,0,0,No data,No data,2
+41028,34,82,30,0,0,0,0,No data,No data,6
+41029,23,36,0,0,0,0,0,No data,No data,No data
+41031,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41045,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41051,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41073,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41083,8,71,27,4,0,0,0,No data,No data,4
+41084,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41102,0,1,0,3,0,0,0,No data,No data,No data
+41107,5,22,31,10,7,0,0,No data,No data,1
+41111,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41112,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41113,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41117,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41126,3,4,5,2,0,1,0,No data,No data,1
+41129,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41201,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41204,12,16,8,3,1,3,6,No data,No data,3
+41216,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41222,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41226,4,5,7,2,1,1,0,No data,No data,2
+41236,7,11,11,16,12,5,9,No data,No data,4
+41237,16,35,24,2,0,0,0,No data,No data,1
+41263,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41270,0,6,2,0,3,0,0,No data,No data,No data
+41271,4,3,6,0,0,0,0,No data,No data,No data
+41275,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41280,3,0,2,0,0,0,0,No data,No data,No data
+41292,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41312,4,8,16,10,3,4,0,No data,No data,1
+41315,No data,No data,No data,No data,No data,No data,No data,78,0,No data
+41316,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41317,18,13,6,5,1,7,0,No data,No data,5
+41320,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41321,1,3,3,2,0,0,0,No data,No data,No data
+41341,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41342,No data,No data,No data,No data,No data,No data,No data,10,0,1
+41343,12,8,3,0,2,0,0,No data,No data,No data
+41346,3,9,2,1,1,0,0,No data,No data,No data
+41347,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41391,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41392,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41401,13,6,5,2,0,0,0,No data,No data,2
+41402,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41416,3,24,11,1,0,0,0,No data,No data,No data
+41417,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41418,9,12,57,0,0,0,0,No data,No data,1
+41420,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41422,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41451,19,22,19,15,18,14,7,No data,No data,12
+41452,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41458,2,0,0,3,1,3,0,No data,No data,No data
+41459,6,9,13,10,8,6,0,No data,No data,8
+41461,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41462,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41463,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41464,5,7,9,2,0,1,0,No data,No data,No data
+41465,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41466,5,9,20,7,7,2,0,No data,No data,11
+41467,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41468,1,4,26,9,10,19,2,No data,No data,2
+41490,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41491,No data,No data,No data,No data,No data,No data,No data,4,0,No data
+41501,13,9,16,14,12,14,7,No data,No data,7
+41502,1,0,2,1,1,0,0,No data,No data,2
+41511,4,12,19,14,19,10,2,No data,No data,6
+41512,3,7,12,10,4,2,1,No data,No data,1
+41514,16,9,14,5,5,0,0,No data,No data,1
+41515,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41516,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41517,8,14,3,1,0,1,0,No data,No data,1
+41522,8,10,2,1,0,0,0,No data,No data,No data
+41524,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41525,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41526,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41528,6,17,15,3,2,2,1,No data,No data,3
+41533,5,12,9,14,7,25,9,No data,No data,12
+41534,0,0,0,1,1,1,1,No data,No data,1
+41561,4,3,7,4,0,0,0,No data,No data,No data
+41563,2,5,5,1,3,2,0,No data,No data,No data
+41564,0,0,0,1,1,2,0,No data,No data,No data
+41591,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41603,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41612,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41615,16,34,43,13,1,0,0,No data,No data,2
+41619,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41635,24,27,47,4,0,3,0,No data,No data,4
+41636,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41637,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41638,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41639,37,26,32,15,0,0,0,No data,No data,8
+41651,No data,No data,No data,No data,No data,No data,No data,8,3,No data
+41653,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41656,9,26,23,10,8,3,0,No data,No data,4
+41658,3,6,5,3,2,2,0,No data,No data,No data
+41659,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41661,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41662,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41667,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41668,1,2,2,1,0,0,0,No data,No data,No data
+41669,3,5,8,5,2,5,0,No data,No data,1
+41680,11,13,30,31,17,15,5,No data,No data,5
+41681,0,1,1,1,3,0,0,No data,No data,No data
+41684,4,10,12,7,4,1,0,No data,No data,2
+41685,2,9,8,4,0,1,0,No data,No data,1
+41686,6,6,22,10,11,9,0,No data,No data,9
+41687,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41689,4,6,1,2,2,0,0,No data,No data,No data
+41690,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41691,No data,No data,No data,No data,No data,No data,No data,10,0,No data
+41714,9,14,27,10,4,2,0,No data,No data,3
+41730,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41733,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41734,16,6,5,0,0,1,0,No data,No data,No data
+41735,5,9,2,0,0,0,0,1,0,No data
+41737,21,24,20,6,2,2,0,No data,No data,5
+41739,2,23,0,0,0,0,0,No data,No data,No data
+41740,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41743,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41747,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41748,4,3,0,2,0,0,1,No data,No data,No data
+41749,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41784,6,12,19,8,6,7,1,No data,No data,4
+41787,8,11,34,6,5,2,0,No data,No data,11
+41789,7,29,25,5,1,5,0,No data,No data,3
+41791,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41792,2,4,0,0,0,0,0,No data,No data,No data
+41801,28,24,0,0,0,0,0,No data,No data,No data
+41808,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41812,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41813,8,4,4,5,1,1,0,No data,No data,No data
+41814,0,3,0,0,2,0,1,No data,No data,1
+41822,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41831,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41832,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41843,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41860,0,0,0,2,2,0,0,No data,No data,2
+41861,1,1,3,1,0,2,0,No data,No data,1
+41862,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41863,0,2,1,1,0,1,0,0,2,1
+41871,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41872,1,6,2,2,1,1,1,No data,No data,No data
+41873,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41874,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41876,1,5,5,1,0,0,0,No data,No data,4
+41881,2,8,0,0,0,0,0,No data,No data,No data
+41882,8,12,7,0,0,0,0,No data,No data,No data
+41903,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41905,12,16,14,2,1,0,0,No data,No data,No data
+41906,9,14,7,3,0,0,0,No data,No data,No data
+41911,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41919,No data,No data,No data,No data,No data,No data,No data,62,0,3
+41925,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41927,17,29,24,14,0,0,0,No data,No data,No data
+41928,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41929,No data,No data,No data,No data,No data,No data,No data,46,0,No data
+41931,0,1,1,2,3,0,0,No data,No data,2
+41932,2,7,9,4,2,0,1,No data,No data,No data
+41933,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41934,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41935,14,20,5,0,0,0,0,No data,No data,No data
+41936,7,70,43,10,0,0,0,No data,No data,3
+41937,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41938,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41941,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41942,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41943,8,50,48,4,1,0,0,No data,No data,1
+41944,38,24,27,16,0,0,0,No data,No data,1
+41945,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41946,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41947,7,28,17,8,0,0,0,No data,No data,1
+41948,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41951,1,1,0,0,1,2,0,No data,No data,2
+41952,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41953,9,17,6,4,4,4,2,No data,No data,3
+41954,0,2,4,11,13,15,0,No data,No data,2
+41955,0,0,0,2,1,5,0,No data,No data,1
+41956,8,14,22,7,15,18,0,No data,No data,2
+41957,0,0,2,1,1,0,0,No data,No data,No data
+41958,0,0,2,2,4,3,0,No data,No data,No data
+41961,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41963,0,0,0,0,4,0,0,No data,No data,1
+41964,5,14,21,12,6,3,0,No data,No data,9
+41965,24,19,21,13,3,0,0,No data,No data,3
+41967,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41968,0,0,0,3,0,1,0,No data,No data,No data
+41969,2,8,11,11,10,3,1,No data,No data,8
+41970,No data,No data,No data,No data,No data,No data,No data,10,3,3
+41B01,0,0,1,3,3,2,0,No data,No data,3
+41B02,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41B03,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41B04,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41B05,2,9,11,6,3,0,0,No data,No data,No data
+41B12,2,11,11,4,0,0,0,No data,No data,1
+41B13,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41B1A,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41B1B,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41B1C,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41B24,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41B25,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41B27,No data,No data,No data,No data,No data,No data,No data,26,3,No data
+41B2A,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41B2B,1,14,3,0,0,0,0,No data,No data,No data
+41B2C,2,13,6,0,0,0,0,No data,No data,No data
+41E16,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+41MIB,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+42001,14,32,9,5,0,0,0,No data,No data,No data
+42009,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+42011,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+42014,41,59,47,28,15,7,3,No data,No data,12
+42015,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+42016,33,62,60,30,8,1,1,No data,No data,13
+42042,18,25,0,0,0,0,0,No data,No data,No data
+42101,50,48,32,24,12,27,1,No data,No data,8
+42112,2,3,6,4,3,2,0,No data,No data,2
+42114,0,1,2,8,8,5,0,No data,No data,No data
+42115,1,6,4,1,0,0,0,No data,No data,1
+42117,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+42136,20,54,12,1,0,0,0,No data,No data,2
+42137,6,16,13,6,3,0,0,No data,No data,2
+42142,No data,No data,No data,No data,No data,No data,No data,10,0,2
+42146,No data,No data,No data,No data,No data,No data,No data,6,0,No data
+42147,No data,No data,No data,No data,No data,No data,No data,5,0,No data
+42178,0,1,1,2,1,0,0,No data,No data,No data
+42180,2,13,13,5,2,2,0,No data,No data,No data
+42186,22,34,38,2,1,0,1,1,0,8
+42187,5,5,7,3,4,3,0,No data,No data,2
+42380,9,26,39,20,23,18,4,No data,No data,8
+42382,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+42402,1,1,2,1,0,0,0,No data,No data,No data
+42404,7,14,22,3,1,0,0,No data,No data,No data
+42417,11,56,81,16,6,1,0,0,3,6
+42421,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+42500,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+42501,No data,No data,No data,No data,No data,No data,No data,759,9,9
+42502,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+42503,No data,No data,No data,No data,No data,No data,No data,98,1,4
+42504,No data,No data,No data,No data,No data,No data,No data,518,29,3
+42505,No data,No data,No data,No data,No data,No data,No data,71,3,No data
+42543,27,160,117,19,0,7,0,No data,No data,3
+42576,40,95,30,0,0,2,0,No data,No data,No data
+42577,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+42578,34,25,26,8,1,0,0,No data,No data,2
+42580,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+42584,25,4,0,0,0,0,0,No data,No data,No data
+42586,7,3,11,6,1,1,0,No data,No data,1
+42587,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+42588,3,16,6,4,4,0,0,No data,No data,No data
+42620,47,85,72,13,4,0,0,No data,No data,No data
+42622,31,66,60,13,9,0,0,No data,No data,2
+42701,No data,No data,No data,No data,No data,No data,No data,24,0,No data
+42702,No data,No data,No data,No data,No data,No data,No data,8,0,No data
+42787,No data,No data,No data,No data,No data,No data,No data,7,0,No data
+42879,0,4,1,2,4,0,0,No data,No data,No data
+42893,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+42973,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+42B50,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+42B51,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+42B54,7,9,4,0,1,0,0,No data,No data,No data
+42B55,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+42B56,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+42B61,2,17,2,0,0,0,0,No data,No data,No data
+42B67,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+42B68,14,7,0,0,0,0,0,No data,No data,No data
+42B71,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+42B73,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+42B76,No data,No data,No data,No data,No data,No data,No data,20,0,No data
+42B77,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+42B84,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+42B85,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+42B86,No data,No data,No data,No data,No data,No data,No data,21,0,No data
+42B87,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+42B88,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+42B90,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+42B91,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+42B92,No data,No data,No data,No data,No data,No data,No data,7,0,No data
+42MMT,13,6,1,1,1,0,0,No data,No data,No data
+42S01,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+42S02,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+42S03,0,11,2,3,0,0,0,No data,No data,No data
+42S04,0,3,13,0,0,0,0,No data,No data,No data
+42S05,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+42S06,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+42S07,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+42S08,2,7,4,1,3,0,0,No data,No data,No data
+42S09,4,10,0,3,0,0,0,No data,No data,No data
+42S10,6,5,5,1,0,1,0,No data,No data,No data
+46000,12,21,49,4,1,0,0,No data,No data,7
+46015,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+46020,7,24,18,3,0,0,0,No data,No data,4
+46025,9,36,10,2,0,1,1,No data,No data,No data
+46030,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+46035,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+46040,15,27,26,20,0,10,1,No data,No data,2
+46045,5,12,9,1,0,0,0,No data,No data,No data
+46050,14,17,11,0,0,0,0,No data,No data,No data
+46055,4,9,17,22,11,5,2,No data,No data,No data
+46060,1,5,2,1,0,0,0,No data,No data,No data
+46100,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+46110,3,19,16,7,0,0,0,No data,No data,2
+46115,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+46200,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+46205,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+46211,1,1,2,1,1,1,0,No data,No data,No data
+46215,20,20,4,4,0,0,0,No data,No data,No data
+46230,2,6,14,13,12,7,1,No data,No data,2
+46300,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+46310,7,15,5,6,0,2,0,No data,No data,No data
+46320,1,1,0,2,1,0,0,No data,No data,1
+46400,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+46411,6,3,2,4,0,4,0,No data,No data,No data
+46415,2,3,5,2,0,0,0,No data,No data,No data
+46420,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+46440,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+46500,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+46550,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+46600,0,3,2,1,0,0,0,No data,No data,No data
+46610,3,3,2,0,0,0,0,No data,No data,1
+46700,2,3,3,0,0,3,0,No data,No data,No data
+46705,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+46710,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+46715,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+46720,13,21,7,6,2,3,0,No data,No data,No data
+46725,4,7,10,4,0,0,0,No data,No data,4
+46735,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+46740,10,48,68,21,8,1,0,No data,No data,6
+46745,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+46750,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+46755,27,55,36,0,4,0,0,No data,No data,2
+46760,14,23,8,1,0,0,0,No data,No data,No data
+46765,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+46770,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+46795,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+46797,No data,No data,No data,No data,No data,No data,No data,6,0,No data
+46901,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+46905,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+46910,No data,No data,No data,No data,No data,No data,No data,10,0,No data
+46915,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+46920,No data,No data,No data,No data,No data,No data,No data,15,0,No data
+46W11,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+46W14,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+46W17,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+46W21,4,5,5,2,0,0,0,No data,No data,No data
+46W24,1,2,1,1,0,0,0,No data,No data,2
+46W27,4,4,3,2,3,0,0,No data,No data,1
+46W31,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+46W34,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+46W37,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+46W44,10,9,2,2,1,0,0,No data,No data,2
+46W47,2,2,1,6,2,1,0,No data,No data,1
+47201,29,30,28,19,4,0,0,No data,No data,3
+47202,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+47203,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+47205,2,11,5,4,5,2,0,No data,No data,2
+47209,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+47211,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+47212,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+47213,5,8,5,2,0,0,0,No data,No data,1
+47214,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+47215,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+47301,15,30,35,17,4,2,0,No data,No data,2
+47302,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+47304,7,16,9,4,0,0,0,No data,No data,2
+47305,2,9,10,4,1,0,0,No data,No data,6
+47310,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+47317,1,1,0,3,0,0,0,No data,No data,No data
+47319,4,15,11,4,4,1,0,No data,No data,2
+47330,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+47332,4,1,3,1,0,0,0,No data,No data,No data
+47333,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+47334,4,28,19,1,0,0,0,No data,No data,No data
+47335,4,1,6,2,0,0,0,No data,No data,4
+47336,No data,No data,No data,No data,No data,No data,No data,16,0,No data
+47337,0,3,1,1,0,0,0,0,1,2
+47338,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+47339,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+47340,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+47507,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+47508,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+47509,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+47511,No data,No data,No data,No data,No data,No data,No data,24,0,No data
+47513,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+47514,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+47517,No data,No data,No data,No data,No data,No data,No data,22,0,No data
+47519,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+47520,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+47521,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+47522,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+47523,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+47525,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+47526,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+47527,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+56867,No data,No data,No data,No data,No data,No data,No data,8,0,No data
+56868,No data,No data,No data,No data,No data,No data,No data,13,0,No data
+62000,2,2,2,1,2,2,0,No data,No data,No data
+62001,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62008,3,10,24,8,2,12,0,No data,No data,1
+62009,0,0,1,5,1,4,0,No data,No data,1
+62014,11,8,46,27,24,20,0,No data,No data,1
+62019,18,9,18,0,1,0,0,No data,No data,2
+62024,No data,No data,No data,No data,No data,No data,No data,45,0,No data
+62030,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62033,12,10,19,10,2,0,0,No data,No data,No data
+62039,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62041,9,14,10,4,0,0,0,No data,No data,2
+62048,19,7,8,4,0,0,0,No data,No data,4
+62051,0,0,0,4,0,0,0,No data,No data,No data
+62054,3,7,6,1,0,0,0,No data,No data,1
+62074,5,151,30,0,0,0,0,No data,No data,No data
+62079,0,0,1,0,0,3,0,No data,No data,5
+62087,No data,No data,No data,No data,No data,No data,No data,8,4,No data
+62096,No data,No data,No data,No data,No data,No data,No data,112,0,1
+62101,8,9,9,7,6,5,1,No data,No data,9
+62104,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62107,13,13,13,6,3,4,0,No data,No data,10
+62108,4,3,7,6,2,0,0,No data,No data,1
+62111,No data,No data,No data,No data,No data,No data,No data,54,0,No data
+62118,12,25,34,28,9,11,0,No data,No data,4
+62119,0,1,3,0,0,0,0,No data,No data,No data
+62120,No data,No data,No data,No data,No data,No data,No data,38,0,No data
+62133,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62134,6,2,4,1,0,0,0,No data,No data,2
+62139,No data,No data,No data,No data,No data,No data,No data,39,0,1
+62142,No data,No data,No data,No data,No data,No data,No data,174,0,No data
+62145,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62146,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62168,0,0,2,0,2,1,0,No data,No data,4
+62169,0,0,0,0,3,1,1,No data,No data,3
+62174,18,8,6,14,10,9,1,No data,No data,17
+62177,0,1,2,2,0,0,0,No data,No data,2
+62191,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62198,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62199,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62202,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62205,13,12,11,8,0,0,0,No data,No data,2
+62206,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62207,8,21,14,0,0,0,0,No data,No data,1
+62210,No data,No data,No data,No data,No data,No data,No data,117,0,No data
+62211,22,9,10,7,0,0,0,No data,No data,No data
+62218,No data,No data,No data,No data,No data,No data,No data,7,1,2
+62223,18,11,14,10,9,13,0,No data,No data,26
+62224,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62225,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62229,50,8,5,0,1,0,0,No data,No data,6
+62231,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62233,11,12,16,15,5,1,0,No data,No data,10
+62234,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62235,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62238,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62243,No data,No data,No data,No data,No data,No data,No data,59,0,2
+62249,5,17,10,0,1,0,0,No data,No data,No data
+62261,13,24,34,34,14,11,0,No data,No data,2
+62263,1,1,1,0,1,2,0,No data,No data,1
+62265,2,6,0,7,3,0,0,No data,No data,No data
+62267,0,11,8,10,15,8,0,No data,No data,6
+62268,5,5,5,0,2,0,0,No data,No data,No data
+62269,6,7,22,13,17,1,0,No data,No data,3
+62271,0,3,2,2,0,3,0,No data,No data,2
+62272,10,27,28,21,5,4,0,No data,No data,2
+62273,21,31,27,13,12,6,1,No data,No data,4
+62276,4,20,10,12,7,0,0,No data,No data,2
+62277,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62279,22,14,24,19,9,5,0,No data,No data,4
+62280,4,8,0,0,0,0,0,No data,No data,No data
+62281,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62282,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62319,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62320,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62324,11,28,31,17,0,0,0,No data,No data,No data
+62327,No data,No data,No data,No data,No data,No data,No data,7,0,1
+62328,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62329,39,49,18,7,0,2,0,No data,No data,10
+62330,15,50,39,11,0,0,0,No data,No data,10
+62331,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62333,17,46,35,12,0,0,0,No data,No data,4
+62362,4,8,17,8,4,9,0,No data,No data,6
+62366,1,4,6,6,0,0,0,No data,No data,No data
+62369,5,3,4,7,1,2,0,No data,No data,3
+62381,24,6,5,4,8,0,0,No data,No data,3
+62389,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62410,36,68,26,1,1,0,0,No data,No data,No data
+62413,4,9,1,1,2,0,0,No data,No data,3
+62416,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62417,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62420,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62422,0,0,1,0,2,1,0,No data,No data,No data
+62423,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62426,3,3,19,5,5,4,0,No data,No data,2
+62427,1,1,0,4,2,0,0,No data,No data,1
+62428,1,1,5,1,0,0,0,No data,No data,No data
+62443,1,6,6,9,5,7,0,No data,No data,No data
+62444,No data,No data,No data,No data,No data,No data,No data,91,22,No data
+62450,3,13,13,4,2,1,0,No data,No data,3
+62452,13,12,7,1,1,0,0,No data,No data,1
+62453,0,10,18,5,0,0,0,No data,No data,No data
+62454,1,4,10,12,10,2,0,No data,No data,3
+62484,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62512,5,7,8,6,2,1,0,No data,No data,2
+62517,5,3,7,5,6,6,0,No data,No data,7
+62521,11,6,15,0,0,0,0,No data,No data,No data
+62523,0,1,2,1,2,2,0,No data,No data,No data
+62525,0,1,2,2,0,1,0,No data,No data,2
+62531,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62532,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62533,3,3,1,1,0,0,0,No data,No data,1
+62550,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62560,No data,No data,No data,No data,No data,No data,No data,63,0,3
+62575,4,3,7,7,4,1,0,No data,No data,1
+62577,3,9,9,25,38,21,0,No data,No data,9
+62581,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62582,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62589,10,35,39,11,5,0,0,No data,No data,3
+62597,9,29,29,19,13,5,0,No data,No data,2
+62601,0,1,5,1,2,0,0,No data,No data,No data
+62604,10,9,12,14,16,16,3,No data,No data,11
+62614,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62616,7,10,17,15,6,3,0,No data,No data,1
+62617,No data,No data,No data,No data,No data,No data,No data,56,0,No data
+62622,9,9,12,0,2,3,0,No data,No data,1
+62623,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62629,5,10,1,2,4,1,0,No data,No data,1
+62637,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62640,No data,No data,No data,No data,No data,No data,No data,30,0,No data
+62643,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62646,7,10,15,16,4,27,2,No data,No data,8
+62657,5,11,17,8,3,17,0,No data,No data,7
+62664,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62669,16,54,26,16,5,2,4,No data,No data,8
+62675,1,6,6,4,3,3,0,No data,No data,3
+62677,0,1,2,1,1,0,0,No data,No data,1
+62683,4,4,8,6,6,4,0,No data,No data,2
+62694,0,0,2,1,5,3,0,No data,No data,No data
+62696,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62704,15,5,3,0,0,0,0,No data,No data,3
+62705,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62708,8,8,4,1,0,0,0,No data,No data,2
+62711,6,4,16,12,6,3,0,No data,No data,5
+62716,1,1,7,6,5,12,2,No data,No data,1
+62733,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62734,3,12,3,7,10,17,0,No data,No data,17
+62735,8,10,11,4,4,15,0,No data,No data,11
+62739,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62743,0,0,1,1,1,2,0,No data,No data,No data
+62748,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62751,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62752,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62753,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62755,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62756,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62760,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62761,0,8,8,4,1,0,0,No data,No data,2
+62762,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62763,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62764,9,4,3,0,0,0,0,No data,No data,3
+62766,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62768,No data,No data,No data,No data,No data,No data,No data,65,2,No data
+62770,1,3,1,1,1,0,0,No data,No data,No data
+62773,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62774,7,11,8,3,0,1,0,No data,No data,3
+62782,13,2,0,0,0,0,0,No data,No data,3
+62783,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62798,5,9,16,12,11,5,0,No data,No data,1
+62800,4,13,5,0,0,1,0,No data,No data,1
+62801,0,2,4,1,2,1,0,No data,No data,3
+62802,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62803,0,3,3,1,0,0,0,No data,No data,No data
+62805,1,0,1,1,2,4,3,No data,No data,1
+62806,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62807,0,1,0,2,2,3,0,No data,No data,2
+62908,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62990,43,76,40,16,0,4,0,No data,No data,5
+62999,29,94,84,22,0,0,0,No data,No data,12
+62B01,7,9,1,0,0,0,0,No data,No data,No data
+62B02,1,6,6,1,0,0,0,No data,No data,No data
+62B03,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62B06,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62B20,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62B24,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62B29,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62B90,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62C02,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62C05,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62C09,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62C21,3,7,4,2,0,0,0,No data,No data,No data
+62C30,No data,No data,No data,No data,No data,No data,No data,16,0,No data
+62C90,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62E90,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62I01,10,8,3,0,0,0,0,No data,No data,No data
+62I02,9,7,5,0,0,0,0,No data,No data,4
+62I03,3,7,1,2,0,0,0,No data,No data,3
+62I04,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62I05,7,6,2,0,0,0,0,No data,No data,No data
+62I07,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62I08,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62I10,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62I11,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62I12,4,3,4,0,0,0,0,No data,No data,1
+62I14,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62I15,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62I16,5,1,2,0,0,0,0,No data,No data,No data
+62I18,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62I19,6,2,3,0,0,0,0,No data,No data,1
+62I90,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62K01,6,5,2,0,1,0,0,No data,No data,No data
+62K02,8,4,3,1,0,0,0,No data,No data,No data
+62K03,4,6,4,0,0,0,0,No data,No data,No data
+62L01,3,7,7,3,0,0,0,No data,No data,No data
+62L02,2,6,2,0,0,0,0,No data,No data,No data
+62L03,6,0,3,0,0,0,0,No data,No data,No data
+62L04,18,27,10,2,1,1,0,No data,No data,No data
+62L05,20,12,9,2,0,0,0,No data,No data,No data
+62L06,14,22,9,1,0,0,0,No data,No data,No data
+62L07,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62L10,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62L12,7,10,3,2,0,0,0,No data,No data,No data
+62L13,3,17,1,0,0,0,0,No data,No data,No data
+62L15,26,30,12,2,1,0,0,No data,No data,No data
+62L16,6,5,3,1,0,0,0,No data,No data,No data
+62L17,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62L18,3,5,3,0,0,0,0,No data,No data,No data
+62L23,4,5,0,0,0,0,0,No data,No data,No data
+62L29,2,5,1,0,0,0,0,No data,No data,No data
+62L32,3,6,5,0,0,0,0,No data,No data,No data
+62L33,10,5,7,0,0,0,0,No data,No data,No data
+62L36,2,8,4,0,0,0,0,No data,No data,No data
+62L40,4,7,5,0,0,0,0,No data,No data,No data
+62L67,3,3,0,0,0,0,0,No data,No data,No data
+62L79,6,8,3,0,0,0,0,No data,No data,No data
+62L84,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62L85,9,4,1,1,0,0,0,No data,No data,No data
+62L89,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62L90,14,12,4,0,0,0,0,No data,No data,No data
+62L91,11,7,7,1,1,0,0,No data,No data,No data
+62L92,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62L93,7,3,2,0,0,0,0,No data,No data,No data
+62L94,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62P01,5,6,1,0,0,0,0,No data,No data,No data
+62P02,3,1,2,0,0,0,0,No data,No data,No data
+62P03,6,10,7,1,0,0,0,No data,No data,No data
+62P04,2,3,4,1,0,0,0,No data,No data,No data
+62P07,6,6,4,1,0,0,0,No data,No data,No data
+62P08,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62P36,3,1,1,4,0,0,0,No data,No data,No data
+62P37,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62P90,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62P91,2,3,0,0,0,0,0,No data,No data,No data
+62T01,8,2,3,2,1,0,0,No data,No data,No data
+62T04,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62T20,4,3,3,0,0,0,0,No data,No data,No data
+62T22,4,2,1,0,0,0,0,No data,No data,No data
+62T25,4,0,1,0,0,0,0,No data,No data,No data
+62T26,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62T34,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62T37,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62T38,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62T39,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+62T90,4,1,2,0,0,0,0,No data,No data,No data
+63850,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+63851,18,83,48,7,0,0,0,No data,No data,16
+63852,37,115,97,12,0,2,1,No data,No data,7
+63860,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+63861,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+63880,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+63881,8,16,6,0,0,0,0,No data,No data,No data
+88383,No data,No data,No data,No data,No data,No data,No data,21,0,1
+88704,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+88709,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+88710,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+88717,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+KU002,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+KU003,12,18,24,17,20,12,1,No data,No data,14
+KU004,21,24,17,0,1,2,0,No data,No data,No data
+KU005,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+KU006,No data,No data,No data,No data,No data,No data,No data,63,2,No data
+KU010,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+KU011,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+KU012,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+KU101,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+KU103,13,11,4,1,0,1,0,No data,No data,No data
+KU105,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+KU112,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+KU113,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+KU115,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+KU180,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+KU181,No data,No data,No data,No data,No data,No data,No data,9,1,No data
+KU304,1,2,6,4,2,2,0,No data,No data,No data
+KU307,0,3,5,5,1,1,1,No data,No data,3
+KU320,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+KU321,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+KU322,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+KU323,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data

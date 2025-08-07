@@ -116,7 +116,7 @@ class Utils:
         """Open JSON file with archived course numbers and return the course names for {semester} as a list"""
         with open(FileNameConsts.scraped_data_folder_name+'/'+FileNameConsts.archived_courses_json+'.json') as f:
             nested_course_dict = json.load(f)
-        return nested_course_dict.get(academic_year, {})
+        return list(nested_course_dict.get(academic_year, {}).keys())
 
     @staticmethod
     def get_archived_course_names(academic_year):

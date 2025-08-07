@@ -11,6 +11,7 @@ from utils import Utils
 from website.global_constants import website_consts
 from website.global_constants.config import Config
 from website.global_constants.csv_columns_consts import CsvColumnConsts
+from website.global_constants.dtu_consts import DtuConsts
 from website.global_constants.eval_consts import EvalConsts
 from website.global_constants.file_name_consts import FileNameConsts
 from website.global_constants.grade_consts import GradeConsts
@@ -28,33 +29,26 @@ class CsvCreator:
         InfoFormatter.quick_test_for_debugging_please_ignore()
 
     @staticmethod
-    def load_course_dict_from_disk_and_create_csv():
-        with open(FileNameConsts.scraped_data_folder_name+'/'+FileNameConsts.course_number_json+'.json') as f:
-            course_dict = json.load(f)
-        CsvCreator.create_csv(course_dict)
-
-    @staticmethod
-    def create_csv(course_dict):
+    def create_csv():
         """ Clean, format and parse the scraped_data into a csv and other files used by my website """
-
         name_and_path_of_csv = FileNameConsts.path_of_csv + FileNameConsts.name_of_csv + ".csv"
         name_and_path_of_pkl = FileNameConsts.path_of_pkl + FileNameConsts.name_of_pkl + ".pkl"
         print()
         print("Part 1 of 3: Creating csv file with specified columns: "+name_and_path_of_csv)
         print()
         premade_columns = CsvColumnConsts.PREMADE_COLUMNS
-        premade_columns_df = CsvCreator._build_combined_df(course_dict, name_and_path_of_csv, premade_columns)
+        premade_columns_df = CsvCreator._build_combined_df(name_and_path_of_csv, premade_columns)
         print(f"Success! Saving df {name_and_path_of_csv} to both csv and pickle format...")
         premade_columns_df.to_csv(name_and_path_of_csv, index = False, header=True)
         premade_columns_df.to_pickle(name_and_path_of_pkl)
 
         name_and_path_of_extended_csv = FileNameConsts.path_of_csv + FileNameConsts.extended_csv_name + ".csv"
-        name_and_path_of_extended_pkl = FileNameConsts.path_of_csv + FileNameConsts.extended_pkl_name + ".pkl"
+        name_and_path_of_extended_pkl = FileNameConsts.path_of_pkl + FileNameConsts.extended_pkl_name + ".pkl"
         print()
         print("Part 2 of 3: Creating extended csv file with all columns: "+name_and_path_of_extended_csv)
         print()
         no_premade_columns = []
-        all_columns_df = CsvCreator._build_combined_df(course_dict, name_and_path_of_extended_csv, no_premade_columns)
+        all_columns_df = CsvCreator._build_combined_df(name_and_path_of_extended_csv, no_premade_columns)
         print()
         print(f"Success! Saving df {name_and_path_of_csv} to both csv and pickle format...")
         all_columns_df.to_csv(name_and_path_of_extended_csv, index = False, header=True)
@@ -63,29 +57,50 @@ class CsvCreator:
         print()
         print("Part 3 of 3: Creating json files used for website search and filter functionality...")
         print()
-        if premade_columns != []:
-            #save specific columns as json dct that are used by the website
-            WebsiteConsts.create_website_data_dct(premade_columns_df)  # Use premade column df
-        else:
-            print()
-            CsvCreator._filter_dct_to_json(all_columns_df)  # Use all columns df
-            print()
+        #save specific columns as json dct that are used by the website
+        WebsiteConsts.create_website_data_dct(premade_columns_df)  # Use premade column df
+        print()
+        CsvCreator._filter_dct_to_json(all_columns_df)  # Use all columns df
+        print()
 
         # Success!
         print("Success! Program will now terminate.")
 
     @staticmethod
-    def _build_combined_df(course_dict, file_name, premade_columns):
+    def _build_combined_df(file_name, premade_columns):
         """Create and save .csv file with data for all courses"""
-        course_numbers = list(course_dict.keys())
-        course_names = list(course_dict.values())
+        all_course_numbers = Utils.get_all_archived_course_numbers()
+        course_numbers = Utils.get_archived_course_numbers(Config.course_years)
+        course_names = Utils.get_archived_course_names(Config.course_years)
         grade_df = Utils.load_scraped_df(FileNameConsts.grade_df)
         eval_df = Utils.load_scraped_df(FileNameConsts.eval_df)
         info_df = Utils.load_scraped_df(FileNameConsts.info_df)
         # Adding data dicts to the data frame, one course at a time
         semesters = Config.course_semesters
         column_names = []  # Create list with column names, this will be the data frame columns
-        for i in range (0, len(course_numbers)):
+        df = pd.DataFrame()
+
+        for i in range(0, len(course_numbers)):
+            info_formatted_dct = InfoFormatter.format_info(info_df, course_numbers[i])
+            if InfoConsts.previous_course.key_df in info_formatted_dct:
+                previous_courses = InfoFormatter.parse_previous_courses_from_dtu_website_rawstring(info_formatted_dct[InfoConsts.previous_course.key_df])
+                for previous_course in previous_courses:
+                    if previous_course in all_course_numbers:
+                        for df, _ in [(eval_df, ""), (grade_df, "")]:
+                            current_row = df.loc[course_numbers[i]]
+                            if course_numbers[i] not in df.index or previous_course not in df.index:
+                                continue  # No data at all for previous course
+                            prev_row = df.loc[previous_course]
+                            for col in df.columns:
+                                if not isinstance(col, str) or not col.startswith((DtuConsts.dtu_term_spring, DtuConsts.dtu_term_autumn)):
+                                    continue  # Skip columns that are not semester-specific
+                                current_val = current_row[col]
+                                if current_val == "" or current_val is None or current_val == GradeConsts.grade_none: # or pd.isna(current_val):
+                                    prev_val = prev_row[col]  # Only fill in missing data ("", "No data", or NaN) in the current course
+                                    if prev_val != "" and prev_val is not None and prev_val != GradeConsts.grade_none:
+                                        df.at[course_numbers[i], col] = prev_val  # Only copy if the previous course actually has data
+
+        for i in range(0, len(course_numbers)):
             grades_formatted_dct = GradeFormatter.format_grades(grade_df, course_numbers[i], semesters)
             evals_formatted_dct = EvalFormatter.format_evaluations(eval_df, course_numbers[i], semesters)
             info_formatted_dct = InfoFormatter.format_info(info_df, course_numbers[i])
@@ -95,21 +110,19 @@ class CsvCreator:
                     column_names = [FileNameConsts.df_index] + [InfoConsts.name_english] + list(data_dct.keys())
                 else:
                     column_names = [FileNameConsts.df_index] + [InfoConsts.name_english] + premade_columns
-            for i in range (0, len(course_numbers)):
-                # Insert each value from data_dct into the matching column in the df.
-                df_input = {FileNameConsts.df_index: [str(course_numbers[i])], InfoConsts.name_english: [str(course_names[i])]}
-                for j in range(2, len(column_names)):  # 2 because first two columns are COURSE and NAME
-                    if str(column_names[j]) in data_dct:
-                        df_input[str(column_names[j])] = [data_dct[column_names[j]]]
-                    else:
-                        df_input[str(column_names[j])] = [None]
+            # Insert each value from data_dct into the matching column in the df.
+            df_input = {FileNameConsts.df_index: [str(course_numbers[i])], InfoConsts.name_english: [str(course_names[i])]}
+            for j in range(2, len(column_names)):  # 2 because first two columns are COURSE and NAME
+                if str(column_names[j]) in data_dct:
+                    df_input[str(column_names[j])] = [data_dct[column_names[j]]]
+                else:
+                    df_input[str(column_names[j])] = [None]
             if i == 0:  # On first loop, create df, then add a new row to data frame on each loop
                 df = pd.DataFrame(data = df_input)
             else:
                 new_df_row = pd.DataFrame(data = df_input)
                 df = pd.concat([df, new_df_row], ignore_index=True)
-            Utils.display_progress(i, course_numbers, file_name, 50)  # Display progress to user
-        CsvCreator.build_df(course_numbers, course_names, file_name, premade_columns, data_dct)
+            Utils.display_progress(i, course_numbers, file_name, 100)  # Display progress to user
         df = df.copy() # df is copied to 'fix fragmentation', which prevents an annoying pandas PerformanceWarning that is polluting the terminal
         df.set_index(FileNameConsts.df_index, inplace=True, drop=False)  # Set course ID as df index
         print(df)
@@ -160,7 +173,8 @@ class CsvCreator:
             json.dump(filter_dct, fp)
         print(f"The dictionary {json_name}.json has been saved...")
 
+
 #%%
 if __name__ == "__main__":
     #CsvCreator.quick_test_for_debugging_please_ignore()
-    CsvCreator.load_course_dict_from_disk_and_create_csv()
+    CsvCreator.create_csv()

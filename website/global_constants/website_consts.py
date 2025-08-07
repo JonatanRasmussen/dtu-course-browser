@@ -144,7 +144,7 @@ class WebsiteConsts:
             return item
 
         dct = df.to_dict()[column]
-        dct_data = WebsiteConsts.rename_dct_value(dct, column)
+        dct_data = WebsiteConsts._rename_dct_value(dct, column)
         sorted_dct = dict(sorted(dct_data.items(), key=lambda item: _turn_to_float(item[1]))) # Be careful, this line will do absolutely nothing WITHOUT RAISING A WARNING if dct_data contains a mix of strings and numbers
         if json_name != "":
             path_and_file_name = FileNameConsts.path_of_pkl + json_name + '.json'

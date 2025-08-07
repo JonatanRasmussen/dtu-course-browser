@@ -590,6 +590,18 @@
           </table>
         </li>
         {% endif %}
+        {% if data.HIGHLIGHTED_MESSAGE != 'None' %}
+        <li class="list-group-item">
+          <table class="table table-sm table-borderless mb-0">
+            <tbody>
+              <tr>
+                <th class="align-top" style="width: 9rem" scope="row">Special remark:</th>
+                <td class="align-top">{{data.HIGHLIGHTED_MESSAGE|safe}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+        {% endif %}
       </ul>
       <div class="card-footer">
         <small class="text-muted">Last updated: {{data.LAST_UPDATED}}</small>

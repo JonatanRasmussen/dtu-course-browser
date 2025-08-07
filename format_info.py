@@ -1,5 +1,5 @@
 #%%
-
+import html
 from scrape_info import InfoScraper
 from format_study_lines import format_study_line_scrape
 from utils import Utils
@@ -138,6 +138,15 @@ class InfoFormatter:
             InfoConsts.time_of_week_updated.key_df,
             InfoConsts.location.key_df
         ]
+
+        keys_with_broken_encoding = [
+            InfoConsts.main_responsible_name.key_df,
+            InfoConsts.co_responsible_1_name.key_df,
+            InfoConsts.co_responsible_2_name.key_df,
+            InfoConsts.co_responsible_3_name.key_df,
+            InfoConsts.co_responsible_4_name.key_df,
+        ]
+
         if key_renamed in keys_expected_to_hold_a_known_value:
             log_type="log"
         else:
@@ -196,13 +205,15 @@ class InfoFormatter:
             if key_renamed == InfoConsts.study_lines.key_df and len(lst_of_study_lines) != boolean_value_count:
                 message = f"{FileNameConsts.info_format}, {course_number}: {len(lst_of_study_lines) - boolean_value_count} unknown study line(s)"
                 Utils.logger(message, "warning", FileNameConsts.format_log_name)
-                for k in range(0, len(lst_of_study_lines)):
-                    if lst_of_study_lines[k] not in values:
-                        print(f'Warning, {course_number}: "{lst_of_study_lines[k]}" was not recognized as a study line. Go to line ~500 of info_consts.py and manually update list')
+                for study_line in lst_of_study_lines:
+                    if study_line not in values:
+                        print(f'Warning, {course_number}: "{study_line}" was not recognized as a study line. Go to line ~500 of info_consts.py and manually update list')
 
             # Check if all expected values in SCRAPED_INFO_DICT[key] was found
             if len(values) == 0:
                 formatted_info[key_renamed] = str(scraped_info[key])
+                if key_renamed in keys_with_broken_encoding:
+                    formatted_info[key_renamed] = html.unescape(str(scraped_info[key]))
                 if log_type.lower() != 'none':
                     message = f"{FileNameConsts.info_format}, {course_number}: '{key_renamed}' = '{scraped_info[key]}'"
                     #Utils.logger(message, "log", FileNameConsts.format_log_name)
@@ -268,6 +279,27 @@ class InfoFormatter:
             message = f"{FileNameConsts.info_format}, {course_number}: Institute {first_two_digits} is unknown"
             Utils.logger(message, "warning", FileNameConsts.format_log_name)
         return department
+
+    @staticmethod
+    def parse_previous_courses_from_dtu_website_rawstring(raw_input):
+        """Parse the string that contains previous course numbers for a course"""
+        def split_by_separators(s):
+            """Define all separators"""
+            s = s.replace(" and ", "|")
+            s = s.replace("/", "|")
+            s = s.replace(",", "|")
+            return s.split("|")
+        parts = split_by_separators(raw_input)
+        course_codes = []
+        for part in parts:
+            code = part.strip()
+            if '-' in code:
+                continue
+            if code.isdigit():
+                course_codes.append(code)
+            elif code.isalnum() and any(c.isdigit() for c in code):
+                course_codes.append(code)
+        return course_codes
 
 
 #%%
