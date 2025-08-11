@@ -446,6 +446,18 @@
           </table>
         </li>
         {% endif %}
+        {% if data.LEGACY_RECOMMENDED_PREREQUISITES != 'None' %}
+        <li class="list-group-item">
+          <table class="table table-sm table-borderless mb-0">
+            <tbody>
+              <tr>
+                <th class="align-top" style="width: 9rem" scope="row">Prerequisites:</th>
+                <td class="align-top">{{data.LEGACY_RECOMMENDED_PREREQUISITES|safe}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+        {% endif %}
         {% if data.RECOMMENDED_PREREQUISITES != 'None' %}
         <li class="list-group-item">
           <table class="table table-sm table-borderless mb-0">

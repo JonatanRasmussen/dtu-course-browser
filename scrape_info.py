@@ -45,8 +45,9 @@ class InfoScraper:
             df_row.update(InfoScraper._scrape_course_responsibles(page_source_2))  #  Parse all info related to teachers and course responsibles
             df = Utils.add_dict_to_df(df_row, lst_of_column_names, df)  # Concatenate dict to dataframe as a new row
             iteration_count += 1  # Print current course to console so user can track the progress
-            if iteration_count % 50 == 0 or iteration_count == 1 or iteration_count == 2:
+            if iteration_count % 50 == 0 or iteration_count == 1 or iteration_count == 2 or iteration_count == 5 or iteration_count == 10:
                 Utils.print_progress(iteration_count, course_numbers, df_row, file_name)
+
         if len(file_name) != 0:
             Utils.save_scraped_df(df, file_name)  # Save all grades as .pkl
             Utils.save_df_as_csv(df, file_name)  # Save all grades as .csv

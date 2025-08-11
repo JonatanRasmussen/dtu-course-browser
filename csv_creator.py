@@ -58,8 +58,8 @@ class CsvCreator:
         print("Part 3 of 3: Creating json files used for website search and filter functionality...")
         print()
         #save specific columns as json dct that are used by the website
-        WebsiteConsts.create_website_data_dct(premade_columns_df)  # Use premade column df
-        print()
+        data_dct = WebsiteConsts.create_website_data_dct(premade_columns_df)  # Use premade column df
+        CsvCreator._data_dct_to_json(data_dct)
         CsvCreator._filter_dct_to_json(all_columns_df)  # Use all columns df
         print()
 
@@ -128,7 +128,21 @@ class CsvCreator:
         print(df)
         if (InfoConsts.main_responsible_name.key_df) in premade_columns or premade_columns == []:
             df = create_teacher_course_lst(df, course_numbers)  # Append columns containing each responsibles' course list. Must be done after rest of the df is finalized
+        for col in df.columns:  # Quick and dirty test: flag columns where all values are identical (incl. None/empty/NaN)
+            unique_vals = pd.Series(df[col].unique()).dropna()  # drop NaN
+            unique_vals = unique_vals.replace("", None)  # treat empty string as None
+            if len(unique_vals) <= 1 and col != InfoConsts.old_recommended_prerequisites.key_df and col[0] != DtuConsts.dtu_term_autumn[0] and col[0] != DtuConsts.dtu_term_spring[0]:  # I know this will impact all columns starting with E and F but I kinda don't care
+                print(f"[Warning] Column '{col}' has identical values for all rows: {unique_vals.iloc[0] if not unique_vals.empty else None}")
         return df
+
+    @staticmethod
+    def _data_dct_to_json(data_dct):
+        json_name = WebsiteConsts.json_course_data
+        path_and_file_name = FileNameConsts.path_of_pkl + json_name + '.json'
+        with open(path_and_file_name, 'w') as fp:
+            json.dump(data_dct, fp)
+        print(f"The dictionary {json_name}.json has been saved...")
+        print()
 
     @staticmethod
     def _filter_dct_to_json(df):

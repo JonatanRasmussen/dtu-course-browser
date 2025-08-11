@@ -94,7 +94,7 @@ class InfoFormatter:
             key_value = key_value.replace("Autumn E3 (Tues 8-12, Fri 13-17)", "Autumn E3A (Tues 8-12) and Autumn E3B (Fri 13-17)")
             key_value = key_value.replace("Autumn E4 (Tues 13-17, Fri 8-12)", "Autumn E4A (Tues 13-17) and Autumn E4B (Fri 8-12)")
             key_value = key_value.replace("Autumn E5 (Wed 8-17)", "Autumn E5A (Wed 8-12) and Autumn E5B (Wed 13-17)")
-            key_value = key_value.replace("F7 (Tues 18-22)", "Spring E7 (Tues 18-22)")
+            key_value = key_value.replace("F7 (Tues 18-22)", "Spring F7 (Tues 18-22)")
             key_value = key_value.replace("E7 (Tues 18-22)", "Autumn E7 (Tues 18-22)")
             # Is a double-space or the word "and" continuing the key?
             # If yes, check all potential continuations of the key
@@ -189,7 +189,7 @@ class InfoFormatter:
         boolean_value_count = 0
         lst_of_study_lines = []
         if key in scraped_info and key_renamed != InfoConsts.institute.key_df:
-            if key_renamed == InfoConsts.study_lines.key_df and len(scraped_info[key]) != 0:
+            if key_renamed == InfoConsts.study_lines.key_df and scraped_info[key] is not None and len(scraped_info[key]) != 0:
                 lst_of_study_lines = format_study_line_scrape(scraped_info[key], {})
             for i in range(0, len(values)):
                 # Check each of the expected values and see if they match what's in the scraped dict (if yes, append them to the output string)
@@ -207,7 +207,7 @@ class InfoFormatter:
                 Utils.logger(message, "warning", FileNameConsts.format_log_name)
                 for study_line in lst_of_study_lines:
                     if study_line not in values:
-                        print(f'Warning, {course_number}: "{study_line}" was not recognized as a study line. Go to line ~500 of info_consts.py and manually update list')
+                        print(f'Warning, {course_number}: "{study_line}" was not recognized as a study line. Go to line ~300 of info_consts.py and manually update list')
 
             # Check if all expected values in SCRAPED_INFO_DICT[key] was found
             if len(values) == 0:

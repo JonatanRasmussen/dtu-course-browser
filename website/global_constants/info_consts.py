@@ -16,162 +16,7 @@ class Info:
         return False
 
 
-"""
-class InfoWithExpectedValues(Info):
-    def __init__(self, key_1, key_2, key_3, lst_1, lst_2, lst_3, raw):
-        super().__init__(key_1, key_2, key_3)
-        self.values_raw = lst_1  # Keep this in sync with what's on DTU's website
-        self.values_df = lst_2  # Custom names for dataframe values
-        self.values_url = lst_3  # Custom value short-names for url-filter
-        self.add_raw = raw  # Boolean, set as true if info contains a teachers' comment
-
-    def contains_values():
-        return True
-"""
-
 class InfoConsts:
-
-
-    """
-    # Column header consts
-    study_lines = "STUDY_LINES"
-    study_lines_formatted = "STUDY_LINES_FORMATTED"
-    last_updated = "LAST_UPDATED"
-    course_description = "COURSE_DESCRIPTION"
-    learning_objectives = "LEARNING_OBJECTIVES"
-    course_content = "COURSE_CONTENT"
-    name_english = "NAME"
-    name_danish = "DANISH_NAME"
-    ects_points = "ECTS_POINTS"
-    institute = "INSTITUTE"
-    language = "LANGUAGE"
-    grade_type = "GRADE_TYPE"
-    grade_seven_step_scale = "SEVEN_STEP_SCALE"
-    grade_pass_or_fail = "PASS_OR_FAIL"
-    examiner = "EXAMINER"
-    examiner_internal = "INTERNAL_EXAMINER"
-    examiner_external = "EXTERNAL_EXAMINER"
-    campus = "CAMPUS"
-    campus_lyngby = "CAMPUS_LYNGBY"
-    campus_ballerup = "CAMPUS_BALLERUP"
-    course_type = "COURSE_TYPE"
-    exam_aid = "EXAM_AID"
-    all_aid = "ALL_AID"
-    written_aid = "WRITTEN_AID"
-    no_aid = "NO_AID"
-    course_duration = "COURSE_DURATION"
-    recommended_prerequisites = "RECOMMENDED_PREREQUISITES"
-
-    mandatory_prerequisites = "MANDATORY_PREREQUISITES"
-    scope_and_form = "SCOPE_AND_FORM"
-    exam_duration = "EXAM_DURATION"
-    webpage = "WEBPAGE"
-    exam_type = "EXAM_TYPE"
-    exam_type_raw = exam_type+'_'+raw_key
-    exam_aid_raw = exam_aid+'_'+raw_key
-    day_of_week = "DAY_OF_WEEK"
-    semester_period = "SEMESTER_PERIOD"
-    separator_plus = ' + '
-    separator_html = '<br />'
-    list_of_info = ["Danish title", "Point( ECTS )", "Language of instruction", "Evaluation",
-                    "Location", "Course type", "Aid", "Type of assessment", "Duration of Course",
-                     "Schedule", study_lines, last_updated, main_responsible_name, main_responsible_pic,
-                     co_responsible_1_name, co_responsible_1_pic, co_responsible_2_name, co_responsible_4_pic,
-                     co_responsible_3_name, co_responsible_3_pic, co_responsible_4_name, co_responsible_4_pic,
-                     "Recommended prerequisites", "Mandatory Prerequisites", course_description, learning_objectives,
-                     course_content, "Scope and form", "Exam duration", "Home page", "Previous Course",
-                     "Registration Sign up", "Not applicable together with", "Green challenge participation",
-                     "Department", "Department involved", "External Institution",
-                     "Date of examination", "Responsible", "Course co-responsible"]
-
-    # Extended csv column headers
-    previous_course = "Previous course"
-    registration_sign_up = "Registration Sign up"
-    not_applicable_with = "Not applicable with"
-    green_challenge = "Green challenge participation"
-    department_main = "Department"
-    department_involved = "Department involved"
-    external_institution = "External Institution"
-    date_of_examination = "Date of examination"
-    responsible_contact = "Responsible"
-    responsible_co_contact = "Course co-responsible"
-
-
-
-
-
-
-    # Mics
-    language_danish = "Danish"
-    language_english = "English"
-    bsc = "BSc"
-    msc = "MSc"
-    beng = "BEng"
-    phd = "Ph.D."
-    deltidsdiplom = "BEng"
-    deltidsmaster = "MSc"
-    duration_13_weeks = "13 weeks"
-    duration_3_weeks = "3 weeks"
-    duration_16_weeks = "13 weeks + 3 weeks"
-    duration_26_weeks = "13 weeks + 13 weeks"
-    duration_unique = "Unique schedule"
-
-
-    # Exam
-    exam_written = "Written exam"
-    exam_oral = "Oral exam"
-    exam_none = "Report hand-in"
-    exam_both = "Written/oral exam"
-    assignments = "ASSIGNMENTS"
-    assignments_none = "No mandatory assignments"
-    assignments_reports = "Mandatory reports"
-    assignments_exercises = "Mandatory exercises"
-    assignments_experiments = "Mandatory experiments"
-    exam_type_unedited = "Exam_type_unedited"
-    exam_written_reports = "Written exam and reports"
-    exam_written_exercises = "Written exam and exercises"
-    exam_written_experiments = "Written exam and experiments"
-    exam_oral_reports = "Oral exam and reports"
-    exam_oral_exercises = "Oral exam and exercises"
-    exam_oral_experiments = "Oral exam and experiments"
-    exam_none_reports = "Evaluation of exercises/reports"
-    exam_none_experiments = "Evaluation of experiments/reports"
-
-    # Schedule
-    unique_schedule = "Special schedule"
-    three_week_january = "3-week January"
-    three_week_june = "3-week June"
-    three_week_july = "3-week July"
-    three_week_august = "3-week August"
-    spring = "Spring"
-    F1A = "F1A (Spring, Mon 8-12)"
-    F1B = "F1B (Spring, Thurs 13-17)"
-    F2A = "F2A (Spring, Mon 13-17)"
-    F2B = "F2B (Spring, Thurs 8-12)"
-    F3A = "F3A (Spring, Tues 8-12)"
-    F3B = "F3B (Spring, Fri 13-17)"
-    F4A = "F4A (Spring, Tues 13-17)"
-    F4B = "F4B (Spring, Fri 8-12)"
-    F5A = "F5A (Spring, Wed 8-12)"
-    F5B = "F5B (Spring, Wed 13-17)"
-    F7 = "F7 (Spring, Tues 18-22)"
-    autumn = "Autumn"
-    E1A = "E1A (Autumn, Mon 8-12)"
-    E1B = "E1B (Autumn, Thurs 13-17)"
-    E2A = "E2A (Autumn, Mon 13-17)"
-    E2B = "E2B (Autumn, Thurs 8-12)"
-    E3A = "E3A (Autumn, Tues 8-12)"
-    E3B = "E3B (Autumn, Fri 13-17)"
-    E4A = "E4A (Autumn, Tues 13-17)"
-    E4B = "E4B (Autumn, Fri 8-12)"
-    E5A = "E5A (Autumn, Wed 8-12)"
-    E5B = "E5B (Autumn, Wed 13-17)"
-    E7 = "E7 (Autumn, Tues 18-22)"
-    january = "January"
-    june = "June"
-    july = "July"
-    august = "August"
-    """
 
     bsc = "BSc"
     msc = "MSc"
@@ -490,7 +335,6 @@ class InfoConsts:
                     "BEng, Food Safety and Quality",
                     "BEng, Global Business Engineering",
                     "BEng, Healthcare Technology",
-                    "BEng, IT Electronics",
                     "BEng, IT and Economics",
                     "BEng, Manufacturing and Management",
                     "BEng, Mechanical Engineering",
@@ -517,12 +361,9 @@ class InfoConsts:
                     "BSc, Life Science and Technology",
                     "BSc, Mathematics and Technology",
                     "BSc, Mechanical Engineering",
-                    "BSc, Medicine and Technology",
                     "BSc, Software Technology",
                     "BSc, Sustainable Energy Design",
-                    "MSc, Advanced Materials and Healthcare Engineering", #
                     "MSc, Applied Chemistry",
-                    "MSc, Aquatic Science and Technology", #
                     "MSc, Architectural Engineering",
                     "MSc, Autonomous Systems",
                     "MSc, Bioinformatics and Systems Biology",
@@ -548,10 +389,7 @@ class InfoConsts:
                     "MSc, Mathematical Modelling and Computation",
                     "MSc, Mechanical Engineering",
                     "MSc, Ocean Engineering",
-                    "MSc, Petroleum Engineering", #
                     "MSc, Pharmaceutical Design and Engineering",
-                    "MSc, Photonics", #
-                    "MSc, Physics and Nanotechnology", #
                     "MSc, Quantitative Biology and Disease Modelling", #
                     "MSc, Sustainable Energy", #DELETE
                     "MSc, Sustainable Energy Systems",
@@ -588,6 +426,18 @@ class InfoConsts:
         add_raw = True
         return Info(key_raw, key_df, key_url, values_raw, values_df, values_url, add_raw)
     study_lines = _study_lines()
+
+    @staticmethod
+    def _old_recommended_prerequisites():
+        key_raw = DtuConsts.dtu_old_recommended_prerequisites  # Decided by DTU's website
+        key_df = "LEGACY_RECOMMENDED_PREREQUISITES"
+        key_url = "old_rec_prereq"
+        values_raw = []  # Decided by DTU's website
+        values_df = []
+        values_url = []
+        add_raw = False
+        return Info(key_raw, key_df, key_url, values_raw, values_df, values_url, add_raw)
+    old_recommended_prerequisites = _old_recommended_prerequisites()
 
     @staticmethod
     def _recommended_prerequisites():
@@ -846,7 +696,7 @@ class InfoConsts:
         key_raw = DtuConsts.dtu_institute #DOES NOT EXIST FOR INSTITUTE, institute is decided based on course number only
         key_df = "INSTITUTE"
         key_url = "institute"
-        values_raw = ["01", "02", "10", "56", "11", "12",
+        values_raw = ["01", "02", "10", "56", "12",
                       "22", "23", "CB", "25", "26", "27",
                       "29", "28", "88", "30", "31", "34",
                       "41", "42", "38", "46", "63", "47", "62", "MA", "KU"]
@@ -854,7 +704,6 @@ class InfoConsts:
                     "Computer Science", #02
                     "Physics", #10
                     "Physics", #56
-                    "Civil Engineering", #11
                     "Environmental Engineering", #12
                     "Health Technology", #22
                     "National Food Institute", #23
@@ -877,7 +726,7 @@ class InfoConsts:
                     "BEng - Bachelor of Engineering", #62
                     "BEng - Bachelor of Engineering", #MA
                     "KU - Copenhagen University"] #KU
-        values_url = ["01", "02", "10", "11", "12",
+        values_url = ["01", "02", "10", "12",
                       "22", "23", "25", "26", "27",
                       "29", "30", "31", "34", "41",
                       "42", "46", "47", "62", "KU"]
@@ -933,6 +782,7 @@ class InfoConsts:
                       time_of_week_updated,
                       semester_period,
                       study_lines,
+                      old_recommended_prerequisites,
                       recommended_prerequisites,
                       mandatory_prerequisites,
                       course_description,

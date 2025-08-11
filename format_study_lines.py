@@ -171,6 +171,7 @@ def format_study_line_scrape(string_of_study_lines, study_lines_dct, course_numb
         scraped_data = scraped_data.replace("MSc, MSc. Eng., Architectural Engineering","MSc, Architectural Engineering")
         scraped_data = scraped_data.replace("BSc, BSc in Architectural Engineering","BSc, Architectural Engineering")
         scraped_data = scraped_data.replace("BEng, Naval Architecture and Maritime Engineering","BEng, Naval Architecture and Offshore Engineering")
+        scraped_data = scraped_data.replace("BSc, Biotecnology", "BSc, Human Life Science Engineering")
 
 
 

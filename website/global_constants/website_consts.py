@@ -101,6 +101,8 @@ class WebsiteConsts:
         """Turn csv columns into dictionary files stored in jsons"""
         # This jsons are the database that gets accessed whenever the "discovery" page (home page) is loaded.
 
+        WebsiteConsts._create_dct_as_json(df, FileNameConsts.df_index, WebsiteConsts.json_number)  # Random side effect I decided to dump here: Save course numbers json
+
         empty_json_name = ""
         json_data = {
             WebsiteConsts.json_name_english: WebsiteConsts._create_dct_as_json(df, InfoConsts.name_english, empty_json_name),
