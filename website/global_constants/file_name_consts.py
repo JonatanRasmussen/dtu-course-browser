@@ -21,16 +21,19 @@ class FileNameConsts:
     # PythonAnywhere.com top level folder
     pythonanywherecom_top_folder = "dtu_course_project/"
 
+    # Year
+    create_file_for_specific_year = ""
+
     # CSV
     path_of_csv = "website/static/csv_files/"
     pythonanywherecom_path_of_csv = pythonanywherecom_top_folder + path_of_csv
-    name_of_csv = "course_df"
-    extended_csv_name = "extended_csv"
-    planner_csv = "planner_csv"
+    name_of_csv = "course_df" + create_file_for_specific_year
+    extended_csv_name = "extended_csv" + create_file_for_specific_year
+    planner_csv = "planner_csv" + create_file_for_specific_year
 
     # PKL
     path_of_pkl = "website/static/pandas_df/"
     pythonanywherecom_path_of_pkl = pythonanywherecom_top_folder + path_of_pkl
-    name_of_pkl = "course_df"
-    extended_pkl_name = "extended_pkl"
-    planner_pkl = "planner_pkl"
+    name_of_pkl = "course_df" + create_file_for_specific_year
+    extended_pkl_name = "extended_pkl" + create_file_for_specific_year
+    planner_pkl = "planner_pkl" + create_file_for_specific_year

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Recommender System (MVP)</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: white;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .container {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    .filter-section {
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      background-color: #f9f9f9;
+    }
+
+    .filter-group {
+      margin-bottom: 10px;
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 5px;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+    }
+
+    .checkbox-item input {
+      margin-right: 5px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 30px;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 20px;
+      font-style: italic;
+      color: #666;
+    }
+
+    .error {
+      background-color: #ffebee;
+      color: #c62828;
+      padding: 15px;
+      margin: 20px 0;
+      border-left: 4px solid #c62828;
+    }
+
+    .results {
+      margin-top: 30px;
+    }
+
+    .course-card {
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin-bottom: 15px;
+      background-color: #fafafa;
+    }
+
+    .course-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 10px;
+    }
+
+    .course-id {
+      font-weight: bold;
+      font-size: 18px;
+      color: #2196F3;
+    }
+
+    .similarity-score {
+      background-color: #4CAF50;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 3px;
+      font-size: 14px;
+    }
+
+    .course-name {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .course-meta {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .course-description {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.4;
+    }
+
+    .info-box {
+      background-color: #e3f2fd;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-left: 4px solid #2196F3;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Jonatan Rasmussen: Course Recommender System (MVP)</h1>
+
+  <div class="info-box">
+    <strong>Enter one or more course IDs (comma-separated) and get recommended similar courses.</strong><br />
+    Example inputs:<br />
+    01001, 01002, 01003, 01004<br />
+    10603<br />
+    02266, 02810<br />
+    You can also filter by course type.
+  </div>
+
+  <div class="container">
+    <label for="courseIds">Course IDs (comma-separated, here is an example: 01001, 01002):</label>
+    <input type="text" id="courseIds" placeholder="Enter course IDs..." />
+  </div>
+
+  <div class="container">
+    <label for="numRecommendations">Number of Recommendations:</label>
+    <input type="number" id="numRecommendations" value="10" min="1" max="50" />
+  </div>
+
+  <div class="filter-section">
+    <h3>Filter by Course Type (Optional)</h3>
+    <div class="filter-group">
+      <div class="checkbox-group">
+        <div class="checkbox-item">
+          <input type="checkbox" id="course_type_bsc" name="course_type" value="bsc">
+          <label for="course_type_bsc">BSc (Bachelor)</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" id="course_type_msc" name="course_type" value="msc">
+          <label for="course_type_msc">MSc (Master)</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" id="course_type_beng" name="course_type" value="beng">
+          <label for="course_type_beng">BEng (Diplom)</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" id="course_type_phd" name="course_type" value="phd">
+          <label for="course_type_phd">PhD (Filosofidoktor)</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button onclick="getRecommendations()" id="submitBtn">Go get em'</button>
+
+  <div id="results"></div>
+
+  <script>
+    function getSelectedFilters() {
+      let filters = {};
+      let selected = [];
+      let checkboxes = document.querySelectorAll('input[name="course_type"]:checked');
+      checkboxes.forEach(cb => selected.push(cb.value));
+      if (selected.length > 0) {
+        filters['course_type'] = selected;
+      }
+      return filters;
+    }
+
+    function getRecommendations() {
+      const courseIds = document.getElementById('courseIds').value;
+      const numRecs = document.getElementById('numRecommendations').value;
+      const filters = getSelectedFilters();
+
+      if (!courseIds.trim()) {
+        showError('Please enter at least one course ID');
+        return;
+      }
+
+      // Disable button and show loading
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.textContent = 'Loading...';
+
+      document.getElementById('results').innerHTML = '<p class="loading">Generating recommendations...</p>';
+
+      fetch('/recommend', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          course_ids: courseIds,
+          n_recommendations: numRecs,
+          filters: filters
+        })
+      })
+        .then(response => response.json())
+        .then(data => {
+          btn.disabled = false;
+          btn.textContent = 'Get Recommendations';
+
+          if (data.success) {
+            displayResults(data);
+          } else {
+            showError(data.error);
+          }
+        })
+        .catch(error => {
+          btn.disabled = false;
+          btn.textContent = 'Get Recommendations';
+          showError('Error: ' + error);
+        });
+    }
+
+    function displayResults(data) {
+      let html = '<div class="results">';
+      html += `<h2>Top ${data.recommendations.length} Recommendations</h2>`;
+
+      html += '<div class="info-box">';
+      html += `<strong>Based on courses:</strong> ${data.input_courses.join(', ')}<br>`;
+      if (Object.keys(data.filters_applied).length > 0) {
+        html += `<strong>Filters applied:</strong> `;
+        html += Object.entries(data.filters_applied)
+          .map(([k, v]) => `${k}: ${v.join(', ')}`)
+          .join(' | ');
+      } else {
+        html += '<strong>No filters applied</strong>';
+      }
+      html += '</div>';
+
+      if (data.recommendations.length === 0) {
+        html += '<p>No recommendations found matching your criteria.</p>';
+      } else {
+        data.recommendations.forEach((course, index) => {
+          html += `
+                        <div class="course-card">
+                            <div class="course-header">
+                                <span class="course-id">${index + 1}. ${course.course_id}</span>
+                                <span class="similarity-score">Similarity: ${course.similarity}</span>
+                            </div>
+                            <div class="course-name"><strong>${course.name}</strong></div>
+                            <div class="course-meta">
+                                📚 ECTS: ${course.ects} | 🏛️ Institute: ${course.institute}
+                            </div>
+                            <div class="course-description">${course.description || 'No description available'}</div>
+                        </div>
+                    `;
+        });
+      }
+
+      html += '</div>';
+      document.getElementById('results').innerHTML = html;
+    }
+
+    function showError(message) {
+      document.getElementById('results').innerHTML =
+        `<div class="error"><strong>Error:</strong> ${message}</div>`;
+    }
+
+    // Allow Enter key to submit
+    document.getElementById('courseIds').addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') {
+        getRecommendations();
+      }
+    });
+  </script>
+</body>
+
+</html>

@@ -39,9 +39,21 @@ class InfoScraper:
             df_row = {df_index: course}
             # Scrape all info inside and outside the dataframe found on the webpage
             page_source_1 = InfoScraper._fetch_course_info_page_source(course, academic_year, file_name, False)
+            if len(page_source_1) == 0:
+                time.sleep(60)  # Sleep for 1 minute, hopefully giving kurser.dtu.dk time to fix itself, then try again
+                page_source_1 = InfoScraper._fetch_course_info_page_source(course, academic_year, file_name, False)
+                if len(page_source_1) == 0:
+                    message = f"{file_name}, {course}: Timeout when loading URL"
+                    Utils.logger(message, "Error", FileNameConsts.scrape_log_name)
             df_row.update(InfoScraper._parse_primary_df(page_source_1, course, academic_year, file_name, False))  #  Parse all info located inside the dataframe
             df_row.update(InfoScraper._parse_info_not_in_primary_df(page_source_1, course, file_name))  #  Parse all info located outside the dataframe
-            page_source_2 = InfoScraper._fetch_course_responsible_page_source(course, file_name, False)
+            page_source_2 = InfoScraper._fetch_course_responsible_page_source(course, False)
+            if len(page_source_2) == 0:
+                time.sleep(60)  # Sleep for 1 minute, hopefully giving kurser.dtu.dk time to fix itself, then try again
+                page_source_2 = InfoScraper._fetch_course_responsible_page_source(course, False)
+                if len(page_source_2) == 0:
+                    message = f"{file_name}, {course}: Timeout when loading URL for course responsibles"
+                    Utils.logger(message, "Error", FileNameConsts.scrape_log_name)
             df_row.update(InfoScraper._scrape_course_responsibles(page_source_2))  #  Parse all info related to teachers and course responsibles
             df = Utils.add_dict_to_df(df_row, lst_of_column_names, df)  # Concatenate dict to dataframe as a new row
             iteration_count += 1  # Print current course to console so user can track the progress
@@ -71,21 +83,18 @@ class InfoScraper:
             # The second request sends the cookie back, and the server returns the real content.
             response = session.get(url, timeout=10, headers={"Accept-Language": "en"})
             response.raise_for_status()
-            page_source = response.text
+            return response.text
         except ImportError:
             message = f"{file_name}, {course}: Missing import / pipinstall for parsing html"
             Utils.logger(message, "Error", FileNameConsts.scrape_log_name)
-            page_source = ""
+            return ""
         except requests.exceptions.RequestException:
             if not is_timeout:  # Try one more time
                 return InfoScraper._fetch_course_info_page_source(course, academic_year, file_name, True)
-            message = f"{file_name}, {course}: Timeout when loading URL"
-            Utils.logger(message, "Error", FileNameConsts.scrape_log_name)
-            page_source = ""
-        return page_source
+            return ""
 
     @staticmethod
-    def _fetch_course_responsible_page_source(course, file_name, is_timeout):
+    def _fetch_course_responsible_page_source(course, is_timeout):
         """Open course's info page with a session to handle cookies."""
         # Scrape course responsibles page source
         try:
@@ -98,9 +107,7 @@ class InfoScraper:
             return response.text
         except requests.exceptions.RequestException:
             if not is_timeout:  # Try one more time
-                return InfoScraper._fetch_course_responsible_page_source(course, file_name, True)
-            message = f"{file_name}, {course}: Timeout when loading URL for course responsibles"
-            Utils.logger(message, "Error", FileNameConsts.scrape_log_name)
+                return InfoScraper._fetch_course_responsible_page_source(course, True)
             return ""
 
     @staticmethod
@@ -151,7 +158,7 @@ class InfoScraper:
             Utils.logger(message, "Error", FileNameConsts.scrape_log_name)
 
         # Scrape last updated
-        start = f'{DtuConsts.dtu_last_updated}</div> '
+        start = f'{DtuConsts.dtu_last_updated}</div>'
         end = '<'
         last_updated = InfoScraper._parse_from_page_source(page_source, start, end)
         if last_updated:
@@ -161,7 +168,7 @@ class InfoScraper:
             Utils.logger(message, "Error", FileNameConsts.scrape_log_name)
 
         # Scrape General course objectives
-        start = f'{DtuConsts.dtu_general_course_objectives}</div> '
+        start = f'{DtuConsts.dtu_general_course_objectives}</div>'
         end = '<div class='
         course_objectives = InfoScraper._parse_from_page_source(page_source, start, end)
         if course_objectives:
@@ -171,7 +178,7 @@ class InfoScraper:
             Utils.logger(message, "Error", FileNameConsts.scrape_log_name)
 
         # Scrape Learning objectives
-        start = f'{DtuConsts.dtu_learning_objectives}</div> '
+        start = f'{DtuConsts.dtu_learning_objectives}</div>'
         end = '<div class='
         learning_objectives = InfoScraper._parse_from_page_source(page_source, start, end)
         if learning_objectives:
@@ -181,7 +188,7 @@ class InfoScraper:
             Utils.logger(message, "Error", FileNameConsts.scrape_log_name)
 
         # Scrape course content
-        start = f'>{DtuConsts.dtu_content}</div> '
+        start = f'>{DtuConsts.dtu_content}</div>'
         end = '<div class='
         course_content = InfoScraper._parse_from_page_source(page_source, start, end)
         if course_content:
@@ -191,7 +198,7 @@ class InfoScraper:
             Utils.logger(message, "Error", FileNameConsts.scrape_log_name)
 
         # Scrape course remarks
-        start = f'>{DtuConsts.dtu_remarks}</div> '
+        start = f'>{DtuConsts.dtu_remarks}</div>'
         end = '<div class='
         course_remarks = InfoScraper._parse_from_page_source(page_source, start, end)
         if not course_remarks:
@@ -245,7 +252,7 @@ class InfoScraper:
             start = page_source.split(start)
             end = start[1].split(end)
             string = end[0]
-            return string
+            return string.lstrip()  # remove leading space(s)
         return ""
 
     @staticmethod

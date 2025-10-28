@@ -74,7 +74,7 @@ class CsvCreator:
         course_names = Utils.get_archived_course_names(Config.course_years)
         grade_df = Utils.load_scraped_df(FileNameConsts.grade_df)
         eval_df = Utils.load_scraped_df(FileNameConsts.eval_df)
-        info_df = Utils.load_scraped_df(FileNameConsts.info_df)
+        info_df = Utils.load_scraped_df(f"{FileNameConsts.info_df}_{Config.course_years.replace('-','_')}")
         # Adding data dicts to the data frame, one course at a time
         semesters = Config.course_semesters
         column_names = []  # Create list with column names, this will be the data frame columns

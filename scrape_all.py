@@ -53,10 +53,7 @@ class AllInOneScraper:
             year_ranges = Utils.extract_unique_year_ranges(course_semesters)
             for academic_year in year_ranges:  # academic_year has format '2024-2025'
                 current_year_course_numbers = Utils.get_archived_course_numbers(academic_year)
-                if academic_year == Config.course_years:
-                    info_df_name = FileNameConsts.info_df
-                else:
-                    info_df_name = f"{FileNameConsts.info_df}_{academic_year[0:4]}_{academic_year[5:9]}"
+                info_df_name = f"{FileNameConsts.info_df}_{academic_year[0:4]}_{academic_year[5:9]}"
                 InfoScraper.scrape_info(current_year_course_numbers, academic_year, info_df_name)
 
     @staticmethod

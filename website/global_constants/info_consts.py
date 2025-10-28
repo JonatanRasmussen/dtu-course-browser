@@ -699,7 +699,7 @@ class InfoConsts:
         values_raw = ["01", "02", "10", "56", "12",
                       "22", "23", "CB", "25", "26", "27",
                       "29", "28", "88", "30", "31", "34",
-                      "41", "42", "38", "46", "63", "47", "62", "MA", "KU"]
+                      "41", "42", "38", "46", "63", "47", "62", "MA", "LY", "KU"]
         values_df = ["Applied Mathematics", #01
                     "Computer Science", #02
                     "Physics", #10
@@ -725,6 +725,7 @@ class InfoConsts:
                     "Energy Conversion and Storage", #47
                     "BEng - Bachelor of Engineering", #62
                     "BEng - Bachelor of Engineering", #MA
+                    "BEng - Bachelor of Engineering", #LY
                     "KU - Copenhagen University"] #KU
         values_url = ["01", "02", "10", "12",
                       "22", "23", "25", "26", "27",

@@ -31,7 +31,13 @@ class EvalScraper:
         iteration_count = 0
         for course in course_numbers:
             df_row = {df_index: course}
-            search_page_source = EvalScraper._search_for_eval_urls(course, file_name, False)
+            search_page_source = EvalScraper._search_for_eval_urls(course, False)
+            if len(search_page_source) == 0:
+                time.sleep(60)  # Sleep for 1 minute, hopefully giving the website time to fix itself, then try again
+                search_page_source = EvalScraper._search_for_eval_urls(course, False)
+                if len(search_page_source) == 0:
+                    message = f"{file_name}, {course}: Timeout when loading URL for course responsibles"
+                    Utils.logger(message, "Error", FileNameConsts.scrape_log_name)
             evaluation_urls = EvalScraper._parse_eval_urls(search_page_source, course, file_name)
             for semester in course_semesters:
                 if semester in evaluation_urls:
@@ -58,7 +64,7 @@ class EvalScraper:
         return df
 
     @staticmethod
-    def _search_for_eval_urls(course, file_name, is_timeout):
+    def _search_for_eval_urls(course, is_timeout):
         """Search for all evaluations for a given course and return the page source"""
         # Scrape page source of course info, as this page contain links to the 5 most recent evaluations
         try:
@@ -70,9 +76,7 @@ class EvalScraper:
             return response.text
         except requests.exceptions.RequestException:
             if not is_timeout:  # Try one more time
-                return EvalScraper._search_for_eval_urls(course, file_name, True)
-            message = f"{file_name}, {course}: Timeout when loading URL for course responsibles"
-            Utils.logger(message, "Error", FileNameConsts.scrape_log_name)
+                return EvalScraper._search_for_eval_urls(course, True)
             return ""
 
     @staticmethod
