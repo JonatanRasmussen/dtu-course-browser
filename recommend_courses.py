@@ -7,6 +7,8 @@ from sentence_transformers import SentenceTransformer
 import nltk
 from nltk.corpus import stopwords
 import re
+import os
+import pickle
 from website.global_constants.file_name_consts import FileNameConsts
 from website.global_constants.info_consts import InfoConsts
 
@@ -14,6 +16,8 @@ from website.global_constants.info_consts import InfoConsts
 class CourseRecommender:
     """ Text Similarity with Embeddings """
     SENTENCE_TRANSFORMER_MODEL = 'all-MiniLM-L6-v2'
+    EMBEDDINGS_CACHE_FILE = 'recommended_course_embeddings_cache.pkl'
+    FILTERED_DF_CACHE_FILE = 'recommended_filtered_courses_df_cache.pkl'
 
     def __init__(self):
         print(f"Loading sentence transformer model: '{CourseRecommender.SENTENCE_TRANSFORMER_MODEL}'")
@@ -34,6 +38,48 @@ class CourseRecommender:
             name_and_path_of_pkl = FileNameConsts.path_of_pkl + FileNameConsts.name_of_pkl + ".pkl"
             df = pd.read_pickle(name_and_path_of_pkl)
         return df
+
+    def save_embeddings_cache(self):
+        """Save embeddings and filtered dataframe to cache files"""
+        try:
+            embeddings_path = self.EMBEDDINGS_CACHE_FILE
+            df_path = self.FILTERED_DF_CACHE_FILE
+
+            print(f"Saving embeddings cache to {embeddings_path}")
+            with open(embeddings_path, 'wb') as f:
+                pickle.dump(self.course_embeddings, f)
+
+            print(f"Saving filtered dataframe cache to {df_path}")
+            self.courses_df.to_pickle(df_path)
+
+            print("Cache saved successfully!")
+            return True
+        except Exception as e:
+            print(f"Warning: Could not save cache: {e}")
+            return False
+
+    def load_embeddings_cache(self):
+        """Load embeddings and filtered dataframe from cache files"""
+        try:
+            embeddings_path = self.EMBEDDINGS_CACHE_FILE
+            df_path = self.FILTERED_DF_CACHE_FILE
+
+            if not os.path.exists(embeddings_path) or not os.path.exists(df_path):
+                print("Cache files not found. Will create new embeddings.")
+                return False
+
+            print(f"Loading embeddings cache from {embeddings_path}")
+            with open(embeddings_path, 'rb') as f:
+                self.course_embeddings = pickle.load(f)
+
+            print(f"Loading filtered dataframe cache from {df_path}")
+            self.courses_df = pd.read_pickle(df_path)
+
+            print(f"Cache loaded successfully! {len(self.courses_df)} courses with embeddings ready.")
+            return True
+        except Exception as e:
+            print(f"Warning: Could not load cache: {e}")
+            return False
 
     def preprocess_text(self, text):
         if pd.isna(text) or text == "None" or text == "NO_DATA":
@@ -68,8 +114,17 @@ class CourseRecommender:
             combined_texts.append(combined_text)
         return combined_texts
 
-    def fit(self):
-        """Fit the model using combined course text"""
+    def fit(self, force_recreate=False):
+        """Fit the model using combined course text
+
+        Args:
+            force_recreate (bool): If True, recreate embeddings even if cache exists
+        """
+        # Try to load from cache first (unless force_recreate is True)
+        if not force_recreate and self.load_embeddings_cache():
+            return  # Successfully loaded from cache
+
+        print("Creating new embeddings...")
         print("Combining course texts...")
         combined_texts = self.combine_course_text()
         # Filter out courses with no meaningful text
@@ -84,6 +139,27 @@ class CourseRecommender:
         # Create embeddings
         self.course_embeddings = self.model.encode(filtered_texts, show_progress_bar=True)
         print(f"Created embeddings for {len(filtered_texts)} courses")
+
+        # Save to cache
+        self.save_embeddings_cache()
+
+    def clear_cache(self):
+        """Delete cache files to force recreation of embeddings"""
+        try:
+            embeddings_path = self.get_cache_path(self.EMBEDDINGS_CACHE_FILE)
+            df_path = self.get_cache_path(self.FILTERED_DF_CACHE_FILE)
+
+            if os.path.exists(embeddings_path):
+                os.remove(embeddings_path)
+                print(f"Deleted {embeddings_path}")
+
+            if os.path.exists(df_path):
+                os.remove(df_path)
+                print(f"Deleted {df_path}")
+
+            print("Cache cleared successfully!")
+        except Exception as e:
+            print(f"Error clearing cache: {e}")
 
     def find_course_by_id(self, course_id):
         """Helper method to find course info"""
@@ -177,14 +253,15 @@ def main():
     # Initialize recommender
     recommender = CourseRecommender()
 
-    # Analyze a few courses first to see what content we have
-    print("Analyzing sample courses:")
-    recommender.analyze_course_content('01001')
-    recommender.analyze_course_content('01002')
-
-    # Fit the model
+    # Fit the model (will use cache if available)
     print("\nFitting the model...")
     recommender.fit()
+
+    # To force recreation of embeddings, use:
+    # recommender.fit(force_recreate=True)
+
+    # To clear cache:
+    # recommender.clear_cache()
 
     # Get recommendations based on the math courses from your sample
     print("\nGetting recommendations for math courses 01001 and 01002:")

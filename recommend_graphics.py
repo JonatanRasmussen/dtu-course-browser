@@ -6,7 +6,6 @@ import traceback
 
 app = Flask(__name__, template_folder='.')
 
-# Initialize the recommendation system (this will take a moment on startup)
 print("Initializing recommendation system...")
 recommendation_filter = None
 
@@ -20,19 +19,100 @@ def get_recommender():
 def index():
     return render_template('recommender.html')
 
+@app.route('/search_courses', methods=['GET'])
+def search_courses():
+    """Search for courses by ID or name"""
+    try:
+        recommender = get_recommender()
+        query = request.args.get('query', '').strip().upper()
+
+        if not query or len(query) < 2:
+            return jsonify({'success': True, 'results': []})
+
+        df = recommender.recommender.courses_df
+
+        # Search by course ID or name
+        mask = (
+            df['COURSE'].str.contains(query, case=False, na=False) |
+            df['NAME'].str.contains(query, case=False, na=False) |
+            df['DANISH_NAME'].str.contains(query, case=False, na=False)
+        )
+
+        matches = df[mask].head(20)  # Limit to 20 results
+
+        results = []
+        for _, row in matches.iterrows():
+            results.append({
+                'course_id': row['COURSE'],
+                'name': row['NAME'],
+                'danish_name': row.get('DANISH_NAME', ''),
+                'language': row.get('LANGUAGE', ''),
+                'ects': row.get('ECTS_POINTS', '')
+            })
+
+        return jsonify({'success': True, 'results': results})
+
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({'success': False, 'error': str(e)})
+
+@app.route('/extract_courses', methods=['POST'])
+def extract_courses():
+    """Extract course codes from raw text"""
+    try:
+        recommender = get_recommender()
+        data = request.json
+        raw_text = data.get('text', '')
+
+        # Find all 5-digit sequences
+        potential_codes = re.findall(r'\b\d{5}\b', raw_text)
+
+        # Get valid course codes from dataframe
+        valid_courses = set(recommender.recommender.courses_df['COURSE'].tolist())
+
+        # Filter to only valid courses
+        found_courses = []
+        seen = set()
+
+        for code in potential_codes:
+            if code in valid_courses and code not in seen:
+                course_information = recommender.recommender.courses_df[
+                    recommender.recommender.courses_df['COURSE'] == code
+                ].iloc[0]
+
+                found_courses.append({
+                    'course_id': code,
+                    'name': course_information['NAME']
+                })
+                seen.add(code)
+
+        return jsonify({
+            'success': True,
+            'courses': found_courses,
+            'count': len(found_courses)
+        })
+
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({'success': False, 'error': str(e)})
+
 @app.route('/recommend', methods=['POST'])
 def recommend():
     try:
-        recommender = get_recommender()  # Fixed bug here - was app.recommender
+        recommender = get_recommender()
         data = request.json
-        course_ids = [c.strip().upper() for c in data.get('course_ids', '').split(',') if c.strip()]  # Parse input courses
-        if not course_ids:
-            return jsonify({'success': False, 'error': 'Please enter at least one course ID'})
-        filters = data.get('filters', {})  # Parse filters
-        filter_criteria = {k: v for k, v in filters.items() if v}
-        number_of_recommendations = int(data.get('n_recommendations', 10))
+        course_ids = data.get('course_ids', [])
 
-        # Get recommendations
+        if isinstance(course_ids, str):
+            course_ids = [c.strip().upper() for c in course_ids.split(',') if c.strip()]
+
+        if not course_ids:
+            return jsonify({'success': False, 'error': 'Please select at least one course'})
+
+        filters = data.get('filters', {})
+        filter_criteria = {k: v for k, v in filters.items() if v}
+        number_of_recommendations = int(data.get('n_recommendations', 100))
+
         if filter_criteria:
             recommendations = recommender.get_filtered_recommendations(
                 course_ids,
@@ -47,14 +127,13 @@ def recommend():
             )
 
         results = []
-        # Convert to list of dicts for JSON serialization
         for _, row in recommendations.iterrows():
             description = row['COURSE_DESCRIPTION']
             if pd.isna(description) or description == "None" or description == "NO_DATA":
                 description = "No description available"
             else:
-                description = re.sub(r'<[^>]+>', ' ', str(description))  # Remove HTML tags
-                description = ' '.join(description.split())  # Remove extra whitespace
+                description = re.sub(r'<[^>]+>', ' ', str(description))
+                description = ' '.join(description.split())
 
             results.append({
                 'course_id': row['COURSE'],
@@ -89,7 +168,6 @@ def course_info(course_id):
         return jsonify({'success': False, 'error': str(e)})
 
 if __name__ == '__main__':
-    # Initialize on startup
     print("Pre-loading recommendation system...")
     get_recommender()
     print("Ready!")

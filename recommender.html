@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Course Recommender System (MVP)</title>
+  <title>Course Recommender System</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -31,12 +31,152 @@
     }
 
     input[type="text"],
-    input[type="number"] {
+    input[type="number"],
+    textarea {
       width: 100%;
       padding: 8px;
       margin-bottom: 15px;
       border: 1px solid #ccc;
       box-sizing: border-box;
+    }
+
+    textarea {
+      min-height: 120px;
+      font-family: monospace;
+      resize: vertical;
+    }
+
+    /* Tabs */
+    .tab-container {
+      margin-bottom: 20px;
+    }
+
+    .tabs {
+      display: flex;
+      border-bottom: 2px solid #ddd;
+      margin-bottom: 15px;
+    }
+
+    .tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      background-color: #f0f0f0;
+      border: none;
+      margin-right: 5px;
+      font-size: 16px;
+    }
+
+    .tab.active {
+      background-color: #4CAF50;
+      color: white;
+      font-weight: bold;
+    }
+
+    .tab-content {
+      display: none;
+      padding: 15px;
+      border: 1px solid #ddd;
+      background-color: #f9f9f9;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Search autocomplete */
+    .search-container {
+      position: relative;
+    }
+
+    .autocomplete-results {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid #ccc;
+      border-top: none;
+      max-height: 300px;
+      overflow-y: auto;
+      z-index: 1000;
+      display: none;
+    }
+
+    .autocomplete-results.show {
+      display: block;
+    }
+
+    .autocomplete-item {
+      padding: 10px;
+      cursor: pointer;
+      border-bottom: 1px solid #eee;
+    }
+
+    .autocomplete-item:hover {
+      background-color: #f0f0f0;
+    }
+
+    .autocomplete-item-id {
+      font-weight: bold;
+      color: #2196F3;
+    }
+
+    .autocomplete-item-name {
+      font-size: 14px;
+      color: #666;
+    }
+
+    /* Course basket */
+    .course-basket {
+      min-height: 80px;
+      padding: 10px;
+      border: 2px dashed #ccc;
+      background-color: #fafafa;
+      margin-bottom: 15px;
+      border-radius: 4px;
+    }
+
+    .course-basket.empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+    }
+
+    .basket-item {
+      display: inline-block;
+      background-color: #2196F3;
+      color: white;
+      padding: 8px 12px;
+      margin: 5px;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .basket-item-remove {
+      margin-left: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      color: #ffcccc;
+    }
+
+    .basket-item-remove:hover {
+      color: #ff0000;
+    }
+
+    /* Extracted courses display */
+    .extracted-courses {
+      margin-top: 15px;
+      padding: 10px;
+      background-color: #e3f2fd;
+      border-left: 4px solid #2196F3;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .extracted-course-item {
+      padding: 5px;
+      font-size: 14px;
     }
 
     .filter-section {
@@ -83,6 +223,23 @@
     button:disabled {
       background-color: #cccccc;
       cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background-color: #2196F3;
+    }
+
+    .btn-secondary:hover {
+      background-color: #0b7dda;
+    }
+
+    .btn-load-more {
+      background-color: #FF9800;
+      margin-top: 20px;
+    }
+
+    .btn-load-more:hover {
+      background-color: #e68900;
     }
 
     .loading {
@@ -155,31 +312,61 @@
       margin-bottom: 20px;
       border-left: 4px solid #2196F3;
     }
+
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 
 <body>
-  <h1>Jonatan Rasmussen: Course Recommender System (MVP)</h1>
+  <h1>Course Recommender System</h1>
 
   <div class="info-box">
-    <strong>Enter one or more course IDs (comma-separated) and get recommended similar courses.</strong><br />
-    Example inputs:<br />
-    01001, 01002, 01003, 01004<br />
-    10603<br />
-    02266, 02810<br />
-    You can also filter by course type.
+    <strong>Find courses similar to ones you've taken or are interested in!</strong><br />
+    Choose how to input courses: search individually or paste a list of course codes.
   </div>
 
-  <div class="container">
-    <label for="courseIds">Course IDs (comma-separated, here is an example: 01001, 01002):</label>
-    <input type="text" id="courseIds" placeholder="Enter course IDs..." />
+  <!-- Tab Navigation -->
+  <div class="tab-container">
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('search')">🔍 Search Courses</button>
+      <button class="tab" onclick="switchTab('bulk')">📋 Paste Course List</button>
+    </div>
+
+    <!-- Tab 1: Search Courses -->
+    <div id="tab-search" class="tab-content active">
+      <div class="container">
+        <label for="courseSearch">Search for courses by ID or name:</label>
+        <div class="search-container">
+          <input type="text" id="courseSearch" placeholder="Type course ID or name (e.g., '01001' or 'Mathematics')..."
+            autocomplete="off" oninput="searchCourses()" onfocus="searchCourses()">
+          <div id="autocompleteResults" class="autocomplete-results"></div>
+        </div>
+      </div>
+
+      <div class="container">
+        <label>Selected Courses:</label>
+        <div id="courseBasket" class="course-basket empty">
+          Click courses from search results to add them here
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 2: Bulk Paste -->
+    <div id="tab-bulk" class="tab-content">
+      <div class="container">
+        <label for="bulkText">Paste text containing course codes (5-digit numbers):</label>
+        <textarea id="bulkText"
+          placeholder="Paste your study plan, grade sheet, or any text containing course codes here...&#10;&#10;Example:&#10;01017 Discrete Mathematics: Grade 7&#10;01020 Advanced Linear Algebra: Grade 12&#10;02105 Algorithms and Data Structures 1: Grade 10"></textarea>
+        <button onclick="extractCourses()" class="btn-secondary">Extract Course Codes</button>
+
+        <div id="extractedCourses" class="hidden"></div>
+      </div>
+    </div>
   </div>
 
-  <div class="container">
-    <label for="numRecommendations">Number of Recommendations:</label>
-    <input type="number" id="numRecommendations" value="10" min="1" max="50" />
-  </div>
-
+  <!-- Filters -->
   <div class="filter-section">
     <h3>Filter by Course Type (Optional)</h3>
     <div class="filter-group">
@@ -198,17 +385,181 @@
         </div>
         <div class="checkbox-item">
           <input type="checkbox" id="course_type_phd" name="course_type" value="phd">
-          <label for="course_type_phd">PhD (Filosofidoktor)</label>
+          <label for="course_type_phd">PhD</label>
         </div>
       </div>
     </div>
   </div>
 
-  <button onclick="getRecommendations()" id="submitBtn">Go get em'</button>
+  <button onclick="getRecommendations()" id="submitBtn">Get Recommendations</button>
 
   <div id="results"></div>
 
   <script>
+    let selectedCourses = new Set();
+    let allRecommendations = [];
+    let displayedCount = 0;
+    const DISPLAY_INCREMENT = 10;
+    let searchTimeout = null;
+
+    function switchTab(tabName) {
+      // Update tab buttons
+      document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+      event.target.classList.add('active');
+      document.getElementById('tab-' + tabName).classList.add('active');
+
+      // Clear the other tab's data when switching
+      if (tabName === 'search') {
+        document.getElementById('bulkText').value = '';
+        document.getElementById('extractedCourses').classList.add('hidden');
+      } else {
+        selectedCourses.clear();
+        updateBasketDisplay();
+        document.getElementById('courseSearch').value = '';
+        document.getElementById('autocompleteResults').classList.remove('show');
+      }
+    }
+
+    function searchCourses() {
+      const query = document.getElementById('courseSearch').value;
+
+      // Clear previous timeout
+      if (searchTimeout) {
+        clearTimeout(searchTimeout);
+      }
+
+      if (query.length < 2) {
+        document.getElementById('autocompleteResults').classList.remove('show');
+        return;
+      }
+
+      // Debounce search
+      searchTimeout = setTimeout(() => {
+        fetch(`/search_courses?query=${encodeURIComponent(query)}`)
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              displayAutocompleteResults(data.results);
+            }
+          })
+          .catch(error => console.error('Search error:', error));
+      }, 300);
+    }
+
+    function displayAutocompleteResults(results) {
+      const container = document.getElementById('autocompleteResults');
+
+      if (results.length === 0) {
+        container.innerHTML = '<div style="padding: 10px; color: #999;">No courses found</div>';
+        container.classList.add('show');
+        return;
+      }
+
+      let html = '';
+      results.forEach(course => {
+        // Skip if already selected
+        if (selectedCourses.has(course.course_id)) {
+          return;
+        }
+
+        html += `
+          <div class="autocomplete-item" onclick="addCourseToBasket('${course.course_id}', '${course.name.replace(/'/g, "\\'")}')">
+            <div class="autocomplete-item-id">${course.course_id}</div>
+            <div class="autocomplete-item-name">${course.name}</div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html || '<div style="padding: 10px; color: #999;">All matching courses already selected</div>';
+      container.classList.add('show');
+    }
+
+    function addCourseToBasket(courseId, courseName) {
+      selectedCourses.add(courseId);
+      updateBasketDisplay();
+
+      // Clear search
+      document.getElementById('courseSearch').value = '';
+      document.getElementById('autocompleteResults').classList.remove('show');
+    }
+
+    function removeCourseFromBasket(courseId) {
+      selectedCourses.delete(courseId);
+      updateBasketDisplay();
+    }
+
+    function updateBasketDisplay() {
+      const basket = document.getElementById('courseBasket');
+
+      if (selectedCourses.size === 0) {
+        basket.className = 'course-basket empty';
+        basket.innerHTML = 'Click courses from search results to add them here';
+        return;
+      }
+
+      basket.className = 'course-basket';
+      let html = '';
+      selectedCourses.forEach(courseId => {
+        html += `
+          <span class="basket-item">
+            ${courseId}
+            <span class="basket-item-remove" onclick="removeCourseFromBasket('${courseId}')">✕</span>
+          </span>
+        `;
+      });
+      basket.innerHTML = html;
+    }
+
+    function extractCourses() {
+      const text = document.getElementById('bulkText').value;
+
+      if (!text.trim()) {
+        showError('Please paste some text containing course codes');
+        return;
+      }
+
+      fetch('/extract_courses', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text: text })
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            displayExtractedCourses(data.courses);
+          } else {
+            showError(data.error);
+          }
+        })
+        .catch(error => showError('Error: ' + error));
+    }
+
+    function displayExtractedCourses(courses) {
+      const container = document.getElementById('extractedCourses');
+
+      if (courses.length === 0) {
+        container.innerHTML = '<div style="padding: 10px; color: #c62828;">No valid course codes found in the text.</div>';
+        container.classList.remove('hidden');
+        return;
+      }
+
+      // Update the selected courses set
+      selectedCourses.clear();
+      courses.forEach(course => selectedCourses.add(course.course_id));
+
+      let html = `<div style="font-weight: bold; margin-bottom: 10px;">Found ${courses.length} course(s):</div>`;
+      courses.forEach(course => {
+        html += `<div class="extracted-course-item">✓ ${course.course_id} - ${course.name}</div>`;
+      });
+
+      container.innerHTML = html;
+      container.classList.remove('hidden');
+    }
+
     function getSelectedFilters() {
       let filters = {};
       let selected = [];
@@ -221,12 +572,21 @@
     }
 
     function getRecommendations() {
-      const courseIds = document.getElementById('courseIds').value;
-      const numRecs = document.getElementById('numRecommendations').value;
       const filters = getSelectedFilters();
 
-      if (!courseIds.trim()) {
-        showError('Please enter at least one course ID');
+      // Get courses from either the basket (search tab) or extracted courses (bulk tab)
+      const activeTab = document.querySelector('.tab-content.active').id;
+      let courseIds = [];
+
+      if (activeTab === 'tab-search') {
+        courseIds = Array.from(selectedCourses);
+      } else {
+        // From bulk tab - selectedCourses is populated by extractCourses()
+        courseIds = Array.from(selectedCourses);
+      }
+
+      if (courseIds.length === 0) {
+        showError('Please select at least one course');
         return;
       }
 
@@ -244,7 +604,7 @@
         },
         body: JSON.stringify({
           course_ids: courseIds,
-          n_recommendations: numRecs,
+          n_recommendations: 100,  // Always fetch 100
           filters: filters
         })
       })
@@ -254,7 +614,9 @@
           btn.textContent = 'Get Recommendations';
 
           if (data.success) {
-            displayResults(data);
+            allRecommendations = data.recommendations;
+            displayedCount = 0;
+            displayResults(data, true);
           } else {
             showError(data.error);
           }
@@ -266,44 +628,84 @@
         });
     }
 
-    function displayResults(data) {
-      let html = '<div class="results">';
-      html += `<h2>Top ${data.recommendations.length} Recommendations</h2>`;
+    function displayResults(data, isInitial = false) {
+      let html = '';
 
-      html += '<div class="info-box">';
-      html += `<strong>Based on courses:</strong> ${data.input_courses.join(', ')}<br>`;
-      if (Object.keys(data.filters_applied).length > 0) {
-        html += `<strong>Filters applied:</strong> `;
-        html += Object.entries(data.filters_applied)
-          .map(([k, v]) => `${k}: ${v.join(', ')}`)
-          .join(' | ');
-      } else {
-        html += '<strong>No filters applied</strong>';
+      if (isInitial) {
+        html += '<div class="results">';
+        html += `<h2>Course Recommendations</h2>`;
+
+        html += '<div class="info-box">';
+        html += `<strong>Based on courses:</strong> ${data.input_courses.join(', ')}<br>`;
+        if (Object.keys(data.filters_applied).length > 0) {
+          html += `<strong>Filters applied:</strong> `;
+          html += Object.entries(data.filters_applied)
+            .map(([k, v]) => `${k}: ${v.join(', ')}`)
+            .join(' | ');
+        } else {
+          html += '<strong>No filters applied</strong>';
+        }
+        html += `<br><strong>Total matches:</strong> ${allRecommendations.length}`;
+        html += '</div>';
       }
-      html += '</div>';
 
-      if (data.recommendations.length === 0) {
+      if (allRecommendations.length === 0) {
         html += '<p>No recommendations found matching your criteria.</p>';
       } else {
-        data.recommendations.forEach((course, index) => {
+        const endIndex = Math.min(displayedCount + DISPLAY_INCREMENT, allRecommendations.length);
+        const coursesToShow = allRecommendations.slice(displayedCount, endIndex);
+
+        coursesToShow.forEach((course, index) => {
+          const actualIndex = displayedCount + index + 1;
           html += `
-                        <div class="course-card">
-                            <div class="course-header">
-                                <span class="course-id">${index + 1}. ${course.course_id}</span>
-                                <span class="similarity-score">Similarity: ${course.similarity}</span>
-                            </div>
-                            <div class="course-name"><strong>${course.name}</strong></div>
-                            <div class="course-meta">
-                                📚 ECTS: ${course.ects} | 🏛️ Institute: ${course.institute}
-                            </div>
-                            <div class="course-description">${course.description || 'No description available'}</div>
-                        </div>
-                    `;
+            <div class="course-card">
+              <div class="course-header">
+                <span class="course-id">${actualIndex}. ${course.course_id}</span>
+                <span class="similarity-score">Similarity: ${course.similarity}</span>
+              </div>
+              <div class="course-name"><strong>${course.name}</strong></div>
+              <div class="course-meta">
+                📚 ECTS: ${course.ects} | 🏛️ Institute: ${course.institute}
+              </div>
+              <div class="course-description">${course.description || 'No description available'}</div>
+            </div>
+          `;
         });
+
+        displayedCount = endIndex;
+
+        // Add "Load More" button if there are more results
+        if (displayedCount < allRecommendations.length) {
+          html += `
+            <button onclick="loadMoreResults()" class="btn-load-more">
+              Load More (${allRecommendations.length - displayedCount} remaining)
+            </button>
+          `;
+        } else {
+          html += '<div style="text-align: center; padding: 20px; color: #666;">All recommendations displayed</div>';
+        }
       }
 
-      html += '</div>';
-      document.getElementById('results').innerHTML = html;
+      if (isInitial) {
+        html += '</div>';
+        document.getElementById('results').innerHTML = html;
+      } else {
+        // Append to existing results (remove old load more button first)
+        const resultsDiv = document.getElementById('results');
+        const oldButton = resultsDiv.querySelector('.btn-load-more');
+        if (oldButton) {
+          oldButton.remove();
+        }
+        const endMessage = resultsDiv.querySelector('div[style*="All recommendations displayed"]');
+        if (endMessage) {
+          endMessage.remove();
+        }
+        resultsDiv.innerHTML += html;
+      }
+    }
+
+    function loadMoreResults() {
+      displayResults({ recommendations: allRecommendations }, false);
     }
 
     function showError(message) {
@@ -311,10 +713,22 @@
         `<div class="error"><strong>Error:</strong> ${message}</div>`;
     }
 
+    // Close autocomplete when clicking outside
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.search-container')) {
+        document.getElementById('autocompleteResults').classList.remove('show');
+      }
+    });
+
     // Allow Enter key to submit
-    document.getElementById('courseIds').addEventListener('keypress', function (e) {
-      if (e.key === 'Enter') {
-        getRecommendations();
+    document.addEventListener('keypress', function (e) {
+      if (e.key === 'Enter' && e.target.id === 'courseSearch') {
+        e.preventDefault();
+        // Select first result if available
+        const firstResult = document.querySelector('.autocomplete-item');
+        if (firstResult) {
+          firstResult.click();
+        }
       }
     });
   </script>
