@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Recommender System</title>
+  <link rel="stylesheet" href="{{ url_for('recommender_static', filename='css/styles.css') }}">
+</head>
+
+<body>
+  <h1>Course Recommender System</h1>
+
+  <div class="info-box">
+    <strong>Find courses similar to ones you've taken or are interested in!</strong><br />
+    Choose how to input courses: search individually or paste a list of course codes.
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-container">
+    <div class="tabs">
+      <button class="tab active" onclick="CourseSearch.switchTab('search')">🔍 Search Courses</button>
+      <button class="tab" onclick="CourseSearch.switchTab('bulk')">📋 Paste Course List</button>
+    </div>
+
+    <!-- Tab 1: Search Courses -->
+    <div id="tab-search" class="tab-content active">
+      <div class="container">
+        <label for="courseSearch">Search for courses by ID or name:</label>
+        <div class="search-container">
+          <input type="text" id="courseSearch" placeholder="Type course ID or name (e.g., '01001' or 'Mathematics')..."
+            autocomplete="off" oninput="CourseSearch.search()" onfocus="CourseSearch.search()">
+          <div id="autocompleteResults" class="autocomplete-results"></div>
+        </div>
+      </div>
+
+      <div class="container">
+        <label>Selected Courses:</label>
+        <div id="courseBasket" class="course-basket empty">
+          Click courses from search results to add them here
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 2: Bulk Paste -->
+    <div id="tab-bulk" class="tab-content">
+      <div class="container">
+        <label for="bulkText">Paste text containing course codes (5-digit numbers):</label>
+        <textarea id="bulkText"
+          placeholder="Paste your study plan, grade sheet, or any text containing course codes here...&#10;&#10;Example:&#10;01017 Discrete Mathematics: Grade 7&#10;01020 Advanced Linear Algebra: Grade 12&#10;02105 Algorithms and Data Structures 1: Grade 10"></textarea>
+        <button onclick="CourseSearch.extractCourses()" class="btn-secondary">Extract Course Codes</button>
+        <div id="extractedCourses" class="hidden"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filter-section">
+    <h3>Filter by Course Type (Optional)</h3>
+    <div class="filter-group">
+      <div class="checkbox-group">
+        <div class="checkbox-item">
+          <input type="checkbox" id="course_type_bsc" name="course_type" value="bsc">
+          <label for="course_type_bsc">BSc (Bachelor)</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" id="course_type_msc" name="course_type" value="msc">
+          <label for="course_type_msc">MSc (Master)</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" id="course_type_beng" name="course_type" value="beng">
+          <label for="course_type_beng">BEng (Diplom)</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" id="course_type_phd" name="course_type" value="phd">
+          <label for="course_type_phd">PhD</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button onclick="AppState.getRecommendations()" id="submitBtn">Get Recommendations</button>
+
+  <div id="results"></div>
+
+  <!-- Load JavaScript modules -->
+  <script src="{{ url_for('recommender_static', filename='js/core.js') }}"></script>
+  <script src="{{ url_for('recommender_static', filename='js/search.js') }}"></script>
+  <script src="{{ url_for('recommender_static', filename='js/display.js') }}"></script>
+</body>
+
+</html>

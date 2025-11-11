@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, jsonify
 from recommend_filtering import FilterRecommendations
 import traceback
 
-app = Flask(__name__, template_folder='.')
+app = Flask(__name__, template_folder='recommender_static/html', static_folder='recommender_static', static_url_path='/recommender_static')
 
 print("Initializing recommendation system...")
 recommendation_filter = None
@@ -17,7 +17,7 @@ def get_recommender():
 
 @app.route('/')
 def index():
-    return render_template('recommender.html')
+    return render_template('test_recommender.html')
 
 @app.route('/search_courses', methods=['GET'])
 def search_courses():
