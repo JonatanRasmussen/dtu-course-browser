@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Course Recommender System</title>
-  <link rel="stylesheet" href="{{ url_for('recommender_static', filename='css/styles.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='recommender_styles.css') }}">
 </head>
 
 <body>
@@ -84,9 +84,9 @@
   <div id="results"></div>
 
   <!-- Load JavaScript modules -->
-  <script src="{{ url_for('recommender_static', filename='js/core.js') }}"></script>
-  <script src="{{ url_for('recommender_static', filename='js/search.js') }}"></script>
-  <script src="{{ url_for('recommender_static', filename='js/display.js') }}"></script>
+  <script src="{{ url_for('static', filename='recommender_core.js') }}"></script>
+  <script src="{{ url_for('static', filename='recommender_search.js') }}"></script>
+  <script src="{{ url_for('static', filename='recommender_display.js') }}"></script>
 </body>
 
 </html>

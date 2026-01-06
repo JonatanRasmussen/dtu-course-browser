@@ -1,0 +1,1482 @@
+{% extends "base.html" %}
+{% block title %}Recommender{% endblock %}
+{% block content %}
+<!--
+NAMING CONVENTION NOTE:
+All custom CSS classes and IDs in this file are prefixed with "recommender-" to avoid conflicts.
+-->
+<style>
+  /* Scoped Styles */
+  #recommender-system-container {
+    padding-bottom: 50px;
+  }
+
+  /* --- CUSTOM DTU RED CHECKBOXES --- */
+  .form-check-input:checked {
+    background-color: #990000;
+    border-color: #990000;
+  }
+
+  .form-check-input:focus {
+    border-color: #990000;
+    box-shadow: 0 0 0 0.25rem rgba(153, 0, 0, 0.25);
+  }
+
+  /* Step Sections */
+  .recommender-step-container {
+    border-bottom: 1px solid #eee;
+    padding: 20px;
+  }
+
+  .recommender-step-container:last-child {
+    border-bottom: none;
+  }
+
+  .recommender-step-header {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  .recommender-step-desc {
+    font-size: 0.95rem;
+    color: #666;
+    margin-bottom: 15px;
+  }
+
+  /* Step 1: Input Toggles */
+  .recommender-input-option-btn {
+    margin-right: 10px;
+    margin-bottom: 10px;
+    min-width: 150px;
+  }
+
+  .recommender-input-area {
+    background-color: #fdfdfd;
+    border: 1px solid #e9ecef;
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 10px;
+    display: none;
+    /* Hidden by default */
+  }
+
+  .recommender-input-area.active {
+    display: block;
+    animation: fadeIn 0.3s;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Brand-style outline buttons */
+  .recommender-btn-outline-brand {
+    color: #212529;
+    border: 1px solid #990000;
+    background-color: transparent;
+  }
+
+  .recommender-btn-outline-brand:hover,
+  .recommender-btn-outline-brand:focus {
+    color: #fff;
+    background-color: #990000;
+    border-color: #990000;
+  }
+
+  .recommender-btn-outline-brand.active {
+    color: #fff;
+    background-color: #990000;
+    border-color: #990000;
+  }
+
+  .recommender-btn-outline-brand:focus,
+  .recommender-btn-outline-brand:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 0.15rem rgba(153, 0, 0, 0.25);
+  }
+
+  /* Solid Brand Button */
+  .recommender-btn-brand {
+    color: #fff;
+    background-color: #990000;
+    border-color: #990000;
+  }
+
+  .recommender-btn-brand:hover {
+    background-color: #7a0000;
+    border-color: #7a0000;
+    color: #fff;
+  }
+
+  /* Custom Red Focus for Search Input */
+  #recommender-search-input:focus {
+    border-color: #990000;
+    box-shadow: 0 0 0 0.25rem rgba(153, 0, 0, 0.25);
+    outline: 0;
+  }
+
+  /* Autocomplete Dropdown */
+  .recommender-search-wrapper {
+    position: relative;
+  }
+
+  .recommender-autocomplete-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ccc;
+    border-top: none;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .recommender-autocomplete-results.show {
+    display: block;
+  }
+
+  .recommender-autocomplete-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+  }
+
+  .recommender-autocomplete-item:hover {
+    background-color: #f8f9fa;
+  }
+
+  .recommender-match-id {
+    font-weight: bold;
+    color: #990000;
+  }
+
+  /* --- FEEDBACK UI --- */
+  .recommender-feedback-container {
+    margin-top: 15px;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  .recommender-feedback-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    padding: 6px 10px;
+    margin-bottom: 5px;
+    background-color: #f0fff4;
+    border: 1px solid #c6f6d5;
+    color: #22543d;
+    border-radius: 4px;
+  }
+
+  .recommender-feedback-icon {
+    font-weight: bold;
+    font-size: 1rem;
+    margin-left: 10px;
+    color: #38a169;
+  }
+
+  /* Step 2: Basket */
+  .recommender-basket-container {
+    min-height: 60px;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .recommender-basket-placeholder {
+    color: #6c757d;
+    font-style: italic;
+    text-align: center;
+    padding: 10px;
+  }
+
+  .recommender-basket-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+    border-left: 4px solid #990000;
+    padding: 8px 12px;
+    border-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
+
+  .recommender-basket-text {
+    font-size: 0.95rem;
+  }
+
+  .recommender-basket-remove {
+    color: #dc3545;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.2rem;
+    line-height: 1;
+    margin-left: 10px;
+  }
+
+  .recommender-basket-remove:hover {
+    color: #a71d2a;
+  }
+
+  /* Step 3: Filters */
+  .recommender-filter-icon {
+    height: 20px;
+    width: auto;
+    vertical-align: middle;
+  }
+
+  /* Carousel & Results */
+  .recommender-carousel-container {
+    position: relative;
+    margin-top: 20px;
+    margin-bottom: 40px;
+  }
+
+  .recommender-carousel-wrapper {
+    overflow: hidden;
+    padding: 10px 5px;
+  }
+
+  .recommender-carousel-track {
+    display: flex;
+    transition: transform 0.3s ease-in-out;
+    width: 100%;
+  }
+
+  .recommender-carousel-item {
+    flex: 0 0 33.333%;
+    max-width: 33.333%;
+    padding: 0 10px;
+    box-sizing: border-box;
+    display: block;
+  }
+
+  @media (max-width: 992px) {
+    .recommender-carousel-item {
+      flex: 0 0 50%;
+      max-width: 50%;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .recommender-carousel-item {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+  }
+
+  .recommender-control-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #990000;
+    color: white;
+    border: none;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  }
+
+  .recommender-control-prev {
+    left: -15px;
+  }
+
+  .recommender-control-next {
+    right: -15px;
+  }
+
+  .recommender-control-btn:disabled {
+    background-color: #ccc;
+    cursor: default;
+  }
+
+  .recommender-dots-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    gap: 8px;
+  }
+
+  .recommender-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #dee2e6;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .recommender-dot.active {
+    background-color: #990000;
+  }
+
+  .recommender-course-card {
+    height: 100%;
+    border: 1px solid rgba(0, 0, 0, .125);
+    border-radius: 0.25rem;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.2s;
+    position: relative;
+  }
+
+  .recommender-course-card:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  }
+
+  .recommender-card-body {
+    flex: 1 1 auto;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .recommender-similarity-badge {
+    background-color: #990000;
+    color: white;
+    font-size: 0.75rem;
+    padding: 0.25em 0.6em;
+    border-radius: 0.25rem;
+    float: right;
+  }
+
+  .recommender-card-text {
+    flex-grow: 1;
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    line-clamp: 4;
+    overflow: hidden;
+  }
+
+  .recommender-hidden {
+    display: none !important;
+  }
+
+  /* Link styling for course numbers */
+  a.recommender-course-link {
+    color: #990000;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  a.recommender-course-link:hover {
+    text-decoration: underline;
+    color: #7a0000;
+  }
+</style>
+
+<!-- Pass Flask URL generators to JavaScript -->
+<script>
+  const BASE_COURSE_URL_TEMPLATE = "{{ url_for('course_database.route_to_course', course_number='PLACEHOLDER') }}";
+  const STATIC_BASE_URL = "{{ url_for('static', filename='') }}";
+</script>
+
+<div id="recommender-system-container">
+  <br><br><br><br>
+  <h1 class="display-4">DTU Course Recommender</h1>
+  <br>
+  <p class="lead">Find courses similar to ones you've taken or are interested in.</p>
+  <br>
+
+  <!-- Main Input Card -->
+  <div class="row row-cols-1 row-cols-xl-1 g-1">
+    <div class="col">
+      <div class="card bg-light" style="width: 42rem;">
+        <div class="card-header">
+          Recommendation inputs:
+        </div>
+        <!-- Step 1: Input Selection -->
+        <div class="recommender-step-container">
+          <div class="recommender-step-header">Step 1: Input Courses</div>
+          <p class="recommender-step-desc">
+            This recommendation tool works by taking one or more courses as input and then outputting a list of DTU's
+            most similar courses.
+            Choose one of the following 2 ways to input courses:
+          </p>
+
+          <div class="btn-group">
+            <button class="btn recommender-btn-outline-brand recommender-input-option-btn active" id="btn-input-search"
+              onclick="showInputMethod('search')">
+              🔍 Search Courses
+            </button>
+
+            <button class="btn recommender-btn-outline-brand recommender-input-option-btn" id="btn-input-bulk"
+              onclick="showInputMethod('bulk')">
+              📋 Paste List
+            </button>
+          </div>
+
+          <!-- Input Method A: Search -->
+          <div id="input-area-search" class="recommender-input-area active">
+            <label for="recommender-search-input" class="form-label"><strong>Search by Name or ID:</strong></label>
+            <div class="recommender-search-wrapper">
+              <input type="text" class="form-control" id="recommender-search-input"
+                placeholder="Type course ID or name (e.g., '01001')..." autocomplete="off" oninput="searchCourses()">
+              <div id="recommender-autocomplete-list" class="recommender-autocomplete-results"></div>
+            </div>
+            <small class="text-muted">Click a result to add it to your review basket below.</small>
+
+            <!-- Unified Feedback Area for Search -->
+            <div id="recommender-search-feedback" class="recommender-feedback-container"></div>
+          </div>
+
+          <!-- Input Method B: Bulk Paste -->
+          <div id="input-area-bulk" class="recommender-input-area">
+            <label for="recommender-bulk-text" class="form-label"><strong>Paste text containing course
+                codes:</strong></label>
+            <textarea class="form-control" id="recommender-bulk-text" rows="5"
+              placeholder="Any text will work, assuming it contains valid 5-digit course codes."></textarea>
+            <small class="text-muted d-block mt-1"><strong>Copy & paste</strong> any text containing 5-digit course
+              codes into the box above.</small>
+
+            <!-- Extract Button with Red Styling -->
+            <button class="btn btn-sm mt-2" style="background-color: #990000; border-color: #990000; color: white;"
+              onclick="extractCourses()">Extract Codes</button>
+
+            <!-- Unified Feedback Area for Bulk Extraction -->
+            <div id="recommender-bulk-feedback" class="recommender-feedback-container"></div>
+          </div>
+        </div>
+
+        <!-- Course review UI Block -->
+        <ul class="list-group list-group-flush">
+          <!-- Step 2: Review Selection -->
+          <li class="list-group-item"></li>
+          <div class="recommender-step-container">
+            <div class="recommender-step-header">Step 2: Review your selected Courses</div>
+            <p class="recommender-step-desc">
+              Review the list below. These are the courses the system will use to find similarities.
+              You can add more using the tools in Step 1.
+            </p>
+            <div id="recommender-basket" class="recommender-basket-container">
+              <div class="recommender-basket-placeholder">Your basket is empty. Please add courses in Step 1.</div>
+            </div>
+          </div>
+        </ul>
+
+        <!-- Filter UI Block -->
+        <ul class="list-group list-group-flush">
+          <!-- Step 3: Filtering -->
+          <li class="list-group-item"></li>
+          <div class="recommender-step-container">
+            <div class="recommender-step-header">Step 3: Filter Recommendations</div>
+            <p class="recommender-step-desc">
+              Narrow down the results based on your preferences (e.g., Language, Degree Level).
+            </p>
+          </div>
+          <!-- Language Filter -->
+          <li class="list-group-item">
+            <table class="table table-sm table-borderless mb-0">
+              <tbody>
+                <tr>
+                  <th class="align-top" style="width: 9rem" scope="row">Language:</th>
+                  <td class="align-top">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Danish" value="language" id="language1">
+                      <label class="form-check-label" for="language1">🍺Danish</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="English" value="language" id="language2">
+                      <label class="form-check-label" for="language2">🚀English</label>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+
+          <!-- Course Type Filter -->
+          <li class="list-group-item">
+            <table class="table table-sm table-borderless mb-0">
+              <tbody>
+                <tr>
+                  <th class="align-top" style="width: 9rem" scope="row">Type:</th>
+                  <td class="align-top" style="width: 7.8rem">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="beng" value="course_type" id="course_type1"
+                        checked>
+                      <label class="form-check-label" for="course_type1">🐇BEng</label>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="bsc" value="course_type" id="course_type2"
+                        checked>
+                      <label class="form-check-label" for="course_type2">🐢BSc</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="msc" value="course_type" id="course_type3"
+                        checked>
+                      <label class="form-check-label" for="course_type3">👩‍🎓MSc</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="phd" value="course_type" id="course_type4">
+                      <label class="form-check-label" for="course_type4">🧙Ph.D.</label>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+
+          <!-- Season Filter -->
+          <li class="list-group-item">
+            <table class="table table-sm table-borderless mb-0">
+              <tbody>
+                <tr>
+                  <th class="align-top" style="width: 9rem" scope="row">Season:</th>
+                  <td class="align-top" style="width: 8.3rem">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="autumn" value="semester_period"
+                        id="semester_period1">
+                      <label class="form-check-label" for="semester_period1">🍂Autumn</label>
+                    </div>
+                  </td>
+                  <td class="align-top">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="spring" value="semester_period"
+                        id="semester_period2">
+                      <label class="form-check-label" for="semester_period2">🌱Spring</label>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="align-top" style="width: 9rem" scope="row"></th>
+                  <td class="align-top" style="width: 8.3rem">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="jan" value="semester_period"
+                        id="semester_period3">
+                      <label class="form-check-label" for="semester_period3">❄️January</label>
+                    </div>
+                  </td>
+                  <td class="align-top">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="jun" value="semester_period"
+                        id="semester_period4">
+                      <label class="form-check-label" for="semester_period4">☀️June</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="jul" value="semester_period"
+                        id="semester_period5">
+                      <label class="form-check-label" for="semester_period5">⛱️July</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="aug" value="semester_period"
+                        id="semester_period6">
+                      <label class="form-check-label" for="semester_period6">🌻August</label>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+
+          <!-- Schedule Filter -->
+          <li class="list-group-item">
+            <table class="table table-sm table-borderless mb-0">
+              <tbody>
+                <tr>
+                  <th class="align-top" style="width: 9rem" scope="row">Schedule:</th>
+                  <td class="align-top">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Mon 8-12" value="timetable" id="timetable1">
+                      <label class="form-check-label" for="timetable1"><img
+                          src="{{ url_for('static', filename='assets/schedules/Mon_8_12_Schedule.png') }}"
+                          class="recommender-filter-icon"></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Tue 8-12" value="timetable" id="timetable2">
+                      <label class="form-check-label" for="timetable2"><img
+                          src="{{ url_for('static', filename='assets/schedules/Tues_8_12_Schedule.png') }}"
+                          class="recommender-filter-icon"></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Wed 8-12" value="timetable" id="timetable3">
+                      <label class="form-check-label" for="timetable3"><img
+                          src="{{ url_for('static', filename='assets/schedules/Wed_8_12_Schedule.png') }}"
+                          class="recommender-filter-icon"></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Thu 8-12" value="timetable" id="timetable4">
+                      <label class="form-check-label" for="timetable4"><img
+                          src="{{ url_for('static', filename='assets/schedules/Thurs_8_12_Schedule.png') }}"
+                          class="recommender-filter-icon"></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Fri 8-12" value="timetable" id="timetable5">
+                      <label class="form-check-label" for="timetable5"><img
+                          src="{{ url_for('static', filename='assets/schedules/Fri_8_12_Schedule.png') }}"
+                          class="recommender-filter-icon"></label>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="align-top" style="width: 9rem" scope="row"></th>
+                  <td class="align-top">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Mon 13-17" value="timetable"
+                        id="timetable6">
+                      <label class="form-check-label" for="timetable6"><img
+                          src="{{ url_for('static', filename='assets/schedules/Mon_13_17_Schedule.png') }}"
+                          class="recommender-filter-icon"></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Tue 13-17" value="timetable"
+                        id="timetable7">
+                      <label class="form-check-label" for="timetable7"><img
+                          src="{{ url_for('static', filename='assets/schedules/Tues_13_17_Schedule.png') }}"
+                          class="recommender-filter-icon"></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Wed 13-17" value="timetable"
+                        id="timetable8">
+                      <label class="form-check-label" for="timetable8"><img
+                          src="{{ url_for('static', filename='assets/schedules/Wed_13_17_Schedule.png') }}"
+                          class="recommender-filter-icon"></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Thu 13-17" value="timetable"
+                        id="timetable9">
+                      <label class="form-check-label" for="timetable9"><img
+                          src="{{ url_for('static', filename='assets/schedules/Thurs_13_17_Schedule.png') }}"
+                          class="recommender-filter-icon"></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Fri 13-17" value="timetable"
+                        id="timetable10">
+                      <label class="form-check-label" for="timetable10"><img
+                          src="{{ url_for('static', filename='assets/schedules/Fri_13_17_Schedule.png') }}"
+                          class="recommender-filter-icon"></label>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="align-top" style="width: 9rem" scope="row"></th>
+                  <td class="align-top">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="offschedule" value="timetable"
+                        id="timetable11">
+                      <label class="form-check-label" for="timetable11"><img
+                          src="{{ url_for('static', filename='assets/schedules/Multi_Unknown_Schedule.png') }}"
+                          class="recommender-filter-icon"></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Tue 18-22" value="timetable"
+                        id="timetable12">
+                      <label class="form-check-label" for="timetable12"><img
+                          src="{{ url_for('static', filename='assets/schedules/Tues_18_22_Schedule.png') }}"
+                          class="recommender-filter-icon"></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="3-week" value="timetable" id="timetable13">
+                      <label class="form-check-label" for="timetable13">3-week</label>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+
+          <!-- Exam Type Filter -->
+          <li class="list-group-item">
+            <table class="table table-sm table-borderless mb-0">
+              <tbody>
+                <tr>
+                  <th class="align-top" style="width: 9rem" scope="row">Exam type:</th>
+                  <td class="align-top" style="width: 10.6rem">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="written" value="exam_type" id="exam_type1">
+                      <label class="form-check-label" for="exam_type1">✍Written exam</label>
+                    </div>
+                  </td>
+                  <td class="align-top" style="width: 9.2rem">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="oral" value="exam_type" id="exam_type2">
+                      <label class="form-check-label" for="exam_type2">🦜Oral exam</label>
+                    </div>
+                  </td>
+                  <td class="align-top">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="reporthandin" value="exam_type"
+                        id="exam_type3">
+                      <label class="form-check-label" for="exam_type3">📑No exam</label>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+        </ul>
+
+        <!-- Submit Action -->
+        <div class="card-footer pb-0">
+          <button onclick="getRecommendations()" id="recommender-submit-btn" class="btn btn-primary btn-block mb-2"
+            style="background-color: #990000; border-color: #990000;">Get Recommendations</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results Section -->
+  <div id="recommender-results-area" class="mt-5 recommender-hidden">
+
+    <h3 class="mb-3">Recommendations</h3>
+
+    <div class="btn-group mb-3" role="group">
+      <button type="button" class="btn recommender-btn-outline-brand" id="recommender-view-carousel-btn"
+        onclick="switchViewMode('carousel')">🎠 Carousel</button>
+      <button type="button" class="btn recommender-btn-outline-brand active" id="recommender-view-list-btn"
+        onclick="switchViewMode('list')">📜 List</button>
+      <button type="button" class="btn recommender-btn-outline-brand" id="recommender-view-analyzer-btn"
+        onclick="switchViewMode('analyzer')">📊 Analyzer</button>
+    </div>
+
+    <!-- Info box constrained to 42rem -->
+    <div class="alert alert-info" id="recommender-results-info" style="max-width: 39rem;"></div>
+
+    <!-- Carousel View -->
+    <div id="recommender-view-carousel" class="recommender-hidden">
+      <div class="recommender-carousel-container">
+        <button class="recommender-control-btn recommender-control-prev" onclick="moveCarousel(-1)">&#10094;</button>
+        <div class="recommender-carousel-wrapper">
+          <div class="recommender-carousel-track" id="recommender-carousel-track"></div>
+        </div>
+        <button class="recommender-control-btn recommender-control-next" onclick="moveCarousel(1)">&#10095;</button>
+        <div class="recommender-dots-container" id="recommender-carousel-dots"></div>
+        <div class="text-center text-muted mt-2" id="recommender-carousel-counter"></div>
+      </div>
+    </div>
+
+    <!-- List View (Constrained width) -->
+    <div id="recommender-view-list" style="max-width: 36rem;">
+      <div class="row row-cols-1 g-3" id="recommender-list-container"></div>
+      <div class="text-center mt-4">
+        <button id="recommender-load-more-btn" class="btn btn-outline-dark" onclick="loadMoreListResults()">Load
+          More</button>
+      </div>
+    </div>
+
+    <!-- Analyzer View (Empty container populated by JS) -->
+    <div id="recommender-view-analyzer" class="recommender-hidden">
+      <section class="row row-cols-1 row-cols-xxl-3 g-4" id="recommender-analyzer-container">
+        <!-- Content injected by JS -->
+      </section>
+      <div class="text-center mt-4">
+        <button id="recommender-analyzer-load-more-btn" class="btn btn-outline-dark"
+          onclick="loadMoreAnalyzerResults()">Load More</button>
+      </div>
+    </div>
+
+  </div>
+  <div id="recommender-error-msg" class="alert alert-danger mt-4 recommender-hidden"></div>
+</div>
+
+<script>
+  // Changed from Set to Map to store {ID -> Name}
+  let selectedCourses = new Map();
+  let allRecommendations = [];
+  let searchTimeout = null;
+
+  // View State - Default is now 'list'
+  let currentViewMode = 'list';
+
+  // List View State
+  let listDisplayedCount = 0;
+  const LIST_INCREMENT = 10;
+
+  // Analyzer View State
+  let analyzerDisplayedCount = 0;
+  const ANALYZER_INCREMENT = 30;
+
+  // Carousel State
+  let carouselState = {
+    currentIndex: 0,
+    itemsPerView: 3
+  };
+
+  // Helper to generate internal URL
+  function getCourseUrl(courseId) {
+    return BASE_COURSE_URL_TEMPLATE.replace('PLACEHOLDER', courseId);
+  }
+
+  // --- Step 1: Input Method Toggling ---
+  function showInputMethod(method) {
+    const searchArea = document.getElementById('input-area-search');
+    const bulkArea = document.getElementById('input-area-bulk');
+    const searchBtn = document.getElementById('btn-input-search');
+    const bulkBtn = document.getElementById('btn-input-bulk');
+
+    if (method === 'search') {
+      searchArea.classList.add('active');
+      bulkArea.classList.remove('active');
+      searchBtn.classList.add('active');
+      bulkBtn.classList.remove('active');
+    } else {
+      searchArea.classList.remove('active');
+      bulkArea.classList.add('active');
+      searchBtn.classList.remove('active');
+      bulkBtn.classList.add('active');
+    }
+  }
+
+  // --- Search & Basket Logic ---
+
+  function searchCourses() {
+    const query = document.getElementById('recommender-search-input').value;
+    if (searchTimeout) clearTimeout(searchTimeout);
+
+    if (query.length < 1) {
+      document.getElementById('recommender-autocomplete-list').classList.remove('show');
+      return;
+    }
+
+    searchTimeout = setTimeout(() => {
+      fetch(`/search_courses?query=${encodeURIComponent(query)}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) displayAutocompleteResults(data.results);
+        })
+        .catch(error => console.error('Search error:', error));
+    }, 10);
+  }
+
+  function displayAutocompleteResults(results) {
+    const container = document.getElementById('recommender-autocomplete-list');
+    if (results.length === 0) {
+      container.classList.remove('show');
+      return;
+    }
+
+    let html = '';
+    let count = 0;
+    results.forEach(course => {
+      if (selectedCourses.has(course.course_id)) return;
+      if (count >= 10) return;
+
+      const safeName = course.name.replace(/'/g, "\\'");
+
+      html += `
+        <div class="recommender-autocomplete-item" onclick="addCourseToBasket('${course.course_id}', '${safeName}')">
+          <span class="recommender-match-id">${course.course_id}</span> ${course.name}
+        </div>
+      `;
+      count++;
+    });
+
+    if (html === '') {
+      container.classList.remove('show');
+    } else {
+      container.innerHTML = html;
+      container.classList.add('show');
+    }
+  }
+
+  function addCourseToBasket(courseId, courseName) {
+    // Safety check: If course is already in basket, stop immediately.
+    if (selectedCourses.has(courseId)) return;
+
+    selectedCourses.set(courseId, courseName);
+    updateBasketDisplay();
+
+    document.getElementById('recommender-search-input').value = '';
+
+    // Clear innerHTML immediately to stop "Enter" spamming
+    const listContainer = document.getElementById('recommender-autocomplete-list');
+    listContainer.classList.remove('show');
+    listContainer.innerHTML = '';
+
+    // -- Unified Feedback: Append to search feedback list --
+    const feedbackDiv = document.getElementById('recommender-search-feedback');
+    const newItemHTML = `
+      <div class="recommender-feedback-item">
+        <span>Added <strong>${courseId}</strong> - ${courseName}</span>
+        <span class="recommender-feedback-icon">✓</span>
+      </div>
+    `;
+    feedbackDiv.insertAdjacentHTML('afterbegin', newItemHTML);
+  }
+
+  function removeCourseFromBasket(courseId) {
+    selectedCourses.delete(courseId);
+    updateBasketDisplay();
+  }
+
+  function updateBasketDisplay() {
+    const basket = document.getElementById('recommender-basket');
+    if (selectedCourses.size === 0) {
+      basket.innerHTML = '<div class="recommender-basket-placeholder">Your basket is empty. Please add courses in Step 1.</div>';
+      return;
+    }
+
+    let html = '';
+    selectedCourses.forEach((name, id) => {
+      html += `
+        <div class="recommender-basket-item">
+          <span class="recommender-basket-text"><strong>${id}</strong> - ${name}</span>
+          <span class="recommender-basket-remove" onclick="removeCourseFromBasket('${id}')" title="Remove">&times;</span>
+        </div>
+      `;
+    });
+    basket.innerHTML = html;
+  }
+
+  // --- Bulk Extract Logic ---
+
+  function extractCourses() {
+    const text = document.getElementById('recommender-bulk-text').value;
+    const feedbackDiv = document.getElementById('recommender-bulk-feedback');
+
+    if (!text.trim()) {
+      feedbackDiv.innerHTML = '<span class="text-danger small">Please paste text first.</span>';
+      return Promise.resolve(false);
+    }
+
+    return fetch('/extract_courses', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: text })
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          if (data.courses.length === 0) {
+            feedbackDiv.innerHTML = '<span class="text-danger small">No valid course codes found.</span>';
+            return false;
+          } else {
+            data.courses.forEach(c => {
+              const name = c.name || "Course Title";
+              selectedCourses.set(c.course_id, name);
+            });
+            updateBasketDisplay();
+
+            const extractedCount = data.courses.length;
+            const courseLabel = extractedCount === 1 ? 'course' : 'courses';
+            let html = `<div class="text-success font-weight-bold mb-2 small">Successfully extracted ${extractedCount} ${courseLabel}:</div>`;
+
+            data.courses.forEach(c => {
+              html += `
+                <div class="recommender-feedback-item">
+                  <span><strong>${c.course_id}</strong> - ${c.name || 'Unknown'}</span>
+                  <span class="recommender-feedback-icon">✓</span>
+                </div>
+              `;
+            });
+            feedbackDiv.innerHTML = html;
+            return true;
+          }
+        } else {
+          feedbackDiv.innerHTML = `<span class="text-danger small">${data.error}</span>`;
+          return false;
+        }
+      })
+      .catch(error => {
+        feedbackDiv.innerHTML = `<span class="text-danger small">Error: ${error}</span>`;
+        return false;
+      });
+  }
+
+  // --- Recommendation Logic ---
+
+  function getSelectedFilters() {
+    let filters = {};
+    function addFilter(categoryKey, idPrefix, count) {
+      let selected = [];
+      for (let i = 1; i <= count; i++) {
+        const el = document.getElementById(idPrefix + i);
+        if (el && el.checked) {
+          selected.push(el.name);
+        }
+      }
+      if (selected.length > 0) {
+        filters[categoryKey] = selected;
+      }
+    }
+    addFilter('language', 'language', 2);
+    addFilter('course_type', 'course_type', 4);
+    addFilter('semester_period', 'semester_period', 6);
+    addFilter('timetable', 'timetable', 13);
+    addFilter('exam_type', 'exam_type', 3);
+    return filters;
+  }
+
+  function getRecommendations() {
+    const filters = getSelectedFilters();
+    let courseIds = Array.from(selectedCourses.keys());
+
+    const errorDiv = document.getElementById('recommender-error-msg');
+    const resultsArea = document.getElementById('recommender-results-area');
+
+    errorDiv.classList.add('recommender-hidden');
+    resultsArea.classList.add('recommender-hidden');
+
+    if (courseIds.length === 0) {
+      errorDiv.textContent = 'Please select at least one course in Step 1 first.';
+      errorDiv.classList.remove('recommender-hidden');
+      return;
+    }
+
+    const btn = document.getElementById('recommender-submit-btn');
+    const originalText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Analyzing...';
+
+    fetch('/recommend', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        course_ids: courseIds,
+        n_recommendations: 9001,  // It's over 9000!
+        filters: filters
+      })
+    })
+      .then(response => response.json())
+      .then(data => {
+        btn.disabled = false;
+        btn.textContent = originalText;
+
+        if (data.success) {
+          allRecommendations = data.recommendations;
+
+          const inputCount = data.input_courses.length;
+          const courseLabel = inputCount === 1 ? 'course' : 'courses';
+
+          const infoDiv = document.getElementById('recommender-results-info');
+          infoDiv.innerHTML = `
+            <strong>Found ${allRecommendations.length} recommendations</strong> based on ${inputCount} input ${courseLabel}.
+          `;
+
+          resultsArea.classList.remove('recommender-hidden');
+
+          // Reset all views
+          listDisplayedCount = 0;
+          analyzerDisplayedCount = 0;
+          carouselState.currentIndex = 0;
+
+          if (currentViewMode === 'carousel') {
+            initCarousel();
+          } else if (currentViewMode === 'list') {
+            renderList();
+          } else {
+            renderAnalyzer();
+          }
+        } else {
+          errorDiv.textContent = data.error;
+          errorDiv.classList.remove('recommender-hidden');
+        }
+      })
+      .catch(error => {
+        btn.disabled = false;
+        btn.textContent = originalText;
+        errorDiv.textContent = 'Network Error: ' + error;
+        errorDiv.classList.remove('recommender-hidden');
+      });
+  }
+
+  // --- View Switching ---
+
+  function switchViewMode(mode) {
+    currentViewMode = mode;
+
+    const carouselBtn = document.getElementById('recommender-view-carousel-btn');
+    const listBtn = document.getElementById('recommender-view-list-btn');
+    const analyzerBtn = document.getElementById('recommender-view-analyzer-btn');
+
+    const carouselDiv = document.getElementById('recommender-view-carousel');
+    const listDiv = document.getElementById('recommender-view-list');
+    const analyzerDiv = document.getElementById('recommender-view-analyzer');
+
+    // Reset buttons
+    carouselBtn.classList.remove('active');
+    listBtn.classList.remove('active');
+    analyzerBtn.classList.remove('active');
+
+    // Hide all divs
+    carouselDiv.classList.add('recommender-hidden');
+    listDiv.classList.add('recommender-hidden');
+    analyzerDiv.classList.add('recommender-hidden');
+
+    if (mode === 'carousel') {
+      carouselBtn.classList.add('active');
+      carouselDiv.classList.remove('recommender-hidden');
+      initCarousel();
+    } else if (mode === 'list') {
+      listBtn.classList.add('active');
+      listDiv.classList.remove('recommender-hidden');
+      if (listDisplayedCount === 0) renderList();
+    } else if (mode === 'analyzer') {
+      analyzerBtn.classList.add('active');
+      analyzerDiv.classList.remove('recommender-hidden');
+      if (analyzerDisplayedCount === 0) renderAnalyzer();
+    }
+  }
+
+  // --- Standard Card HTML (Carousel & List) ---
+  function createCardHTML(course, index) {
+    const courseUrl = getCourseUrl(course.course_id);
+    return `
+      <div class="recommender-course-card">
+        <div class="recommender-card-body">
+          <div class="mb-2">
+            <a href="${courseUrl}" class="h5 recommender-course-link">${course.course_id}</a>
+            <span class="recommender-similarity-badge">Match: ${course.similarity}</span>
+          </div>
+          <h6 class="card-title font-weight-bold">${course.name}</h6>
+          <p class="card-subtitle text-muted mb-2 small">
+            ${course.ects} ECTS | ${course.institute}
+          </p>
+          <div class="recommender-card-text">
+            ${course.description || 'No description available.'}
+          </div>
+          <a href="${courseUrl}" class="btn btn-sm recommender-btn-brand mt-auto">View Course ↗</a>
+        </div>
+      </div>
+    `;
+  }
+
+  // --- Analyzer Card HTML Helper ---
+  function createAnalyzerCardHTML(course) {
+    const courseUrl = getCourseUrl(course.course_id);
+
+    // Handle potential missing data gracefully
+    const responsibleImg = (course.responsible && course.responsible !== "NO_DATA")
+      ? course.responsible
+      : `${STATIC_BASE_URL}assets/brand/blank_photo.png`;
+
+    const scheduleImg = (course.season === "Fall" || course.season === "Spring") && course.schedule
+      ? `<img src="${STATIC_BASE_URL}assets/schedules/${course.schedule}_Schedule.png">`
+      : '';
+
+    const isDanish = course.language === "Danish";
+    const votes = course.votes || 0;
+
+    const ratingTier = course.rating_tier || '0';
+    const workloadTier = course.workload_tier || '0';
+
+    let voteDisplay = '';
+    if (votes >= 1 && votes <= 9) {
+      voteDisplay = `<small class="fs-6 text-danger" title="Warning: Low sample size (${votes} evaluations)">(${votes})</small>`;
+    } else {
+      voteDisplay = `<small class="fs-6 text-muted" title="${votes} evaluations">(${votes})</small>`;
+    }
+
+    const starWarning = (votes >= 1 && votes <= 9)
+      ? `<small class="fs-6 text-danger" title="Warning: Low sample size (${votes} evaluations)">(!)</small>`
+      : '';
+
+    return `
+        <div class="col">
+          <div class="card h-100" style="max-width: 26rem; margin: 0 auto;">
+            <a href="${courseUrl}" class="stretched-link"></a>
+            <img src="${STATIC_BASE_URL}assets/colors/red.png" width="100%" height="20"
+              class="d-inline-block align-top" alt="red-color" loading="lazy"
+              style="filter: invert(0) grayscale(0%) brightness(100%)"/>
+            <div class="card-body pb-0">
+              <h6 class="card-title mb-0 ml-3 mr-0">${course.course_id} ${course.name}</h6>
+            </div>
+            <div class="card-footer bg-white border-top-0">
+              <ul class="list-group list-group-flush mt-0 pt-0">
+                <li class="list-group-item mt-0 pt-0">
+                  <table class="table table-sm table-borderless mt-0 mb-3">
+                    <tbody>
+                      <tr>
+                        <th style="width: 7%" scope="row"></th>
+                        <td style="width: 8%" class="align-top"></td>
+                        <td style="width: 14%" class="align-top"></td>
+                        <th style="width: 6%" class="align-top"></th>
+                        <td style="width: 26%" class="align-top"></td>
+                        <td style="width: 4%" class="align-top"></td>
+                        <td style="width: 35%" class="align-top"></td>
+                      </tr>
+                      <tr>
+                        <th scope="row" colspan="5">
+                          <hr class="bg-secondary border-2 border-top border-secondary mb-0 mt-0">
+                        </th>
+                        <th></th>
+                        <td rowspan="6">
+                          <img class="img" alt="Responsible" src="${responsibleImg}" width="100%">
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">🎓</th>
+                        <td class="align-top" colspan="2"><small>${course.course_type || ''}
+                          ${isDanish ? '<small class="fs-6 text-muted"> (DK)</small>' : ''}</small>
+                        </td>
+                        <th>🕗</th>
+                        <td class="align-top" colspan="2"><small>${course.season || ''}</small> ${scheduleImg}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">🏅</th>
+                        <td class="align-top" colspan="2"><small>${course.ects || ''} pts</small></td>
+                        <th>📚</th>
+                        <td class="align-top" colspan="2"><small>${course.exam || ''}</small></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">👩‍🎓</th>
+                        <td class="align-top" colspan="2"><small>${course.signups || '0'} ppl</small></td>
+                        <th>❌</th>
+                        <td class="align-top" colspan="2"><small>${course.grade || ''} <small class="fs-6 text-muted">(${course.fail || 0}% fail)</small></small></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">⭐</th>
+                        <td class="align-top" colspan="2"><small>${course.rating || ''}${starWarning} stars <br></small></td>
+                        <th>☠️</th>
+                        <td class="align-top" colspan="2"><small>${course.workload || ''} workload</small></td>
+                      </tr>
+                      <tr>
+                        <th scope="row" colspan="5">
+                          <hr class="bg-secondary border-2 border-top border-secondary mb-0 mt-0">
+                        </th>
+                        <th></th>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <img src="${STATIC_BASE_URL}assets/ratings/${ratingTier}-star.png" width="100%">
+                        </td>
+                        <td style="text-align: center; width: 8%"><small>${voteDisplay}</small><br></td>
+                        <td>
+                          <img src="${STATIC_BASE_URL}assets/ratings/${workloadTier}-skull.png" width="100%">
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        `;
+  }
+
+  function renderAnalyzer() {
+    const container = document.getElementById('recommender-analyzer-container');
+    const loadMoreBtn = document.getElementById('recommender-analyzer-load-more-btn');
+
+    if (analyzerDisplayedCount === 0) container.innerHTML = '';
+
+    const nextCount = Math.min(analyzerDisplayedCount + ANALYZER_INCREMENT, allRecommendations.length);
+    const itemsToAdd = allRecommendations.slice(analyzerDisplayedCount, nextCount);
+
+    let html = '';
+    itemsToAdd.forEach(course => {
+      html += createAnalyzerCardHTML(course);
+    });
+
+    container.insertAdjacentHTML('beforeend', html);
+    analyzerDisplayedCount = nextCount;
+
+    if (analyzerDisplayedCount >= allRecommendations.length) {
+      loadMoreBtn.style.display = 'none';
+    } else {
+      loadMoreBtn.style.display = 'inline-block';
+      const remaining = allRecommendations.length - analyzerDisplayedCount;
+      loadMoreBtn.textContent = `Load More (${remaining} remaining)`;
+    }
+  }
+
+  function loadMoreAnalyzerResults() {
+    renderAnalyzer();
+  }
+
+  // --- Carousel Logic ---
+
+  function initCarousel() {
+    updateItemsPerView();
+    renderCarouselItems();
+    createCarouselDots();
+    updateCarouselPosition();
+    window.addEventListener('resize', handleCarouselResize);
+  }
+
+  function updateItemsPerView() {
+    const width = window.innerWidth;
+    if (width <= 768) carouselState.itemsPerView = 1;
+    else if (width <= 992) carouselState.itemsPerView = 2;
+    else carouselState.itemsPerView = 3;
+  }
+
+  function handleCarouselResize() {
+    const oldItems = carouselState.itemsPerView;
+    updateItemsPerView();
+    if (oldItems !== carouselState.itemsPerView) {
+      carouselState.currentIndex = 0;
+      createCarouselDots();
+      updateCarouselPosition();
+    }
+  }
+
+  function renderCarouselItems() {
+    const track = document.getElementById('recommender-carousel-track');
+    let html = '';
+    allRecommendations.forEach((course, index) => {
+      html += `<div class="recommender-carousel-item">${createCardHTML(course, index)}</div>`;
+    });
+    track.innerHTML = html;
+  }
+
+  function createCarouselDots() {
+    const container = document.getElementById('recommender-carousel-dots');
+    const totalPages = Math.ceil(allRecommendations.length / carouselState.itemsPerView);
+
+    if (totalPages > 15) {
+      container.innerHTML = '';
+      return;
+    }
+
+    let html = '';
+    for (let i = 0; i < totalPages; i++) {
+      html += `<div class="recommender-dot ${i === 0 ? 'active' : ''}" onclick="goToCarouselPage(${i})"></div>`;
+    }
+    container.innerHTML = html;
+  }
+
+  function moveCarousel(direction) {
+    const totalPages = Math.ceil(allRecommendations.length / carouselState.itemsPerView);
+    carouselState.currentIndex += direction;
+
+    if (carouselState.currentIndex < 0) carouselState.currentIndex = 0;
+    if (carouselState.currentIndex >= totalPages) carouselState.currentIndex = totalPages - 1;
+
+    updateCarouselPosition();
+  }
+
+  function goToCarouselPage(index) {
+    carouselState.currentIndex = index;
+    updateCarouselPosition();
+  }
+
+  function updateCarouselPosition() {
+    const track = document.getElementById('recommender-carousel-track');
+    const dots = document.querySelectorAll('.recommender-dot');
+    const counter = document.getElementById('recommender-carousel-counter');
+
+    const itemWidth = 100 / carouselState.itemsPerView;
+    const translateX = -(carouselState.currentIndex * itemWidth * carouselState.itemsPerView);
+
+    track.style.transform = `translateX(${translateX}%)`;
+
+    dots.forEach((dot, idx) => {
+      dot.classList.toggle('active', idx === carouselState.currentIndex);
+    });
+
+    const prevBtn = document.querySelector('.recommender-control-prev');
+    const nextBtn = document.querySelector('.recommender-control-next');
+    const totalPages = Math.ceil(allRecommendations.length / carouselState.itemsPerView);
+
+    if (prevBtn) prevBtn.disabled = carouselState.currentIndex === 0;
+    if (nextBtn) nextBtn.disabled = carouselState.currentIndex >= totalPages - 1;
+
+    const start = (carouselState.currentIndex * carouselState.itemsPerView) + 1;
+    const end = Math.min((carouselState.currentIndex + 1) * carouselState.itemsPerView, allRecommendations.length);
+    if (counter) counter.textContent = `Showing ${start}-${end} of ${allRecommendations.length}`;
+  }
+
+  // --- List View Logic ---
+
+  function renderList() {
+    const container = document.getElementById('recommender-list-container');
+    const loadMoreBtn = document.getElementById('recommender-load-more-btn');
+
+    if (listDisplayedCount === 0) container.innerHTML = '';
+
+    const nextCount = Math.min(listDisplayedCount + LIST_INCREMENT, allRecommendations.length);
+    const itemsToAdd = allRecommendations.slice(listDisplayedCount, nextCount);
+
+    let html = '';
+    itemsToAdd.forEach((course, index) => {
+      html += `<div class="col">${createCardHTML(course, listDisplayedCount + index)}</div>`;
+    });
+
+    container.insertAdjacentHTML('beforeend', html);
+    listDisplayedCount = nextCount;
+
+    if (listDisplayedCount >= allRecommendations.length) {
+      loadMoreBtn.style.display = 'none';
+    } else {
+      loadMoreBtn.style.display = 'inline-block';
+      const remaining = allRecommendations.length - listDisplayedCount;
+      loadMoreBtn.textContent = `Load More (${remaining} remaining)`;
+    }
+  }
+
+  function loadMoreListResults() {
+    renderList();
+  }
+
+  // Close autocomplete when clicking outside
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('.recommender-search-wrapper')) {
+      document.getElementById('recommender-autocomplete-list').classList.remove('show');
+    }
+  });
+
+  // --- Event Listeners for Input ---
+
+  // Search Input: Enter selects first result, Ctrl+Enter selects AND submits
+  document.getElementById('recommender-search-input').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+
+      // 1. Select the item
+      const firstItem = document.querySelector('.recommender-autocomplete-item');
+      if (firstItem) {
+        firstItem.click();
+      }
+
+      // 2. If Ctrl is held, submit immediately
+      if (e.ctrlKey) {
+        // Small timeout to allow the click() to process adding the course to the basket
+        setTimeout(() => {
+          getRecommendations();
+        }, 100);
+      }
+    }
+  });
+
+  // Bulk Input: Ctrl+Enter extracts AND submits
+  document.getElementById('recommender-bulk-text').addEventListener('keydown', function (e) {
+    if (e.ctrlKey && e.key === 'Enter') {
+      e.preventDefault();
+      // Call extract, wait for it to finish, then recommend if successful
+      extractCourses().then((success) => {
+        if (success) {
+          getRecommendations();
+        }
+      });
+    }
+  });
+
+</script>
+{% endblock %}

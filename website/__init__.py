@@ -32,4 +32,7 @@ def create_app():
     from .course_database import course_database
     app.register_blueprint(course_database, url_prefix='/')
 
+    from .recommender import recommender
+    app.register_blueprint(recommender, url_prefix='/')
+
     return app

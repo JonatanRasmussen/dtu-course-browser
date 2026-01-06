@@ -1,9 +1,9 @@
+import json
 import pandas as pd
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.decomposition import LatentDirichletAllocation
-from sentence_transformers import SentenceTransformer
 import nltk
 from nltk.corpus import stopwords
 import re
@@ -11,7 +11,7 @@ import os
 import pickle
 from website.global_constants.file_name_consts import FileNameConsts
 from website.global_constants.info_consts import InfoConsts
-
+from website.global_constants.website_consts import WebsiteConsts
 
 class CourseRecommender:
     """ Text Similarity with Embeddings """
@@ -20,12 +20,20 @@ class CourseRecommender:
     FILTERED_DF_CACHE_FILE = 'recommended_filtered_courses_df_cache.pkl'
 
     def __init__(self):
-        print(f"Loading sentence transformer model: '{CourseRecommender.SENTENCE_TRANSFORMER_MODEL}'")
-        self.model = SentenceTransformer('all-MiniLM-L6-v2')
+        self._model = None  # Lazy loaded - only loads when needed
         self.course_embeddings = None
         print(f"Loading course data from {FileNameConsts.name_of_pkl}.pkl")
         self.courses_df = CourseRecommender.load_course_data_df()
         print(f"Loaded {len(self.courses_df)} courses")
+
+    @property
+    def model(self):
+        """Lazy load the SentenceTransformer model only when needed"""
+        if self._model is None:
+            from sentence_transformers import SentenceTransformer  # Lazy import
+            print(f"Loading sentence transformer model: '{CourseRecommender.SENTENCE_TRANSFORMER_MODEL}'")
+            self._model = SentenceTransformer(CourseRecommender.SENTENCE_TRANSFORMER_MODEL)
+        return self._model
 
     @staticmethod
     def load_course_data_df():
@@ -39,11 +47,22 @@ class CourseRecommender:
             df = pd.read_pickle(name_and_path_of_pkl)
         return df
 
+    def _is_pythonanywhere(self):
+        """Detect if running on PythonAnywhere"""
+        return os.path.exists(FileNameConsts.pythonanywherecom_path_of_pkl)
+
+    def _get_cache_dir(self):
+        """Get the appropriate cache directory"""
+        if self._is_pythonanywhere():
+            return FileNameConsts.pythonanywherecom_path_of_pkl
+        return FileNameConsts.path_of_pkl
+
     def save_embeddings_cache(self):
         """Save embeddings and filtered dataframe to cache files"""
         try:
-            embeddings_path = self.EMBEDDINGS_CACHE_FILE
-            df_path = self.FILTERED_DF_CACHE_FILE
+            cache_dir = self._get_cache_dir()
+            embeddings_path = os.path.join(cache_dir, self.EMBEDDINGS_CACHE_FILE)
+            df_path = os.path.join(cache_dir, self.FILTERED_DF_CACHE_FILE)
 
             print(f"Saving embeddings cache to {embeddings_path}")
             with open(embeddings_path, 'wb') as f:
@@ -61,11 +80,14 @@ class CourseRecommender:
     def load_embeddings_cache(self):
         """Load embeddings and filtered dataframe from cache files"""
         try:
-            embeddings_path = self.EMBEDDINGS_CACHE_FILE
-            df_path = self.FILTERED_DF_CACHE_FILE
+            cache_dir = self._get_cache_dir()
+            embeddings_path = os.path.join(cache_dir, self.EMBEDDINGS_CACHE_FILE)
+            df_path = os.path.join(cache_dir, self.FILTERED_DF_CACHE_FILE)
 
             if not os.path.exists(embeddings_path) or not os.path.exists(df_path):
-                print("Cache files not found. Will create new embeddings.")
+                print(f"Cache files not found at {cache_dir}")
+                print(f"  Looking for: {embeddings_path}")
+                print(f"  Looking for: {df_path}")
                 return False
 
             print(f"Loading embeddings cache from {embeddings_path}")
@@ -118,9 +140,31 @@ class CourseRecommender:
         """Fit the model using combined course text
 
         Args:
-            force_recreate (bool): If True, recreate embeddings even if cache exists
+            force_recreate (bool): If True, recreate embeddings even if cache exists.
+                                   Ignored on PythonAnywhere for safety.
         """
-        # Try to load from cache first (unless force_recreate is True)
+        # On PythonAnywhere, always try cache first and refuse to create new embeddings
+        if self._is_pythonanywhere():
+            print("Running on PythonAnywhere - cache-only mode enabled")
+            if force_recreate:
+                print("Warning: force_recreate=True ignored on PythonAnywhere to protect CPU quota")
+
+            if self.load_embeddings_cache():
+                return  # Successfully loaded from cache
+
+            # Cache not found on PythonAnywhere - this is a critical error
+            cache_dir = self._get_cache_dir()
+            raise RuntimeError(
+                f"CRITICAL: Cache files not found on PythonAnywhere!\n"
+                f"Expected location: {cache_dir}\n"
+                f"Expected files:\n"
+                f"  - {self.EMBEDDINGS_CACHE_FILE}\n"
+                f"  - {self.FILTERED_DF_CACHE_FILE}\n\n"
+                f"Please generate cache locally and upload these files to PythonAnywhere.\n"
+                f"To generate cache locally, run: python recommend_courses.py"
+            )
+
+        # Local development - normal behavior
         if not force_recreate and self.load_embeddings_cache():
             return  # Successfully loaded from cache
 
@@ -136,7 +180,7 @@ class CourseRecommender:
         self.courses_df = self.courses_df.iloc[non_empty_indices].reset_index(drop=True)
         filtered_texts = [combined_texts[i] for i in non_empty_indices]
         print("Creating embeddings...")
-        # Create embeddings
+        # Create embeddings - this is where self.model is accessed, triggering lazy load
         self.course_embeddings = self.model.encode(filtered_texts, show_progress_bar=True)
         print(f"Created embeddings for {len(filtered_texts)} courses")
 
@@ -145,9 +189,14 @@ class CourseRecommender:
 
     def clear_cache(self):
         """Delete cache files to force recreation of embeddings"""
+        if self._is_pythonanywhere():
+            print("Warning: Refusing to clear cache on PythonAnywhere to protect CPU quota")
+            return
+
         try:
-            embeddings_path = self.get_cache_path(self.EMBEDDINGS_CACHE_FILE)
-            df_path = self.get_cache_path(self.FILTERED_DF_CACHE_FILE)
+            cache_dir = self._get_cache_dir()
+            embeddings_path = os.path.join(cache_dir, self.EMBEDDINGS_CACHE_FILE)
+            df_path = os.path.join(cache_dir, self.FILTERED_DF_CACHE_FILE)
 
             if os.path.exists(embeddings_path):
                 os.remove(embeddings_path)
@@ -248,33 +297,112 @@ class CourseRecommender:
             print()
 
 
-# Usage
-def main():
-    # Initialize recommender
-    recommender = CourseRecommender()
+class FilterRecommendations:
+    """Filtering methods for CourseRecommender"""
+    def __init__(self):
+        self.recommender = FilterRecommendations.initialize_course_recommender()
+        self.filter_dct = FilterRecommendations.load_dct_from_json_file()
+        print(f"Loaded filter dictionary with categories: {list(self.filter_dct.keys())}")
 
-    # Fit the model (will use cache if available)
-    print("\nFitting the model...")
-    recommender.fit()
+    def apply_filters(self, filter_criteria):
+        """
+        Apply filters to get a set of courses matching criteria.
+        Args:
+            filter_criteria (dict): Dictionary with format: {"category_name": ["value1", "value2"], "another_category": ["value3"]}
+            Example: {"language": ["eng"], "gradetype": ["passfail", "sevenstep"]}
+        Returns:
+            set: Set of course IDs matching all filter criteria
+        """
+        if not filter_criteria:
+            return set(self.recommender.courses_df['COURSE'].tolist())  # No filters applied - return all courses
+        temp_dct = {}
+        filters_found = 0
+        for category, values in filter_criteria.items():  # Build temporary dictionary with courses for each category
+            if category not in self.filter_dct:
+                print(f"Warning: Category '{category}' not found in filter dictionary")
+                continue
+            # Collect courses for all values in this category
+            category_courses = []
+            for value in values:
+                if value in self.filter_dct[category]:
+                    filters_found += 1
+                    category_courses.extend(self.filter_dct[category][value])
+                else:
+                    print(f"Warning: Value '{value}' not found in category '{category}'")
+            if category_courses:
+                temp_dct[category] = category_courses
+        if not temp_dct:
+            print("No valid filters found, returning empty set")
+            return set()
+        courses_to_display = None
+        for category, course_list in temp_dct.items():  # Intersect all category course lists
+            course_set = set(course_list)
+            if courses_to_display is None:
+                courses_to_display = course_set
+            else:
+                courses_to_display = courses_to_display.intersection(course_set)
+        print(f"Applied {filters_found} filters across {len(temp_dct)} categories, found {len(courses_to_display)} matching courses")
+        return courses_to_display if courses_to_display else set()
 
-    # To force recreation of embeddings, use:
-    # recommender.fit(force_recreate=True)
+    def get_filtered_recommendations(self, input_course_ids, filter_criteria=None, n_recommendations=10):
+        """ Get course recommendations with optional filtering.
+        Args:
+            input_course_ids (list): List of course IDs to base recommendations on
+            filter_criteria (dict): Optional filter criteria (same format as apply_filters)
+            n_recommendations (int): Number of recommendations to return
+        Returns:
+            pd.DataFrame: Filtered and sorted recommendations
+        """
+        all_recommendations = self.recommender.recommend_courses(input_course_ids, return_all_ranked=True)  # Get all recommendations (ranked)
+        if not filter_criteria:
+            return all_recommendations.head(n_recommendations)
+        allowed_courses = self.apply_filters(filter_criteria)
+        if not allowed_courses:
+            print("No courses match the filter criteria")
+            return pd.DataFrame()
+        filtered_recommendations = all_recommendations[all_recommendations['COURSE'].isin(allowed_courses)]
+        return filtered_recommendations.head(n_recommendations)  # Filter recommendations to only include allowed courses
 
-    # To clear cache:
-    # recommender.clear_cache()
+    def get_available_filter_options(self):
+        """Get all available filter categories and their values, return dct of categories and their possible values"""
+        filter_options = {}
+        for category, values_dict in self.filter_dct.items():
+            filter_options[category] = list(values_dict.keys())
+        return filter_options
 
-    # Get recommendations based on the math courses from your sample
-    print("\nGetting recommendations for math courses 01001 and 01002:")
-    recommendations = recommender.recommend_courses(['01001', '01002'], n_recommendations=5)
+    def get_courses_by_filters(self, filter_criteria):
+        """ Get course details for courses matching filter criteria (without using recommender).
+        Args: filter_criteria (dict): Filter criteria dictionary
+        Returns: pd.DataFrame: DataFrame with matching courses """
+        matching_course_ids = self.apply_filters(filter_criteria)
+        if not matching_course_ids:
+            return pd.DataFrame()
+        # Get course details from recommender's dataframe
+        matching_courses = self.recommender.courses_df[self.recommender.courses_df['COURSE'].isin(matching_course_ids)]
+        return matching_courses
 
-    # Display results nicely
-    recommender.display_recommendations(recommendations)
+    @staticmethod
+    def initialize_course_recommender():
+        recommender = CourseRecommender()
+        recommender.fit()
+        return recommender
 
-    # You can also try single course recommendations
-    print("\nRecommendations based on just 01001:")
-    single_recs = recommender.recommend_courses(['01001'], n_recommendations=3)
-    recommender.display_recommendations(single_recs, show_description=False)
-
-
-if __name__ == "__main__":
-    main()
+    @staticmethod
+    def load_dct_from_json_file():
+        """Load in dictionary from json file"""
+        file_name = WebsiteConsts.json_filter_dct
+        try:
+            pythonanywhere_dct_name = FileNameConsts.pythonanywherecom_path_of_pkl + file_name + '.json'
+            with open(pythonanywhere_dct_name) as f:
+                dct = json.load(f)
+            return dct
+        except FileNotFoundError:
+            try:
+                dct_name = FileNameConsts.path_of_pkl + file_name + '.json'
+                with open(dct_name) as f:
+                    dct = json.load(f)
+                return dct
+            except Exception as e:
+                print(f"Error: Dictionary with file name {file_name} was not found in {FileNameConsts.path_of_pkl}")
+                print(f"Exception: {e}")
+                return {}

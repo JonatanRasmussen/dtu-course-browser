@@ -1,0 +1,1215 @@
+<!-- Start of recommender page  -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Recommender System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: white;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .container {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    textarea {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      min-height: 120px;
+      font-family: monospace;
+      resize: vertical;
+    }
+
+    /* Tabs */
+    .tab-container {
+      margin-bottom: 20px;
+    }
+
+    .tabs {
+      display: flex;
+      border-bottom: 2px solid #ddd;
+      margin-bottom: 15px;
+    }
+
+    .tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      background-color: #f0f0f0;
+      border: none;
+      margin-right: 5px;
+      font-size: 16px;
+    }
+
+    .tab.active {
+      background-color: #990000;
+      color: white;
+      font-weight: bold;
+    }
+
+    .tab-content {
+      display: none;
+      padding: 15px;
+      border: 1px solid #ddd;
+      background-color: #f9f9f9;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Search autocomplete */
+    .search-container {
+      position: relative;
+    }
+
+    .autocomplete-results {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid #ccc;
+      border-top: none;
+      max-height: 300px;
+      overflow-y: auto;
+      z-index: 1000;
+      display: none;
+    }
+
+    .autocomplete-results.show {
+      display: block;
+    }
+
+    .autocomplete-item {
+      padding: 10px;
+      cursor: pointer;
+      border-bottom: 1px solid #eee;
+    }
+
+    .autocomplete-item:hover {
+      background-color: #f0f0f0;
+    }
+
+    .autocomplete-item-id {
+      font-weight: bold;
+      color: #990000;
+    }
+
+    .autocomplete-item-name {
+      font-size: 14px;
+      color: #666;
+    }
+
+    /* Course link to official DTU course page */
+    .course-link {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 6px 12px;
+      background-color: #990000;
+      color: white;
+      text-decoration: none;
+      border-radius: 3px;
+      font-size: 13px;
+      transition: background-color 0.3s;
+    }
+
+    .course-link:hover {
+      background-color: #990000;
+    }
+
+    .course-link::after {
+      content: " ↗";
+      font-size: 11px;
+    }
+
+    /* Course basket */
+    .course-basket {
+      min-height: 80px;
+      padding: 10px;
+      border: 2px dashed #ccc;
+      background-color: #fafafa;
+      margin-bottom: 15px;
+      border-radius: 4px;
+    }
+
+    .course-basket.empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+    }
+
+    .basket-item {
+      display: inline-block;
+      background-color: #990000;
+      color: white;
+      padding: 8px 12px;
+      margin: 5px;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .basket-item-remove {
+      margin-left: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      color: #990000;
+    }
+
+    .basket-item-remove:hover {
+      color: #990000;
+    }
+
+    /* Extracted courses display */
+    .extracted-courses {
+      margin-top: 15px;
+      padding: 10px;
+      background-color: #e3f2fd;
+      border-left: 4px solid #990000;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .extracted-course-item {
+      padding: 5px;
+      font-size: 14px;
+    }
+
+    .filter-section {
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      background-color: #f9f9f9;
+    }
+
+    .filter-group {
+      margin-bottom: 10px;
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 5px;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+    }
+
+    .checkbox-item input {
+      margin-right: 5px;
+    }
+
+    button {
+      background-color: #990000;
+      color: white;
+      padding: 12px 30px;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #990000;
+    }
+
+    button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background-color: #990000;
+    }
+
+    .btn-secondary:hover {
+      background-color: #990000;
+    }
+
+    .btn-load-more {
+      background-color: #990000;
+      margin-top: 20px;
+    }
+
+    .btn-load-more:hover {
+      background-color: #990000;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 20px;
+      font-style: italic;
+      color: #666;
+    }
+
+    .error {
+      background-color: #ffebee;
+      color: #c62828;
+      padding: 15px;
+      margin: 20px 0;
+      border-left: 4px solid #c62828;
+    }
+
+    .results {
+      margin-top: 30px;
+    }
+
+    /* View Toggle */
+    .view-toggle-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      padding: 15px;
+      background-color: #f0f0f0;
+      border-radius: 4px;
+    }
+
+    .view-toggle-btn {
+      background-color: white;
+      color: #333;
+      border: 2px solid #990000;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 14px;
+      border-radius: 4px;
+      width: auto;
+      transition: all 0.3s;
+    }
+
+    .view-toggle-btn:hover {
+      background-color: #e3f2fd;
+    }
+
+    .view-toggle-btn.active {
+      background-color: #990000;
+      color: white;
+    }
+
+    /* Carousel Styles */
+    .carousel-container {
+      margin-bottom: 40px;
+    }
+
+    .carousel-header {
+      margin-bottom: 20px;
+    }
+
+    .carousel-wrapper {
+      position: relative;
+      overflow: hidden;
+      padding: 0 50px;
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.3s ease-in-out;
+      gap: 20px;
+    }
+
+    .carousel-item {
+      flex: 0 0 calc(33.333% - 14px);
+      min-width: 0;
+    }
+
+    @media (max-width: 900px) {
+      .carousel-item {
+        flex: 0 0 calc(50% - 10px);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .carousel-item {
+        flex: 0 0 100%;
+      }
+
+      .carousel-wrapper {
+        padding: 0 40px;
+      }
+    }
+
+    .carousel-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(153, 0, 0, 0.9);
+      color: white;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      transition: background-color 0.3s;
+    }
+
+    .carousel-button:hover {
+      background-color: rgba(153, 0, 0, 0.9);
+    }
+
+    .carousel-button:disabled {
+      background-color: rgba(0, 0, 0, 0.2);
+      cursor: not-allowed;
+    }
+
+    .carousel-button-prev {
+      left: 0;
+    }
+
+    .carousel-button-next {
+      right: 0;
+    }
+
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .carousel-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: #ddd;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .carousel-dot.active {
+      background-color: #990000;
+    }
+
+    .carousel-dot:hover {
+      background-color: #990000;
+    }
+
+    .carousel-counter {
+      text-align: center;
+      color: #666;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    /* Scroll List Styles */
+    .scroll-list-container {
+      margin-bottom: 40px;
+    }
+
+    .scroll-list {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    /* Course Card Styles */
+    .course-card {
+      border: 1px solid #ddd;
+      padding: 15px;
+      background-color: #fafafa;
+      border-radius: 4px;
+    }
+
+    .carousel-item .course-card {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .course-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .course-id {
+      font-weight: bold;
+      font-size: 18px;
+      color: #990000;
+    }
+
+    .similarity-score {
+      background-color: #990000;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 3px;
+      font-size: 14px;
+    }
+
+    .course-name {
+      font-size: 16px;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    .course-meta {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .course-description {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.4;
+    }
+
+    .carousel-item .course-description {
+      flex-grow: 1;
+    }
+
+    .info-box {
+      background-color: #e3f2fd;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-left: 4px solid #990000;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Course Recommender System</h1>
+
+  <div class="info-box">
+    <strong>Find courses similar to ones you've taken or are interested in!</strong><br />
+    Choose how to input courses: search individually or paste a list of course codes.
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-container">
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('search')">🔍 Search Courses</button>
+      <button class="tab" onclick="switchTab('bulk')">📋 Paste Course List</button>
+    </div>
+
+    <!-- Tab 1: Search Courses -->
+    <div id="tab-search" class="tab-content active">
+      <div class="container">
+        <label for="courseSearch">Search for courses by ID or name:</label>
+        <div class="search-container">
+          <input type="text" id="courseSearch" placeholder="Type course ID or name (e.g., '01001' or 'Mathematics')..."
+            autocomplete="off" oninput="searchCourses()" onfocus="searchCourses()">
+          <div id="autocompleteResults" class="autocomplete-results"></div>
+        </div>
+      </div>
+
+      <div class="container">
+        <label>Selected Courses:</label>
+        <div id="courseBasket" class="course-basket empty">
+          Click courses from search results to add them here
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 2: Bulk Paste -->
+    <div id="tab-bulk" class="tab-content">
+      <div class="container">
+        <label for="bulkText">Paste text containing course codes (5-digit numbers):</label>
+        <textarea id="bulkText"
+          placeholder="Paste your study plan, grade sheet, or any text containing course codes here...&#10;&#10;Example:&#10;01017 Discrete Mathematics: Grade 7&#10;01020 Advanced Linear Algebra: Grade 12&#10;02105 Algorithms and Data Structures 1: Grade 10"></textarea>
+        <button onclick="extractCourses()" class="btn-secondary">Extract Course Codes</button>
+
+        <div id="extractedCourses" class="hidden"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filter-section">
+    <h3>Filter by Course Type (Optional)</h3>
+    <div class="filter-group">
+      <div class="checkbox-group">
+        <div class="checkbox-item">
+          <input type="checkbox" id="course_type_bsc" name="course_type" value="bsc">
+          <label for="course_type_bsc">BSc (Bachelor)</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" id="course_type_msc" name="course_type" value="msc">
+          <label for="course_type_msc">MSc (Master)</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" id="course_type_beng" name="course_type" value="beng">
+          <label for="course_type_beng">BEng (Diplom)</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" id="course_type_phd" name="course_type" value="phd">
+          <label for="course_type_phd">PhD</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button onclick="getRecommendations()" id="submitBtn">Get Recommendations</button>
+
+  <div id="results"></div>
+
+  <script>
+    let selectedCourses = new Set();
+    let allRecommendations = [];
+    let displayedCount = 0;
+    const DISPLAY_INCREMENT = 10;
+    let searchTimeout = null;
+    let currentViewMode = 'scroll'; // 'carousel' or 'scroll'
+
+    // Carousel state
+    let carouselState = {
+      currentIndex: 0,
+      itemsPerView: 3
+    };
+
+    function switchTab(tabName) {
+      // Update tab buttons
+      document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+      event.target.classList.add('active');
+      document.getElementById('tab-' + tabName).classList.add('active');
+
+      // Clear the other tab's data when switching
+      if (tabName === 'search') {
+        document.getElementById('bulkText').value = '';
+        document.getElementById('extractedCourses').classList.add('hidden');
+      } else {
+        selectedCourses.clear();
+        updateBasketDisplay();
+        document.getElementById('courseSearch').value = '';
+        document.getElementById('autocompleteResults').classList.remove('show');
+      }
+    }
+
+    function searchCourses() {
+      const query = document.getElementById('courseSearch').value;
+
+      // Clear previous timeout
+      if (searchTimeout) {
+        clearTimeout(searchTimeout);
+      }
+
+      if (query.length < 2) {
+        document.getElementById('autocompleteResults').classList.remove('show');
+        return;
+      }
+
+      // Debounce search
+      searchTimeout = setTimeout(() => {
+        fetch(`/search_courses?query=${encodeURIComponent(query)}`)
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              displayAutocompleteResults(data.results);
+            }
+          })
+          .catch(error => console.error('Search error:', error));
+      }, 300);
+    }
+
+    function displayAutocompleteResults(results) {
+      const container = document.getElementById('autocompleteResults');
+
+      if (results.length === 0) {
+        container.innerHTML = '<div style="padding: 10px; color: #999;">No courses found</div>';
+        container.classList.add('show');
+        return;
+      }
+
+      let html = '';
+      results.forEach(course => {
+        // Skip if already selected
+        if (selectedCourses.has(course.course_id)) {
+          return;
+        }
+
+        html += `
+          <div class="autocomplete-item" onclick="addCourseToBasket('${course.course_id}', '${course.name.replace(/'/g, "\\'")}')">
+            <div class="autocomplete-item-id">${course.course_id}</div>
+            <div class="autocomplete-item-name">${course.name}</div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html || '<div style="padding: 10px; color: #999;">All matching courses already selected</div>';
+      container.classList.add('show');
+    }
+
+    function addCourseToBasket(courseId, courseName) {
+      selectedCourses.add(courseId);
+      updateBasketDisplay();
+
+      // Clear search
+      document.getElementById('courseSearch').value = '';
+      document.getElementById('autocompleteResults').classList.remove('show');
+    }
+
+    function removeCourseFromBasket(courseId) {
+      selectedCourses.delete(courseId);
+      updateBasketDisplay();
+    }
+
+    function updateBasketDisplay() {
+      const basket = document.getElementById('courseBasket');
+
+      if (selectedCourses.size === 0) {
+        basket.className = 'course-basket empty';
+        basket.innerHTML = 'Click courses from search results to add them here';
+        return;
+      }
+
+      basket.className = 'course-basket';
+      let html = '';
+      selectedCourses.forEach(courseId => {
+        html += `
+          <span class="basket-item">
+            ${courseId}
+            <span class="basket-item-remove" onclick="removeCourseFromBasket('${courseId}')">✕</span>
+          </span>
+        `;
+      });
+      basket.innerHTML = html;
+    }
+
+    function extractCourses() {
+      const text = document.getElementById('bulkText').value;
+
+      if (!text.trim()) {
+        showError('Please paste some text containing course codes');
+        return;
+      }
+
+      fetch('/extract_courses', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text: text })
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            displayExtractedCourses(data.courses);
+          } else {
+            showError(data.error);
+          }
+        })
+        .catch(error => showError('Error: ' + error));
+    }
+
+    function displayExtractedCourses(courses) {
+      const container = document.getElementById('extractedCourses');
+
+      if (courses.length === 0) {
+        container.innerHTML = '<div style="padding: 10px; color: #c62828;">No valid course codes found in the text.</div>';
+        container.classList.remove('hidden');
+        return;
+      }
+
+      // Update the selected courses set
+      selectedCourses.clear();
+      courses.forEach(course => selectedCourses.add(course.course_id));
+
+      let html = `<div style="font-weight: bold; margin-bottom: 10px;">Found ${courses.length} course(s):</div>`;
+      courses.forEach(course => {
+        html += `<div class="extracted-course-item">✓ ${course.course_id} - ${course.name}</div>`;
+      });
+
+      container.innerHTML = html;
+      container.classList.remove('hidden');
+    }
+
+    function getSelectedFilters() {
+      let filters = {};
+      let selected = [];
+      let checkboxes = document.querySelectorAll('input[name="course_type"]:checked');
+      checkboxes.forEach(cb => selected.push(cb.value));
+      if (selected.length > 0) {
+        filters['course_type'] = selected;
+      }
+      return filters;
+    }
+
+    function getRecommendations() {
+      const filters = getSelectedFilters();
+
+      // Get courses from either the basket (search tab) or extracted courses (bulk tab)
+      const activeTab = document.querySelector('.tab-content.active').id;
+      let courseIds = [];
+
+      if (activeTab === 'tab-search') {
+        courseIds = Array.from(selectedCourses);
+      } else {
+        // From bulk tab - selectedCourses is populated by extractCourses()
+        courseIds = Array.from(selectedCourses);
+      }
+
+      if (courseIds.length === 0) {
+        showError('Please select at least one course');
+        return;
+      }
+
+      // Disable button and show loading
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.textContent = 'Loading...';
+
+      document.getElementById('results').innerHTML = '<p class="loading">Generating recommendations...</p>';
+
+      fetch('/recommend', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          course_ids: courseIds,
+          n_recommendations: 100,  // Always fetch 100
+          filters: filters
+        })
+      })
+        .then(response => response.json())
+        .then(data => {
+          btn.disabled = false;
+          btn.textContent = 'Get Recommendations';
+
+          if (data.success) {
+            allRecommendations = data.recommendations;
+            displayedCount = 0;
+            displayResults(data);
+          } else {
+            showError(data.error);
+          }
+        })
+        .catch(error => {
+          btn.disabled = false;
+          btn.textContent = 'Get Recommendations';
+          showError('Error: ' + error);
+        });
+    }
+
+    function switchViewMode(mode) {
+      if (mode !== 'carousel' && mode !== 'scroll') return;
+
+      currentViewMode = mode;
+
+      // Update button states: remove from both, then add to the chosen one
+      document.getElementById('view-carousel').classList.remove('active');
+      document.getElementById('view-scroll').classList.remove('active');
+      document.getElementById(`view-${mode}`).classList.add('active');
+
+      // Show/hide containers exclusively
+      const carouselView = document.getElementById('carouselView');
+      const scrollView = document.getElementById('scrollView');
+      if (mode === 'carousel') {
+        if (carouselView) carouselView.style.display = 'block';
+        if (scrollView) scrollView.style.display = 'none';
+        // Only initialize carousel when switching to it
+        initCarousel();
+      } else {
+        if (carouselView) carouselView.style.display = 'none';
+        if (scrollView) scrollView.style.display = 'block';
+      }
+    }
+
+    function displayResults(data) {
+      if (allRecommendations.length === 0) {
+        document.getElementById('results').innerHTML = '<div class="results"><p>No recommendations found matching your criteria.</p></div>';
+        return;
+      }
+
+      let html = '<div class="results">';
+
+      // Header with info
+      html += '<h2>Course Recommendations</h2>';
+      html += '<div class="info-box">';
+      html += `<strong>Based on courses:</strong> ${data.input_courses.join(', ')}<br>`;
+      if (Object.keys(data.filters_applied).length > 0) {
+        html += `<strong>Filters applied:</strong> `;
+        html += Object.entries(data.filters_applied)
+          .map(([k, v]) => `${k}: ${v.join(', ')}`)
+          .join(' | ');
+      } else {
+        html += '<strong>No filters applied</strong>';
+      }
+      html += `<br><strong>Total matches:</strong> ${allRecommendations.length >= 100 ? '100+' : allRecommendations.length}`;
+      html += '</div>';
+
+      // View toggle buttons (render with active class depending on currentViewMode)
+      html += '<div class="view-toggle-container">';
+      html += '<span style="margin-right: 10px; font-weight: bold;">View Mode:</span>';
+      html += `<button id="view-carousel" class="view-toggle-btn ${currentViewMode === 'carousel' ? 'active' : ''}" onclick="switchViewMode('carousel')">🎠 Carousel View</button>`;
+      html += `<button id="view-scroll" class="view-toggle-btn ${currentViewMode === 'scroll' ? 'active' : ''}" onclick="switchViewMode('scroll')">📜 Scroll List View</button>`;
+      html += '</div>';
+
+      // Carousel View container
+      html += `<div id="carouselView" style="display: ${currentViewMode === 'carousel' ? 'block' : 'none'};">`;
+      html += generateCarouselHTML();
+      html += '</div>';
+
+      // Scroll List View container
+      html += `<div id="scrollView" style="display: ${currentViewMode === 'scroll' ? 'block' : 'none'};">`;
+      html += generateScrollListHTML();
+      html += '</div>';
+
+      html += '</div>'; // Close results
+
+      document.getElementById('results').innerHTML = html;
+
+      // Initialize or bind features depending on selected view
+      if (currentViewMode === 'carousel') {
+        // ensure carousel is initialized only when visible
+        initCarousel();
+      } else {
+        // if previously initialized, remove resize handler to avoid stray listeners
+        try {
+          window.removeEventListener('resize', handleCarouselResize);
+        } catch (e) { /* ignore if not attached */ }
+      }
+
+      // Initialize based on current view mode
+      if (currentViewMode === 'carousel') {
+        document.getElementById('carouselView').style.display = 'block';
+        document.getElementById('scrollView').style.display = 'none';
+        document.getElementById('view-carousel').classList.add('active');
+        initCarousel();
+      } else {
+        document.getElementById('carouselView').style.display = 'none';
+        document.getElementById('scrollView').style.display = 'block';
+        document.getElementById('view-scroll').classList.add('active');
+      }
+    }
+
+    function generateCarouselHTML() {
+      let html = '<div class="carousel-container">';
+      html += '<div class="carousel-wrapper">';
+
+      // Previous button
+      html += '<button class="carousel-button carousel-button-prev" onclick="moveCarousel(-1)">&#10094;</button>';
+
+      // Carousel track
+      html += '<div class="carousel-track" id="carouselTrack">';
+
+      allRecommendations.forEach((course, index) => {
+        html += `
+          <div class="carousel-item">
+            <div class="course-card">
+              <div class="course-header">
+                <span class="course-id">${index + 1}. ${course.course_id}</span>
+                <span class="similarity-score">${course.similarity}</span>
+              </div>
+              <div class="course-name">${course.name}</div>
+              <div class="course-meta">
+                📚 ${course.ects} ECTS | 🏛️ ${course.institute}
+              </div>
+              <div class="course-description">${course.description || 'No description available'}</div>
+              <a href="https://kurser.dtu.dk/course/${course.course_id}" target="_blank" rel="noopener noreferrer" class="course-link">Visit Official Page</a>
+            </div>
+          </div>
+        `;
+      });
+
+      html += '</div>'; // Close carousel-track
+
+      // Next button
+      html += '<button class="carousel-button carousel-button-next" onclick="moveCarousel(1)">&#10095;</button>';
+
+      html += '</div>'; // Close carousel-wrapper
+
+      // Dots navigation
+      html += '<div class="carousel-dots" id="carouselDots"></div>';
+
+      // Counter
+      html += `<div class="carousel-counter" id="carouselCounter"></div>`;
+
+      html += '</div>'; // Close carousel-container
+
+      return html;
+    }
+
+    function generateScrollListHTML(initialLoad = true) {
+      let html = '<div class="scroll-list-container">';
+      html += '<div class="scroll-list" id="scrollList">';
+
+      const endIndex = initialLoad ? Math.min(DISPLAY_INCREMENT, allRecommendations.length) : displayedCount;
+      const coursesToShow = allRecommendations.slice(0, endIndex);
+
+      coursesToShow.forEach((course, index) => {
+        html += `
+          <div class="course-card">
+            <div class="course-header">
+              <span class="course-id">${index + 1}. ${course.course_id}</span>
+              <span class="similarity-score">Similarity: ${course.similarity}</span>
+            </div>
+            <div class="course-name"><strong>${course.name}</strong></div>
+            <div class="course-meta">
+              📚 ECTS: ${course.ects} | 🏛️ Institute: ${course.institute}
+            </div>
+            <div class="course-description">${course.description || 'No description available'}</div>
+            <a href="https://kurser.dtu.dk/course/${course.course_id}" target="_blank" rel="noopener noreferrer" class="course-link">View Course Details</a>
+          </div>
+        `;
+      });
+
+      html += '</div>'; // Close scroll-list
+
+      // Add "Load More" button if there are more results
+      if (endIndex < allRecommendations.length) {
+        html += `
+          <button onclick="loadMoreResults()" class="btn-load-more">
+            Load More (${allRecommendations.length - endIndex} remaining)
+          </button>
+        `;
+      } else if (allRecommendations.length > DISPLAY_INCREMENT) {
+        html += '<div style="text-align: center; padding: 20px; color: #666;">All recommendations displayed</div>';
+      }
+
+      html += '</div>'; // Close scroll-list-container
+
+      if (initialLoad) {
+        displayedCount = endIndex;
+      }
+
+      return html;
+    }
+
+    function loadMoreResults() {
+      const endIndex = Math.min(displayedCount + DISPLAY_INCREMENT, allRecommendations.length);
+      const coursesToAdd = allRecommendations.slice(displayedCount, endIndex);
+
+      let html = '';
+      coursesToAdd.forEach((course, index) => {
+        const actualIndex = displayedCount + index + 1;
+        html += `
+          <div class="course-card">
+            <div class="course-header">
+              <span class="course-id">${actualIndex}. ${course.course_id}</span>
+              <span class="similarity-score">Similarity: ${course.similarity}</span>
+            </div>
+            <div class="course-name"><strong>${course.name}</strong></div>
+            <div class="course-meta">
+              📚 ECTS: ${course.ects} | 🏛️ Institute: ${course.institute}
+            </div>
+            <div class="course-description">${course.description || 'No description available'}</div>
+            <a href="https://kurser.dtu.dk/course/${course.course_id}" target="_blank" rel="noopener noreferrer" class="course-link">View Course Details</a>
+          </div>
+        `;
+      });
+
+      // Remove old load more button
+      const scrollView = document.getElementById('scrollView');
+      const oldButton = scrollView.querySelector('.btn-load-more');
+      if (oldButton) {
+        oldButton.remove();
+      }
+
+      // Add new courses
+      const scrollList = document.getElementById('scrollList');
+      scrollList.insertAdjacentHTML('beforeend', html);
+
+      displayedCount = endIndex;
+
+      // Add new load more button or end message
+      if (displayedCount < allRecommendations.length) {
+        const newButton = document.createElement('button');
+        newButton.className = 'btn-load-more';
+        newButton.onclick = loadMoreResults;
+        newButton.textContent = `Load More (${allRecommendations.length - displayedCount} remaining)`;
+        scrollView.querySelector('.scroll-list-container').appendChild(newButton);
+      } else {
+        const endMessage = document.createElement('div');
+        endMessage.style.cssText = 'text-align: center; padding: 20px; color: #666;';
+        endMessage.textContent = 'All recommendations displayed';
+        scrollView.querySelector('.scroll-list-container').appendChild(endMessage);
+      }
+    }
+
+    function initCarousel() {
+      // Reset carousel state
+      carouselState.currentIndex = 0;
+
+      // Determine items per view based on screen width
+      updateItemsPerView();
+
+      // Create dots
+      createCarouselDots();
+
+      // Update carousel position
+      updateCarousel();
+
+      // Add resize listener to update items per view
+      window.addEventListener('resize', handleCarouselResize);
+    }
+
+    function updateItemsPerView() {
+      const width = window.innerWidth;
+      if (width <= 600) {
+        carouselState.itemsPerView = 1;
+      } else if (width <= 900) {
+        carouselState.itemsPerView = 2;
+      } else {
+        carouselState.itemsPerView = 3;
+      }
+    }
+
+    function handleCarouselResize() {
+      const oldItemsPerView = carouselState.itemsPerView;
+      updateItemsPerView();
+
+      // Reset position if items per view changed
+      if (oldItemsPerView !== carouselState.itemsPerView) {
+        carouselState.currentIndex = 0;
+        createCarouselDots();
+        updateCarousel();
+      }
+    }
+
+    function createCarouselDots() {
+      const dotsContainer = document.getElementById('carouselDots');
+      if (!dotsContainer) return;
+
+      const totalPages = Math.ceil(allRecommendations.length / carouselState.itemsPerView);
+      let html = '';
+
+      for (let i = 0; i < totalPages; i++) {
+        html += `<div class="carousel-dot ${i === 0 ? 'active' : ''}" onclick="goToCarouselPage(${i})"></div>`;
+      }
+
+      dotsContainer.innerHTML = html;
+    }
+
+    function moveCarousel(direction) {
+      const totalPages = Math.ceil(allRecommendations.length / carouselState.itemsPerView);
+      carouselState.currentIndex += direction;
+
+      // Wrap around or clamp
+      if (carouselState.currentIndex < 0) {
+        carouselState.currentIndex = 0;
+      } else if (carouselState.currentIndex >= totalPages) {
+        carouselState.currentIndex = totalPages - 1;
+      }
+
+      updateCarousel();
+    }
+
+    function goToCarouselPage(pageIndex) {
+      carouselState.currentIndex = pageIndex;
+      updateCarousel();
+    }
+
+    function updateCarousel() {
+      const track = document.getElementById('carouselTrack');
+      const dots = document.querySelectorAll('.carousel-dot');
+      const counter = document.getElementById('carouselCounter');
+
+      if (!track) return;
+
+      // Calculate translation
+      const itemWidth = 100 / carouselState.itemsPerView;
+      const translateX = -(carouselState.currentIndex * itemWidth * carouselState.itemsPerView);
+      track.style.transform = `translateX(${translateX}%)`;
+
+      // Update dots
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === carouselState.currentIndex);
+      });
+
+      // Update counter
+      const startItem = carouselState.currentIndex * carouselState.itemsPerView + 1;
+      const endItem = Math.min((carouselState.currentIndex + 1) * carouselState.itemsPerView, allRecommendations.length);
+      if (counter) {
+        counter.textContent = `Showing ${startItem}-${endItem} of ${allRecommendations.length}`;
+      }
+
+      // Update button states
+      const prevBtn = document.querySelector('.carousel-button-prev');
+      const nextBtn = document.querySelector('.carousel-button-next');
+      const totalPages = Math.ceil(allRecommendations.length / carouselState.itemsPerView);
+
+      if (prevBtn) {
+        prevBtn.disabled = carouselState.currentIndex === 0;
+      }
+      if (nextBtn) {
+        nextBtn.disabled = carouselState.currentIndex >= totalPages - 1;
+      }
+    }
+
+    function showError(message) {
+      document.getElementById('results').innerHTML =
+        `<div class="error"><strong>Error:</strong> ${message}</div>`;
+    }
+
+    // Close autocomplete when clicking outside
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.search-container')) {
+        document.getElementById('autocompleteResults').classList.remove('show');
+      }
+    });
+
+    // Allow Enter key to submit
+    document.addEventListener('keypress', function (e) {
+      if (e.key === 'Enter' && e.target.id === 'courseSearch') {
+        e.preventDefault();
+        // Select first result if available
+        const firstResult = document.querySelector('.autocomplete-item');
+        if (firstResult) {
+          firstResult.click();
+        }
+      }
+    });
+
+    // Keyboard navigation for carousel
+    document.addEventListener('keydown', function (e) {
+      const resultsVisible = document.getElementById('carouselTrack') !== null;
+      if (!resultsVisible) return;
+
+      if (e.key === 'ArrowLeft') {
+        moveCarousel(-1);
+      } else if (e.key === 'ArrowRight') {
+        moveCarousel(1);
+      }
+    });
+  </script>
+</body>
+
+</html>
+
+<br><br><br><br><br><br><br><br>
+<!-- End of recommender page -->
