@@ -1,11 +1,7 @@
 import json
 import pandas as pd
 import numpy as np
-from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-from sklearn.decomposition import LatentDirichletAllocation
-import nltk
-from nltk.corpus import stopwords
 import re
 import os
 import pickle
@@ -137,54 +133,38 @@ class CourseRecommender:
         return combined_texts
 
     def fit(self, force_recreate=False):
-        """Fit the model using combined course text
-
-        Args:
-            force_recreate (bool): If True, recreate embeddings even if cache exists.
-                                   Ignored on PythonAnywhere for safety.
-        """
-        # On PythonAnywhere, always try cache first and refuse to create new embeddings
+        """Fit the model using combined course text"""
         if self._is_pythonanywhere():
             print("Running on PythonAnywhere - cache-only mode enabled")
             if force_recreate:
                 print("Warning: force_recreate=True ignored on PythonAnywhere to protect CPU quota")
 
             if self.load_embeddings_cache():
-                return  # Successfully loaded from cache
+                return
 
-            # Cache not found on PythonAnywhere - this is a critical error
             cache_dir = self._get_cache_dir()
             raise RuntimeError(
                 f"CRITICAL: Cache files not found on PythonAnywhere!\n"
-                f"Expected location: {cache_dir}\n"
-                f"Expected files:\n"
-                f"  - {self.EMBEDDINGS_CACHE_FILE}\n"
-                f"  - {self.FILTERED_DF_CACHE_FILE}\n\n"
-                f"Please generate cache locally and upload these files to PythonAnywhere.\n"
-                f"To generate cache locally, run: python recommend_courses.py"
+                f"Expected location: {cache_dir}"
             )
 
-        # Local development - normal behavior
         if not force_recreate and self.load_embeddings_cache():
-            return  # Successfully loaded from cache
+            return
 
         print("Creating new embeddings...")
         print("Combining course texts...")
         combined_texts = self.combine_course_text()
-        # Filter out courses with no meaningful text
         non_empty_indices = [i for i, text in enumerate(combined_texts) if len(text.strip()) > 10]
         print(f"Found {len(non_empty_indices)} courses with meaningful text content")
         if not non_empty_indices:
             raise ValueError("No courses found with meaningful text content!")
-        # Filter dataframe and texts to only include courses with content
+
         self.courses_df = self.courses_df.iloc[non_empty_indices].reset_index(drop=True)
         filtered_texts = [combined_texts[i] for i in non_empty_indices]
         print("Creating embeddings...")
-        # Create embeddings - this is where self.model is accessed, triggering lazy load
         self.course_embeddings = self.model.encode(filtered_texts, show_progress_bar=True)
         print(f"Created embeddings for {len(filtered_texts)} courses")
 
-        # Save to cache
         self.save_embeddings_cache()
 
     def clear_cache(self):
@@ -220,7 +200,7 @@ class CourseRecommender:
     def recommend_courses(self, input_course_ids, n_recommendations=10, return_all_ranked=False):
         if self.course_embeddings is None:
             raise ValueError("Model not fitted! Call fit() first.")
-        # Get indices of input courses
+
         input_indices = []
         found_courses = []
         for course_id in input_course_ids:
@@ -233,18 +213,15 @@ class CourseRecommender:
         if not input_indices:
             print("No valid input courses found!")
             return pd.DataFrame()
-        print(f"Using courses as input: {found_courses}")
-        # Average embeddings of input courses
+
         input_embedding = np.mean(self.course_embeddings[input_indices], axis=0)
-        # Calculate similarities
         similarities = cosine_similarity([input_embedding], self.course_embeddings)[0]
-        # Create results dataframe
+
         results_df = self.courses_df.copy()
         results_df['similarity_score'] = similarities
-        # Remove input courses from recommendations
         results_df = results_df[~results_df.index.isin(input_indices)]
-        # Sort by similarity
         results_df = results_df.sort_values('similarity_score', ascending=False)
+
         if return_all_ranked:
             return results_df
         else:
@@ -263,38 +240,130 @@ class CourseRecommender:
             }
         return None
 
-    def display_recommendations(self, recommendations_df, show_description=True):
-        """Pretty print recommendations"""
-        if recommendations_df.empty:
-            print("No recommendations found.")
-            return
-        print(f"\nTop {len(recommendations_df)} Recommendations:")
-        print("=" * 80)
-        for idx, (_, row) in enumerate(recommendations_df.iterrows(), 1):
-            print(f"{idx}. {row['COURSE']} - {row['NAME']}")
-            print(f"   Similarity: {row['similarity_score']:.3f} | ECTS: {row['ECTS_POINTS']} | Institute: {row['INSTITUTE']}")
-            if show_description and pd.notna(row['COURSE_DESCRIPTION']):
-                desc = str(row['COURSE_DESCRIPTION'])[:150]
-                print(f"   Description: {desc}{'...' if len(str(row['COURSE_DESCRIPTION'])) > 150 else ''}")
-            print()
+    def recommend_by_text(self, text_input, n_recommendations=10, return_all_ranked=False):
+        """ Generates recommendations based on free text input."""
+        if self.course_embeddings is None:
+            raise ValueError("Model not fitted! Call fit() first.")
 
-    def analyze_course_content(self, course_id):
-        """Analyze what text content is available for a specific course"""
-        course = self.find_course_by_id(course_id)
-        if course is None:
-            print(f"Course {course_id} not found")
-            return
-        print(f"Content analysis for {course_id} - {course['NAME']}")
-        print("=" * 60)
-        text_columns = ['COURSE_DESCRIPTION', 'LEARNING_OBJECTIVES', 'COURSE_CONTENT', 'REMARKS']
-        for col in text_columns:
-            content = course[col]
-            if pd.notna(content) and str(content).strip() not in ['None', 'NO_DATA', '']:
-                print(f"{col}: {len(str(content))} characters")
-                print(f"  Preview: {str(content)[:100]}...")
-            else:
-                print(f"{col}: No content")
-            print()
+        if not text_input or len(text_input.strip()) < 3:
+            print("Input text too short")
+            return pd.DataFrame()
+
+        clean_text = self.preprocess_text(text_input)
+        input_embedding = self.model.encode([clean_text])[0]
+        similarities = cosine_similarity([input_embedding], self.course_embeddings)[0]
+
+        results_df = self.courses_df.copy()
+        results_df['similarity_score'] = similarities
+        results_df = results_df.sort_values('similarity_score', ascending=False)
+
+        if return_all_ranked:
+            return results_df
+        else:
+            return results_df.head(n_recommendations)
+
+    def recommend_hybrid(self, input_list, n_recommendations=10, return_all_ranked=False):
+        """
+        input_list: A list of dictionaries:
+                    [{'type': 'course', 'value': '01005'}, {'type': 'text', 'value': 'Machine Learning'}]
+        """
+        if self.course_embeddings is None:
+            raise ValueError("Model not fitted!")
+
+        course_vectors = []
+        text_vectors = []
+
+        valid_vectors = []      # for explanation
+        valid_labels = []
+        is_course_input = []    # track which inputs are courses
+
+        # 1. Convert inputs to vectors
+        for item in input_list:
+            if item['type'] == 'course':
+                matches = self.courses_df[self.courses_df['COURSE'] == item['value']]
+                if len(matches) > 0:
+                    idx = matches.index[0]
+                    vec = self.course_embeddings[idx]
+
+                    course_vectors.append(vec)
+                    valid_vectors.append(vec)
+                    is_course_input.append(True)
+
+                    course_name = matches.iloc[0]['NAME']
+                    valid_labels.append(f"Course {item['value']} - {course_name}")
+
+            elif item['type'] == 'text':
+                clean_text = self.preprocess_text(item['value'])
+                if len(clean_text) > 2:
+                    vec = self.model.encode([clean_text])[0]
+
+                    text_vectors.append(vec)
+                    valid_vectors.append(vec)
+                    is_course_input.append(False)
+
+                    display_text = item['value'][:20] + "..." if len(item['value']) > 20 else item['value']
+                    valid_labels.append(f"input '{display_text}'")
+
+        if not valid_vectors:
+            return pd.DataFrame()
+
+        # 2. Compute centroids per input type
+        course_centroid = np.mean(course_vectors, axis=0) if course_vectors else None
+        text_centroid = np.mean(text_vectors, axis=0) if text_vectors else None
+
+        # 3. Combine centroids with 50/50 weighting
+        if course_centroid is not None and text_centroid is not None:
+            final_embedding = 0.5 * course_centroid + 0.5 * text_centroid
+        elif course_centroid is not None:
+            final_embedding = course_centroid
+        else:
+            final_embedding = text_centroid
+
+        # 4. Overall similarity (ranking)
+        overall_similarities = cosine_similarity(
+            [final_embedding], self.course_embeddings
+        )[0]
+
+        # 5. Individual similarities (explanations + filtering)
+        individual_sims = cosine_similarity(self.course_embeddings, valid_vectors)
+
+        breakdown_col = []
+        for row_sims in individual_sims:
+            pairs = []
+            for label, score in zip(valid_labels, row_sims):
+                pairs.append({'name': label, 'score': float(score)})
+            pairs.sort(key=lambda x: x['score'], reverse=True)
+            breakdown_col.append(pairs)
+
+        # 6. Build result DataFrame
+        results_df = self.courses_df.copy()
+        results_df['similarity_score'] = overall_similarities
+        results_df['similarity_breakdown'] = breakdown_col
+
+        # --- FILTERING LOGIC ---
+
+        # 1. Remove explicitly selected input courses
+        input_course_ids = [x['value'] for x in input_list if x['type'] == 'course']
+        results_df = results_df[~results_df['COURSE'].isin(input_course_ids)]
+
+        # 2. Remove near-duplicate courses (>= 0.99 similarity to any input COURSE)
+        course_input_indices = [i for i, is_course in enumerate(is_course_input) if is_course]
+
+        if course_input_indices:
+            course_sims_matrix = individual_sims[:, course_input_indices]
+            max_course_sim = np.max(course_sims_matrix, axis=1)
+
+            is_duplicate_mask = max_course_sim >= 0.99
+            results_df = results_df[~is_duplicate_mask[results_df.index]]
+
+        # --- END FILTERING ---
+
+        results_df = results_df.sort_values('similarity_score', ascending=False)
+
+        if return_all_ranked:
+            return results_df
+        return results_df.head(n_recommendations)
+
 
 
 class FilterRecommendations:
@@ -305,23 +374,14 @@ class FilterRecommendations:
         print(f"Loaded filter dictionary with categories: {list(self.filter_dct.keys())}")
 
     def apply_filters(self, filter_criteria):
-        """
-        Apply filters to get a set of courses matching criteria.
-        Args:
-            filter_criteria (dict): Dictionary with format: {"category_name": ["value1", "value2"], "another_category": ["value3"]}
-            Example: {"language": ["eng"], "gradetype": ["passfail", "sevenstep"]}
-        Returns:
-            set: Set of course IDs matching all filter criteria
-        """
         if not filter_criteria:
-            return set(self.recommender.courses_df['COURSE'].tolist())  # No filters applied - return all courses
+            return set(self.recommender.courses_df['COURSE'].tolist())
         temp_dct = {}
         filters_found = 0
-        for category, values in filter_criteria.items():  # Build temporary dictionary with courses for each category
+        for category, values in filter_criteria.items():
             if category not in self.filter_dct:
                 print(f"Warning: Category '{category}' not found in filter dictionary")
                 continue
-            # Collect courses for all values in this category
             category_courses = []
             for value in values:
                 if value in self.filter_dct[category]:
@@ -335,7 +395,7 @@ class FilterRecommendations:
             print("No valid filters found, returning empty set")
             return set()
         courses_to_display = None
-        for category, course_list in temp_dct.items():  # Intersect all category course lists
+        for category, course_list in temp_dct.items():
             course_set = set(course_list)
             if courses_to_display is None:
                 courses_to_display = course_set
@@ -345,15 +405,7 @@ class FilterRecommendations:
         return courses_to_display if courses_to_display else set()
 
     def get_filtered_recommendations(self, input_course_ids, filter_criteria=None, n_recommendations=10):
-        """ Get course recommendations with optional filtering.
-        Args:
-            input_course_ids (list): List of course IDs to base recommendations on
-            filter_criteria (dict): Optional filter criteria (same format as apply_filters)
-            n_recommendations (int): Number of recommendations to return
-        Returns:
-            pd.DataFrame: Filtered and sorted recommendations
-        """
-        all_recommendations = self.recommender.recommend_courses(input_course_ids, return_all_ranked=True)  # Get all recommendations (ranked)
+        all_recommendations = self.recommender.recommend_courses(input_course_ids, return_all_ranked=True)
         if not filter_criteria:
             return all_recommendations.head(n_recommendations)
         allowed_courses = self.apply_filters(filter_criteria)
@@ -361,23 +413,18 @@ class FilterRecommendations:
             print("No courses match the filter criteria")
             return pd.DataFrame()
         filtered_recommendations = all_recommendations[all_recommendations['COURSE'].isin(allowed_courses)]
-        return filtered_recommendations.head(n_recommendations)  # Filter recommendations to only include allowed courses
+        return filtered_recommendations.head(n_recommendations)
 
     def get_available_filter_options(self):
-        """Get all available filter categories and their values, return dct of categories and their possible values"""
         filter_options = {}
         for category, values_dict in self.filter_dct.items():
             filter_options[category] = list(values_dict.keys())
         return filter_options
 
     def get_courses_by_filters(self, filter_criteria):
-        """ Get course details for courses matching filter criteria (without using recommender).
-        Args: filter_criteria (dict): Filter criteria dictionary
-        Returns: pd.DataFrame: DataFrame with matching courses """
         matching_course_ids = self.apply_filters(filter_criteria)
         if not matching_course_ids:
             return pd.DataFrame()
-        # Get course details from recommender's dataframe
         matching_courses = self.recommender.courses_df[self.recommender.courses_df['COURSE'].isin(matching_course_ids)]
         return matching_courses
 
@@ -389,7 +436,6 @@ class FilterRecommendations:
 
     @staticmethod
     def load_dct_from_json_file():
-        """Load in dictionary from json file"""
         file_name = WebsiteConsts.json_filter_dct
         try:
             pythonanywhere_dct_name = FileNameConsts.pythonanywherecom_path_of_pkl + file_name + '.json'
@@ -406,3 +452,16 @@ class FilterRecommendations:
                 print(f"Error: Dictionary with file name {file_name} was not found in {FileNameConsts.path_of_pkl}")
                 print(f"Exception: {e}")
                 return {}
+
+    def get_text_based_recommendations(self, text_input, filter_criteria=None, n_recommendations=10):
+        all_recommendations = self.recommender.recommend_by_text(text_input, return_all_ranked=True)
+        if all_recommendations.empty:
+            return pd.DataFrame()
+        if not filter_criteria:
+            return all_recommendations.head(n_recommendations)
+        allowed_courses = self.apply_filters(filter_criteria)
+        if not allowed_courses:
+            print("No courses match the filter criteria")
+            return pd.DataFrame()
+        filtered_recommendations = all_recommendations[all_recommendations['COURSE'].isin(allowed_courses)]
+        return filtered_recommendations.head(n_recommendations)

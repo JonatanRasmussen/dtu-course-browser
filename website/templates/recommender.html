@@ -117,7 +117,8 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
   }
 
   /* Custom Red Focus for Search Input */
-  #recommender-search-input:focus {
+  #recommender-search-input:focus,
+  #recommender-free-text:focus {
     border-color: #990000;
     box-shadow: 0 0 0 0.25rem rgba(153, 0, 0, 0.25);
     outline: 0;
@@ -217,6 +218,12 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
     padding: 8px 12px;
     border-radius: 4px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
+
+  /* Different style for text items */
+  .recommender-basket-item.text-item {
+    border-left: 4px solid #005599;
+    background-color: #f0f7ff;
   }
 
   .recommender-basket-text {
@@ -416,11 +423,10 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
         </div>
         <!-- Step 1: Input Selection -->
         <div class="recommender-step-container">
-          <div class="recommender-step-header">Step 1: Input Courses</div>
+          <div class="recommender-step-header">Step 1: Input Method</div>
           <p class="recommender-step-desc">
-            This recommendation tool works by taking one or more courses as input and then outputting a list of DTU's
-            most similar courses.
-            Choose one of the following ways to input courses:
+            This recommendation tool works by taking one or more courses as input and then outputting a list of DTU's most similar
+            courses. Choose one of the following ways to input courses:
           </p>
 
           <div class="btn-group">
@@ -433,6 +439,11 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
               onclick="showInputMethod('bulk')">
               📋 Paste List
             </button>
+
+            <button class="btn recommender-btn-outline-brand recommender-input-option-btn" id="btn-input-text"
+              onclick="showInputMethod('text')">
+              📝 Add Interest
+            </button>
           </div>
 
           <!-- Input Method A: Search -->
@@ -443,7 +454,7 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
                 placeholder="Type course ID or name (e.g., '01001')..." autocomplete="off" oninput="searchCourses()">
               <div id="recommender-autocomplete-list" class="recommender-autocomplete-results"></div>
             </div>
-            <small class="text-muted">Click a result to add it to your review basket below.</small>
+            <small class="text-muted">Click a result to add it to your basket.</small>
 
             <!-- Unified Feedback Area for Search -->
             <div id="recommender-search-feedback" class="recommender-feedback-container"></div>
@@ -455,29 +466,43 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
                 codes:</strong></label>
             <textarea class="form-control" id="recommender-bulk-text" rows="2"
               placeholder="Any text will work, assuming it contains valid 5-digit course codes."></textarea>
-            <small class="text-muted d-block mt-1"><strong>Copy & paste</strong> any text containing 5-digit course codes into the box above.</small>
 
             <!-- Extract Button with Red Styling -->
             <button class="btn btn-sm mt-2" style="background-color: #990000; border-color: #990000; color: white;"
-              onclick="extractCourses()">Extract Codes</button>
+              onclick="extractCourses()">Extract Codes to Basket</button>
 
             <!-- Unified Feedback Area for Bulk Extraction -->
             <div id="recommender-bulk-feedback" class="recommender-feedback-container"></div>
           </div>
+
+          <!-- Input Method C: Free Text (Updated) -->
+          <div id="input-area-text" class="recommender-input-area">
+            <label for="recommender-free-text" class="form-label"><strong>Describe what you want to
+                learn:</strong></label>
+            <textarea class="form-control" id="recommender-free-text" rows="3"
+              placeholder="E.g., 'I am interested in machine learning, neural networks, and python programming applied to biology.'"></textarea>
+
+            <button class="btn btn-sm mt-2" style="background-color: #990000; border-color: #990000; color: white;"
+              onclick="addTextToBasket()">Add Description to Basket</button>
+
+            <div id="recommender-text-feedback" class="recommender-feedback-container"></div>
+          </div>
+
         </div>
 
-        <!-- Course review UI Block -->
-        <ul class="list-group list-group-flush">
-          <!-- Step 2: Review Selection -->
+        <!-- Course review UI Block (Step 2) -->
+        <ul class="list-group list-group-flush" id="step-2-container">
           <li class="list-group-item"></li>
           <div class="recommender-step-container">
-            <div class="recommender-step-header">Step 2: Review your selected Courses</div>
+            <div class="recommender-step-header">Step 2: Your Basket</div>
             <p class="recommender-step-desc">
-              Review the list below. These are the courses the system will use to find similarities.
+              Review the list below. This recommendation tool will find courses with
+              high similarity to these learning objectives and course descriptions.
               You can add more using the tools in Step 1.
             </p>
             <div id="recommender-basket" class="recommender-basket-container">
-              <div class="recommender-basket-placeholder">Your basket is empty. Please add courses in Step 1.</div>
+              <div class="recommender-basket-placeholder">Your basket is empty. Please add courses or text in Step 1.
+              </div>
             </div>
           </div>
         </ul>
@@ -489,7 +514,7 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
           <div class="recommender-step-container">
             <div class="recommender-step-header">Step 3: Filter Recommendations</div>
             <p class="recommender-step-desc">
-              Narrow down the results based on your preferences (e.g., Language, Degree Level).
+              Narrow down the results based on your preferences.
             </p>
           </div>
           <!-- Language Filter -->
@@ -800,8 +825,8 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
 </div>
 
 <script>
-  // Changed from Set to Map to store {ID -> Name}
-  let selectedCourses = new Map();
+  // Basket now stores objects: { type: 'course'|'text', value: '...', display: '...' }
+  let basketItems = [];
   let allRecommendations = [];
   let searchTimeout = null;
 
@@ -831,19 +856,30 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
   function showInputMethod(method) {
     const searchArea = document.getElementById('input-area-search');
     const bulkArea = document.getElementById('input-area-bulk');
+    const textArea = document.getElementById('input-area-text');
+
     const searchBtn = document.getElementById('btn-input-search');
     const bulkBtn = document.getElementById('btn-input-bulk');
+    const textBtn = document.getElementById('btn-input-text');
+
+    // Reset all
+    searchArea.classList.remove('active');
+    bulkArea.classList.remove('active');
+    textArea.classList.remove('active');
+
+    searchBtn.classList.remove('active');
+    bulkBtn.classList.remove('active');
+    textBtn.classList.remove('active');
 
     if (method === 'search') {
       searchArea.classList.add('active');
-      bulkArea.classList.remove('active');
       searchBtn.classList.add('active');
-      bulkBtn.classList.remove('active');
-    } else {
-      searchArea.classList.remove('active');
+    } else if (method === 'bulk') {
       bulkArea.classList.add('active');
-      searchBtn.classList.remove('active');
       bulkBtn.classList.add('active');
+    } else if (method === 'text') {
+      textArea.classList.add('active');
+      textBtn.classList.add('active');
     }
   }
 
@@ -877,8 +913,12 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
 
     let html = '';
     let count = 0;
+
+    // Get current IDs in basket to avoid duplicates
+    const currentIds = new Set(basketItems.filter(i => i.type === 'course').map(i => i.value));
+
     results.forEach(course => {
-      if (selectedCourses.has(course.course_id)) return;
+      if (currentIds.has(course.course_id)) return;
       if (count >= 10) return;
 
       const safeName = course.name.replace(/'/g, "\\'");
@@ -900,20 +940,24 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
   }
 
   function addCourseToBasket(courseId, courseName) {
-    // Safety check: If course is already in basket, stop immediately.
-    if (selectedCourses.has(courseId)) return;
+    // Check duplicate
+    if (basketItems.some(i => i.type === 'course' && i.value === courseId)) return;
 
-    selectedCourses.set(courseId, courseName);
+    basketItems.push({
+      type: 'course',
+      value: courseId,
+      display: `<strong>${courseId}</strong> - ${courseName}`
+    });
+
     updateBasketDisplay();
-
     document.getElementById('recommender-search-input').value = '';
 
-    // Clear innerHTML immediately to stop "Enter" spamming
+    // Close dropdown
     const listContainer = document.getElementById('recommender-autocomplete-list');
     listContainer.classList.remove('show');
     listContainer.innerHTML = '';
 
-    // -- Unified Feedback: Append to search feedback list --
+    // Feedback
     const feedbackDiv = document.getElementById('recommender-search-feedback');
     const newItemHTML = `
       <div class="recommender-feedback-item">
@@ -924,24 +968,58 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
     feedbackDiv.insertAdjacentHTML('afterbegin', newItemHTML);
   }
 
-  function removeCourseFromBasket(courseId) {
-    selectedCourses.delete(courseId);
+  function addTextToBasket() {
+    const input = document.getElementById('recommender-free-text');
+    const text = input.value.trim();
+
+    if (text.length < 3) {
+      alert("Please enter a longer description.");
+      return;
+    }
+
+    // Truncate display text if too long
+    const displaySnippet = text.length > 50 ? text.substring(0, 50) + "..." : text;
+
+    basketItems.push({
+      type: 'text',
+      value: text,
+      display: `<em>"${displaySnippet}"</em>`
+    });
+
+    updateBasketDisplay();
+    input.value = '';
+
+    // Feedback
+    const feedbackDiv = document.getElementById('recommender-text-feedback');
+    feedbackDiv.innerHTML = `
+      <div class="recommender-feedback-item" style="background-color: #f0f7ff; border-color: #cce5ff; color: #004085;">
+        <span>Added interest description</span>
+        <span class="recommender-feedback-icon">✓</span>
+      </div>
+    `;
+  }
+
+  function removeItemFromBasket(index) {
+    basketItems.splice(index, 1);
     updateBasketDisplay();
   }
 
   function updateBasketDisplay() {
     const basket = document.getElementById('recommender-basket');
-    if (selectedCourses.size === 0) {
-      basket.innerHTML = '<div class="recommender-basket-placeholder">Your basket is empty. Please add courses in Step 1.</div>';
+    if (basketItems.length === 0) {
+      basket.innerHTML = '<div class="recommender-basket-placeholder">Your basket is empty. Please add courses or text in Step 1.</div>';
       return;
     }
 
     let html = '';
-    selectedCourses.forEach((name, id) => {
+    basketItems.forEach((item, index) => {
+      const isText = item.type === 'text';
+      const cssClass = isText ? 'recommender-basket-item text-item' : 'recommender-basket-item';
+
       html += `
-        <div class="recommender-basket-item">
-          <span class="recommender-basket-text"><strong>${id}</strong> - ${name}</span>
-          <span class="recommender-basket-remove" onclick="removeCourseFromBasket('${id}')" title="Remove">&times;</span>
+        <div class="${cssClass}">
+          <span class="recommender-basket-text">${item.display}</span>
+          <span class="recommender-basket-remove" onclick="removeItemFromBasket(${index})" title="Remove">&times;</span>
         </div>
       `;
     });
@@ -968,27 +1046,27 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
       .then(data => {
         if (data.success) {
           if (data.courses.length === 0) {
-            feedbackDiv.innerHTML = '<span class="text-danger small">No valid course codes found.</span>';
+            feedbackDiv.innerHTML = '<span class="text-danger small">No valid 5-digit course codes found!</span>';
             return false;
           } else {
+            let addedCount = 0;
+            const currentIds = new Set(basketItems.filter(i => i.type === 'course').map(i => i.value));
+
             data.courses.forEach(c => {
-              const name = c.name || "Course Title";
-              selectedCourses.set(c.course_id, name);
+              if (!currentIds.has(c.course_id)) {
+                basketItems.push({
+                  type: 'course',
+                  value: c.course_id,
+                  display: `<strong>${c.course_id}</strong> - ${c.name || 'Unknown'}`
+                });
+                addedCount++;
+              }
             });
+
             updateBasketDisplay();
 
-            const extractedCount = data.courses.length;
-            const courseLabel = extractedCount === 1 ? 'course' : 'courses';
-            let html = `<div class="text-success font-weight-bold mb-2 small">Successfully extracted ${extractedCount} ${courseLabel}:</div>`;
-
-            data.courses.forEach(c => {
-              html += `
-                <div class="recommender-feedback-item">
-                  <span><strong>${c.course_id}</strong> - ${c.name || 'Unknown'}</span>
-                  <span class="recommender-feedback-icon">✓</span>
-                </div>
-              `;
-            });
+            const courseLabel = addedCount === 1 ? 'course' : 'courses';
+            let html = `<div class="text-success font-weight-bold mb-2 small">Added ${addedCount} new ${courseLabel}:</div>`;
             feedbackDiv.innerHTML = html;
             return true;
           }
@@ -1029,16 +1107,14 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
 
   function getRecommendations() {
     const filters = getSelectedFilters();
-    let courseIds = Array.from(selectedCourses.keys());
-
     const errorDiv = document.getElementById('recommender-error-msg');
     const resultsArea = document.getElementById('recommender-results-area');
 
     errorDiv.classList.add('recommender-hidden');
     resultsArea.classList.add('recommender-hidden');
 
-    if (courseIds.length === 0) {
-      errorDiv.textContent = 'Please select at least one course in Step 1 first.';
+    if (basketItems.length === 0) {
+      errorDiv.textContent = 'Please add at least one course or interest description to your basket.';
       errorDiv.classList.remove('recommender-hidden');
       return;
     }
@@ -1046,14 +1122,15 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
     const btn = document.getElementById('recommender-submit-btn');
     const originalText = btn.textContent;
     btn.disabled = true;
-    btn.textContent = 'Analyzing...';
+    btn.textContent = 'Analyzing, please wait...';
 
+    // Send the whole basket to the backend
     fetch('/recommend', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        course_ids: courseIds,
-        n_recommendations: 9001,  // It's over 9000!
+        basket_items: basketItems,
+        n_recommendations: 9001,
         filters: filters
       })
     })
@@ -1065,13 +1142,11 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
         if (data.success) {
           allRecommendations = data.recommendations;
 
-          const inputCount = data.input_courses.length;
-          const courseLabel = inputCount === 1 ? 'course' : 'courses';
-
           const infoDiv = document.getElementById('recommender-results-info');
-          infoDiv.innerHTML = `
-            <strong>Found ${allRecommendations.length} recommendations</strong> based on ${inputCount} input ${courseLabel}.
-          `;
+          const count = basketItems.length;
+          const label = count === 1 ? 'item' : 'items';
+
+          infoDiv.innerHTML = `<strong>Found ${allRecommendations.length} recommendations</strong> based on ${count} basket ${label}.`;
 
           resultsArea.classList.remove('recommender-hidden');
 
@@ -1138,27 +1213,52 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
     }
   }
 
-  // --- Standard Card HTML (Carousel & List) ---
   function createCardHTML(course, index) {
     const courseUrl = getCourseUrl(course.course_id);
+
+    const scheduleImg =
+      (course.season === "Fall" || course.season === "Spring") && course.schedule
+        ? `<img src="${STATIC_BASE_URL}assets/schedules/${course.schedule}_Schedule.png"
+            style="height: 14px; width: auto; vertical-align: middle;">`
+        : '';
+
+    const seasonLabel =
+      course.season === "2+ Timeslots"
+        ? "Multiple semesters"
+        : (course.season || '');
+
+    // Subtle grey button using standard Bootstrap classes
+    // btn-light gives a very light grey background
+    // border makes it defined against the white card
+    // text-muted makes the text grey
+    const similarityBtn = `
+    <button class="btn btn-sm btn-light border text-muted"
+            onclick="openSimilarityModal(${index})"
+            style="font-size: 0.8rem;">
+      View similarity scores
+    </button>
+  `;
+
     return `
-      <div class="recommender-course-card">
-        <div class="recommender-card-body">
-          <div class="mb-2">
-            <a href="${courseUrl}" class="h5 recommender-course-link">${course.course_id}</a>
-            <span class="recommender-similarity-badge">Match: ${course.similarity}</span>
-          </div>
-          <h6 class="card-title font-weight-bold">${course.name}</h6>
-          <p class="card-subtitle text-muted mb-2 small">
-            ${course.ects} ECTS | ${course.institute}
-          </p>
-          <div class="recommender-card-text">
-            ${course.description || 'No description available.'}
-          </div>
-          <a href="${courseUrl}" class="btn btn-sm recommender-btn-brand mt-auto">View Course ↗</a>
+    <div class="recommender-course-card">
+      <div class="recommender-card-body">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <a href="${courseUrl}" class="h5 recommender-course-link mb-0">${course.course_id}</a>
+          ${similarityBtn}
         </div>
+        <h6 class="card-title font-weight-bold">${course.name}</h6>
+
+        <p class="card-subtitle text-muted mb-2 small">
+          🎓 ${course.course_type || ''} 🏅 ${course.ects} ECTS | 📚 ${course.exam || ''} | 🕗 ${seasonLabel} ${scheduleImg}
+        </p>
+
+        <div class="recommender-card-text">
+          ${course.description || 'No description available.'}
+        </div>
+        <a href="${courseUrl}" class="btn btn-sm recommender-btn-brand mt-auto">View Course ↗</a>
       </div>
-    `;
+    </div>
+  `;
   }
 
   // --- Analyzer Card HTML Helper ---
@@ -1434,6 +1534,59 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
     renderList();
   }
 
+  function openSimilarityModal(index) {
+    // Safety check
+    if (!allRecommendations || !allRecommendations[index]) {
+      console.error("Course data not found for index", index);
+      return;
+    }
+
+    const course = allRecommendations[index];
+    const breakdown = course.similarity_breakdown || [];
+
+    // Set Title
+    document.getElementById('similarity_modal_title').textContent = `Similarity: ${course.course_id} - ${course.name}`;
+
+    // Build Table Rows
+    let html = '';
+    if (breakdown.length === 0) {
+      html = '<tr><td colspan="2" class="text-muted text-center">No breakdown data available.</td></tr>';
+    } else {
+      breakdown.forEach(item => {
+        const percent = Math.round(item.score * 100);
+
+        let scoreClass = 'text-muted';
+        if (percent > 70) scoreClass = 'text-success font-weight-bold';
+        else if (percent > 40) scoreClass = 'text-dark';
+
+        html += `
+            <tr>
+              <td>${item.name}</td>
+              <td class="text-right ${scoreClass}">${percent}%</td>
+            </tr>
+          `;
+      });
+    }
+
+    document.getElementById('similarity_modal_body').innerHTML = html;
+
+    // --- ROBUST OPENING LOGIC (Handles BS4 and BS5) ---
+    const modalEl = document.getElementById('similarity_breakdown_modal');
+
+    // Check for Bootstrap 5 (Vanilla JS)
+    if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+      const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+      modal.show();
+    }
+    // Check for Bootstrap 4 (jQuery)
+    else if (typeof $ !== 'undefined' && $.fn.modal) {
+      $(modalEl).modal('show');
+    }
+    else {
+      console.error("Bootstrap Javascript library is not loaded.");
+    }
+  }
+
   // Close autocomplete when clicking outside
   document.addEventListener('click', function (e) {
     if (!e.target.closest('.recommender-search-wrapper')) {
@@ -1477,5 +1630,47 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
     }
   });
 
+  // Free Text Input: Ctrl+Enter ADDS to basket
+  document.getElementById('recommender-free-text').addEventListener('keydown', function (e) {
+    if (e.ctrlKey && e.key === 'Enter') {
+      e.preventDefault();
+      addTextToBasket();
+    }
+  });
+
 </script>
+
+<!-- Similarity Breakdown Modal -->
+<div class="modal fade" id="similarity_breakdown_modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="similarity_modal_title">Similarity Breakdown</h5>
+        <!-- Supports both BS4 and BS5 closing -->
+        <button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>How this course compares to your inputs:</p>
+        <table class="table table-sm table-striped mt-2 mb-0">
+          <thead>
+            <tr>
+              <th scope="col">Input Source</th>
+              <th scope="col" class="text-right">Match</th>
+            </tr>
+          </thead>
+          <tbody id="similarity_modal_body">
+            <!-- Content injected via JS -->
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <!-- Supports both BS4 and BS5 closing -->
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}

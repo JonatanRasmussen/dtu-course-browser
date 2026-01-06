@@ -36,6 +36,13 @@ def index_v1():
         return submit_search_field(request.form.get('search_field_input'))
     return render_template('recommender_v1.html')
 
+@recommender.route('/recommender_v2', methods=['GET', 'POST'])
+def index_v2():
+    """Route for the V1 version of the recommender interface"""
+    if request.method == 'POST':
+        return submit_search_field(request.form.get('search_field_input'))
+    return render_template('recommender_v2.html')
+
 
 @recommender.route('/search_courses', methods=['GET'])
 def search_courses():
@@ -116,23 +123,54 @@ def recommend():
     try:
         rec = get_recommender()
         req_data = request.json
-        course_ids = req_data.get('course_ids', [])
 
-        if isinstance(course_ids, str):
-            course_ids = [c.strip().upper() for c in course_ids.split(',') if c.strip()]
+        # Expecting a list of mixed items now
+        # Format: [{'type': 'course', 'value': '01005'}, {'type': 'text', 'value': 'biology'}]
+        basket_items = req_data.get('basket_items', [])
 
-        if not course_ids:
-            return jsonify({'success': False, 'error': 'Please select at least one course'})
+        # Backward compatibility: If basket is empty, check for old inputs and convert them
+        if not basket_items:
+            old_ids = req_data.get('course_ids', [])
+            old_text = req_data.get('text_input', '')
+
+            if old_ids:
+                if isinstance(old_ids, str):
+                    old_ids = [c.strip().upper() for c in old_ids.split(',') if c.strip()]
+                for c in old_ids:
+                    basket_items.append({'type': 'course', 'value': c})
+
+            if old_text:
+                basket_items.append({'type': 'text', 'value': old_text})
+
+        if not basket_items:
+            return jsonify({'success': False, 'error': 'Please add courses or text description to your basket'})
 
         filters = req_data.get('filters', {})
         filter_criteria = {k: v for k, v in filters.items() if v}
-        number_of_recommendations = int(req_data.get('n_recommendations', 9001))  # It's over 9000!
+        number_of_recommendations = int(req_data.get('n_recommendations', 9001))
 
-        recommendations = rec.get_filtered_recommendations(
-            course_ids,
-            filter_criteria=filter_criteria if filter_criteria else None,
-            n_recommendations=number_of_recommendations
+        # Use the new hybrid method directly from the inner recommender class
+        all_recommendations = rec.recommender.recommend_hybrid(
+            basket_items,
+            return_all_ranked=True
         )
+
+        if all_recommendations.empty:
+            return jsonify({'success': True, 'recommendations': [], 'message': 'No courses found matching criteria.'})
+
+        # Apply filters manually since we bypassed the wrapper class method
+        if filter_criteria:
+            allowed_courses = rec.apply_filters(filter_criteria)
+            if allowed_courses:
+                all_recommendations = all_recommendations[all_recommendations['COURSE'].isin(allowed_courses)]
+            else:
+                # Filters resulted in 0 allowed courses
+                return jsonify({'success': True, 'recommendations': [], 'message': 'Filters excluded all results.'})
+
+        # Slice the results
+        recommendations = all_recommendations.head(number_of_recommendations)
+
+        # --- Formatting Logic ---
         global_data = data()
         results = []
         for _, row in recommendations.iterrows():
@@ -147,33 +185,28 @@ def recommend():
                 description = ' '.join(description.split())
 
             # Helper to safely extract data from the global dict
-            # Access pattern: global_data['category_name'][course_id]
             def get_stat(category, default=""):
                 try:
-                    # Check if category exists in global_data
                     if hasattr(global_data, 'get'):
                         cat_dict = global_data.get(category)
                     else:
-                         # Fallback if global_data is an object attribute
                         cat_dict = getattr(global_data, category, None)
 
                     if cat_dict and cid in cat_dict:
                         return cat_dict[cid]
                     return default
-                except:  #type: ignore
+                except:
                     return default
 
-            # Build the rich result object expected by the JS Analyzer
+            # Build the rich result object
             results.append({
-                # Basic Info
                 'course_id': cid,
                 'name': row['NAME'],
-                'similarity': f"{row['similarity_score']:.3f}",
+                # Pass the breakdown list to the frontend
+                'similarity_breakdown': row.get('similarity_breakdown', []),
                 'ects': row['ECTS_POINTS'],
                 'institute': row['INSTITUTE'],
                 'description': description[:200] + '...' if len(description) > 200 else description,
-
-                # Detailed Stats (Mapped from context_dicts.data)
                 'responsible': get_stat('responsible', 'NO_DATA'),
                 'course_type': get_stat('course_type', ''),
                 'language': get_stat('language', ''),
@@ -189,10 +222,11 @@ def recommend():
                 'rating_tier': get_stat('rating_tier', '0'),
                 'workload_tier': get_stat('workload_tier', '0')
             })
+
         return jsonify({
             'success': True,
             'recommendations': results,
-            'input_courses': course_ids,
+            'basket_items': basket_items,
             'filters_applied': filter_criteria
         })
     except Exception as e:

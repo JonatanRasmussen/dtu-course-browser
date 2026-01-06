@@ -860,7 +860,7 @@
       // Header with info
       html += '<h2>Course Recommendations</h2>';
       html += '<div class="info-box">';
-      html += `<strong>Based on courses:</strong> ${data.input_courses.join(', ')}<br>`;
+      html += `<strong>Based on courses:</strong> ${data.basket_items.join(', ')}<br>`;
       if (Object.keys(data.filters_applied).length > 0) {
         html += `<strong>Filters applied:</strong> `;
         html += Object.entries(data.filters_applied)

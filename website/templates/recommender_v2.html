@@ -420,7 +420,7 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
           <p class="recommender-step-desc">
             This recommendation tool works by taking one or more courses as input and then outputting a list of DTU's
             most similar courses.
-            Choose one of the following 2 ways to input courses:
+            Choose one of the following ways to input courses:
           </p>
 
           <div class="btn-group">
@@ -453,7 +453,7 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
           <div id="input-area-bulk" class="recommender-input-area">
             <label for="recommender-bulk-text" class="form-label"><strong>Paste text containing course
                 codes:</strong></label>
-            <textarea class="form-control" id="recommender-bulk-text" rows="5"
+            <textarea class="form-control" id="recommender-bulk-text" rows="2"
               placeholder="Any text will work, assuming it contains valid 5-digit course codes."></textarea>
             <small class="text-muted d-block mt-1"><strong>Copy & paste</strong> any text containing 5-digit course
               codes into the box above.</small>
@@ -969,7 +969,7 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
       .then(data => {
         if (data.success) {
           if (data.courses.length === 0) {
-            feedbackDiv.innerHTML = '<span class="text-danger small">No valid course codes found.</span>';
+            feedbackDiv.innerHTML = '<span class="text-danger small">No valid 5-digit course codes found!</span>';
             return false;
           } else {
             data.courses.forEach(c => {
@@ -1066,7 +1066,7 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
         if (data.success) {
           allRecommendations = data.recommendations;
 
-          const inputCount = data.input_courses.length;
+          const inputCount = data.basket_items.length;
           const courseLabel = inputCount === 1 ? 'course' : 'courses';
 
           const infoDiv = document.getElementById('recommender-results-info');
@@ -1142,17 +1142,43 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
   // --- Standard Card HTML (Carousel & List) ---
   function createCardHTML(course, index) {
     const courseUrl = getCourseUrl(course.course_id);
+
+    const scheduleImg =
+      (course.season === "Fall" || course.season === "Spring") && course.schedule
+        ? `<img src="${STATIC_BASE_URL}assets/schedules/${course.schedule}_Schedule.png"
+             style="height: 14px; width: auto; vertical-align: middle;">`
+        : '';
+
+    const seasonLabel =
+      course.season === "2+ Timeslots"
+        ? "Multiple semesters"
+        : (course.season || '');
+
+    // Subtle grey button using standard Bootstrap classes
+    // btn-light gives a very light grey background
+    // border makes it defined against the white card
+    // text-muted makes the text grey
+    const similarityBtn = `
+      <button class="btn btn-sm btn-light border text-muted"
+              onclick="openSimilarityModal(${index})"
+              style="font-size: 0.8rem;">
+        View similarity scores
+      </button>
+    `;
+
     return `
       <div class="recommender-course-card">
         <div class="recommender-card-body">
-          <div class="mb-2">
-            <a href="${courseUrl}" class="h5 recommender-course-link">${course.course_id}</a>
-            <span class="recommender-similarity-badge">Match: ${course.similarity}</span>
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <a href="${courseUrl}" class="h5 recommender-course-link mb-0">${course.course_id}</a>
+            ${similarityBtn}
           </div>
           <h6 class="card-title font-weight-bold">${course.name}</h6>
+
           <p class="card-subtitle text-muted mb-2 small">
-            ${course.ects} ECTS | ${course.institute}
+            🎓 ${course.course_type || ''} 🏅 ${course.ects} ECTS | 📚 ${course.exam || ''} | 🕗 ${seasonLabel} ${scheduleImg}
           </p>
+
           <div class="recommender-card-text">
             ${course.description || 'No description available.'}
           </div>
@@ -1435,6 +1461,59 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
     renderList();
   }
 
+  function openSimilarityModal(index) {
+    // Safety check
+    if (!allRecommendations || !allRecommendations[index]) {
+      console.error("Course data not found for index", index);
+      return;
+    }
+
+    const course = allRecommendations[index];
+    const breakdown = course.similarity_breakdown || [];
+
+    // Set Title
+    document.getElementById('similarity_modal_title').textContent = `Similarity: ${course.course_id} - ${course.name}`;
+
+    // Build Table Rows
+    let html = '';
+    if (breakdown.length === 0) {
+      html = '<tr><td colspan="2" class="text-muted text-center">No breakdown data available.</td></tr>';
+    } else {
+      breakdown.forEach(item => {
+        const percent = Math.round(item.score * 100);
+
+        let scoreClass = 'text-muted';
+        if (percent > 70) scoreClass = 'text-success font-weight-bold';
+        else if (percent > 40) scoreClass = 'text-dark';
+
+        html += `
+            <tr>
+              <td>${item.name}</td>
+              <td class="text-right ${scoreClass}">${percent}%</td>
+            </tr>
+          `;
+      });
+    }
+
+    document.getElementById('similarity_modal_body').innerHTML = html;
+
+    // --- ROBUST OPENING LOGIC (Handles BS4 and BS5) ---
+    const modalEl = document.getElementById('similarity_breakdown_modal');
+
+    // Check for Bootstrap 5 (Vanilla JS)
+    if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+      const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+      modal.show();
+    }
+    // Check for Bootstrap 4 (jQuery)
+    else if (typeof $ !== 'undefined' && $.fn.modal) {
+      $(modalEl).modal('show');
+    }
+    else {
+      console.error("Bootstrap Javascript library is not loaded.");
+    }
+  }
+
   // Close autocomplete when clicking outside
   document.addEventListener('click', function (e) {
     if (!e.target.closest('.recommender-search-wrapper')) {
@@ -1479,4 +1558,38 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
   });
 
 </script>
+
+<!-- Similarity Breakdown Modal -->
+<div class="modal fade" id="similarity_breakdown_modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="similarity_modal_title">Similarity Breakdown</h5>
+        <!-- Supports both BS4 and BS5 closing -->
+        <button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>How this course compares to your inputs:</p>
+        <table class="table table-sm table-striped mt-2 mb-0">
+          <thead>
+            <tr>
+              <th scope="col">Input Source</th>
+              <th scope="col" class="text-right">Match</th>
+            </tr>
+          </thead>
+          <tbody id="similarity_modal_body">
+            <!-- Content injected via JS -->
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <!-- Supports both BS4 and BS5 closing -->
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}
