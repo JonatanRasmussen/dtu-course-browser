@@ -45,6 +45,61 @@
     .navbar-custom .navbar-text {
     color: white;
     }
+
+    /* Search Autocomplete Styles for Navbar */
+    .navbar-search-container {
+      position: relative;
+      width: 100%;
+    }
+
+    .navbar-autocomplete-results {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 0 0 4px 4px;
+      max-height: 300px;
+      overflow-y: auto;
+      z-index: 9999; /* Ensure it floats above everything */
+      display: none;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .navbar-autocomplete-results.show {
+      display: block;
+    }
+
+    .navbar-autocomplete-item {
+      padding: 10px;
+      cursor: pointer;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+      color: #333; /* Dark text for white background */
+    }
+
+    .navbar-autocomplete-item:hover {
+      background-color: #f0f0f0;
+    }
+
+    .navbar-autocomplete-item:last-child {
+      border-bottom: none;
+    }
+
+    .navbar-item-id {
+      font-weight: bold;
+      color: #990000;
+      font-size: 13px;
+    }
+
+    .navbar-item-name {
+      font-size: 13px;
+      color: #555;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   </style>
 
 </head>
@@ -72,12 +127,15 @@
             <a class="nav-link" href="/recommender">Recommender</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/browse?dk=language&eng=language">Browse</a>
+            <a class="nav-link" href="/browse?dk=language&eng=language">Browse all</a>
           </li>
         </ul>
-        <form class="d-flex ms-3" method="POST" style="width: 160px;">
-          <input class="form-control" type="text" id="search_field_input" name="search_field_input"
-            placeholder="Search" aria-label="Search" />
+        <form class="d-flex ms-3" method="POST" style="width: 200px;" id="navbarSearchForm">
+          <div class="navbar-search-container">
+            <input class="form-control" type="text" id="search_field_input" name="search_field_input" placeholder="Search"
+              aria-label="Search" autocomplete="off" oninput="navbarSearchCourses()" onfocus="navbarSearchCourses()" />
+            <div id="navbarAutocompleteResults" class="navbar-autocomplete-results"></div>
+          </div>
         </form>
         <ul class="navbar-nav">
           <li class="nav-item">
@@ -110,6 +168,68 @@
   <!-- End of flash message -->
 
   <div class="container">{% block content %} {% endblock %}</div>
+
+  <!-- Start of Navbar Search Logic -->
+  <script>
+    let navSearchTimeout = null;
+    function navbarSearchCourses() {
+      const query = document.getElementById('search_field_input').value;
+      const resultsContainer = document.getElementById('navbarAutocompleteResults');
+      if (navSearchTimeout) {  // Clear previous timeout
+        clearTimeout(navSearchTimeout);
+      }
+      if (query.length < 1) {
+        resultsContainer.classList.remove('show');
+        return;
+      }
+      navSearchTimeout = setTimeout(() => {  // Debounce search
+        fetch(`/search_courses?query=${encodeURIComponent(query)}`)
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              displayNavbarResults(data.results);
+            }
+          })
+          .catch(error => console.error('Navbar search error:', error));
+      }, 25);
+    }
+
+    function displayNavbarResults(results) {
+      const container = document.getElementById('navbarAutocompleteResults');
+      if (results.length === 0) {
+        container.innerHTML = '<div style="padding: 10px; color: #999; font-size: 13px;">No courses found</div>';
+        container.classList.add('show');
+        return;
+      }
+      let html = '';
+      const displayResults = results.slice(0, 10);  // Limit to 5 results for the small navbar dropdown
+      displayResults.forEach(course => {  // Escape quotes for the onclick handler
+        const safeName = course.name.replace(/'/g, "\\'");
+        html += `
+            <div class="navbar-autocomplete-item" onclick="selectNavbarCourse('${course.course_id}')">
+              <div class="navbar-item-id">${course.course_id}</div>
+              <div class="navbar-item-name">${course.name}</div>
+            </div>
+          `;
+      });
+      container.innerHTML = html;
+      container.classList.add('show');
+    }
+
+    function selectNavbarCourse(courseId) {
+      const input = document.getElementById('search_field_input');
+      const form = document.getElementById('navbarSearchForm');
+      input.value = courseId;  // Set the input value to the course ID
+      document.getElementById('navbarAutocompleteResults').classList.remove('show');  // Hide results
+      form.submit();  // Submit the form immediately
+    }
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.navbar-search-container')) {
+        document.getElementById('navbarAutocompleteResults').classList.remove('show');
+      }  // Close dropdown when clicking outside
+    });
+  </script>
+  <!-- End of Navbar Search Logic -->
 
 </body>
 

@@ -51,7 +51,7 @@ class CsvColumnConsts:
         InfoConsts.time_of_week_updated.key_df, InfoConsts.exam_duration.key_df, InfoConsts.home_page.key_df,
         InfoConsts.learning_objectives.key_df, InfoConsts.course_content.key_df, InfoConsts.remarks.key_df,
         InfoConsts.old_recommended_prerequisites.key_df, InfoConsts.recommended_prerequisites.key_df,
-        InfoConsts.mandatory_prerequisites.key_df, InfoConsts.highlighted_message.key_df,
+        InfoConsts.mandatory_prerequisites.key_df, InfoConsts.subsequent_courses.key_df, InfoConsts.highlighted_message.key_df,
         InfoConsts.study_lines.key_df, GradeConsts.semesters_total, InfoConsts.institute.key_df
     ] + Utils.generate_columns(Config.course_semesters, SEMESTER_ELEMENTS, add_index = False)
 

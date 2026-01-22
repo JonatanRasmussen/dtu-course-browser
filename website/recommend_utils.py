@@ -1,3 +1,4 @@
+#recommend_utils.py
 import json
 import pandas as pd
 import numpy as np
@@ -11,24 +12,56 @@ from website.global_constants.website_consts import WebsiteConsts
 
 class CourseRecommender:
     """ Text Similarity with Embeddings """
-    SENTENCE_TRANSFORMER_MODEL = 'all-MiniLM-L6-v2'
+    SENTENCE_TRANSFORMER_MODEL = 'all-MiniLM-L6-v2'  # all-mpnet-base-v2 (unused alternative)
     EMBEDDINGS_CACHE_FILE = 'recommended_course_embeddings_cache.pkl'
     FILTERED_DF_CACHE_FILE = 'recommended_filtered_courses_df_cache.pkl'
 
-    def __init__(self):
+    def __init__(self, eager_load=False):
         self._model = None  # Lazy loaded - only loads when needed
         self.course_embeddings = None
         print(f"Loading course data from {FileNameConsts.name_of_pkl}.pkl")
         self.courses_df = CourseRecommender.load_course_data_df()
         print(f"Loaded {len(self.courses_df)} courses")
 
+        # --- EAGER LOADING LOGIC ---
+        # If eager_load is True, we force the model to load right now (at startup).
+        if eager_load:
+            print("Eager loading enabled: Initializing model now...")
+            # Accessing self.model triggers the property logic below
+            if self.model is None:
+                print("WARNING: Model could not be loaded (missing 'sentence_transformers' library?)")
+            else:
+                print("Model loaded successfully during initialization.")
+
     @property
     def model(self):
-        """Lazy load the SentenceTransformer model only when needed"""
+        """
+        Loads the SentenceTransformer model.
+        Wrapped in try/except to allow the code to run even if the library is missing.
+        """
         if self._model is None:
-            from sentence_transformers import SentenceTransformer  # Lazy import
-            print(f"Loading sentence transformer model: '{CourseRecommender.SENTENCE_TRANSFORMER_MODEL}'")
-            self._model = SentenceTransformer(CourseRecommender.SENTENCE_TRANSFORMER_MODEL)
+            try:
+                # 1. Try to import the library. If this fails, we are in "Lite Mode"
+                from sentence_transformers import SentenceTransformer
+                print(f"Loading sentence transformer model: '{CourseRecommender.SENTENCE_TRANSFORMER_MODEL}'")
+
+                # 2. Try to load the model file
+                try:
+                    # Fix for when this code is being run at pythonanywhere.com
+                    web_path = FileNameConsts.pythonanywherecom_path_of_pkl + self.SENTENCE_TRANSFORMER_MODEL
+                    self._model = SentenceTransformer(web_path)
+                except FileNotFoundError:
+                    # Relative path used when localhosting
+                    local_path = FileNameConsts.path_of_pkl + self.SENTENCE_TRANSFORMER_MODEL
+                    self._model = SentenceTransformer(local_path)
+
+            except ImportError:
+                print("CRITICAL: 'sentence_transformers' not installed. Keyword search will be disabled.")
+                self._model = None
+            except Exception as e:
+                print(f"Error loading model: {e}")
+                self._model = None
+
         return self._model
 
     @staticmethod
@@ -134,6 +167,11 @@ class CourseRecommender:
 
     def fit(self, force_recreate=False):
         """Fit the model using combined course text"""
+        # Safety check: If model failed to load (no library), we cannot fit.
+        if self.model is None:
+            print("Cannot fit model: SentenceTransformer is not available.")
+            return
+
         if self._is_pythonanywhere():
             print("Running on PythonAnywhere - cache-only mode enabled")
             if force_recreate:
@@ -199,7 +237,9 @@ class CourseRecommender:
 
     def recommend_courses(self, input_course_ids, n_recommendations=10, return_all_ranked=False):
         if self.course_embeddings is None:
-            raise ValueError("Model not fitted! Call fit() first.")
+            # If embeddings aren't loaded, we can't recommend
+            print("Warning: Embeddings not loaded. Cannot recommend.")
+            return pd.DataFrame()
 
         input_indices = []
         found_courses = []
@@ -242,8 +282,10 @@ class CourseRecommender:
 
     def recommend_by_text(self, text_input, n_recommendations=10, return_all_ranked=False):
         """ Generates recommendations based on free text input."""
-        if self.course_embeddings is None:
-            raise ValueError("Model not fitted! Call fit() first.")
+        # Check if model is loaded
+        if self.course_embeddings is None or self.model is None:
+            print("Model not fitted or library missing! Cannot recommend by text.")
+            return pd.DataFrame()
 
         if not text_input or len(text_input.strip()) < 3:
             print("Input text too short")
@@ -268,7 +310,8 @@ class CourseRecommender:
                     [{'type': 'course', 'value': '01005'}, {'type': 'text', 'value': 'Machine Learning'}]
         """
         if self.course_embeddings is None:
-            raise ValueError("Model not fitted!")
+            print("Embeddings not loaded. Cannot recommend.")
+            return pd.DataFrame()
 
         course_vectors = []
         text_vectors = []
@@ -293,16 +336,20 @@ class CourseRecommender:
                     valid_labels.append(f"Course {item['value']} - {course_name}")
 
             elif item['type'] == 'text':
-                clean_text = self.preprocess_text(item['value'])
-                if len(clean_text) > 2:
-                    vec = self.model.encode([clean_text])[0]
+                # Only try to encode text if the model is actually loaded
+                if self.model is not None:
+                    clean_text = self.preprocess_text(item['value'])
+                    if len(clean_text) > 2:
+                        vec = self.model.encode([clean_text])[0]
 
-                    text_vectors.append(vec)
-                    valid_vectors.append(vec)
-                    is_course_input.append(False)
+                        text_vectors.append(vec)
+                        valid_vectors.append(vec)
+                        is_course_input.append(False)
 
-                    display_text = item['value'][:20] + "..." if len(item['value']) > 20 else item['value']
-                    valid_labels.append(f"input '{display_text}'")
+                        display_text = item['value'][:20] + "..." if len(item['value']) > 20 else item['value']
+                        valid_labels.append(f"input '{display_text}'")
+                else:
+                    print("Skipping text input: Model not available.")
 
         if not valid_vectors:
             return pd.DataFrame()
@@ -365,11 +412,11 @@ class CourseRecommender:
         return results_df.head(n_recommendations)
 
 
-
 class FilterRecommendations:
     """Filtering methods for CourseRecommender"""
-    def __init__(self):
-        self.recommender = FilterRecommendations.initialize_course_recommender()
+    def __init__(self, eager_load=False):
+        # Pass the eager_load flag down to the recommender
+        self.recommender = FilterRecommendations.initialize_course_recommender(eager_load)
         self.filter_dct = FilterRecommendations.load_dct_from_json_file()
         print(f"Loaded filter dictionary with categories: {list(self.filter_dct.keys())}")
 
@@ -429,9 +476,16 @@ class FilterRecommendations:
         return matching_courses
 
     @staticmethod
-    def initialize_course_recommender():
-        recommender = CourseRecommender()
-        recommender.fit()
+    def initialize_course_recommender(eager_load=False):
+        recommender = CourseRecommender(eager_load=eager_load)
+
+        # Only fit if the embeddings/model are actually available
+        # If model is None (library missing), fit() would fail on text encoding
+        if recommender.model is not None or recommender.load_embeddings_cache():
+            recommender.fit()
+        else:
+            print("Skipping fit(): Model not available and cache not found.")
+
         return recommender
 
     @staticmethod

@@ -2,6 +2,7 @@
 
 import pandas as pd
 import json
+import re
 
 from format_evaluations import EvalFormatter
 from format_grades import GradeFormatter
@@ -125,14 +126,44 @@ class CsvCreator:
             Utils.display_progress(i, course_numbers, file_name, 100)  # Display progress to user
         df = df.copy() # df is copied to 'fix fragmentation', which prevents an annoying pandas PerformanceWarning that is polluting the terminal
         df.set_index(FileNameConsts.df_index, inplace=True, drop=False)  # Set course ID as df index
-        print(df)
         if (InfoConsts.main_responsible_name.key_df) in premade_columns or premade_columns == []:
             df = create_teacher_course_lst(df, course_numbers)  # Append columns containing each responsibles' course list. Must be done after rest of the df is finalized
+        if (InfoConsts.subsequent_courses.key_df) in premade_columns or premade_columns == []:
+            df = CsvCreator._add_subsequent_courses(df, course_numbers)
+
         for col in df.columns:  # Quick and dirty test: flag columns where all values are identical (incl. None/empty/NaN)
             unique_vals = pd.Series(df[col].unique()).dropna()  # drop NaN
             unique_vals = unique_vals.replace("", None)  # treat empty string as None
             if len(unique_vals) <= 1 and col != InfoConsts.old_recommended_prerequisites.key_df and col[0] != DtuConsts.dtu_term_autumn[0] and col[0] != DtuConsts.dtu_term_spring[0]:  # I know this will impact all columns starting with E and F but I kinda don't care
                 print(f"[Warning] Column '{col}' has identical values for all rows: {unique_vals.iloc[0] if not unique_vals.empty else None}")
+        return df
+
+    @staticmethod
+    def _add_subsequent_courses(df, course_numbers):
+        """Generate reversed course prerequisites (the courses a course gives access to)"""
+        prereq_keys = [InfoConsts.recommended_prerequisites.key_df, InfoConsts.old_recommended_prerequisites.key_df, InfoConsts.mandatory_prerequisites.key_df]
+        valid_courses_set = set(str(c) for c in course_numbers)
+        subsequent_map = {str(c): set() for c in course_numbers} # course_numbers is converted to a set for O(1) lookups
+        for current_course_id, row in df.iterrows():  # Iterate over every course in the dataframe to find what prerequisites they require
+            combined_prereq_text = ""  # Combine text from all prerequisite columns into one string
+            for key in prereq_keys:
+                if key in df.columns:
+                    val = row[key]
+                    if val and pd.notna(val):
+                        combined_prereq_text += " " + str(val)
+            # Use Regex to find all 5-digit course numbers in the text
+            found_prereqs = re.findall(r"\b\d{5}\b", combined_prereq_text)  # Pattern \b\d{5}\b ensures we match exactly 5 digits surrounded by word boundaries
+            for prereq in found_prereqs:  # For every prerequisite found, record that the 'current_course_id' comes after it
+                if prereq in valid_courses_set:
+                    subsequent_map[prereq].add(str(current_course_id))  # If Course A requires Course B (prereq), then Course A is a subsequent course for Course B.
+        for course_id in df.index:  # Populate the dataframe with the formatted strings
+            course_id_str = str(course_id)
+            if course_id_str in subsequent_map and subsequent_map[course_id_str]:
+                sorted_subsequent = sorted(list(subsequent_map[course_id_str]))  # Sort the courses to ensure deterministic order
+                formatted_str = ', '.join(sorted_subsequent)  # Format as: 01002, 02003, 42604
+                df.at[course_id, InfoConsts.subsequent_courses.key_df] = formatted_str
+            else:
+                df.at[course_id, InfoConsts.subsequent_courses.key_df] = InfoConsts.no_subsequent_courses
         return df
 
     @staticmethod

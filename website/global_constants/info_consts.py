@@ -41,6 +41,7 @@ class InfoConsts:
     separator_html = '<br />'
     name_english = "NAME"
     not_yet_assigned_value = "No data available"
+    no_subsequent_courses = "No other course requires this as a prerequisite"
     unknown_value = "Unknown data value"
     unspecified_schedule = "Unspecified"
     no_linked_study_lines = "Not linked to any study lines"
@@ -745,6 +746,10 @@ class InfoConsts:
         values_url = []
         add_raw = False
         return Info(key_raw, key_df, key_url, values_raw, values_df, values_url, add_raw)
+
+    # Subsequent courses (reversed prerequisites)
+    subsequent_courses = _course_responsible(DtuConsts.dtu_subsequent_courses,
+                                                "SUBSEQUENT_COURSES")
 
     # Name and picture of course responsibles
     main_responsible_name = _course_responsible(DtuConsts.dtu_name_of_main_responsible,

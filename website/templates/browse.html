@@ -1,14 +1,15 @@
-{% extends "base.html" %} {% block title %}Home{% endblock %} {% block
-content %}
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
 
-  <!-- Start of main title  -->
-  <br><br><br><br>
+<!-- Start of main title  -->
+<br><br><br><br>
 
-  <h1 class="display-4">DTU Course Analyzer {{last_update.current_year}}</h1>
-  <br>
-  <p class="lead">A software project by DTU-student Jonatan Rasmussen s183649</p>
-  <br>
-  <!-- End of main title -->
+<h1 class="display-4">DTU Course Analyzer {{last_update.current_year}}</h1>
+<br>
+<p class="lead">A software project by DTU-student Jonatan Rasmussen s183649</p>
+<br>
+<!-- End of main title -->
 
 <!-- Start of outer loop -->
 {% for category in dicts_to_display.list_of_dicts %}
@@ -16,20 +17,24 @@ content %}
 <!-- Start of card section containing sorting options -->
 <div class="card text-black bg-light mb-3" style="max-width: 24rem;">
   <div class="card-header">
-    {{course_lists[category]|length}} course{% if course_lists[category]|length != 1 %}s{% endif %} matched your search criteria
+    {{course_lists[category]|length}} course{% if course_lists[category]|length != 1 %}s{% endif %} matched your search
+    criteria
   </div>
   <div class="card-body">
     {% if course_lists[category]|length != 0 %}
     <h5 class="card-title">Sort {% if course_lists[category]|length != 1 %}them{% else %}it{% endif %} based on:</h5>
-    <!-- Start of: Scuffed button group that is nested inside an invisible navbar because otherwise the dropdown does not work -->
+    <!-- Start of: Scuffed button group -->
     <nav class="navbar navbar-expand" aria-label="NavbarNewLabel">
       <div class="navbar-collapse collapse" id="fakeNavbarButtonMenu1">
         <ul class="navbar-nav">
           <li class="btn-group">
             <a href="{{args.args}}" class="btn btn-outline-secondary" aria-current="page">ID</a>
-            <a href="{{args.args}}&sort_by=course_english_names" class="btn btn-outline-secondary" aria-current="page">Name</a>
-            <a href="{{args.args}}&sort_by=course_rating" class="btn btn-outline-secondary" aria-current="page">Rating</a>
-            <a href="{{args.args}}&sort_by=course_workload" class="btn btn-outline-secondary" aria-current="page">Workload</a>
+            <a href="{{args.args}}&sort_by=course_english_names" class="btn btn-outline-secondary"
+              aria-current="page">Name</a>
+            <a href="{{args.args}}&sort_by=course_rating" class="btn btn-outline-secondary"
+              aria-current="page">Rating</a>
+            <a href="{{args.args}}&sort_by=course_workload" class="btn btn-outline-secondary"
+              aria-current="page">Workload</a>
             <a href="{{args.args}}&sort_by=course_grade" class="btn btn-outline-secondary" aria-current="page">Grade</a>
           </li>
         </ul>
@@ -37,7 +42,8 @@ content %}
     </nav>
     <!-- Start of: Switch for reverse sorting -->
     <div class="form-check form-switch">
-      <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" onchange="toggleSortReverse()" {% if 'sort_reverse' in request.args %}checked{% endif %}>
+      <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"
+        onchange="toggleSortReverse()" {% if 'sort_reverse' in request.args %}checked{% endif %}>
       <label class="form-check-label" for="flexSwitchCheckDefault">Reverse Sort Order</label>
     </div>
     <!-- End of: Switch for reverse sorting -->
@@ -46,7 +52,8 @@ content %}
         <ul class="navbar-nav">
           <li class="btn-group">
             <div class="btn-group">
-              <button id="btnSortGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+              <button id="btnSortGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle"
+                data-toggle="dropdown" aria-expanded="false">
                 All sorting options
               </button>
               <ul class="dropdown-menu" aria-labelledby="btnSortGroupDrop1">
@@ -59,10 +66,14 @@ content %}
                 <a href="{{args.args}}&sort_by=course_signups" class="dropdown-item" aria-current="page">Signups</a>
                 <a href="{{args.args}}&sort_by=course_schedule" class="dropdown-item" aria-current="page">Schedule</a>
                 <a href="{{args.args}}&sort_by=course_fail" class="dropdown-item" aria-current="page">Failrate</a>
-                <a href="{{args.args}}&sort_by=course_votes" class="dropdown-item" aria-current="page">Evaluation votes</a>
-                <a href="{{args.args}}&sort_by=course_eval_learning" class="dropdown-item" aria-current="page">Rating: Learning</a>
-                <a href="{{args.args}}&sort_by=course_eval_motivation" class="dropdown-item" aria-current="page">Rating: Motivation</a>
-                <a href="{{args.args}}&sort_by=course_eval_feedback" class="dropdown-item" aria-current="page">Rating: Feedback</a>
+                <a href="{{args.args}}&sort_by=course_votes" class="dropdown-item" aria-current="page">Evaluation
+                  votes</a>
+                <a href="{{args.args}}&sort_by=course_eval_learning" class="dropdown-item" aria-current="page">Rating:
+                  Learning</a>
+                <a href="{{args.args}}&sort_by=course_eval_motivation" class="dropdown-item" aria-current="page">Rating:
+                  Motivation</a>
+                <a href="{{args.args}}&sort_by=course_eval_feedback" class="dropdown-item" aria-current="page">Rating:
+                  Feedback</a>
               </ul>
             </div>
             <a href="/" class="btn btn-outline-info" aria-current="page">Adjust filters</a>
@@ -70,12 +81,7 @@ content %}
         </ul>
       </div>
     </nav>
-    <!-- End of: Scuffed button group that is nested inside an invisible navbar because otherwise the dropdown does not work -->
     {% endif %}
-    <!-- Start of: Current filter/sort --
-    <p class="card-text"><small class="fs-6 text-muted">Current filter options: {{args.args}}</small></p>
-    <p class="card-text"><small class="fs-6 text-muted">Current sorting option: {{args.sort_by}}</small></p>
-    !-- End of: Current filter/sort -->
   </div>
 </div>
 <!-- End of card section containing sorting options -->
@@ -83,13 +89,15 @@ content %}
 <br><br>
 
 <!-- Start of card list -->
-<section class="row row-cols-1 row-cols-xxl-3 g-4">
+<section class="row row-cols-1 row-cols-xxl-3 g-4 course-list-container" id="course-list-{{ loop.index }}">
   <!-- Start of summary statistics -->
   {% if course_lists[category]|length != 0 %}
+  <!-- This summary card is NOT class="course-card-item", so it is always visible at the top -->
   <div class="col">
     <div class="card bg-light h-100" style="max-width: 26rem;">
       <div class="card-header">
-        Summary statistics ({{course_lists[category]|length}} course{% if course_lists[category]|length != 1 %}s{% endif %}):
+        Summary statistics ({{course_lists[category]|length}} course{% if course_lists[category]|length != 1 %}s{% endif
+        %}):
       </div>
       <ul class="list-group list-group-flush">
         <li class="list-group-item">
@@ -107,7 +115,8 @@ content %}
             <tbody>
               <tr>
                 <th class="align-top" style="width: 11rem" scope="row">Average grade:</th>
-                <td class="align-top">{{stats.grade}} <small class="fs-6 text-muted">({{stats.failrate}}% failrate on exams)</small></td>
+                <td class="align-top">{{stats.grade}} <small class="fs-6 text-muted">({{stats.failrate}}% failrate on
+                    exams)</small></td>
               </tr>
             </tbody>
           </table>
@@ -121,19 +130,23 @@ content %}
               </tr>
               <tr>
                 <td class="align-top pb-0 pt-0" scope="row"><i>Course workload</i></td>
-                <td class="align-top pb-0 pt-0">{{stats.workload}} <small class="fs-6 text-muted">(not part of avg. rating)</small></td>
+                <td class="align-top pb-0 pt-0">{{stats.workload}} <small class="fs-6 text-muted">(not part of avg.
+                    rating)</small></td>
               </tr>
               <tr>
                 <td class="align-top pb-0 pt-0" scope="row"><i>"I have learned a lot"</i></td>
-                <td class="align-top pb-0 pt-0">{{stats.learning}} <small class="fs-6 text-muted">(⅓ part of avg. rating)</small></td>
+                <td class="align-top pb-0 pt-0">{{stats.learning}} <small class="fs-6 text-muted">(⅓ part of avg.
+                    rating)</small></td>
               </tr>
               <tr>
                 <td class="align-top pb-0 pt-0" scope="row"><i>"Motivating activities"</i></td>
-                <td class="align-top pb-0 pt-0">{{stats.motivation}} <small class="fs-6 text-muted">(⅓ part of avg. rating)</small></td>
+                <td class="align-top pb-0 pt-0">{{stats.motivation}} <small class="fs-6 text-muted">(⅓ part of avg.
+                    rating)</small></td>
               </tr>
               <tr>
                 <td class="align-top pb-0 pt-0" scope="row"><i>"Access to feedback"</i></td>
-                <td class="align-top pb-0 pt-0">{{stats.feedback}} <small class="fs-6 text-muted">(⅓ part of avg. rating)</small></td>
+                <td class="align-top pb-0 pt-0">{{stats.feedback}} <small class="fs-6 text-muted">(⅓ part of avg.
+                    rating)</small></td>
               </tr>
             </tbody>
           </table>
@@ -143,13 +156,14 @@ content %}
   </div>
   {% endif %}
   <!-- End of summary statistics -->
+
   {% for course in course_lists[category] %}
-  <div class="col">
+  <div class="col course-card-item">
     <div class="card h-100" style="max-width: 26rem">
       <a href="{{ url_for('course_database.route_to_course', course_number=course) }}" class="stretched-link"></a>
       <img src="{{ url_for('static', filename='assets/colors/red.png') }}" width="100%" height="20"
         class="d-inline-block align-top" alt="red-color" loading="lazy"
-        style="filter: invert(0) grayscale(0%) brightness(100%)"/>
+        style="filter: invert(0) grayscale(0%) brightness(100%)" />
       <div class="card-body pb-0">
         <h6 class="card-title mb-0 ml-3 mr-0">{{course}} {{data.name[course]}}</h6></a>
       </div>
@@ -175,7 +189,8 @@ content %}
                   <th></th>
                   <td rowspan="6">
                     {% if data.responsible[course] == "NO_DATA" %}
-                    <img class="img" alt="100%x280" src="{{ url_for('static', filename='assets/brand/blank_photo.png') }}" width="100%">
+                    <img class="img" alt="100%x280"
+                      src="{{ url_for('static', filename='assets/brand/blank_photo.png') }}" width="100%">
                     {% else %}
                     <img class="img" alt="100%x280" src="{{data.responsible[course]}}" width="100%">
                     {% endif %}
@@ -184,12 +199,15 @@ content %}
                 <tr>
                   <th scope="row">🎓</th>
                   <td class="align-top" colspan="2"><small>{{data.course_type[course]}}
-                    {% if data.language[course] == "Danish" and data.course_type[course] != "BSc/MSc" %}
-                    <small class="fs-6 text-muted"> (🇩🇰)</small></small>
+                      {% if data.language[course] == "Danish" and data.course_type[course] != "BSc/MSc" %}
+                      <small class="fs-6 text-muted"> (🇩🇰)</small></small>
                     {% endif %}
                   </td>
                   <th>🕗</th>
-                  <td class="align-top" colspan="2"><small>{{data.season[course]}}</small>{% if data.season[course] == "Fall" or data.season[course] == "Spring" %} <img src="{{ url_for('static', filename='assets/schedules/' ~ data.schedule[course] ~ '_Schedule.png') }}" >{% endif %}</td>
+                  <td class="align-top" colspan="2"><small>{{data.season[course]}}</small>{% if data.season[course] ==
+                    "Fall" or data.season[course] == "Spring" %} <img
+                      src="{{ url_for('static', filename='assets/schedules/' ~ data.schedule[course] ~ '_Schedule.png') }}">{%
+                    endif %}</td>
                 </tr>
                 <tr>
                   <th scope="row">🏅</th>
@@ -199,13 +217,19 @@ content %}
                 </tr>
                 <tr>
                   <th scope="row">👩‍🎓</th>
-                  <td class="align-top" colspan="2"><small>{{data.signups[course]}} {% if data.signups[course] < 1000 %}ppl{% else %}ppl{% endif %}</small></td>
+                  <td class="align-top" colspan="2"><small>{{data.signups[course]}} {% if data.signups[course] < 1000
+                        %}ppl{% else %}ppl{% endif %}</small>
+                  </td>
                   <th>❌</th>
-                  <td class="align-top" colspan="2"><small>{{data.grade[course]}} <small class="fs-6 text-muted">({{data.fail[course]}}% fail)</small></small></td>
+                  <td class="align-top" colspan="2"><small>{{data.grade[course]}} <small
+                        class="fs-6 text-muted">({{data.fail[course]}}% fail)</small></small></td>
                 </tr>
                 <tr>
                   <th scope="row">⭐</th>
-                  <td class="align-top" colspan="2"><small>{{data.rating[course]}}{% if data.votes[course] >= 1 and data.votes[course] <= 9 %}<small class="fs-6 text-danger" title="Warning: Low sample size ({{data.votes[course]}} evaluations)">(!)</small>{% endif %} stars <br></small></td>
+                  <td class="align-top" colspan="2"><small>{{data.rating[course]}}{% if data.votes[course] >= 1 and
+                      data.votes[course] <= 9 %}<small class="fs-6 text-danger"
+                        title="Warning: Low sample size ({{data.votes[course]}} evaluations)">(!)</small>{% endif %}
+                    stars <br></small></td>
                   <th>☠️</th>
                   <td class="align-top" colspan="2"><small>{{data.workload[course]}} workload</small></td>
                 </tr>
@@ -222,11 +246,24 @@ content %}
               <tbody>
                 <tr>
                   <td>
-                    <img src="{{ url_for('static', filename='assets/ratings/' ~ data.rating_tier[course] ~ '-star.png') }}" width="100%">
+                    <img
+                      src="{{ url_for('static', filename='assets/ratings/' ~ data.rating_tier[course] ~ '-star.png') }}"
+                      width="100%">
                   </td>
-                  <td style="text-align: center; width: 8%">{% if data.votes[course] >= 1 and data.votes[course] <= 9 %}<small><small class="fs-6 text-danger" title="Warning: Low sample size ({{data.votes[course]}} evaluations)">({{data.votes[course]}})</small></small>{% elif data.votes[course] <= 99 %}<small><small class="fs-6 text-muted" title="{{data.votes[course]}} evaluations">({{data.votes[course]}})</small></small>{% elif data.votes[course] >= 1000 %}<small><small><small><small class="fs-6 text-muted" title="{{data.votes[course]}} evaluations">({{data.votes[course]}})</small></small></small></small>{% else %}<small><small><small class="fs-6 text-muted" title="{{data.votes[course]}} evaluations">({{data.votes[course]}})</small></small></small>{% endif %}<br></td>
+                  <td style="text-align: center; width: 8%">{% if data.votes[course] >= 1 and data.votes[course] <= 9
+                      %}<small><small class="fs-6 text-danger"
+                        title="Warning: Low sample size ({{data.votes[course]}} evaluations)">({{data.votes[course]}})</small></small>{%
+                      elif data.votes[course] <= 99 %}<small><small class="fs-6 text-muted"
+                          title="{{data.votes[course]}} evaluations">({{data.votes[course]}})</small></small>{% elif
+                        data.votes[course] >= 1000 %}<small><small><small><small class="fs-6 text-muted"
+                                title="{{data.votes[course]}} evaluations">({{data.votes[course]}})</small></small></small></small>{%
+                        else %}<small><small><small class="fs-6 text-muted"
+                              title="{{data.votes[course]}} evaluations">({{data.votes[course]}})</small></small></small>{%
+                        endif %}<br></td>
                   <td>
-                    <img src="{{ url_for('static', filename='assets/ratings/' ~ data.workload_tier[course] ~ '-skull.png') }}" width="100%">
+                    <img
+                      src="{{ url_for('static', filename='assets/ratings/' ~ data.workload_tier[course] ~ '-skull.png') }}"
+                      width="100%">
                   </td>
                 </tr>
               </tbody>
@@ -237,9 +274,10 @@ content %}
     </div>
   </div>
   {% endfor %}
-  <!-- Start of summary statistics -->
+
+  <!-- Start of summary statistics (Bottom) -->
   {% if course_lists[category]|length != 0 %}
-  <div class="col">
+  <div class="col course-card-item">
     <div class="card bg-light h-100" style="max-width: 26rem;">
       <div class="card-header">
         Summary statistics:
@@ -260,7 +298,8 @@ content %}
             <tbody>
               <tr>
                 <th class="align-top" style="width: 11rem" scope="row">Average grade:</th>
-                <td class="align-top">{{stats.grade}} <small class="fs-6 text-muted">({{stats.failrate}}% failrate on exams)</small></td>
+                <td class="align-top">{{stats.grade}} <small class="fs-6 text-muted">({{stats.failrate}}% failrate on
+                    exams)</small></td>
               </tr>
             </tbody>
           </table>
@@ -274,19 +313,23 @@ content %}
               </tr>
               <tr>
                 <td class="align-top pb-0 pt-0" scope="row"><i>Course workload</i></td>
-                <td class="align-top pb-0 pt-0">{{stats.workload}} <small class="fs-6 text-muted">(not part of avg. rating)</small></td>
+                <td class="align-top pb-0 pt-0">{{stats.workload}} <small class="fs-6 text-muted">(not part of avg.
+                    rating)</small></td>
               </tr>
               <tr>
                 <td class="align-top pb-0 pt-0" scope="row"><i>"I have learned a lot"</i></td>
-                <td class="align-top pb-0 pt-0">{{stats.learning}} <small class="fs-6 text-muted">(⅓ part of avg. rating)</small></td>
+                <td class="align-top pb-0 pt-0">{{stats.learning}} <small class="fs-6 text-muted">(⅓ part of avg.
+                    rating)</small></td>
               </tr>
               <tr>
                 <td class="align-top pb-0 pt-0" scope="row"><i>"Motivating activities"</i></td>
-                <td class="align-top pb-0 pt-0">{{stats.motivation}} <small class="fs-6 text-muted">(⅓ part of avg. rating)</small></td>
+                <td class="align-top pb-0 pt-0">{{stats.motivation}} <small class="fs-6 text-muted">(⅓ part of avg.
+                    rating)</small></td>
               </tr>
               <tr>
                 <td class="align-top pb-0 pt-0" scope="row"><i>"Access to feedback"</i></td>
-                <td class="align-top pb-0 pt-0">{{stats.feedback}} <small class="fs-6 text-muted">(⅓ part of avg. rating)</small></td>
+                <td class="align-top pb-0 pt-0">{{stats.feedback}} <small class="fs-6 text-muted">(⅓ part of avg.
+                    rating)</small></td>
               </tr>
             </tbody>
           </table>
@@ -299,16 +342,15 @@ content %}
 </section>
 <!-- End of card list -->
 
-<!-- Start of list of courses shown ->
-{% if course_lists[category]|length != 0 %}
-<br><br>
-<h5> List of courses shown: </h5>
-{% for course in course_lists[category] %}
-<small class="fs-6 text-muted"> {{course}} {{data.name[course]}}</small><br>
-{% endfor %}
-<br><br><br><br>
+<!-- Load More Controls -->
+<!-- Changed condition to 29 so buttons appear if there is more than 1 initial page -->
+{% if course_lists[category]|length > 29 %}
+<div class="text-center mt-4 mb-5 load-more-controls" data-target="course-list-{{ loop.index }}">
+  <button class="btn btn-outline-dark me-2 btn-load-more">Load More</button>
+  <button class="btn btn-outline-dark btn-load-all">Load All Remaining</button>
+  <div class="text-muted mt-2 small status-text"></div>
+</div>
 {% endif %}
-<!- End of list of courses shown -->
 
 <!-- End of outer loop -->
 
@@ -323,8 +365,9 @@ content %}
 
 {% endfor %}
 
-<!-- JavaScript to handle switch toggle -->
+<!-- JavaScript to handle switch toggle and Load More logic -->
 <script>
+  // Sort Switch Logic
   function toggleSortReverse() {
     const urlParams = new URLSearchParams(window.location.search);
     const currentUrl = window.location.href;
@@ -337,6 +380,77 @@ content %}
 
     window.location.href = currentUrl.split('?')[0] + '?' + urlParams.toString();
   }
+
+  // Load More Logic
+  document.addEventListener("DOMContentLoaded", function () {
+    // Initial display matches the 3-column grid offset by the static top summary card
+    const INITIAL_BATCH = 32;
+    const LOAD_BATCH = 30;
+
+    // Initialize all sections
+    document.querySelectorAll('.course-list-container').forEach(container => {
+      const items = container.querySelectorAll('.course-card-item');
+      const controls = document.querySelector(`.load-more-controls[data-target="${container.id}"]`);
+
+      if (!controls) return;
+
+      let currentVisible = INITIAL_BATCH;
+      const totalItems = items.length;
+      const loadMoreBtn = controls.querySelector('.btn-load-more');
+      const loadAllBtn = controls.querySelector('.btn-load-all');
+      const statusText = controls.querySelector('.status-text');
+
+      // Initial Hide
+      items.forEach((item, index) => {
+        if (index >= currentVisible) {
+          item.classList.add('d-none');
+        }
+      });
+
+      // Update Text
+      function updateStatus() {
+        const remaining = totalItems - currentVisible;
+        if (remaining <= 0) {
+          controls.style.display = 'none';
+        } else {
+          const nextLoadCount = remaining > LOAD_BATCH ? LOAD_BATCH : remaining;
+          loadMoreBtn.innerHTML = `Load More (${nextLoadCount})`;
+          statusText.innerHTML = `Showing ${currentVisible} of ${totalItems} items`;
+        }
+      }
+
+      // Event Listener: Load More
+      loadMoreBtn.addEventListener('click', function () {
+        const nextLimit = currentVisible + LOAD_BATCH;
+
+        items.forEach((item, index) => {
+          if (index >= currentVisible && index < nextLimit) {
+            item.classList.remove('d-none');
+            // Simple fade in effect
+            item.style.opacity = 0;
+            item.style.transition = "opacity 0.5s";
+            requestAnimationFrame(() => item.style.opacity = 1);
+          }
+        });
+
+        currentVisible = nextLimit;
+        if (currentVisible > totalItems) currentVisible = totalItems;
+        updateStatus();
+      });
+
+      // Event Listener: Load All
+      loadAllBtn.addEventListener('click', function () {
+        items.forEach(item => {
+          item.classList.remove('d-none');
+          item.style.opacity = 1;
+        });
+        currentVisible = totalItems;
+        updateStatus();
+      });
+
+      updateStatus();
+    });
+  });
 </script>
 
 {% endblock %}

@@ -1,10 +1,9 @@
+--- START OF FILE Paste January 21, 2026 - 7:31PM ---
+
 {% extends "base.html" %}
 {% block title %}Recommender{% endblock %}
 {% block content %}
-<!--
-NAMING CONVENTION NOTE:
-All custom CSS classes and IDs in this file are prefixed with "recommender-" to avoid conflicts.
--->
+
 <style>
   /* Scoped Styles */
   #recommender-system-container {
@@ -23,97 +22,22 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
   }
 
   /* Step Sections */
-  .recommender-step-container {
-    border-bottom: 1px solid #eee;
-    padding: 20px;
-  }
-
-  .recommender-step-container:last-child {
-    border-bottom: none;
-  }
-
   .recommender-step-header {
     font-weight: bold;
     font-size: 1.2rem;
     color: #333;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
   }
 
   .recommender-step-desc {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     color: #666;
-    margin-bottom: 15px;
-  }
-
-  /* Step 1: Input Toggles */
-  .recommender-input-option-btn {
-    margin-right: 10px;
     margin-bottom: 10px;
-    min-width: 150px;
   }
 
-  .recommender-input-area {
-    background-color: #fdfdfd;
-    border: 1px solid #e9ecef;
-    padding: 15px;
-    border-radius: 5px;
-    margin-top: 10px;
-    display: none;
-    /* Hidden by default */
-  }
-
-  .recommender-input-area.active {
-    display: block;
-    animation: fadeIn 0.3s;
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-
-    to {
-      opacity: 1;
-    }
-  }
-
-  /* Brand-style outline buttons */
-  .recommender-btn-outline-brand {
-    color: #212529;
-    border: 1px solid #990000;
-    background-color: transparent;
-  }
-
-  .recommender-btn-outline-brand:hover,
-  .recommender-btn-outline-brand:focus {
-    color: #fff;
-    background-color: #990000;
-    border-color: #990000;
-  }
-
-  .recommender-btn-outline-brand.active {
-    color: #fff;
-    background-color: #990000;
-    border-color: #990000;
-  }
-
-  .recommender-btn-outline-brand:focus,
-  .recommender-btn-outline-brand:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 0.15rem rgba(153, 0, 0, 0.25);
-  }
-
-  /* Solid Brand Button */
-  .recommender-btn-brand {
-    color: #fff;
-    background-color: #990000;
-    border-color: #990000;
-  }
-
-  .recommender-btn-brand:hover {
-    background-color: #7a0000;
-    border-color: #7a0000;
-    color: #fff;
+  /* Inputs */
+  .recommender-input-wrapper {
+    margin-bottom: 15px;
   }
 
   /* Custom Red Focus for Search Input */
@@ -127,6 +51,28 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
   /* Autocomplete Dropdown */
   .recommender-search-wrapper {
     position: relative;
+  }
+
+  /* Inner White Box Style */
+  .recommender-content-box {
+    background-color: #fff;
+    border: 1px solid #e9ecef;
+    border-radius: 0.25rem;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
+
+  .recommender-content-box:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Adjust list group items inside the white box to look clean */
+  .recommender-content-box .list-group-item {
+    border-left: 0;
+    border-right: 0;
+    padding-left: 0;
+    padding-right: 0;
   }
 
   .recommender-autocomplete-results {
@@ -149,9 +95,10 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
   }
 
   .recommender-autocomplete-item {
-    padding: 10px 15px;
+    padding: 8px 12px;
     cursor: pointer;
     border-bottom: 1px solid #eee;
+    font-size: 0.9rem;
   }
 
   .recommender-autocomplete-item:hover {
@@ -163,50 +110,25 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
     color: #990000;
   }
 
-  /* --- FEEDBACK UI --- */
-  .recommender-feedback-container {
-    margin-top: 15px;
-    max-height: 200px;
-    overflow-y: auto;
-  }
-
-  .recommender-feedback-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.85rem;
-    padding: 6px 10px;
-    margin-bottom: 5px;
-    background-color: #f0fff4;
-    border: 1px solid #c6f6d5;
-    color: #22543d;
-    border-radius: 4px;
-  }
-
-  .recommender-feedback-icon {
-    font-weight: bold;
-    font-size: 1rem;
-    margin-left: 10px;
-    color: #38a169;
-  }
-
   /* Step 2: Basket */
   .recommender-basket-container {
-    min-height: 60px;
+    min-height: 100px;
+    /* Reduced height */
     background-color: #fff;
     border: 1px solid #ced4da;
     border-radius: 0.25rem;
-    padding: 15px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
   }
 
   .recommender-basket-placeholder {
     color: #6c757d;
     font-style: italic;
     text-align: center;
-    padding: 10px;
+    padding: 20px 5px;
+    font-size: 0.9rem;
   }
 
   .recommender-basket-item {
@@ -215,28 +137,28 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
     align-items: center;
     background-color: #f8f9fa;
     border-left: 4px solid #990000;
-    padding: 8px 12px;
+    padding: 6px 10px;
     border-radius: 4px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   }
 
-  /* Different style for text items */
   .recommender-basket-item.text-item {
     border-left: 4px solid #005599;
     background-color: #f0f7ff;
   }
 
   .recommender-basket-text {
-    font-size: 0.95rem;
+    font-size: 0.85rem;
+    word-break: break-word;
   }
 
   .recommender-basket-remove {
     color: #dc3545;
     cursor: pointer;
     font-weight: bold;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     line-height: 1;
-    margin-left: 10px;
+    margin-left: 8px;
   }
 
   .recommender-basket-remove:hover {
@@ -245,7 +167,7 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
 
   /* Step 3: Filters */
   .recommender-filter-icon {
-    height: 20px;
+    height: 18px;
     width: auto;
     vertical-align: middle;
   }
@@ -363,15 +285,6 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
     flex-direction: column;
   }
 
-  .recommender-similarity-badge {
-    background-color: #990000;
-    color: white;
-    font-size: 0.75rem;
-    padding: 0.25em 0.6em;
-    border-radius: 0.25rem;
-    float: right;
-  }
-
   .recommender-card-text {
     flex-grow: 1;
     font-size: 0.9rem;
@@ -399,6 +312,34 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
     text-decoration: underline;
     color: #7a0000;
   }
+
+  /* Brand-style outline buttons */
+  .recommender-btn-outline-brand {
+    color: #212529;
+    border: 1px solid #990000;
+    background-color: transparent;
+  }
+
+  .recommender-btn-outline-brand:hover,
+  .recommender-btn-outline-brand:focus,
+  .recommender-btn-outline-brand.active {
+    color: #fff;
+    background-color: #990000;
+    border-color: #990000;
+  }
+
+  /* Solid Brand Button */
+  .recommender-btn-brand {
+    color: #fff;
+    background-color: #990000;
+    border-color: #990000;
+  }
+
+  .recommender-btn-brand:hover {
+    background-color: #7a0000;
+    border-color: #7a0000;
+    color: #fff;
+  }
 </style>
 
 <!-- Pass Flask URL generators to JavaScript -->
@@ -414,378 +355,139 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
   <p class="lead">Find courses similar to ones you've taken or are interested in.</p>
   <br>
 
-  <!-- Main Input Card -->
-  <div class="row row-cols-1 row-cols-xl-1 g-1">
+  <!-- Start of card grid -->
+  <div class="row row-cols-1 row-cols-xl-2 g-2">
+
+    <!-- LEFT COLUMN: Inputs & Top Results -->
     <div class="col">
-      <div class="card bg-light" style="width: 42rem;">
-        <div class="card-header">
-          Recommendation inputs:
-        </div>
-        <!-- Step 1: Input Selection -->
-        <div class="recommender-step-container">
-          <div class="recommender-step-header">Step 1: Input Method</div>
-          <p class="recommender-step-desc">
-            This recommendation tool works by taking one or more courses as input and then outputting a list of DTU's most similar
-            courses. Choose one of the following ways to input courses:
-          </p>
-
-          <div class="btn-group">
-            <button class="btn recommender-btn-outline-brand recommender-input-option-btn active" id="btn-input-search"
-              onclick="showInputMethod('search')">
-              🔍 Search Courses
-            </button>
-
-            <button class="btn recommender-btn-outline-brand recommender-input-option-btn" id="btn-input-bulk"
-              onclick="showInputMethod('bulk')">
-              📋 Paste List
-            </button>
-
-            <button class="btn recommender-btn-outline-brand recommender-input-option-btn" id="btn-input-text"
-              onclick="showInputMethod('text')">
-              📝 Add Interest
+      <div class="card bg-light" style="max-width: 36rem;">
+        <img src="{{ url_for('static', filename='assets/colors/grey.png') }}" width="100%" height="26"
+          class="card-img-top" alt="..." />
+        <!-- Grey Body Area -->
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="recommender-step-header">Input your Preferences:</div>
+            <button class="btn btn-sm btn-light text-dark border" style="background-color: #FFFFFF;" data-toggle="modal"
+              data-target="#bulkImportModal">
+              📋 Study-Planner toolset
             </button>
           </div>
 
-          <!-- Input Method A: Search -->
-          <div id="input-area-search" class="recommender-input-area active">
-            <label for="recommender-search-input" class="form-label"><strong>Search by Name or ID:</strong></label>
-            <div class="recommender-search-wrapper">
-              <input type="text" class="form-control" id="recommender-search-input"
-                placeholder="Type course ID or name (e.g., '01001')..." autocomplete="off" oninput="searchCourses()">
-              <div id="recommender-autocomplete-list" class="recommender-autocomplete-results"></div>
+          <!-- Box 1: Inputs -->
+          <div class="recommender-content-box">
+
+            <!-- Search Input -->
+            <div class="recommender-input-wrapper">
+              <label for="recommender-search-input" class="form-label small text-muted mb-1">Search by Name or
+                ID:</label>
+              <div class="recommender-search-wrapper">
+                <input type="text" class="form-control form-control-sm" id="recommender-search-input"
+                  placeholder="Type course ID or name..." autocomplete="off" oninput="searchCourses()">
+                <div id="recommender-autocomplete-list" class="recommender-autocomplete-results"></div>
+              </div>
             </div>
-            <small class="text-muted">Click a result to add it to your basket.</small>
 
-            <!-- Unified Feedback Area for Search -->
-            <div id="recommender-search-feedback" class="recommender-feedback-container"></div>
-          </div>
-
-          <!-- Input Method B: Bulk Paste -->
-          <div id="input-area-bulk" class="recommender-input-area">
-            <label for="recommender-bulk-text" class="form-label"><strong>Paste text containing course
-                codes:</strong></label>
-            <textarea class="form-control" id="recommender-bulk-text" rows="2"
-              placeholder="Any text will work, assuming it contains valid 5-digit course codes."></textarea>
-
-            <!-- Extract Button with Red Styling -->
-            <button class="btn btn-sm mt-2" style="background-color: #990000; border-color: #990000; color: white;"
-              onclick="extractCourses()">Extract Codes to Basket</button>
-
-            <!-- Unified Feedback Area for Bulk Extraction -->
-            <div id="recommender-bulk-feedback" class="recommender-feedback-container"></div>
-          </div>
-
-          <!-- Input Method C: Free Text (Updated) -->
-          <div id="input-area-text" class="recommender-input-area">
-            <label for="recommender-free-text" class="form-label"><strong>Describe what you want to
-                learn:</strong></label>
-            <textarea class="form-control" id="recommender-free-text" rows="3"
-              placeholder="E.g., 'I am interested in machine learning, neural networks, and python programming applied to biology.'"></textarea>
-
-            <button class="btn btn-sm mt-2" style="background-color: #990000; border-color: #990000; color: white;"
-              onclick="addTextToBasket()">Add Description to Basket</button>
-
-            <div id="recommender-text-feedback" class="recommender-feedback-container"></div>
-          </div>
-
-        </div>
-
-        <!-- Course review UI Block (Step 2) -->
-        <ul class="list-group list-group-flush" id="step-2-container">
-          <li class="list-group-item"></li>
-          <div class="recommender-step-container">
-            <div class="recommender-step-header">Step 2: Your Basket</div>
-            <p class="recommender-step-desc">
-              Review the list below. This recommendation tool will find courses with
-              high similarity to these learning objectives and course descriptions.
-              You can add more using the tools in Step 1.
-            </p>
-            <div id="recommender-basket" class="recommender-basket-container">
-              <div class="recommender-basket-placeholder">Your basket is empty. Please add courses or text in Step 1.
+            <!-- Interest Input -->
+            <div class="recommender-input-wrapper mb-0">
+              <label for="recommender-free-text" class="form-label small text-muted mb-1">Or describe your
+                interests:</label>
+              <div class="input-group input-group-sm">
+                <textarea class="form-control" id="recommender-free-text" rows="1"
+                  placeholder="E.g., 'I am interested in machine learning and biology.'"></textarea>
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" onclick="addTextToBasket()">Add</button>
+                </div>
               </div>
             </div>
           </div>
-        </ul>
 
-        <!-- Filter UI Block -->
-        <ul class="list-group list-group-flush">
-          <!-- Step 3: Filtering -->
-          <li class="list-group-item"></li>
-          <div class="recommender-step-container">
-            <div class="recommender-step-header">Step 3: Filter Recommendations</div>
-            <p class="recommender-step-desc">
-              Narrow down the results based on your preferences.
-            </p>
+          <!-- Box 2: Top 5 Recommendations -->
+          <div class="recommender-content-box">
+            <div id="recommender-top5-container">
+              <div class="text-muted text-center py-2 font-italic small">
+                Your top 5 course recommendations will be displayed here.
+              </div>
+            </div>
           </div>
-          <!-- Language Filter -->
-          <li class="list-group-item">
-            <table class="table table-sm table-borderless mb-0">
-              <tbody>
-                <tr>
-                  <th class="align-top" style="width: 9rem" scope="row">Language:</th>
-                  <td class="align-top">
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" name="Danish" value="language" id="language1">
-                      <label class="form-check-label" for="language1">🍺Danish</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" name="English" value="language" id="language2">
-                      <label class="form-check-label" for="language2">🚀English</label>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </li>
 
-          <!-- Course Type Filter -->
-          <li class="list-group-item">
-            <table class="table table-sm table-borderless mb-0">
-              <tbody>
-                <tr>
-                  <th class="align-top" style="width: 9rem" scope="row">Type:</th>
-                  <td class="align-top" style="width: 7.8rem">
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" name="beng" value="course_type" id="course_type1"
-                        checked>
-                      <label class="form-check-label" for="course_type1">🐇BEng</label>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" name="bsc" value="course_type" id="course_type2"
-                        checked>
-                      <label class="form-check-label" for="course_type2">🐢BSc</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" name="msc" value="course_type" id="course_type3"
-                        checked>
-                      <label class="form-check-label" for="course_type3">👩‍🎓MSc</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" name="phd" value="course_type" id="course_type4">
-                      <label class="form-check-label" for="course_type4">🧙Ph.D.</label>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </li>
+          <!-- Box 3: Unlocked Courses (Prerequisites Met) -->
+          <!-- This UI element always appears now, even if 0 -->
+          <div class="recommender-content-box recommender-hidden" id="recommender-unlocked-section"
+            style="background-color: #e8f5e9; border-color: #c3e6cb;">
+            <div class="d-flex align-items-center justify-content-between">
+              <div>
+                <h6 class="text-success small font-weight-bold mb-1">✅ Prerequisites Met</h6>
+                <div class="small text-dark" style="line-height: 1.2;">
+                  <span id="recommender-unlocked-text">You have the prerequisites for 0 subsequent courses.</span>
+                </div>
+              </div>
+              <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#unlockedCoursesModal">
+                View Unlocked Courses
+              </button>
+            </div>
+          </div>
 
-          <!-- Season Filter -->
-          <li class="list-group-item">
-            <table class="table table-sm table-borderless mb-0">
-              <tbody>
-                <tr>
-                  <th class="align-top" style="width: 9rem" scope="row">Season:</th>
-                  <td class="align-top" style="width: 8.3rem">
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" name="autumn" value="semester_period"
-                        id="semester_period1">
-                      <label class="form-check-label" for="semester_period1">🍂Autumn</label>
-                    </div>
-                  </td>
-                  <td class="align-top">
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" name="spring" value="semester_period"
-                        id="semester_period2">
-                      <label class="form-check-label" for="semester_period2">🌱Spring</label>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <th class="align-top" style="width: 9rem" scope="row"></th>
-                  <td class="align-top" style="width: 8.3rem">
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" name="jan" value="semester_period"
-                        id="semester_period3">
-                      <label class="form-check-label" for="semester_period3">❄️January</label>
-                    </div>
-                  </td>
-                  <td class="align-top">
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" name="jun" value="semester_period"
-                        id="semester_period4">
-                      <label class="form-check-label" for="semester_period4">☀️June</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" name="jul" value="semester_period"
-                        id="semester_period5">
-                      <label class="form-check-label" for="semester_period5">⛱️July</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" name="aug" value="semester_period"
-                        id="semester_period6">
-                      <label class="form-check-label" for="semester_period6">🌻August</label>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </li>
+          <!-- Box 4: View Toggles (Hidden initially) -->
+          <div class="recommender-content-box recommender-hidden" id="recommender-view-controls">
+            <h6 class="text-dark small font-weight-bold mb-2" id="recommender-additional-header">
+              Browse additional course suggestions:
+            </h6>
+            <div class="btn-group w-100" role="group">
+              <button type="button" class="btn recommender-btn-outline-brand" id="recommender-view-carousel-btn"
+                onclick="switchViewMode('carousel')">🎠 Carousel</button>
+              <button type="button" class="btn recommender-btn-outline-brand active" id="recommender-view-list-btn"
+                onclick="switchViewMode('list')">📜 List</button>
+              <button type="button" class="btn recommender-btn-outline-brand" id="recommender-view-analyzer-btn"
+                onclick="switchViewMode('analyzer')">📊 Analyzer</button>
+            </div>
+          </div>
 
-          <!-- Schedule Filter -->
-          <li class="list-group-item">
-            <table class="table table-sm table-borderless mb-0">
-              <tbody>
-                <tr>
-                  <th class="align-top" style="width: 9rem" scope="row">Schedule:</th>
-                  <td class="align-top">
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" name="Mon 8-12" value="timetable" id="timetable1">
-                      <label class="form-check-label" for="timetable1"><img
-                          src="{{ url_for('static', filename='assets/schedules/Mon_8_12_Schedule.png') }}"
-                          class="recommender-filter-icon"></label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" name="Tue 8-12" value="timetable" id="timetable2">
-                      <label class="form-check-label" for="timetable2"><img
-                          src="{{ url_for('static', filename='assets/schedules/Tues_8_12_Schedule.png') }}"
-                          class="recommender-filter-icon"></label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" name="Wed 8-12" value="timetable" id="timetable3">
-                      <label class="form-check-label" for="timetable3"><img
-                          src="{{ url_for('static', filename='assets/schedules/Wed_8_12_Schedule.png') }}"
-                          class="recommender-filter-icon"></label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" name="Thu 8-12" value="timetable" id="timetable4">
-                      <label class="form-check-label" for="timetable4"><img
-                          src="{{ url_for('static', filename='assets/schedules/Thurs_8_12_Schedule.png') }}"
-                          class="recommender-filter-icon"></label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" name="Fri 8-12" value="timetable" id="timetable5">
-                      <label class="form-check-label" for="timetable5"><img
-                          src="{{ url_for('static', filename='assets/schedules/Fri_8_12_Schedule.png') }}"
-                          class="recommender-filter-icon"></label>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <th class="align-top" style="width: 9rem" scope="row"></th>
-                  <td class="align-top">
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" name="Mon 13-17" value="timetable"
-                        id="timetable6">
-                      <label class="form-check-label" for="timetable6"><img
-                          src="{{ url_for('static', filename='assets/schedules/Mon_13_17_Schedule.png') }}"
-                          class="recommender-filter-icon"></label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" name="Tue 13-17" value="timetable"
-                        id="timetable7">
-                      <label class="form-check-label" for="timetable7"><img
-                          src="{{ url_for('static', filename='assets/schedules/Tues_13_17_Schedule.png') }}"
-                          class="recommender-filter-icon"></label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" name="Wed 13-17" value="timetable"
-                        id="timetable8">
-                      <label class="form-check-label" for="timetable8"><img
-                          src="{{ url_for('static', filename='assets/schedules/Wed_13_17_Schedule.png') }}"
-                          class="recommender-filter-icon"></label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" name="Thu 13-17" value="timetable"
-                        id="timetable9">
-                      <label class="form-check-label" for="timetable9"><img
-                          src="{{ url_for('static', filename='assets/schedules/Thurs_13_17_Schedule.png') }}"
-                          class="recommender-filter-icon"></label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" name="Fri 13-17" value="timetable"
-                        id="timetable10">
-                      <label class="form-check-label" for="timetable10"><img
-                          src="{{ url_for('static', filename='assets/schedules/Fri_13_17_Schedule.png') }}"
-                          class="recommender-filter-icon"></label>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <th class="align-top" style="width: 9rem" scope="row"></th>
-                  <td class="align-top">
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" name="offschedule" value="timetable"
-                        id="timetable11">
-                      <label class="form-check-label" for="timetable11"><img
-                          src="{{ url_for('static', filename='assets/schedules/Multi_Unknown_Schedule.png') }}"
-                          class="recommender-filter-icon"></label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" name="Tue 18-22" value="timetable"
-                        id="timetable12">
-                      <label class="form-check-label" for="timetable12"><img
-                          src="{{ url_for('static', filename='assets/schedules/Tues_18_22_Schedule.png') }}"
-                          class="recommender-filter-icon"></label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" name="3-week" value="timetable" id="timetable13">
-                      <label class="form-check-label" for="timetable13">3-week</label>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </li>
+        </div>
+      </div>
+    </div>
+    <!-- End of Left Column -->
 
-          <!-- Exam Type Filter -->
-          <li class="list-group-item">
-            <table class="table table-sm table-borderless mb-0">
-              <tbody>
-                <tr>
-                  <th class="align-top" style="width: 9rem" scope="row">Exam type:</th>
-                  <td class="align-top" style="width: 10.6rem">
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" name="written" value="exam_type" id="exam_type1">
-                      <label class="form-check-label" for="exam_type1">✍Written exam</label>
-                    </div>
-                  </td>
-                  <td class="align-top" style="width: 9.2rem">
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" name="oral" value="exam_type" id="exam_type2">
-                      <label class="form-check-label" for="exam_type2">🦜Oral exam</label>
-                    </div>
-                  </td>
-                  <td class="align-top">
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" name="reporthandin" value="exam_type"
-                        id="exam_type3">
-                      <label class="form-check-label" for="exam_type3">📑No exam</label>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </li>
-        </ul>
+    <!-- RIGHT COLUMN: Basket, Filters & Actions -->
+    <div class="col">
+      <div class="card bg-light" style="max-width: 24rem;">
+        <img src="{{ url_for('static', filename='assets/colors/grey.png') }}" width="100%" height="26"
+          class="card-img-top" alt="..." />
+
+        <!-- Updated to match Left Column Style -->
+        <div class="card-body">
+          <div class="recommender-step-header">Course Basket</div>
+          <p class="recommender-step-desc">
+            Courses similar to these will be found.
+          </p>
+
+          <!-- Wrapped in recommender-content-box for matching white box style -->
+          <div class="recommender-content-box">
+            <div id="recommender-basket" class="recommender-basket-container" style="border: none; box-shadow: none;">
+              <div class="recommender-basket-placeholder">
+                Basket is empty.
+              </div>
+            </div>
+          </div>
+        </div>
 
         <!-- Submit Action -->
-        <div class="card-footer pb-0">
-          <button onclick="getRecommendations()" id="recommender-submit-btn" class="btn btn-primary btn-block mb-2"
+        <div class="card-footer">
+          <small class="text-muted d-block mb-2"></small>
+          <button class="btn btn-outline-secondary btn-block" data-toggle="modal" data-target="#filterOptionsModal">
+            ⚙️ Configure Filters
+          </button>
+          <button onclick="getRecommendations()" id="recommender-submit-btn" class="btn btn-primary btn-block"
             style="background-color: #990000; border-color: #990000;">Get Recommendations</button>
         </div>
       </div>
     </div>
+    <!-- End of Right Column -->
+
   </div>
+  <!-- End of card grid -->
 
-  <!-- Results Section -->
+  <!-- Results Section (Actual Cards appear here) -->
   <div id="recommender-results-area" class="mt-5 recommender-hidden">
-
-    <h3 class="mb-3">Recommendations</h3>
-
-    <div class="btn-group mb-3" role="group">
-      <button type="button" class="btn recommender-btn-outline-brand" id="recommender-view-carousel-btn"
-        onclick="switchViewMode('carousel')">🎠 Carousel</button>
-      <button type="button" class="btn recommender-btn-outline-brand active" id="recommender-view-list-btn"
-        onclick="switchViewMode('list')">📜 List</button>
-      <button type="button" class="btn recommender-btn-outline-brand" id="recommender-view-analyzer-btn"
-        onclick="switchViewMode('analyzer')">📊 Analyzer</button>
-    </div>
-
-    <!-- Info box constrained to 42rem -->
-    <div class="alert alert-info" id="recommender-results-info" style="max-width: 39rem;"></div>
 
     <!-- Carousel View -->
     <div id="recommender-view-carousel" class="recommender-hidden">
@@ -828,6 +530,7 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
   // Basket now stores objects: { type: 'course'|'text', value: '...', display: '...' }
   let basketItems = [];
   let allRecommendations = [];
+  let unlockedCourses = []; // Stores the prerequisite courses data
   let searchTimeout = null;
 
   // View State - Default is now 'list'
@@ -850,37 +553,6 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
   // Helper to generate internal URL
   function getCourseUrl(courseId) {
     return BASE_COURSE_URL_TEMPLATE.replace('PLACEHOLDER', courseId);
-  }
-
-  // --- Step 1: Input Method Toggling ---
-  function showInputMethod(method) {
-    const searchArea = document.getElementById('input-area-search');
-    const bulkArea = document.getElementById('input-area-bulk');
-    const textArea = document.getElementById('input-area-text');
-
-    const searchBtn = document.getElementById('btn-input-search');
-    const bulkBtn = document.getElementById('btn-input-bulk');
-    const textBtn = document.getElementById('btn-input-text');
-
-    // Reset all
-    searchArea.classList.remove('active');
-    bulkArea.classList.remove('active');
-    textArea.classList.remove('active');
-
-    searchBtn.classList.remove('active');
-    bulkBtn.classList.remove('active');
-    textBtn.classList.remove('active');
-
-    if (method === 'search') {
-      searchArea.classList.add('active');
-      searchBtn.classList.add('active');
-    } else if (method === 'bulk') {
-      bulkArea.classList.add('active');
-      bulkBtn.classList.add('active');
-    } else if (method === 'text') {
-      textArea.classList.add('active');
-      textBtn.classList.add('active');
-    }
   }
 
   // --- Search & Basket Logic ---
@@ -939,9 +611,53 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
     }
   }
 
+  // Helper to check if course is in basket
+  function isCourseInBasket(courseId) {
+    return basketItems.some(i => i.type === 'course' && i.value === courseId);
+  }
+
+  // Toggle function for the +/- buttons
+  function toggleBasketCourse(btn, courseId, courseName) {
+    if (isCourseInBasket(courseId)) {
+      // Remove it
+      const index = basketItems.findIndex(i => i.type === 'course' && i.value === courseId);
+      if (index > -1) {
+        removeItemFromBasket(index);
+      }
+    } else {
+      // Add it
+      addCourseToBasket(courseId, courseName);
+    }
+    // Note: removeItemFromBasket and addCourseToBasket call updateBasketDisplay
+    // We also need to update ALL buttons on the page for this course ID
+    updateAllCardButtons(courseId);
+  }
+
+  function updateAllCardButtons(courseId) {
+    const inBasket = isCourseInBasket(courseId);
+    // Find all buttons with data-course-id attribute
+    const buttons = document.querySelectorAll(`button[data-course-id="${courseId}"]`);
+
+    buttons.forEach(btn => {
+      if (inBasket) {
+        // Change to Remove state
+        btn.innerHTML = '&times;'; // Cross
+        btn.classList.remove('btn-outline-success', 'btn-outline-secondary');
+        btn.classList.add('btn-danger');
+        btn.title = "Remove from basket";
+      } else {
+        // Change to Add state
+        btn.innerHTML = '+';
+        btn.classList.remove('btn-danger');
+        btn.classList.add('btn-outline-success');
+        btn.title = "Add to basket";
+      }
+    });
+  }
+
   function addCourseToBasket(courseId, courseName) {
     // Check duplicate
-    if (basketItems.some(i => i.type === 'course' && i.value === courseId)) return;
+    if (isCourseInBasket(courseId)) return;
 
     basketItems.push({
       type: 'course',
@@ -957,22 +673,15 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
     listContainer.classList.remove('show');
     listContainer.innerHTML = '';
 
-    // Feedback
-    const feedbackDiv = document.getElementById('recommender-search-feedback');
-    const newItemHTML = `
-      <div class="recommender-feedback-item">
-        <span>Added <strong>${courseId}</strong> - ${courseName}</span>
-        <span class="recommender-feedback-icon">✓</span>
-      </div>
-    `;
-    feedbackDiv.insertAdjacentHTML('afterbegin', newItemHTML);
+    // Sync buttons
+    updateAllCardButtons(courseId);
   }
 
   function addTextToBasket() {
     const input = document.getElementById('recommender-free-text');
     const text = input.value.trim();
 
-    if (text.length < 3) {
+    if (text.length < 2) {
       alert("Please enter a longer description.");
       return;
     }
@@ -988,26 +697,22 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
 
     updateBasketDisplay();
     input.value = '';
-
-    // Feedback
-    const feedbackDiv = document.getElementById('recommender-text-feedback');
-    feedbackDiv.innerHTML = `
-      <div class="recommender-feedback-item" style="background-color: #f0f7ff; border-color: #cce5ff; color: #004085;">
-        <span>Added interest description</span>
-        <span class="recommender-feedback-icon">✓</span>
-      </div>
-    `;
   }
 
   function removeItemFromBasket(index) {
+    const item = basketItems[index];
     basketItems.splice(index, 1);
     updateBasketDisplay();
+
+    if (item.type === 'course') {
+      updateAllCardButtons(item.value);
+    }
   }
 
   function updateBasketDisplay() {
     const basket = document.getElementById('recommender-basket');
     if (basketItems.length === 0) {
-      basket.innerHTML = '<div class="recommender-basket-placeholder">Your basket is empty. Please add courses or text in Step 1.</div>';
+      basket.innerHTML = '<div class="recommender-basket-placeholder">Basket is empty.</div>';
       return;
     }
 
@@ -1060,14 +765,20 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
                   display: `<strong>${c.course_id}</strong> - ${c.name || 'Unknown'}`
                 });
                 addedCount++;
+                // Sync button state if visible
+                updateAllCardButtons(c.course_id);
               }
             });
 
             updateBasketDisplay();
 
             const courseLabel = addedCount === 1 ? 'course' : 'courses';
-            let html = `<div class="text-success font-weight-bold mb-2 small">Added ${addedCount} new ${courseLabel}:</div>`;
+            let html = `<div class="text-success font-weight-bold mb-2 small">Added ${addedCount} new ${courseLabel} to basket.</div>`;
             feedbackDiv.innerHTML = html;
+
+            // Clear text area after successful add
+            document.getElementById('recommender-bulk-text').value = '';
+
             return true;
           }
         } else {
@@ -1099,7 +810,7 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
     }
     addFilter('language', 'language', 2);
     addFilter('course_type', 'course_type', 4);
-    addFilter('semester_period', 'semester_period', 6);
+    addFilter('semester_period', 'semester_period', 4);
     addFilter('timetable', 'timetable', 13);
     addFilter('exam_type', 'exam_type', 3);
     return filters;
@@ -1109,6 +820,9 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
     const filters = getSelectedFilters();
     const errorDiv = document.getElementById('recommender-error-msg');
     const resultsArea = document.getElementById('recommender-results-area');
+    const top5Container = document.getElementById('recommender-top5-container');
+    const viewControls = document.getElementById('recommender-view-controls');
+    const unlockedSection = document.getElementById('recommender-unlocked-section');
 
     errorDiv.classList.add('recommender-hidden');
     resultsArea.classList.add('recommender-hidden');
@@ -1141,13 +855,82 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
 
         if (data.success) {
           allRecommendations = data.recommendations;
+          unlockedCourses = data.unlocked_courses || [];
 
-          const infoDiv = document.getElementById('recommender-results-info');
-          const count = basketItems.length;
-          const label = count === 1 ? 'item' : 'items';
+          // --- UPDATE UNLOCKED COURSES UI ---
+          // Always show the section now
+          unlockedSection.classList.remove('recommender-hidden');
 
-          infoDiv.innerHTML = `<strong>Found ${allRecommendations.length} recommendations</strong> based on ${count} basket ${label}.`;
+          const unlockedText = document.getElementById('recommender-unlocked-text');
+          if (unlockedCourses.length > 0) {
+            unlockedText.innerHTML = `You have the prerequisites for <span class="font-weight-bold">${unlockedCourses.length}</span> subsequent courses.`;
+          } else {
+            unlockedText.innerHTML = `No subsequent courses found for the items in your basket.`;
+          }
 
+          populateUnlockedModal(unlockedCourses);
+
+          // --- UPDATE TOP 5 UI ---
+          const top5 = allRecommendations.slice(0, 5);
+          let top5Html = '<h6 class="recommender-step-header mb-2 text-dark">Top Matches</h6><ul class="list-group list-group-flush">';
+
+          if (top5.length === 0) {
+            top5Html += '<li class="list-group-item">No matches found with current filters.</li>';
+          } else {
+            top5.forEach(course => {
+              // Determine percentage score
+              let scorePct = 0;
+              if (course.score !== undefined) {
+                scorePct = Math.round(course.score * 100);
+              } else if (course.similarity_breakdown) {
+                // Try to sum breakdown if root score is missing
+                let total = course.similarity_breakdown.reduce((acc, item) => acc + item.score, 0);
+                scorePct = Math.round(total * 100);
+              }
+
+              // Cap at 100 just in case
+              if (scorePct > 100) scorePct = 100;
+
+              const courseUrl = getCourseUrl(course.course_id);
+              const safeName = course.name.replace(/'/g, "\\'");
+
+              // Determine button state
+              const inBasket = isCourseInBasket(course.course_id);
+              const btnClass = inBasket ? 'btn-danger' : 'btn-outline-success';
+              const btnIcon = inBasket ? '&times;' : '+';
+              const btnTitle = inBasket ? 'Remove from basket' : 'Add to basket';
+
+              top5Html += `
+                  <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-2 border-bottom-0">
+                    <div class="text-truncate" style="max-width: 65%;">
+                       <a href="${courseUrl}" class="font-weight-bold" style="color:#990000; text-decoration:none;">${course.course_id}</a>
+                       <span class="small text-muted ml-1 text-truncate">${course.name}</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <span class="badge badge-pill badge-light border text-dark mr-2" title="Similarity Score">${scorePct}% similar description</span>
+                        <button class="btn btn-sm ${btnClass} py-0 px-2"
+                                data-course-id="${course.course_id}"
+                                onclick="toggleBasketCourse(this, '${course.course_id}', '${safeName}')"
+                                title="${btnTitle}"
+                                style="font-size:1.1rem; line-height:1.2; font-weight:bold; width: 24px;">${btnIcon}</button>
+                    </div>
+                  </li>`;
+            });
+          }
+          top5Html += '</ul>';
+
+          top5Container.innerHTML = top5Html;
+
+          // --- UPDATE VIEW CONTROLS ---
+          const remainingCount = Math.max(0, allRecommendations.length - 5);
+          if (remainingCount > 0) {
+            document.getElementById('recommender-additional-header').textContent = `Browse ${remainingCount} additional suggestions:`;
+            viewControls.classList.remove('recommender-hidden');
+          } else {
+            viewControls.classList.add('recommender-hidden');
+          }
+
+          // --- SHOW RESULTS AREA ---
           resultsArea.classList.remove('recommender-hidden');
 
           // Reset all views
@@ -1173,6 +956,41 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
         errorDiv.textContent = 'Network Error: ' + error;
         errorDiv.classList.remove('recommender-hidden');
       });
+  }
+
+  function populateUnlockedModal(courses) {
+    const listBody = document.getElementById('unlocked_courses_list');
+    let html = '';
+
+    if (courses.length === 0) {
+      html = '<div class="p-3 text-muted text-center">No subsequent courses found for the items in your basket.</div>';
+    } else {
+      courses.forEach(c => {
+        const url = getCourseUrl(c.id);
+        const safeName = c.name.replace(/'/g, "\\'");
+
+        // Determine button state
+        const inBasket = isCourseInBasket(c.id);
+        const btnClass = inBasket ? 'btn-danger' : 'btn-outline-success';
+        const btnIcon = inBasket ? '&times;' : '+';
+        const btnTitle = inBasket ? 'Remove from basket' : 'Add to basket';
+
+        html += `
+                <div class="list-group-item list-group-item-action py-2 d-flex justify-content-between align-items-center">
+                    <a href="${url}" class="text-dark text-decoration-none">
+                        <span class="font-weight-bold" style="color:#990000;">${c.id}</span> ${c.name}
+                    </a>
+                    <button class="btn btn-sm ${btnClass} ml-2"
+                            data-course-id="${c.id}"
+                            onclick="toggleBasketCourse(this, '${c.id}', '${safeName}')"
+                            title="${btnTitle}"
+                            style="font-weight:bold; width: 24px;">${btnIcon}</button>
+                </div>
+            `;
+      });
+    }
+
+    listBody.innerHTML = html;
   }
 
   // --- View Switching ---
@@ -1215,6 +1033,17 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
 
   function createCardHTML(course, index) {
     const courseUrl = getCourseUrl(course.course_id);
+    const safeName = course.name.replace(/'/g, "\\'");
+
+    // Calculate Score
+    let scorePct = 0;
+    if (course.score !== undefined) {
+      scorePct = Math.round(course.score * 100);
+    } else if (course.similarity_breakdown) {
+      let total = course.similarity_breakdown.reduce((acc, item) => acc + item.score, 0);
+      scorePct = Math.round(total * 100);
+    }
+    if (scorePct > 100) scorePct = 100;
 
     const scheduleImg =
       (course.season === "Fall" || course.season === "Spring") && course.schedule
@@ -1227,16 +1056,27 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
         ? "Multiple semesters"
         : (course.season || '');
 
+    // Determine button state
+    const inBasket = isCourseInBasket(course.course_id);
+    const btnClass = inBasket ? 'btn-danger' : 'btn-outline-success';
+    const btnIcon = inBasket ? '&times;' : '+';
+    const btnTitle = inBasket ? 'Remove from basket' : 'Add to basket';
+
     // Subtle grey button using standard Bootstrap classes
-    // btn-light gives a very light grey background
-    // border makes it defined against the white card
-    // text-muted makes the text grey
     const similarityBtn = `
-    <button class="btn btn-sm btn-light border text-muted"
-            onclick="openSimilarityModal(${index})"
-            style="font-size: 0.8rem;">
-      View similarity scores
-    </button>
+    <div class="d-flex align-items-center">
+        <span class="font-weight-bold text-muted mr-2">${scorePct}%</span>
+        <button class="btn btn-sm btn-light border text-muted"
+                onclick="openSimilarityModal(${index})"
+                style="font-size: 0.8rem;">
+          View breakdown
+        </button>
+        <button class="btn btn-sm ${btnClass} ml-2"
+                data-course-id="${course.course_id}"
+                onclick="toggleBasketCourse(this, '${course.course_id}', '${safeName}')"
+                title="${btnTitle}"
+                style="font-weight:bold; width: 28px;">${btnIcon}</button>
+    </div>
   `;
 
     return `
@@ -1264,6 +1104,17 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
   // --- Analyzer Card HTML Helper ---
   function createAnalyzerCardHTML(course) {
     const courseUrl = getCourseUrl(course.course_id);
+    const safeName = course.name.replace(/'/g, "\\'");
+
+    // Calculate Score
+    let scorePct = 0;
+    if (course.score !== undefined) {
+      scorePct = Math.round(course.score * 100);
+    } else if (course.similarity_breakdown) {
+      let total = course.similarity_breakdown.reduce((acc, item) => acc + item.score, 0);
+      scorePct = Math.round(total * 100);
+    }
+    if (scorePct > 100) scorePct = 100;
 
     // Handle potential missing data gracefully
     const responsibleImg = (course.responsible && course.responsible !== "NO_DATA")
@@ -1291,6 +1142,12 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
       ? `<small class="fs-6 text-danger" title="Warning: Low sample size (${votes} evaluations)">(!)</small>`
       : '';
 
+    // Determine button state
+    const inBasket = isCourseInBasket(course.course_id);
+    const btnClass = inBasket ? 'btn-danger' : 'btn-outline-success';
+    const btnIcon = inBasket ? '&times;' : '+';
+    const btnTitle = inBasket ? 'Remove from basket' : 'Add to basket';
+
     return `
         <div class="col">
           <div class="card h-100" style="max-width: 26rem; margin: 0 auto;">
@@ -1299,7 +1156,14 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
               class="d-inline-block align-top" alt="red-color" loading="lazy"
               style="filter: invert(0) grayscale(0%) brightness(100%)"/>
             <div class="card-body pb-0">
-              <h6 class="card-title mb-0 ml-3 mr-0">${course.course_id} ${course.name}</h6>
+              <div class="d-flex justify-content-between">
+                <h6 class="card-title mb-0 ml-3 mr-0">${course.course_id} ${course.name} <span class="badge badge-light border text-muted ml-1">${scorePct}%</span></h6>
+                <button class="btn btn-sm ${btnClass}"
+                        data-course-id="${course.course_id}"
+                        onclick="toggleBasketCourse(this, '${course.course_id}', '${safeName}')"
+                        style="z-index: 2; position:relative; height: 24px; line-height: 10px; font-weight:bold; width: 24px;"
+                        title="${btnTitle}">${btnIcon}</button>
+              </div>
             </div>
             <div class="card-footer bg-white border-top-0">
               <ul class="list-group list-group-flush mt-0 pt-0">
@@ -1624,6 +1488,8 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
       // Call extract, wait for it to finish, then recommend if successful
       extractCourses().then((success) => {
         if (success) {
+          // Close modal if using BS4/BS5
+          $('#bulkImportModal').modal('hide');
           getRecommendations();
         }
       });
@@ -1646,7 +1512,6 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="similarity_modal_title">Similarity Breakdown</h5>
-        <!-- Supports both BS4 and BS5 closing -->
         <button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -1660,17 +1525,443 @@ All custom CSS classes and IDs in this file are prefixed with "recommender-" to 
               <th scope="col" class="text-right">Match</th>
             </tr>
           </thead>
-          <tbody id="similarity_modal_body">
-            <!-- Content injected via JS -->
-          </tbody>
+          <tbody id="similarity_modal_body"></tbody>
         </table>
       </div>
       <div class="modal-footer">
-        <!-- Supports both BS4 and BS5 closing -->
         <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
 </div>
 
+<!-- Unlocked Courses Modal -->
+<div class="modal fade" id="unlockedCoursesModal" tabindex="-1" role="dialog"
+  aria-labelledby="unlockedCoursesModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="unlockedCoursesModalLabel">Courses you have prerequisites for</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p-0">
+        <div class="list-group list-group-flush" id="unlocked_courses_list">
+          <!-- Content populated via JS -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bulk Import Modal -->
+<div class="modal fade" id="bulkImportModal" tabindex="-1" role="dialog" aria-labelledby="bulkImportModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="bulkImportModalLabel">Import courses from Study-Planner</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="small text-muted">
+          Insert raw text containing 5-digit course codes (copied from elsewhere) and the recommendation tool will
+          automatically extract valid courses!
+        </p>
+        <textarea class="form-control" id="recommender-bulk-text" rows="6"
+          placeholder="Go to studieplan.dtu.dk and copy-paste all of your prior course enrollments into this window..."></textarea>
+        <div id="recommender-bulk-feedback" class="mt-2"></div>
+        <p class="small text-muted fst-italic mt-3">
+          This is <strong>optional</strong>. You can alternatively add courses one by one instead.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" style="background-color: #990000; border-color: #990000;"
+          onclick="extractCourses()">Extract to Basket</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Filter Options Modal -->
+<div class="modal fade" id="filterOptionsModal" tabindex="-1" role="dialog" aria-labelledby="filterOptionsModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="filterOptionsModalLabel">Filter Recommendations</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p-0">
+        <ul class="list-group list-group-flush">
+          <!-- Language Filter -->
+          <li class="list-group-item">
+            <table class="table table-sm table-borderless mb-0">
+              <tbody>
+                <tr>
+                  <th class="align-top" style="width: 9rem" scope="row">Language:</th>
+                  <td class="align-top">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Danish" value="language" id="language1">
+                      <label class="form-check-label" for="language1">🍺Danish</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="English" value="language" id="language2">
+                      <label class="form-check-label" for="language2">🚀English</label>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+
+          <!-- Course Type Filter -->
+          <li class="list-group-item">
+            <table class="table table-sm table-borderless mb-0">
+              <tbody>
+                <tr>
+                  <th class="align-top" style="width: 9rem" scope="row">Type:</th>
+                  <td class="align-top" style="width: 7.8rem">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="beng" value="course_type" id="course_type1"
+                        checked>
+                      <label class="form-check-label" for="course_type1">🐇BEng</label>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="bsc" value="course_type" id="course_type2"
+                        checked>
+                      <label class="form-check-label" for="course_type2">🐢BSc</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="msc" value="course_type" id="course_type3"
+                        checked>
+                      <label class="form-check-label" for="course_type3">👩‍🎓MSc</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="phd" value="course_type" id="course_type4">
+                      <label class="form-check-label" for="course_type4">🧙Ph.D.</label>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+
+          <!-- Season Filter -->
+          <li class="list-group-item">
+            <table class="table table-sm table-borderless mb-0">
+              <tbody>
+                <tr>
+                  <th class="align-top" style="width: 9rem" scope="row">Season:</th>
+                  <td class="align-top" style="width: 8.3rem">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="autumn" value="semester_period"
+                        id="semester_period1">
+                      <label class="form-check-label" for="semester_period1">🍂Autumn</label>
+                    </div>
+                  </td>
+                  <td class="align-top">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="spring" value="semester_period"
+                        id="semester_period2">
+                      <label class="form-check-label" for="semester_period2">🌱Spring</label>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="align-top" style="width: 9rem" scope="row"></th>
+                  <td class="align-top" style="width: 8.3rem">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="jan" value="semester_period"
+                        id="semester_period3">
+                      <label class="form-check-label" for="semester_period3">❄️January</label>
+                    </div>
+                  </td>
+                  <td class="align-top">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="jun" value="semester_period"
+                        id="semester_period4">
+                      <label class="form-check-label" for="semester_period4">☀️June</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="jul" value="semester_period"
+                        id="semester_period5">
+                      <label class="form-check-label" for="semester_period5">⛱️July</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="aug" value="semester_period"
+                        id="semester_period6">
+                      <label class="form-check-label" for="semester_period6">🌻August</label>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+
+          <!-- Schedule Filter -->
+          <li class="list-group-item">
+            <table class="table table-sm table-borderless mb-0">
+              <tbody>
+                <tr>
+                  <th class="align-top" style="width: 9rem" scope="row">
+                    Schedule:
+                    <!-- UPDATED TRIGGER: Toggles the collapse below instead of a modal -->
+                    <small class="fs-6 text-muted" data-toggle="collapse" data-bs-toggle="collapse"
+                      data-target="#schedule_legend_collapse" data-bs-target="#schedule_legend_collapse"
+                      aria-expanded="false" aria-controls="schedule_legend_collapse"
+                      style="cursor: pointer;">[?]</small>
+                  </th>
+                  <td class="align-top">
+                    <!-- Morning Row -->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Mon 8-12" value="timetable" id="timetable1">
+                      <label class="form-check-label" for="timetable1"><img
+                          src="{{ url_for('static', filename='assets/schedules/Mon_8_12_Schedule.png') }}"
+                          class="recommender-filter-icon"></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Tue 8-12" value="timetable" id="timetable2">
+                      <label class="form-check-label" for="timetable2"><img
+                          src="{{ url_for('static', filename='assets/schedules/Tues_8_12_Schedule.png') }}"
+                          class="recommender-filter-icon"></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Wed 8-12" value="timetable" id="timetable3">
+                      <label class="form-check-label" for="timetable3"><img
+                          src="{{ url_for('static', filename='assets/schedules/Wed_8_12_Schedule.png') }}"
+                          class="recommender-filter-icon"></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Thu 8-12" value="timetable" id="timetable4">
+                      <label class="form-check-label" for="timetable4"><img
+                          src="{{ url_for('static', filename='assets/schedules/Thurs_8_12_Schedule.png') }}"
+                          class="recommender-filter-icon"></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Fri 8-12" value="timetable" id="timetable5">
+                      <label class="form-check-label" for="timetable5"><img
+                          src="{{ url_for('static', filename='assets/schedules/Fri_8_12_Schedule.png') }}"
+                          class="recommender-filter-icon"></label>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="align-top" style="width: 9rem" scope="row"></th>
+                  <td class="align-top">
+                    <!-- Afternoon Row -->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Mon 13-17" value="timetable"
+                        id="timetable6">
+                      <label class="form-check-label" for="timetable6"><img
+                          src="{{ url_for('static', filename='assets/schedules/Mon_13_17_Schedule.png') }}"
+                          class="recommender-filter-icon"></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Tue 13-17" value="timetable"
+                        id="timetable7">
+                      <label class="form-check-label" for="timetable7"><img
+                          src="{{ url_for('static', filename='assets/schedules/Tues_13_17_Schedule.png') }}"
+                          class="recommender-filter-icon"></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Wed 13-17" value="timetable"
+                        id="timetable8">
+                      <label class="form-check-label" for="timetable8"><img
+                          src="{{ url_for('static', filename='assets/schedules/Wed_13_17_Schedule.png') }}"
+                          class="recommender-filter-icon"></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Thu 13-17" value="timetable"
+                        id="timetable9">
+                      <label class="form-check-label" for="timetable9"><img
+                          src="{{ url_for('static', filename='assets/schedules/Thurs_13_17_Schedule.png') }}"
+                          class="recommender-filter-icon"></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Fri 13-17" value="timetable"
+                        id="timetable10">
+                      <label class="form-check-label" for="timetable10"><img
+                          src="{{ url_for('static', filename='assets/schedules/Fri_13_17_Schedule.png') }}"
+                          class="recommender-filter-icon"></label>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="align-top" style="width: 9rem" scope="row"></th>
+                  <td class="align-top">
+                    <!-- Other Row -->
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="offschedule" value="timetable"
+                        id="timetable11">
+                      <label class="form-check-label" for="timetable11"><img
+                          src="{{ url_for('static', filename='assets/schedules/Multi_Unknown_Schedule.png') }}"
+                          class="recommender-filter-icon"></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Tue 18-22" value="timetable"
+                        id="timetable12">
+                      <label class="form-check-label" for="timetable12"><img
+                          src="{{ url_for('static', filename='assets/schedules/Tues_18_22_Schedule.png') }}"
+                          class="recommender-filter-icon"></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="3-week" value="timetable" id="timetable13">
+                      <label class="form-check-label" for="timetable13">3-week</label>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- COLLAPSIBLE LEGEND SECTION -->
+            <div class="collapse" id="schedule_legend_collapse">
+              <div class="card card-body bg-light mt-2">
+                <h6 class="modal-title fs-5 mb-2">Breakdown of schedule icons:</h6>
+
+                <h6 class="mt-2 border-bottom pb-2">Morning (08:00 - 12:00)</h6>
+                <table class="table table-sm table-borderless mb-0 align-middle">
+                  <tbody>
+                    <tr>
+                      <td style="width: 50px;"><img
+                          src="{{ url_for('static', filename='assets/schedules/Mon_8_12_Schedule.png') }}" width="40">
+                      </td>
+                      <td>Monday Morning (E1A)</td>
+                    </tr>
+                    <tr>
+                      <td><img src="{{ url_for('static', filename='assets/schedules/Tues_8_12_Schedule.png') }}"
+                          width="40"></td>
+                      <td>Tuesday Morning (E2A)</td>
+                    </tr>
+                    <tr>
+                      <td><img src="{{ url_for('static', filename='assets/schedules/Wed_8_12_Schedule.png') }}"
+                          width="40"></td>
+                      <td>Wednesday Morning (E3A)</td>
+                    </tr>
+                    <tr>
+                      <td><img src="{{ url_for('static', filename='assets/schedules/Thurs_8_12_Schedule.png') }}"
+                          width="40"></td>
+                      <td>Thursday Morning (E4A)</td>
+                    </tr>
+                    <tr>
+                      <td><img src="{{ url_for('static', filename='assets/schedules/Fri_8_12_Schedule.png') }}"
+                          width="40"></td>
+                      <td>Friday Morning (E5A)</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <h6 class="mt-3 border-bottom pb-2">Afternoon (13:00 - 17:00)</h6>
+                <table class="table table-sm table-borderless mb-0 align-middle">
+                  <tbody>
+                    <tr>
+                      <td style="width: 50px;"><img
+                          src="{{ url_for('static', filename='assets/schedules/Mon_13_17_Schedule.png') }}" width="40">
+                      </td>
+                      <td>Monday Afternoon (E1B)</td>
+                    </tr>
+                    <tr>
+                      <td><img src="{{ url_for('static', filename='assets/schedules/Tues_13_17_Schedule.png') }}"
+                          width="40"></td>
+                      <td>Tuesday Afternoon (E2B)</td>
+                    </tr>
+                    <tr>
+                      <td><img src="{{ url_for('static', filename='assets/schedules/Wed_13_17_Schedule.png') }}"
+                          width="40"></td>
+                      <td>Wednesday Afternoon (E3B)</td>
+                    </tr>
+                    <tr>
+                      <td><img src="{{ url_for('static', filename='assets/schedules/Thurs_13_17_Schedule.png') }}"
+                          width="40">
+                      </td>
+                      <td>Thursday Afternoon (E4B)</td>
+                    </tr>
+                    <tr>
+                      <td><img src="{{ url_for('static', filename='assets/schedules/Fri_13_17_Schedule.png') }}"
+                          width="40"></td>
+                      <td>Friday Afternoon (E5B)</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <h6 class="mt-3 border-bottom pb-2">Other</h6>
+                <table class="table table-sm table-borderless mb-0 align-middle">
+                  <tbody>
+                    <tr>
+                      <td style="width: 50px;"><img
+                          src="{{ url_for('static', filename='assets/schedules/Tues_18_22_Schedule.png') }}" width="40">
+                      </td>
+                      <td>Tuesday Evening (18:00 - 22:00)</td>
+                    </tr>
+                    <tr>
+                      <td><img src="{{ url_for('static', filename='assets/schedules/Multi_Unknown_Schedule.png') }}"
+                          width="40">
+                      </td>
+                      <td>Off-schedule / Flexible / Unknown</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <!-- Close Button for the Collapse -->
+                <div class="text-end mt-3">
+                  <button type="button" class="btn btn-sm btn-secondary" data-toggle="collapse"
+                    data-bs-toggle="collapse" data-target="#schedule_legend_collapse"
+                    data-bs-target="#schedule_legend_collapse">
+                    Hide schedule explanation
+                  </button>
+                </div>
+              </div>
+            </div>
+          </li>
+
+          <!-- Exam Type Filter -->
+          <li class="list-group-item">
+            <table class="table table-sm table-borderless mb-0">
+              <tbody>
+                <tr>
+                  <th class="align-top" style="width: 9rem" scope="row">Exam type:</th>
+                  <td class="align-top" style="width: 10.6rem">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="written" value="exam_type" id="exam_type1">
+                      <label class="form-check-label" for="exam_type1">✍Written exam</label>
+                    </div>
+                  </td>
+                  <td class="align-top" style="width: 9.2rem">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="oral" value="exam_type" id="exam_type2">
+                      <label class="form-check-label" for="exam_type2">🦜Oral exam</label>
+                    </div>
+                  </td>
+                  <td class="align-top">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="reporthandin" value="exam_type"
+                        id="exam_type3">
+                      <label class="form-check-label" for="exam_type3">📑No exam</label>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<br><br><br><br><br><br> <!-- Do not remove those -->
 {% endblock %}

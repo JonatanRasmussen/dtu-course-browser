@@ -43,6 +43,7 @@ class DtuConsts:
     # Custom-named variables, these can be whatever but a new scrape must be performed if changed
     dtu_accosiated_study_lines = "Study lines"
     dtu_institute = "Institute"
+    dtu_subsequent_courses = "Subsequents"
     dtu_name_of_main_responsible = "Main responsible name"
     dtu_name_of_co_responsible_1 = "Co responsible name 1"
     dtu_name_of_co_responsible_2 = "Co responsible name 2"

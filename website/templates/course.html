@@ -494,6 +494,18 @@
           </table>
         </li>
         {% endif %}
+        {% if data.SUBSEQUENT_COURSES != 'No other course requires this as a prerequisite' %}
+        <li class="list-group-item">
+          <table class="table table-sm table-borderless mb-0">
+            <tbody>
+              <tr>
+                <th class="align-top" style="width: 9rem" scope="row">Prerequisite to:</th>
+                <td class="align-top">{{data.SUBSEQUENT_COURSES|safe}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+        {% endif %}
         {% if data.SCOPE_AND_FORM != 'None' %}
         <li class="list-group-item">
           <table class="table table-sm table-borderless mb-0">
