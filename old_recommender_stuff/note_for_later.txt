@@ -1,0 +1,57 @@
+I am running this on the website class CourseRecommender: """ Text Similarity with Embeddings """ SENTENCE_TRANSFORMER_MODEL = 'all-MiniLM-L6-v2' Is the any chance I can run this model while making 1.3G /home/DTUcourseanalyzer/.local/lib/python3.10/site-packages Be less than 200MB
+
+---------
+
+Option 1 (recommended): Use PythonAnywhere’s system PyTorch, not local
+
+PythonAnywhere already provides PyTorch system-wide on many plans. If you install torch with pip install torch, you duplicate it into ~/.local, which is what happened here.
+
+What to do:
+
+Uninstall local torch and torchvision:
+
+pip uninstall torch torchvision functorch torchgen -y
+
+
+Check whether system torch is available:
+
+python - <<EOF
+import torch
+print(torch.__version__)
+print(torch.__file__)
+EOF
+
+
+If the path is not under ~/.local, you win immediately. Your .local size will drop by ~700 MB.
+
+This alone often gets users under quota.
+
+Option 2: Use ONNX instead of PyTorch (this can fit under 200 MB)
+
+This is the only way to reliably stay below 200 MB.
+
+What changes:
+
+• No PyTorch
+• No sentence-transformers
+• No transformers runtime
+• Use onnxruntime instead (~20–40 MB)
+
+Pipeline:
+
+Convert all-MiniLM-L6-v2 to ONNX locally (once)
+
+Upload the .onnx model to PythonAnywhere
+
+Run inference via onnxruntime
+
+Disk usage roughly:
+• ONNX model: ~90 MB
+• onnxruntime: ~30 MB
+• numpy: ~30–40 MB
+
+Total: ~160 MB
+
+This works well for inference-only similarity search, which is exactly your use case.
+
+SentenceTransformers even has official guidance for this workflow.

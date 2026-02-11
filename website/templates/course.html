@@ -451,7 +451,8 @@
           <table class="table table-sm table-borderless mb-0">
             <tbody>
               <tr>
-                <th class="align-top" style="width: 9rem" scope="row">Prerequisites:</th>
+                <th class="align-top" style="width: 9rem" scope="row">Prerequisites:   <small class="fs-6 text-muted" data-toggle="modal"
+                  data-target="#course_graph_modal" onclick="initCourseGraph()" style="cursor: pointer;">[+]</small></th>
                 <td class="align-top">{{data.LEGACY_RECOMMENDED_PREREQUISITES|safe}}</td>
               </tr>
             </tbody>
@@ -463,7 +464,8 @@
           <table class="table table-sm table-borderless mb-0">
             <tbody>
               <tr>
-                <th class="align-top" style="width: 9rem" scope="row">Prerequisites:</th>
+                <th class="align-top" style="width: 9rem" scope="row">Prerequisites:   <small class="fs-6 text-muted" data-toggle="modal"
+                  data-target="#course_graph_modal" onclick="initCourseGraph()" style="cursor: pointer;">[+]</small></th>
                 <td class="align-top">{{data.RECOMMENDED_PREREQUISITES|safe}}</td>
               </tr>
             </tbody>
@@ -475,7 +477,8 @@
           <table class="table table-sm table-borderless mb-0">
             <tbody>
               <tr>
-                <th class="align-top" style="width: 9rem" scope="row">Prerequisites:</th>
+                <th class="align-top" style="width: 9rem" scope="row">Prerequisites:   <small class="fs-6 text-muted" data-toggle="modal"
+                  data-target="#course_graph_modal" onclick="initCourseGraph()" style="cursor: pointer;">[+]</small></th>
                 <td class="align-top">{{data.MANDATORY_PREREQUISITES|safe}}</td>
               </tr>
             </tbody>
@@ -487,7 +490,8 @@
           <table class="table table-sm table-borderless mb-0">
             <tbody>
               <tr>
-                <th class="align-top" style="width: 9rem" scope="row">Prerequisites:</th>
+                <th class="align-top" style="width: 9rem" scope="row">Prerequisites:   <small class="fs-6 text-muted" data-toggle="modal"
+                  data-target="#course_graph_modal" onclick="initCourseGraph()" style="cursor: pointer;">[+]</small></th>
                 <td class="align-top">No prerequisites required</td>
               </tr>
             </tbody>
@@ -737,7 +741,6 @@
   </div>
 </div>
 <!-- End of modal: gradegraph explainer -->
-
 
 <!-- Start of modal: gradegraph explainer -->
 <div class="modal fade" id="gradegraph_explainer" tabindex="-1" role="dialog"
@@ -1144,9 +1147,336 @@
 <script src="{{ url_for('static', filename='assets/dist/js/gradegraph.js') }}"></script>
 <!-- End of custom javascripts -->
 
+<!-- Start of modal: Course Graph -->
+<div class="modal fade" id="course_graph_modal" tabindex="-1" role="dialog" aria-labelledby="course_graph_label" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="course_graph_label">Course dependency graph</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="position: relative; min-height: 400px; overflow-x: auto;">
+        <!-- The graph will be injected here by JS -->
+        <div id="graph-container" style="width: 100%; min-width: 100%; position: relative;">
+            <div class="text-center mt-5"><div class="spinner-border" role="status"></div><br>Loading graph data...</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of modal: Course Graph -->
+
+<style>
+  /* Friend's CSS adapted */
+  .tooltip-link {
+    position: relative;
+    color: #000000;
+    text-decoration: none;
+    display: inline-block;
+    padding: 2px;
+  }
+  .tooltip-link .tooltip-text {
+    visibility: hidden;
+    opacity: 0;
+    background-color: rgba(255, 255, 255, 0.95);
+    color: black;
+    border: 1px solid #b50404;
+    border-radius: 6px;
+    padding: 5px 10px;
+    position: absolute;
+    z-index: 1000;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    font-weight: normal;
+    white-space: nowrap;
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.15);
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  .tooltip-link:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+  }
+  /* Graph specific table styles */
+  .graph-section-table td {
+    padding: 5px;
+    position: relative;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    let graphData = null;
+    let nameMapping = null;
+    const courseId = "{{data.COURSE}}".trim();
+
+    // Global function to be called by the button onclick
+    window.initCourseGraph = async function () {
+      console.log("Init Course Graph triggered");
+      const container = document.getElementById('graph-container');
+
+      // Load data if not loaded
+      if (!nameMapping) {
+        try {
+          container.innerHTML = `<div class="text-center mt-5"><div class="spinner-border" role="status"></div><br>Loading graph data...</div>`;
+
+          const [mapRes, graphRes] = await Promise.all([
+            fetch('https://raw.githubusercontent.com/Marcrulo/DTU-courses-extension/master/jsons/id_to_name.json'),
+            fetch('https://raw.githubusercontent.com/Marcrulo/DTU-courses-extension/master/jsons/graphs.json')
+          ]);
+          if (!mapRes.ok || !graphRes.ok) throw new Error("Network response was not ok");
+          nameMapping = await mapRes.json();
+          const allGraphs = await graphRes.json();
+
+          if (allGraphs[courseId]) {
+            graphData = allGraphs[courseId];
+          } else {
+            graphData = null;
+          }
+        } catch (err) {
+          container.innerHTML = `<p class='text-danger text-center p-4'>Error loading data.<br><small>${err.message}</small></p>`;
+          return;
+        }
+      }
+
+      if (!graphData) {
+        container.innerHTML = `
+        <div class="alert alert-secondary text-center mt-4">
+        <strong>No graph data is available for ${courseId}.</strong><br>
+        This feature is provided by the <a href="https://github.com/Marcrulo/DTU-courses-extension" style="color: #990000; text-decoration: none;" target="_blank">DTU-courses-extension</a>, and data for this course is not yet available.
+          </div>`;
+        return;
+      }
+
+      // Calculate grid data immediately to check structure, though we might not render yet
+      const { t_prereq, t_subseq } = buildGrid(graphData);
+      const nodeCount = graphData.nodes ? graphData.nodes.length : 0;
+      const NODE_THRESHOLD = 50;
+
+      // Function to actually render the HTML and draw lines
+      const renderGraph = () => {
+        // Build HTML structure: SVG Layer BEHIND Content Layer
+        let html = `
+          <div class="alert alert-light text-center" style="font-size: 0.9em; color: gray;">
+            The graphs show all prerequisite relationships leading to and from the given course.<br>
+            Outdated courses that are no longer being offered is not displayed.
+          </div>
+
+          <div id="svg-wrapper" style="position: relative;">
+            <!-- SVG Layer -->
+            <svg id="graph-svg" style="position: absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index: 0;">
+              <defs>
+                <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                  <polygon points="0 0, 10 3.5, 0 7" fill="rgba(181, 4, 4, 0.3)" />
+                </marker>
+              </defs>
+            </svg>
+
+            <!-- Content Layer -->
+            <div style="position: relative; z-index: 1;">
+              <h6 class="text-center border-bottom pb-2">Prerequisites</h6>
+              <div id="prereq-area" style="min-height: 50px; margin-bottom: 20px;">
+                ${generateTableHTML(t_prereq, 'prereq')}
+              </div>
+
+              <h6 class="text-center border-bottom pb-2 border-top pt-2">Subsequent Courses</h6>
+              <div id="subseq-area" style="min-height: 50px;">
+                ${generateTableHTML(t_subseq, 'subseq')}
+              </div>
+            </div>
+          </div>
+
+          <div class="text-center mt-4" style="font-size: 11px; color: #888;">
+            Data is based on <a href="https://github.com/Marcrulo/DTU-courses-extension" style="color: #888; text-decoration: none;" target="_blank">DTU-courses-extension</a> by Marcus Presutti.
+          </div>
+        `;
+
+        container.innerHTML = html;
+
+        // Wait for modal transition/DOM update to finish before drawing lines
+        setTimeout(() => {
+          drawSVGLines(t_prereq, 'prereq');
+          drawSVGLines(t_subseq, 'subseq');
+        }, 200);
+      };
+
+      // Logic to handle large graphs
+      if (nodeCount > NODE_THRESHOLD) {
+        container.innerHTML = `
+          <div class="d-flex flex-column align-items-center justify-content-center" style="height: 300px;">
+            <h4 class="text-danger mb-3">Large graph warning</h4>
+            <p class="text-muted text-center px-4">
+              This dependency graph contains <strong>${nodeCount}</strong> courses.<br>
+            </p>
+            <button id="show-graph-anyway-btn" class="btn btn-outline-danger mt-2">
+              Show anyway
+            </button>
+          </div>
+        `;
+        // Attach click listener to the new button
+        document.getElementById('show-graph-anyway-btn').onclick = renderGraph;
+      } else {
+        // Small graph, render immediately
+        renderGraph();
+      }
+    };
+
+    function buildGrid(graph) {
+      if (!graph) return { t_prereq: [], t_subseq: [] };
+      const { max_subseq = 0, max_prereq = 0, subseq_height = 0, prereq_height = 0 } = graph;
+      let t_prereq = Array.from({ length: prereq_height }, () => Array(max_prereq + 1).fill(null));
+      let t_subseq = Array.from({ length: subseq_height }, () => Array(max_subseq + 1).fill(null));
+      const rowTrackerP = {};
+      const rowTrackerS = {};
+
+      for (const { id, level } of graph.nodes) {
+        if (level < 0) {
+          if (!(level in rowTrackerP)) rowTrackerP[level] = 0;
+          t_prereq[rowTrackerP[level]][max_prereq + level] = id;
+          rowTrackerP[level]++;
+        } else if (level > 0) {
+          if (!(level in rowTrackerS)) rowTrackerS[level] = 0;
+          t_subseq[rowTrackerS[level]][level] = id;
+          rowTrackerS[level]++;
+        }
+      }
+      if (prereq_height > 0) t_prereq[0][max_prereq] = courseId;
+      if (subseq_height > 0) t_subseq[0][0] = courseId;
+
+      for (let row of t_prereq) for (let j = 1; j < row.length; j += 2) row.splice(j, 0, null);
+      for (let row of t_subseq) for (let j = 1; j < row.length; j += 2) row.splice(j, 0, null);
+
+      const centerCols = (table) => {
+        const rows = table.length, cols = table[0]?.length || 0;
+        for (let c = 0; c < cols; c++) {
+          let vals = [];
+          for (let r = 0; r < rows; r++) if (table[r][c] !== null) vals.push(table[r][c]);
+          if (!vals.length) continue;
+          vals.sort();
+          const pad = Math.floor((rows - vals.length) / 2);
+          for (let r = 0; r < rows; r++) table[r][c] = (r >= pad && r < pad + vals.length) ? vals[r - pad] : null;
+        }
+      };
+      centerCols(t_prereq);
+      centerCols(t_subseq);
+      return { t_prereq, t_subseq };
+    }
+
+    function generateTableHTML(grid, type) {
+      const labelMap = {
+        prereq: "prerequisite",
+        subseq: "subsequent"
+      };
+      const label = labelMap[type] || type;
+      if (!grid || grid.length === 0 || grid.every(r => r.every(c => c === null))) {
+        return `<div class="text-center text-muted font-italic my-3">
+          No ${label} courses found.
+        </div>`;
+      }
+      const suffix = type === 'prereq' ? '_p' : '_s';
+      let html = `<table class="graph-section-table" style="width:100%; border-collapse: separate; margin: 0 auto;">`;
+      grid.forEach(row => {
+        html += `<tr>`;
+        row.forEach((cell, idx) => {
+          const width = idx % 2 === 0 ? '60px' : '40px';
+          let content = '';
+          if (cell) {
+            const name = (nameMapping && nameMapping[cell]) ? nameMapping[cell] : "Unknown Course";
+            const isCurrent = cell === courseId;
+            const style = isCurrent ? "font-weight:bold; text-decoration:underline;" : "";
+            content = `<a href="/course/${cell}" class="tooltip-link" id="${cell}${suffix}" style="${style}">${cell}<span class="tooltip-text">${name}</span></a>`;
+          }
+          html += `<td style="width:${width}; text-align:center; vertical-align:middle; height: 50px;">${content}</td>`;
+        });
+        html += `</tr>`;
+      });
+      html += `</table>`;
+      return html;
+    }
+
+    function drawSVGLines(grid, type) {
+      if (!grid || !graphData || !graphData.edges) return;
+      const suffix = type === 'prereq' ? '_p' : '_s';
+      const svg = document.getElementById('graph-svg');
+
+      const wrapper = document.getElementById('svg-wrapper');
+      if (!wrapper) return; // Safety check
+      const wrapperRect = wrapper.getBoundingClientRect();
+
+      graphData.edges.forEach(edge => {
+        const startElem = document.getElementById(edge.source + suffix);
+        const endElem = document.getElementById(edge.target + suffix);
+
+        if (startElem && endElem) {
+          const startRect = startElem.getBoundingClientRect();
+          const endRect = endElem.getBoundingClientRect();
+
+          // Calculate center points
+          const startCenterX = startRect.left + startRect.width / 2;
+          const startCenterY = startRect.top + startRect.height / 2;
+          const endCenterX = endRect.left + endRect.width / 2;
+          const endCenterY = endRect.top + endRect.height / 2;
+
+          let x1, y1, x2, y2;
+
+          // --- CONFIGURATION ---
+          const gap = 6; // The fixed distance (in pixels) the arrow starts/ends away from the text
+
+          // Default Y to vertical center
+          y1 = startCenterY - wrapperRect.top;
+          y2 = endCenterY - wrapperRect.top;
+
+          // Determine the direction of the line to attach to the correct edges
+          if (endCenterX > startCenterX + 10) {
+            // Flows Left to Right (Standard)
+            x1 = (startRect.right + gap) - wrapperRect.left;
+            x2 = (endRect.left - gap) - wrapperRect.left;
+          } else if (startCenterX > endCenterX + 10) {
+            // Flows Right to Left
+            x1 = (startRect.left - gap) - wrapperRect.left;
+            x2 = (endRect.right + gap) - wrapperRect.left;
+          } else {
+            // Vertical line (same column)
+            x1 = startCenterX - wrapperRect.left;
+            x2 = endCenterX - wrapperRect.left;
+
+            if (endCenterY > startCenterY) {
+              // Top to Bottom
+              y1 = (startRect.bottom + gap) - wrapperRect.top;
+              y2 = (endRect.top - gap) - wrapperRect.top;
+            } else {
+              // Bottom to Top
+              y1 = (startRect.top - gap) - wrapperRect.top;
+              y2 = (endRect.bottom + gap) - wrapperRect.top;
+            }
+          }
+
+          // Create SVG Line
+          const newLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+          newLine.setAttribute('x1', x1);
+          newLine.setAttribute('y1', y1);
+          newLine.setAttribute('x2', x2);
+          newLine.setAttribute('y2', y2);
+          newLine.setAttribute('stroke', 'rgba(100, 100, 100, 0.4)'); // Grey color
+          newLine.setAttribute('stroke-width', '2');
+          newLine.setAttribute('marker-end', 'url(#arrowhead)');
+
+          svg.appendChild(newLine);
+        }
+      });
+    }
+  });
+</script>
+
 <br>
 <br>
 <br>
 
 {% endblock %}
-
