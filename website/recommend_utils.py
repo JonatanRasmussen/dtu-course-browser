@@ -7,20 +7,17 @@ import re
 import os
 import pickle
 import traceback
+import onnxruntime as ort
+from tokenizers import Tokenizer
 from website.global_constants.file_name_consts import FileNameConsts
 from website.global_constants.info_consts import InfoConsts
 from website.global_constants.website_consts import WebsiteConsts
-
-# --- ONNX CHANGE: New imports ---
-import onnxruntime as ort
-from tokenizers import Tokenizer
 
 
 class CourseRecommender:
     """ Text Similarity with Embeddings """
 
-    # --- ONNX CHANGE: Constants for ONNX model (just folder/file names, not full paths) ---
-    ONNX_MODEL_FOLDER = 'model_onnx'  # Folder name only
+    ONNX_MODEL_FOLDER = 'model_onnx'
     ONNX_MODEL_FILE = 'model.onnx'
     TOKENIZER_FILE = 'tokenizer.json'
 
@@ -28,7 +25,6 @@ class CourseRecommender:
     FILTERED_DF_CACHE_FILE = 'recommended_filtered_courses_df_cache.pkl'
 
     def __init__(self, eager_load=False):
-        # --- ONNX CHANGE: Replace _model with _session and _tokenizer ---
         self._session = None      # ONNX inference session (lazy loaded)
         self._tokenizer = None    # Tokenizer (lazy loaded)
         self._model_loaded = False
@@ -45,7 +41,6 @@ class CourseRecommender:
             else:
                 print("WARNING: ONNX model could not be loaded.")
 
-    # --- ONNX CHANGE: New method to load ONNX model with path fallback ---
     def _load_onnx_model(self):
         """
         Load the ONNX model and tokenizer.
@@ -75,7 +70,7 @@ class CourseRecommender:
                 break
 
         if model_path is None:
-            print(f"ONNX model files not found in either location:")
+            print("ONNX model files not found in either location:")
             print(f"  Tried: {pythonanywhere_model_path}")
             print(f"  Tried: {local_model_path}")
             return False
@@ -122,7 +117,7 @@ class CourseRecommender:
 
         return sum_embeddings / sum_mask
 
-    def encode(self, sentences, show_progress_bar=False):
+    def encode(self, sentences):
         """
         Encode sentences into embeddings using ONNX model.
         This replaces SentenceTransformer's encode() method.
@@ -262,7 +257,6 @@ class CourseRecommender:
 
     def fit(self, force_recreate=False):
         """Fit the model using combined course text"""
-        # --- ONNX CHANGE: Check for ONNX model instead of SentenceTransformer ---
         if self.model is None:
             print("Cannot fit model: ONNX model is not available.")
             return
@@ -295,9 +289,8 @@ class CourseRecommender:
         self.courses_df = self.courses_df.iloc[non_empty_indices].reset_index(drop=True)
         filtered_texts = [combined_texts[i] for i in non_empty_indices]
 
-        # --- ONNX CHANGE: Use self.encode() instead of self.model.encode() ---
         print("Creating embeddings...")
-        self.course_embeddings = self.encode(filtered_texts, show_progress_bar=True)
+        self.course_embeddings = self.encode(filtered_texts)
         print(f"Created embeddings for {len(filtered_texts)} courses")
 
         self.save_embeddings_cache()
@@ -378,7 +371,6 @@ class CourseRecommender:
 
     def recommend_by_text(self, text_input, n_recommendations=10, return_all_ranked=False):
         """Generates recommendations based on free text input."""
-        # --- ONNX CHANGE: Check model availability ---
         if self.course_embeddings is None or self.model is None:
             print("Model not fitted or not available! Cannot recommend by text.")
             return pd.DataFrame()
@@ -389,7 +381,6 @@ class CourseRecommender:
 
         clean_text = self.preprocess_text(text_input)
 
-        # --- ONNX CHANGE: Use self.encode() instead of self.model.encode() ---
         input_embedding = self.encode([clean_text])[0]
         similarities = cosine_similarity([input_embedding], self.course_embeddings)[0]
 
@@ -433,7 +424,7 @@ class CourseRecommender:
                     valid_labels.append(f"Course {item['value']} - {course_name}")
 
             elif item['type'] == 'text':
-                # --- ONNX CHANGE: Check self.model and use self.encode() ---
+
                 if self.model is not None:
                     clean_text = self.preprocess_text(item['value'])
                     if len(clean_text) > 2:
@@ -564,7 +555,6 @@ class FilterRecommendations:
     def initialize_course_recommender(eager_load=False):
         recommender = CourseRecommender(eager_load=eager_load)
 
-        # --- ONNX CHANGE: Check model availability before fitting ---
         if recommender.model is not None or recommender.load_embeddings_cache():
             recommender.fit()
         else:
