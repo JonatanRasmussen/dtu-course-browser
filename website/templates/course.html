@@ -447,64 +447,75 @@
         </li>
         {% endif %}
         {% if data.LEGACY_RECOMMENDED_PREREQUISITES != 'None' %}
-        <li class="list-group-item">
+        <li class="list-group-item" style="overflow: visible;">
           <table class="table table-sm table-borderless mb-0">
             <tbody>
               <tr>
-                <th class="align-top" style="width: 9rem" scope="row">Prerequisites:   <small class="fs-6 text-muted" data-toggle="modal"
-                  data-target="#course_graph_modal" onclick="initCourseGraph()" style="cursor: pointer;">[+]</small></th>
-                <td class="align-top">{{data.LEGACY_RECOMMENDED_PREREQUISITES|safe}}</td>
+                <th class="align-top" style="width: 9rem" scope="row">Prerequisites:   <small class="fs-6 text-muted" onclick="toggleInlineGraph('prereq-legacy')" style="cursor: pointer;"><span id="toggle-prereq-legacy">[+]</span></small></th>
+                <td class="align-top" style="overflow: visible;">
+                  {{data.LEGACY_RECOMMENDED_PREREQUISITES|safe}}
+                  <div id="graph-container-prereq-legacy" style="display: none; margin-top: 15px; overflow: visible;"></div>
+                </td>
               </tr>
             </tbody>
           </table>
         </li>
         {% endif %}
         {% if data.RECOMMENDED_PREREQUISITES != 'None' %}
-        <li class="list-group-item">
+        <li class="list-group-item" style="overflow: visible;">
           <table class="table table-sm table-borderless mb-0">
             <tbody>
               <tr>
-                <th class="align-top" style="width: 9rem" scope="row">Prerequisites:   <small class="fs-6 text-muted" data-toggle="modal"
-                  data-target="#course_graph_modal" onclick="initCourseGraph()" style="cursor: pointer;">[+]</small></th>
-                <td class="align-top">{{data.RECOMMENDED_PREREQUISITES|safe}}</td>
+                <th class="align-top" style="width: 9rem" scope="row">Prerequisites:   <small class="fs-6 text-muted" onclick="toggleInlineGraph('prereq-recommended')" style="cursor: pointer;"><span id="toggle-prereq-recommended">[+]</span></small></th>
+                <td class="align-top" style="overflow: visible;">
+                  {{data.RECOMMENDED_PREREQUISITES|safe}}
+                  <div id="graph-container-prereq-recommended" style="display: none; margin-top: 15px; overflow: visible;"></div>
+                </td>
               </tr>
             </tbody>
           </table>
         </li>
         {% endif %}
         {% if data.MANDATORY_PREREQUISITES != 'None' %}
-        <li class="list-group-item">
+        <li class="list-group-item" style="overflow: visible;">
           <table class="table table-sm table-borderless mb-0">
             <tbody>
               <tr>
-                <th class="align-top" style="width: 9rem" scope="row">Prerequisites:   <small class="fs-6 text-muted" data-toggle="modal"
-                  data-target="#course_graph_modal" onclick="initCourseGraph()" style="cursor: pointer;">[+]</small></th>
-                <td class="align-top">{{data.MANDATORY_PREREQUISITES|safe}}</td>
+                <th class="align-top" style="width: 9rem" scope="row">Prerequisites:   <small class="fs-6 text-muted" onclick="toggleInlineGraph('prereq-mandatory')" style="cursor: pointer;"><span id="toggle-prereq-mandatory">[+]</span></small></th>
+                <td class="align-top" style="overflow: visible;">
+                  {{data.MANDATORY_PREREQUISITES|safe}}
+                  <div id="graph-container-prereq-mandatory" style="display: none; margin-top: 15px; overflow: visible;"></div>
+                </td>
               </tr>
             </tbody>
           </table>
         </li>
         {% endif %}
         {% if (data.MANDATORY_PREREQUISITES == 'None' and data.RECOMMENDED_PREREQUISITES == 'None') %}
-        <li class="list-group-item">
+        <li class="list-group-item" style="overflow: visible;">
           <table class="table table-sm table-borderless mb-0">
             <tbody>
               <tr>
-                <th class="align-top" style="width: 9rem" scope="row">Prerequisites:   <small class="fs-6 text-muted" data-toggle="modal"
-                  data-target="#course_graph_modal" onclick="initCourseGraph()" style="cursor: pointer;">[+]</small></th>
-                <td class="align-top">No prerequisites required</td>
+                <th class="align-top" style="width: 9rem" scope="row">Prerequisites:   <small class="fs-6 text-muted" onclick="toggleInlineGraph('prereq-none')" style="cursor: pointer;"><span id="toggle-prereq-none">[+]</span></small></th>
+                <td class="align-top" style="overflow: visible;">
+                  No prerequisites required
+                  <div id="graph-container-prereq-none" style="display: none; margin-top: 15px; overflow: visible;"></div>
+                </td>
               </tr>
             </tbody>
           </table>
         </li>
         {% endif %}
         {% if data.SUBSEQUENT_COURSES != 'No other course requires this as a prerequisite' %}
-        <li class="list-group-item">
+        <li class="list-group-item" style="overflow: visible;">
           <table class="table table-sm table-borderless mb-0">
             <tbody>
               <tr>
-                <th class="align-top" style="width: 9rem" scope="row">Prerequisite for:</th>
-                <td class="align-top">{{data.SUBSEQUENT_COURSES|safe}}</td>
+                <th class="align-top" style="width: 9rem" scope="row">Subsequent:   <small class="fs-6 text-muted" onclick="toggleInlineGraph('subseq')" style="cursor: pointer;"><span id="toggle-subseq">[+]</span></small></th>
+                <td class="align-top" style="overflow: visible;">
+                  {{data.SUBSEQUENT_COURSES|safe}}
+                  <div id="graph-container-subseq" style="display: none; margin-top: 15px; overflow: visible;"></div>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -1175,10 +1186,11 @@
   /* Friend's CSS adapted */
   .tooltip-link {
     position: relative;
-    color: #000000;
+    color: #b50404;
     text-decoration: none;
     display: inline-block;
     padding: 2px;
+    transition: all 0.2s ease;
   }
   .tooltip-link .tooltip-text {
     visibility: hidden;
@@ -1208,6 +1220,104 @@
   .graph-section-table td {
     padding: 5px;
     position: relative;
+    overflow: visible;
+  }
+  
+  .graph-section-table {
+    overflow: visible;
+  }
+  
+  /* Ensure parent containers allow tooltip overflow */
+  .list-group-item:has(.graph-section-table),
+  .list-group-item:has([id^="graph-container-"]) {
+    overflow: visible !important;
+  }
+  
+  /* Graph node highlighting */
+  .tooltip-link.node-highlight {
+    background-color: #ffcccc;
+    border-radius: 3px;
+    font-weight: bold;
+    color: #b50404;
+    box-shadow: 0 0 8px rgba(181, 4, 4, 0.6);
+  }
+  
+  .tooltip-link.node-neighbor {
+    background-color: #ffcccc;
+    border-radius: 3px;
+    font-weight: bold;
+    color: #b50404;
+    box-shadow: 0 0 5px rgba(181, 4, 4, 0.4);
+  }
+  
+  svg line {
+    transition: stroke 0.2s ease, stroke-width 0.2s ease, opacity 0.2s ease;
+  }
+  
+  .edge-highlight {
+    stroke: #b50404 !important;
+    stroke-width: 3 !important;
+    opacity: 1 !important;
+  }
+  
+  .edge-dimmed {
+    opacity: 0.2 !important;
+  }
+  
+  .node-dimmed {
+    opacity: 0.4 !important;
+  }
+  
+  /* Preview mode for large graphs */
+  .graph-preview-wrapper {
+    position: relative;
+    max-height: 180px;
+    overflow-y: hidden;
+    overflow-x: visible;
+    cursor: pointer;
+    border: 2px dashed #ccc;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+  }
+  
+  .graph-preview-wrapper:hover {
+    border-color: #999;
+  }
+  
+  .graph-preview-blur {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: linear-gradient(to bottom, rgba(248, 249, 250, 0) 0%, rgba(248, 249, 250, 0.95) 70%, rgba(248, 249, 250, 1) 100%);
+    pointer-events: none;
+    z-index: 10;
+  }
+  
+  .graph-preview-overlay {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 13px;
+    z-index: 11;
+    pointer-events: none;
+  }
+  
+  .graph-preview-wrapper:hover .graph-preview-overlay {
+    background: rgba(0, 0, 0, 0.85);
+  }
+  
+  .graph-expanded {
+    max-height: none !important;
+    overflow: visible !important;
+    cursor: default;
+    border: none;
   }
 </style>
 
@@ -1216,117 +1326,375 @@
     let graphData = null;
     let nameMapping = null;
     const courseId = "{{data.COURSE}}".trim();
+    const loadedGraphs = {}; // Track which inline graphs have been loaded
+    const graphEdges = {}; // Store edges for each graph for hover interactions
 
-    // Global function to be called by the button onclick
-    window.initCourseGraph = async function () {
-      console.log("Init Course Graph triggered");
-      const container = document.getElementById('graph-container');
+    // Load graph data (shared across all graphs)
+    async function loadGraphData() {
+      if (nameMapping) return true; // Already loaded
 
-      // Load data if not loaded
-      if (!nameMapping) {
-        try {
-          container.innerHTML = `<div class="text-center mt-5"><div class="spinner-border" role="status"></div><br>Loading graph data...</div>`;
+      try {
+        const [mapRes, graphRes] = await Promise.all([
+          fetch('https://raw.githubusercontent.com/Marcrulo/DTU-courses-extension/master/jsons/id_to_name.json'),
+          fetch('https://raw.githubusercontent.com/Marcrulo/DTU-courses-extension/master/jsons/graphs.json')
+        ]);
+        if (!mapRes.ok || !graphRes.ok) throw new Error("Network response was not ok");
+        nameMapping = await mapRes.json();
+        const allGraphs = await graphRes.json();
 
-          const [mapRes, graphRes] = await Promise.all([
-            fetch('https://raw.githubusercontent.com/Marcrulo/DTU-courses-extension/master/jsons/id_to_name.json'),
-            fetch('https://raw.githubusercontent.com/Marcrulo/DTU-courses-extension/master/jsons/graphs.json')
-          ]);
-          if (!mapRes.ok || !graphRes.ok) throw new Error("Network response was not ok");
-          nameMapping = await mapRes.json();
-          const allGraphs = await graphRes.json();
+        if (allGraphs[courseId]) {
+          graphData = allGraphs[courseId];
+        } else {
+          graphData = null;
+        }
+        return true;
+      } catch (err) {
+        console.error("Error loading graph data:", err);
+        return false;
+      }
+    }
 
-          if (allGraphs[courseId]) {
-            graphData = allGraphs[courseId];
-          } else {
-            graphData = null;
-          }
-        } catch (err) {
-          container.innerHTML = `<p class='text-danger text-center p-4'>Error loading data.<br><small>${err.message}</small></p>`;
-          return;
+    // Check if graph is small based on the largest layer size
+    function isGraphSmall(viewType) {
+      if (!graphData) return true; // No data means we'll show the "no data" message
+      
+      const nodes = graphData.nodes || [];
+      let relevantNodes;
+      
+      if (viewType === 'prereq') {
+        relevantNodes = nodes.filter(n => n.level <= 0);
+      } else if (viewType === 'subseq') {
+        relevantNodes = nodes.filter(n => n.level >= 0);
+      } else {
+        relevantNodes = nodes;
+      }
+      
+      // Count nodes per level to find the largest layer
+      const levelCounts = {};
+      for (const node of relevantNodes) {
+        levelCounts[node.level] = (levelCounts[node.level] || 0) + 1;
+      }
+      
+      // Find the maximum layer size
+      const maxLayerSize = Math.max(...Object.values(levelCounts), 0);
+      
+      // Consider a graph small if the largest layer has 6 or fewer nodes
+      return maxLayerSize <= 6;
+    }
+
+    // Auto-expand small graphs on page load
+    async function autoExpandSmallGraphs() {
+      const loaded = await loadGraphData();
+      if (!loaded) return;
+
+      // List of all possible graph containers
+      const graphIds = ['prereq-legacy', 'prereq-recommended', 'prereq-mandatory', 'prereq-none', 'subseq'];
+      
+      for (const graphId of graphIds) {
+        const container = document.getElementById(`graph-container-${graphId}`);
+        if (!container) continue; // Skip if container doesn't exist on this page
+        
+        const viewType = graphId === 'subseq' ? 'subseq' : 'prereq';
+        
+        if (isGraphSmall(viewType)) {
+          // Auto-expand small graphs fully
+          toggleInlineGraph(graphId);
+        } else {
+          // Show large graphs in preview mode
+          showGraphPreview(graphId);
         }
       }
+    }
 
+    // Show graph preview for large graphs
+    async function showGraphPreview(graphId) {
+      const container = document.getElementById(`graph-container-${graphId}`);
+      const toggle = document.getElementById(`toggle-${graphId}`);
+      
+      if (!container || !toggle) return;
+
+      // Show container
+      container.style.display = 'block';
+      toggle.textContent = '[-]';
+
+      // Show loading indicator
+      container.innerHTML = '<div class="text-center my-3"><div class="spinner-border spinner-border-sm" role="status"></div> Loading preview...</div>';
+
+      // Check if graph data exists
       if (!graphData) {
         container.innerHTML = `
-        <div class="alert alert-secondary text-center mt-4">
-        <strong>No graph data is available for ${courseId}.</strong><br>
-        This feature is provided by the <a href="https://github.com/Marcrulo/DTU-courses-extension" style="color: #990000; text-decoration: none;" target="_blank">DTU-courses-extension</a>, and data for this course is not yet available.
+          <div class="alert alert-secondary text-center my-2" style="font-size: 0.9em;">
+            <strong>No graph data available for ${courseId}.</strong><br>
+            <small>This feature is provided by the <a href="https://github.com/Marcrulo/DTU-courses-extension" target="_blank">DTU-courses-extension</a>.</small>
           </div>`;
+        loadedGraphs[graphId] = true;
         return;
       }
 
-      // Calculate grid data immediately to check structure, though we might not render yet
-      const { t_prereq, t_subseq } = buildGrid(graphData);
-      const nodeCount = graphData.nodes ? graphData.nodes.length : 0;
-      const NODE_THRESHOLD = 50;
-
-      // Function to actually render the HTML and draw lines
-      const renderGraph = () => {
-        // Build HTML structure: SVG Layer BEHIND Content Layer
-        let html = `
-          <div class="alert alert-light text-center" style="font-size: 0.9em; color: gray;">
-            The graphs show all prerequisite relationships leading to and from the given course.<br>
-            Outdated courses that are no longer being offered is not displayed.
-          </div>
-
-          <div id="svg-wrapper" style="position: relative;">
-            <!-- SVG Layer -->
-            <svg id="graph-svg" style="position: absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index: 0;">
-              <defs>
-                <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-                  <polygon points="0 0, 10 3.5, 0 7" fill="rgba(181, 4, 4, 0.3)" />
-                </marker>
-              </defs>
-            </svg>
-
-            <!-- Content Layer -->
-            <div style="position: relative; z-index: 1;">
-              <h6 class="text-center border-bottom pb-2">Prerequisites</h6>
-              <div id="prereq-area" style="min-height: 50px; margin-bottom: 20px;">
-                ${generateTableHTML(t_prereq, 'prereq')}
-              </div>
-
-              <h6 class="text-center border-bottom pb-2 border-top pt-2">Subsequent Courses</h6>
-              <div id="subseq-area" style="min-height: 50px;">
-                ${generateTableHTML(t_subseq, 'subseq')}
-              </div>
-            </div>
-          </div>
-
-          <div class="text-center mt-4" style="font-size: 11px; color: #888;">
-            Data is based on <a href="https://github.com/Marcrulo/DTU-courses-extension" style="color: #888; text-decoration: none;" target="_blank">DTU-courses-extension</a> by Marcus Presutti.
-          </div>
-        `;
-
-        container.innerHTML = html;
-
-        // Wait for modal transition/DOM update to finish before drawing lines
-        setTimeout(() => {
-          drawSVGLines(t_prereq, 'prereq');
-          drawSVGLines(t_subseq, 'subseq');
-        }, 200);
-      };
-
-      // Logic to handle large graphs
-      if (nodeCount > NODE_THRESHOLD) {
-        container.innerHTML = `
-          <div class="d-flex flex-column align-items-center justify-content-center" style="height: 300px;">
-            <h4 class="text-danger mb-3">Large graph warning</h4>
-            <p class="text-muted text-center px-4">
-              This dependency graph contains <strong>${nodeCount}</strong> courses.<br>
-            </p>
-            <button id="show-graph-anyway-btn" class="btn btn-outline-danger mt-2">
-              Show anyway
-            </button>
-          </div>
-        `;
-        // Attach click listener to the new button
-        document.getElementById('show-graph-anyway-btn').onclick = renderGraph;
-      } else {
-        // Small graph, render immediately
-        renderGraph();
+      // Determine view type based on graphId
+      let viewType = 'prereq';
+      if (graphId === 'subseq') {
+        viewType = 'subseq';
       }
+
+      // Generate and render the graph in preview mode
+      renderInlineGraph(container, viewType, graphId, true);
+      loadedGraphs[graphId] = true;
+    }
+
+    // Call auto-expand after page loads
+    autoExpandSmallGraphs();
+
+    // Expand graph from preview mode
+    window.expandGraphPreview = function(event, graphId) {
+      // Stop event propagation to prevent clicking through to graph nodes
+      if (event) {
+        event.stopPropagation();
+        event.preventDefault();
+      }
+      
+      const previewWrapper = document.getElementById(`preview-${graphId}`);
+      if (!previewWrapper) return;
+      
+      // Add expanded class to remove height restriction and blur
+      previewWrapper.classList.add('graph-expanded');
+      
+      // Remove click handler and overlays
+      previewWrapper.onclick = null;
+      const blur = previewWrapper.querySelector('.graph-preview-blur');
+      const overlay = previewWrapper.querySelector('.graph-preview-overlay');
+      if (blur) blur.remove();
+      if (overlay) overlay.remove();
+      
+      // Remove dashed border by replacing wrapper classes
+      previewWrapper.style.border = 'none';
+      previewWrapper.style.cursor = 'default';
     };
+
+    // Toggle inline graph display
+    window.toggleInlineGraph = async function(graphId) {
+      const container = document.getElementById(`graph-container-${graphId}`);
+      const toggle = document.getElementById(`toggle-${graphId}`);
+      
+      if (!container || !toggle) return;
+
+      // If already visible (including preview mode), hide it
+      if (container.style.display !== 'none' && container.innerHTML.trim() !== '') {
+        container.style.display = 'none';
+        toggle.textContent = '[+]';
+        return;
+      }
+
+      // Show container
+      container.style.display = 'block';
+      toggle.textContent = '[-]';
+
+      // If already loaded, don't reload
+      if (loadedGraphs[graphId]) return;
+
+      // Show loading indicator
+      container.innerHTML = '<div class="text-center my-3"><div class="spinner-border spinner-border-sm" role="status"></div> Loading graph...</div>';
+
+      // Load data if needed
+      const loaded = await loadGraphData();
+      if (!loaded) {
+        container.innerHTML = '<p class="text-danger text-center p-2">Error loading graph data.</p>';
+        return;
+      }
+
+      // Check if graph data exists
+      if (!graphData) {
+        container.innerHTML = `
+          <div class="alert alert-secondary text-center my-2" style="font-size: 0.9em;">
+            <strong>No graph data available for ${courseId}.</strong><br>
+            <small>This feature is provided by the <a href="https://github.com/Marcrulo/DTU-courses-extension" target="_blank">DTU-courses-extension</a>.</small>
+          </div>`;
+        loadedGraphs[graphId] = true;
+        return;
+      }
+
+      // Determine view type based on graphId
+      let viewType = 'prereq';
+      if (graphId === 'subseq') {
+        viewType = 'subseq';
+      }
+
+      // Generate and render the graph (user manually clicked, so show full view, not preview)
+      renderInlineGraph(container, viewType, graphId, false);
+      loadedGraphs[graphId] = true;
+    };
+
+    function renderInlineGraph(container, viewType, graphId, isPreview = false) {
+      // Calculate grid data
+      const { t_prereq, t_subseq } = buildGrid(graphData);
+
+      const showPrereq = (viewType === 'prereq');
+      const showSubseq = (viewType === 'subseq');
+      
+      const svgId = `graph-svg-${graphId}`;
+      const wrapperId = `svg-wrapper-${graphId}`;
+      
+      let graphContent = `
+        <div id="${wrapperId}" style="position: relative; min-height: 100px;">
+          <!-- SVG Layer -->
+          <svg id="${svgId}" style="position: absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index: 0;">
+            <defs>
+              <marker id="arrowhead-${graphId}" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="rgba(181, 4, 4, 0.3)" />
+              </marker>
+              <marker id="arrowhead-highlight-${graphId}" markerWidth="11" markerHeight="7.7" refX="9.9" refY="3.85" orient="auto">
+                <polygon points="0 0, 11 3.85, 0 7.7" fill="#b50404" />
+              </marker>
+            </defs>
+          </svg>
+
+          <!-- Content Layer -->
+          <div style="position: relative; z-index: 1;">
+            ${showPrereq ? `
+            <div id="prereq-area-${graphId}" style="min-height: 50px;">
+              ${generateTableHTML(t_prereq, 'prereq', graphId)}
+            </div>
+            ` : ''}
+
+            ${showSubseq ? `
+            <div id="subseq-area-${graphId}" style="min-height: 50px;">
+              ${generateTableHTML(t_subseq, 'subseq', graphId)}
+            </div>
+            ` : ''}
+          </div>
+        </div>
+
+        <div class="text-center mt-2" style="font-size: 10px; color: #888;">
+          Made in collaboration with <a href="https://github.com/Marcrulo/DTU-courses-extension" target="_blank">DTU-courses-extension</a>
+        </div>
+      `;
+
+      if (isPreview) {
+        // Wrap in preview container with blur and click-to-expand overlay
+        container.innerHTML = `
+          <div class="graph-preview-wrapper" id="preview-${graphId}" onclick="expandGraphPreview(event, '${graphId}')">
+            ${graphContent}
+            <div class="graph-preview-blur"></div>
+            <div class="graph-preview-overlay">▼ Click to expand full graph ▼</div>
+          </div>
+        `;
+      } else {
+        container.innerHTML = graphContent;
+      }
+
+      // Wait for DOM update to finish before drawing lines
+      setTimeout(() => {
+        if (showPrereq) {
+          drawSVGLines(t_prereq, 'prereq', graphId);
+        }
+        if (showSubseq) {
+          drawSVGLines(t_subseq, 'subseq', graphId);
+        }
+        
+        // Set up hover interactions after lines are drawn
+        setupGraphHoverInteractions(graphId);
+      }, 100);
+    }
+
+    // Set up hover interactions for graph nodes
+    function setupGraphHoverInteractions(graphId) {
+      if (!graphData || !graphData.edges) return;
+      
+      // Store edges for this graph
+      graphEdges[graphId] = graphData.edges;
+      
+      // Get all node links in this graph
+      const nodes = document.querySelectorAll(`[id$="_prereq_${graphId}"], [id$="_subseq_${graphId}"]`);
+      
+      nodes.forEach(nodeLink => {
+        nodeLink.addEventListener('mouseenter', function(e) {
+          highlightNodeAndNeighbors(this, graphId);
+        });
+        
+        nodeLink.addEventListener('mouseleave', function(e) {
+          clearGraphHighlights(graphId);
+        });
+      });
+    }
+
+    // Highlight a node and its neighbors
+    function highlightNodeAndNeighbors(nodeElement, graphId) {
+      const nodeId = nodeElement.id;
+      const courseCode = nodeId.replace(/_prereq_.*|_subseq_.*/, '');
+      const edges = graphEdges[graphId] || [];
+      
+      // Find all connected nodes
+      const connectedNodes = new Set();
+      
+      edges.forEach((edge) => {
+        if (edge.source === courseCode) {
+          connectedNodes.add(edge.target);
+        } else if (edge.target === courseCode) {
+          connectedNodes.add(edge.source);
+        }
+      });
+      
+      // Get all nodes and edges in this graph
+      const allNodes = document.querySelectorAll(`[id$="_prereq_${graphId}"], [id$="_subseq_${graphId}"]`);
+      const svg = document.getElementById(`graph-svg-${graphId}`);
+      const allEdges = svg ? svg.querySelectorAll('line') : [];
+      
+      // Dim all nodes and edges first
+      allNodes.forEach(node => {
+        if (node !== nodeElement) {
+          node.classList.add('node-dimmed');
+        }
+      });
+      
+      allEdges.forEach(edge => {
+        edge.classList.add('edge-dimmed');
+      });
+      
+      // Highlight the hovered node
+      nodeElement.classList.add('node-highlight');
+      nodeElement.classList.remove('node-dimmed');
+      
+      // Highlight connected nodes
+      connectedNodes.forEach(connectedId => {
+        const connectedNode = document.getElementById(`${connectedId}_prereq_${graphId}`) || 
+                              document.getElementById(`${connectedId}_subseq_${graphId}`);
+        if (connectedNode) {
+          connectedNode.classList.add('node-neighbor');
+          connectedNode.classList.remove('node-dimmed');
+        }
+      });
+      
+      // Highlight connected edges using data attributes
+      allEdges.forEach(edge => {
+        const source = edge.getAttribute('data-source');
+        const target = edge.getAttribute('data-target');
+        
+        // Check if this edge connects to the hovered node
+        if (source === courseCode || target === courseCode) {
+          edge.classList.add('edge-highlight');
+          edge.classList.remove('edge-dimmed');
+          // Change to highlighted arrowhead marker
+          edge.setAttribute('marker-end', `url(#arrowhead-highlight-${graphId})`);
+        }
+      });
+    }
+
+    // Clear all graph highlights
+    function clearGraphHighlights(graphId) {
+      const allNodes = document.querySelectorAll(`[id$="_prereq_${graphId}"], [id$="_subseq_${graphId}"]`);
+      const svg = document.getElementById(`graph-svg-${graphId}`);
+      const allEdges = svg ? svg.querySelectorAll('line') : [];
+      
+      allNodes.forEach(node => {
+        node.classList.remove('node-highlight', 'node-neighbor', 'node-dimmed');
+      });
+      
+      allEdges.forEach(edge => {
+        edge.classList.remove('edge-highlight', 'edge-dimmed');
+        // Reset to normal arrowhead marker
+        edge.setAttribute('marker-end', `url(#arrowhead-${graphId})`);
+      });
+    }
 
     function buildGrid(graph) {
       if (!graph) return { t_prereq: [], t_subseq: [] };
@@ -1369,7 +1737,7 @@
       return { t_prereq, t_subseq };
     }
 
-    function generateTableHTML(grid, type) {
+    function generateTableHTML(grid, type, graphId) {
       const labelMap = {
         prereq: "prerequisite",
         subseq: "subsequent"
@@ -1380,7 +1748,7 @@
           No ${label} courses found.
         </div>`;
       }
-      const suffix = type === 'prereq' ? '_p' : '_s';
+      const suffix = `_${type}_${graphId}`;
       let html = `<table class="graph-section-table" style="width:100%; border-collapse: separate; margin: 0 auto;">`;
       grid.forEach(row => {
         html += `<tr>`;
@@ -1401,13 +1769,13 @@
       return html;
     }
 
-    function drawSVGLines(grid, type) {
+    function drawSVGLines(grid, type, graphId) {
       if (!grid || !graphData || !graphData.edges) return;
-      const suffix = type === 'prereq' ? '_p' : '_s';
-      const svg = document.getElementById('graph-svg');
+      const suffix = `_${type}_${graphId}`;
+      const svg = document.getElementById(`graph-svg-${graphId}`);
 
-      const wrapper = document.getElementById('svg-wrapper');
-      if (!wrapper) return; // Safety check
+      const wrapper = document.getElementById(`svg-wrapper-${graphId}`);
+      if (!wrapper || !svg) return; // Safety check
       const wrapperRect = wrapper.getBoundingClientRect();
 
       graphData.edges.forEach(edge => {
@@ -1466,7 +1834,10 @@
           newLine.setAttribute('y2', y2);
           newLine.setAttribute('stroke', 'rgba(100, 100, 100, 0.4)'); // Grey color
           newLine.setAttribute('stroke-width', '2');
-          newLine.setAttribute('marker-end', 'url(#arrowhead)');
+          newLine.setAttribute('marker-end', `url(#arrowhead-${graphId})`);
+          // Add data attributes to identify the edge
+          newLine.setAttribute('data-source', edge.source);
+          newLine.setAttribute('data-target', edge.target);
 
           svg.appendChild(newLine);
         }
