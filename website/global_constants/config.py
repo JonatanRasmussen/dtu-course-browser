@@ -8,7 +8,7 @@ class Config:
     data_percental_precision = 1
 
     website_current_year = "2025-2026"
-    website_last_updated = "21/01/2026"
+    website_last_updated = "27/02/2026"
 
     # feature flags for scraping
     feature_flag_scrape_archive = True

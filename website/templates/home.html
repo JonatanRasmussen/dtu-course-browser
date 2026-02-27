@@ -1,1416 +1,1441 @@
-{% extends "base.html" %} {% block title %}Home{% endblock %} {% block
-  content %}
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content%}
 
-  <!-- Start of main title  -->
-  <br><br><br><br>
+<style>
+  /* DTU Red for checkboxes */
+  .form-check-input:checked {
+    background-color: #990000;
+    border-color: #990000;
+  }
 
-  <h1 class="display-4">DTU Course Analyzer {{last_update.current_year}}</h1>
-  <br>
-  <p class="lead">A software project by DTU-student Jonatan Rasmussen s183649</p>
-  <p style="color:red; font-size:12px; font-weight:bold;"></p>
-  <br>
-  <!-- End of main title -->
+  .form-check-input:focus {
+    border-color: #990000;
+    box-shadow: 0 0 0 0.25rem rgba(153, 0, 0, 0.25);
+  }
 
-  <!-- Start of Recommender advertisement -->
-  <!--
-  <a href="/recommender" class="text-decoration-none d-block mb-4" style="width: 36rem;">
-    <div class="card border-0 shadow-lg text-white position-relative overflow-hidden"
-      style="background: linear-gradient(135deg, #990000 0%, #FF4400 100%); transition: transform 0.2s, box-shadow 0.2s;"
-      onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 1rem 3rem rgba(0,0,0,.25)';"
-      onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='';">
-      <div class="card-body text-center py-3">
-        <span class="badge bg-warning text-dark fs-6 mb-3 px-3 py-1">NEW FEATURE</span>
-        <h2 class="card-title fw-bold mb-3">Course Recommendation Tool</h2>
-        <p class="card-text mb-4" style="opacity: 0.9;">
-          Get personalized course suggestions based on your favorite courses.
-        </p>
-          <span class="btn mb-2 px-5" style="background-color: #ffffff; color: #990000;">Visit course recommender</span>
-      </div>
+  /* Override Bootstrap primary button */
+  .btn-primary {
+    background-color: #990000;
+    border-color: #990000;
+  }
+
+  .btn-primary:hover,
+  .btn-primary:focus,
+  .btn-primary:active {
+    background-color: #7a0000;
+    border-color: #7a0000;
+  }
+</style>
+
+<!-- Start of main title  -->
+<br><br><br><br>
+
+<h1 class="display-4">DTU Course Analyzer {{last_update.current_year}}</h1>
+<br>
+<p class="lead">A software project by DTU-student Jonatan Rasmussen s183649</p>
+<p style="color:red; font-size:12px; font-weight:bold;"></p>
+<br>
+<!-- End of main title -->
+
+<!-- Start of Recommender advertisement -->
+<!--
+<a href="/recommender" class="text-decoration-none d-block mb-4" style="width: 36rem;">
+  <div class="card border-0 shadow-lg text-white position-relative overflow-hidden"
+    style="background: linear-gradient(135deg, #990000 0%, #FF4400 100%); transition: transform 0.2s, box-shadow 0.2s;"
+    onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 1rem 3rem rgba(0,0,0,.25)';"
+    onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='';">
+    <div class="card-body text-center py-3">
+      <span class="badge bg-warning text-dark fs-6 mb-3 px-3 py-1">NEW FEATURE</span>
+      <h2 class="card-title fw-bold mb-3">Course Recommendation Tool</h2>
+      <p class="card-text mb-4" style="opacity: 0.9;">
+        Get personalized course suggestions based on your favorite courses.
+      </p>
+        <span class="btn mb-2 px-5" style="background-color: #ffffff; color: #990000;">Visit course recommender</span>
     </div>
-  </a>
-  -->
-  <!-- End of Recommender advertisement -->
+  </div>
+</a>
+-->
+<!-- End of Recommender advertisement -->
 
-  <!-- Display flash messages -->
-  {% with messages = get_flashed_messages() %}
-    {% if messages %}
-      <div class="alert alert-warning" role="alert">
-        {% for message in messages %}
-          <p>{{ message }}</p>
-        {% endfor %}
+<!-- Display flash messages -->
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="alert alert-warning" role="alert">
+      {% for message in messages %}
+        <p>{{ message }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<!-- Start of card section containing sorting options -->
+<div class="row row-cols-1 row-cols-xl-1 g-1">
+  <div class="col">
+    <div class="card bg-light" style="width: 42rem;">
+      <div class="card-header">
+        Course search:
       </div>
-    {% endif %}
-  {% endwith %}
-
-  <!-- Start of card section containing sorting options -->
-  <div class="row row-cols-1 row-cols-xl-1 g-1">
-    <div class="col">
-      <div class="card bg-light" style="width: 42rem;">
-        <div class="card-header">
-          Course search:
+      <form method="get" action="/browse">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <table class="table table-sm table-borderless mb-0">
+              <tbody>
+                <tr>
+                  <th class="align-top" style="width: 9rem" scope="row">Language:</th>
+                  <td class="align-top">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="dk" value="language" id="language1">
+                      <label class="form-check-label" for="language1">🍺Danish</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="eng" value="language" id="language2">
+                      <label class="form-check-label" for="language2">🚀English</label>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+          <li class="list-group-item">
+            <table class="table table-sm table-borderless mb-0">
+              <tbody>
+                <tr>
+                  <th class="align-top" style="width: 9rem" scope="row">Type:</th>
+                  <td class="align-top" style="width: 7.8rem">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="beng" value="course_type" id="course_type1" checked>
+                      <label class="form-check-label" for="course_type1">🐇BEng</label>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="bsc" value="course_type" id="course_type2" checked>
+                      <label class="form-check-label" for="course_type2">🐢BSc</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="msc" value="course_type" id="course_type3" checked>
+                      <label class="form-check-label" for="course_type3">👩‍🎓MSc</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="phd" value="course_type" id="course_type4">
+                      <label class="form-check-label" for="course_type4">🧙Ph.D.</label>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+          <li class="list-group-item">
+            <table class="table table-sm table-borderless mb-0">
+              <tbody>
+                <tr>
+                  <th class="align-top" style="width: 9rem" scope="row">Season:</th>
+                  <td class="align-top" style="width: 8.3rem">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="autumn" value="semester_period" id="semester_period1">
+                      <label class="form-check-label" for="semester_period1">🍂Autumn</label>
+                    </div>
+                  </td>
+                  <td class="align-top">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="spring" value="semester_period" id="semester_period2">
+                      <label class="form-check-label" for="semester_period2">🌱Spring</label>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="align-top" style="width: 9rem" scope="row"></th>
+                  <td class="align-top" style="width: 8.3rem">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="jan" value="semester_period" id="semester_period3">
+                      <label class="form-check-label" for="semester_period3">❄️January</label>
+                    </div>
+                  </td>
+                  <td class="align-top">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="jun" value="semester_period" id="semester_period4">
+                      <label class="form-check-label" for="semester_period4">☀️June</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="jul" value="semester_period" id="semester_period5">
+                      <label class="form-check-label" for="semester_period5">⛱️July</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="aug" value="semester_period" id="semester_period6">
+                      <label class="form-check-label" for="semester_period6">🌻August</label>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+          <li class="list-group-item">
+            <table class="table table-sm table-borderless mb-0">
+              <tbody>
+                <tr>
+                  <th class="align-top" style="width: 9rem" scope="row">Schedule: <small class="fs-6 text-muted" data-toggle="modal" data-target="#schedule_legend_modal"
+                    style="cursor: pointer;">[?]</small></th>
+                  <td class="align-top">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Mon 8-12" value="timetable" id="timetable1">
+                      <label class="form-check-label" for="timetable1"><img src="{{ url_for('static', filename='assets/schedules/Mon_8_12_Schedule.png') }}" ></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Tue 8-12" value="timetable" id="timetable2">
+                      <label class="form-check-label" for="timetable2"><img src="{{ url_for('static', filename='assets/schedules/Tues_8_12_Schedule.png') }}" ></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Wed 8-12" value="timetable" id="timetable3">
+                      <label class="form-check-label" for="timetable3"><img src="{{ url_for('static', filename='assets/schedules/Wed_8_12_Schedule.png') }}" ></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Thu 8-12" value="timetable" id="timetable4">
+                      <label class="form-check-label" for="timetable4"><img src="{{ url_for('static', filename='assets/schedules/Thurs_8_12_Schedule.png') }}" ></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Fri 8-12" value="timetable" id="timetable5">
+                      <label class="form-check-label" for="timetable5"><img src="{{ url_for('static', filename='assets/schedules/Fri_8_12_Schedule.png') }}" ></label>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="align-top" style="width: 9rem" scope="row"></th>
+                  <td class="align-top">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Mon 13-17" value="timetable" id="timetable6">
+                      <label class="form-check-label" for="timetable6"><img src="{{ url_for('static', filename='assets/schedules/Mon_13_17_Schedule.png') }}" ></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Tue 13-17" value="timetable" id="timetable7">
+                      <label class="form-check-label" for="timetable7"><img src="{{ url_for('static', filename='assets/schedules/Tues_13_17_Schedule.png') }}" ></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Wed 13-17" value="timetable" id="timetable8">
+                      <label class="form-check-label" for="timetable8"><img src="{{ url_for('static', filename='assets/schedules/Wed_13_17_Schedule.png') }}" ></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Thu 13-17" value="timetable" id="timetable9">
+                      <label class="form-check-label" for="timetable9"><img src="{{ url_for('static', filename='assets/schedules/Thurs_13_17_Schedule.png') }}" ></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Fri 13-17" value="timetable" id="timetable10">
+                      <label class="form-check-label" for="timetable10"><img src="{{ url_for('static', filename='assets/schedules/Fri_13_17_Schedule.png') }}" ></label>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="align-top" style="width: 9rem" scope="row"></th>
+                  <td class="align-top">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="offschedule" value="timetable" id="timetable11">
+                      <label class="form-check-label" for="timetable11"><img src="{{ url_for('static', filename='assets/schedules/Multi_Unknown_Schedule.png') }}" ></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="Tue 18-22" value="timetable" id="timetable12">
+                      <label class="form-check-label" for="timetable12"><img src="{{ url_for('static', filename='assets/schedules/Tues_18_22_Schedule.png') }}" ></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="3-week" value="timetable" id="timetable13">
+                      <label class="form-check-label" for="timetable13">3-week</label>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+          <li class="list-group-item">
+            <table class="table table-sm table-borderless mb-0">
+              <tbody>
+                <tr>
+                  <th class="align-top" style="width: 9rem" scope="row">Exam type:</th>
+                  <td class="align-top" style="width: 10.6rem">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="written" value="exam_type" id="exam_type1">
+                      <label class="form-check-label" for="exam_type1">✍Written exam</label>
+                    </div>
+                  </td>
+                  <td class="align-top" style="width: 9.2rem">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="oral" value="exam_type" id="exam_type2">
+                      <label class="form-check-label" for="exam_type2">🦜Oral exam</label>
+                    </div>
+                  </td>
+                  <td class="align-top">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="reporthandin" value="exam_type" id="exam_type3">
+                      <label class="form-check-label" for="exam_type3">📑No exam</label>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+          <li class="list-group-item">
+            <table class="table table-sm table-borderless mb-0">
+              <tbody>
+                <tr>
+                  <th class="align-top" style="width: 9rem" scope="row">Exam details:</th>
+                  <td class="align-top">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="passfail" value="gradetype" id="gradetype1">
+                      <label class="form-check-label" for="gradetype1">💯Pass/fail grade</label>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="align-top" style="width: 9rem" scope="row"></th>
+                  <td class="align-top">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="digitalaid" value="aid" id="digitalaid1">
+                      <label class="form-check-label" for="digitalaid1">💻All aid (computers allowed)</label>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="align-top" style="width: 9rem" scope="row"></th>
+                  <td class="align-top">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="noassign" value="assignments" id="assignments1">
+                      <label class="form-check-label" for="assignments1">🙏No hand-ins before exam</label>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="align-top" style="width: 9rem" scope="row"></th>
+                  <td class="align-top">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="internal" value="examiner" id="examiner1">
+                      <label class="form-check-label" for="examiner1">🔑Internal examiner</label>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+          <li class="list-group-item pb-0">
+            <table class="table table-sm table-borderless mb-0">
+              <tbody>
+                <tr>
+                  <th class="align-top" style="width: 9rem" scope="row">Study lines:</th>
+                  <td class="align-top pb-0">
+                    <p>
+                      <button class="btn btn-outline-secondary btn-sm pb-0 pt-0" type="button" data-toggle="collapse" data-target="#FilterStudylineBEng" aria-expanded="false" aria-controls="FilterStudylineBEng">
+                        BEng study lines
+                      </button>
+                      <button class="btn btn-outline-secondary btn-sm pb-0 pt-0" type="button" data-toggle="collapse" data-target="#FilterStudylineBSc" aria-expanded="false" aria-controls="FilterStudylineBSc">
+                        BSc study lines
+                      </button>
+                      <button class="btn btn-outline-secondary btn-sm pb-0 pt-0" type="button" data-toggle="collapse" data-target="#FilterStudylineMSc" aria-expanded="false" aria-controls="FilterStudylineMSc">
+                        MSc study lines
+                      </button>
+                    </p>
+                    <div class="collapse" id="FilterStudylineBEng">
+                      <li class="list-group-item">
+                        <table class="table table-sm table-borderless mb-0">
+                          <tbody>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BENG_AE" value="study_lines" id="study_lines1">
+                                  <label class="form-check-label" for="study_lines1">BEng, Architectural Engineering</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BENG_ACE" value="study_lines" id="study_lines2">
+                                  <label class="form-check-label" for="study_lines2">BEng, Arctic Civil Engineering</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BENG_CEIB" value="study_lines" id="study_lines3">
+                                  <label class="form-check-label" for="study_lines3">BEng, Chemical Engineering and International Business</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BENG_CBE" value="study_lines" id="study_lines4">
+                                  <label class="form-check-label" for="study_lines4">BEng, Chemical and Bio Engineering</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BENG_CE" value="study_lines" id="study_lines5">
+                                  <label class="form-check-label" for="study_lines5">BEng, Civil Engineering</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BENG_EET" value="study_lines" id="study_lines6">
+                                  <label class="form-check-label" for="study_lines6">BEng, Electrical Energy Technology</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BENG_EE" value="study_lines" id="study_lines7">
+                                  <label class="form-check-label" for="study_lines7">BEng, Electrical Engineering</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BENG_FT" value="study_lines" id="study_lines8">
+                                  <label class="form-check-label" for="study_lines8">BEng, Fisheries Technology</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BENG_FSQ" value="study_lines" id="study_lines9">
+                                  <label class="form-check-label" for="study_lines9">BEng, Food Safety and Quality</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BENG_GBE" value="study_lines" id="study_lines10">
+                                  <label class="form-check-label" for="study_lines10">BEng, Global Business Engineering</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BENG_HT" value="study_lines" id="study_lines11">
+                                  <label class="form-check-label" for="study_lines11">BEng, Healthcare Technology</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BENG_ITE2" value="study_lines" id="study_lines13">
+                                  <label class="form-check-label" for="study_lines13">BEng, IT and Economics</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BENG_MM" value="study_lines" id="study_lines14">
+                                  <label class="form-check-label" for="study_lines14">BEng, Manufacturing and Management</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BENG_ME" value="study_lines" id="study_lines15">
+                                  <label class="form-check-label" for="study_lines15">BEng, Mechanical Engineering</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BENG_MTL" value="study_lines" id="study_lines16">
+                                  <label class="form-check-label" for="study_lines16">BEng, Mobility, Transport and Logistics</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BENG_PI" value="study_lines" id="study_lines17">
+                                  <label class="form-check-label" for="study_lines17">BEng, Process and Innovation</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BENG_ST" value="study_lines" id="study_lines18">
+                                  <label class="form-check-label" for="study_lines18">BEng, Software Technology</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="no_studyline" value="study_lines" id="study_lines_nolink1">
+                                  <label class="form-check-label" for="study_lines_nolink1">Show courses not linked to any study line</label>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </li>
+                    </div>
+                    <div class="collapse" id="FilterStudylineBSc">
+                      <li class="list-group-item">
+                        <table class="table table-sm table-borderless mb-0">
+                          <tbody>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BSC_AE" value="study_lines" id="study_lines19">
+                                  <label class="form-check-label" for="study_lines19">BSc, Architectural Engineering</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BSC_AID" value="study_lines" id="study_lines20">
+                                  <label class="form-check-label" for="study_lines20">BSc, Artificial Intelligence and Data</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BSC_BE" value="study_lines" id="study_lines21">
+                                  <label class="form-check-label" for="study_lines21">BSc, Biomedical Engineering</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BSC_CT" value="study_lines" id="study_lines22">
+                                  <label class="form-check-label" for="study_lines22">BSc, Chemistry and Technology</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BSC_CE1" value="study_lines" id="study_lines23">
+                                  <label class="form-check-label" for="study_lines23">BSc, Civil Engineering</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BSC_CE2" value="study_lines" id="study_lines24">
+                                  <label class="form-check-label" for="study_lines24">BSc, Computer Engineering</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BSC_C" value="study_lines" id="study_lines25">
+                                  <label class="form-check-label" for="study_lines25">BSc, Cybertechnology</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BSC_DSM" value="study_lines" id="study_lines26">
+                                  <label class="form-check-label" for="study_lines26">BSc, Data Science and Management</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BSC_DI" value="study_lines" id="study_lines27">
+                                  <label class="form-check-label" for="study_lines27">BSc, Design and Innovation</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BSC_DSES" value="study_lines" id="study_lines28">
+                                  <label class="form-check-label" for="study_lines28">BSc, Design of Sustainable Energy Systems</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BSC_ESPE" value="study_lines" id="study_lines29">
+                                  <label class="form-check-label" for="study_lines29">BSc, Earth and Space Physics and Engineering</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BSC_EE1" value="study_lines" id="study_lines30">
+                                  <label class="form-check-label" for="study_lines30">BSc, Electrical Engineering</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BSC_EP" value="study_lines" id="study_lines31">
+                                  <label class="form-check-label" for="study_lines31">BSc, Engineering Physics</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BSC_EE2" value="study_lines" id="study_lines32">
+                                  <label class="form-check-label" for="study_lines32">BSc, Environmental Engineering</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BSC_GE" value="study_lines" id="study_lines33">
+                                  <label class="form-check-label" for="study_lines33">BSc, General Engineering</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BSC_HLSE" value="study_lines" id="study_lines34">
+                                  <label class="form-check-label" for="study_lines34">BSc, Human Life Science Engineering</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BSC_LST" value="study_lines" id="study_lines35">
+                                  <label class="form-check-label" for="study_lines35">BSc, Life Science and Technology</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BSC_MT1" value="study_lines" id="study_lines36">
+                                  <label class="form-check-label" for="study_lines36">BSc, Mathematics and Technology</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BSC_ME" value="study_lines" id="study_lines37">
+                                  <label class="form-check-label" for="study_lines37">BSc, Mechanical Engineering</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BSC_ST" value="study_lines" id="study_lines39">
+                                  <label class="form-check-label" for="study_lines39">BSc, Software Technology</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="BSC_SED" value="study_lines" id="study_lines40">
+                                  <label class="form-check-label" for="study_lines40">BSc, Sustainable Energy Design</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="no_studyline" value="study_lines" id="study_lines_nolink2">
+                                  <label class="form-check-label" for="study_lines_nolink2">Show courses not linked to any study line</label>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </li>
+                    </div>
+                    <div class="collapse" id="FilterStudylineMSc">
+                      <li class="list-group-item">
+                        <table class="table table-sm table-borderless mb-0">
+                          <tbody>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="MSC_AC" value="study_lines" id="study_lines42">
+                                  <label class="form-check-label" for="study_lines42">MSc, Applied Chemistry</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="MSC_AE" value="study_lines" id="study_lines44">
+                                  <label class="form-check-label" for="study_lines44">MSc, Architectural Engineering</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="MSC_AS" value="study_lines" id="study_lines45">
+                                  <label class="form-check-label" for="study_lines45">MSc, Autonomous Systems</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="MSC_BSB" value="study_lines" id="study_lines46">
+                                  <label class="form-check-label" for="study_lines46">MSc, Bioinformatics and Systems Biology</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="MSC_BEM" value="study_lines" id="study_lines47">
+                                  <label class="form-check-label" for="study_lines47">MSc, Biomaterial Engineering for Medicine</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="MSC_BE" value="study_lines" id="study_lines48">
+                                  <label class="form-check-label" for="study_lines48">MSc, Biomedical Engineering</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="MSC_B" value="study_lines" id="study_lines49">
+                                  <label class="form-check-label" for="study_lines49">MSc, Biotechnology</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="MSC_BA" value="study_lines" id="study_lines50">
+                                  <label class="form-check-label" for="study_lines50">MSc, Business Analytics</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="MSC_CBE" value="study_lines" id="study_lines51">
+                                  <label class="form-check-label" for="study_lines51">MSc, Chemical and Biochemical Engineering</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="MSC_CE" value="study_lines" id="study_lines52">
+                                  <label class="form-check-label" for="study_lines52">MSc, Civil Engineering</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="MSC_CTSD" value="study_lines" id="study_lines53">
+                                  <label class="form-check-label" for="study_lines53">MSc, Communication Technologies and System Design</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="MSC_CSE" value="study_lines" id="study_lines54">
+                                  <label class="form-check-label" for="study_lines54">MSc, Computer Science and Engineering</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="MSC_DI" value="study_lines" id="study_lines55">
+                                  <label class="form-check-label" for="study_lines55">MSc, Design and Innovation</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="MSC_ESPE" value="study_lines" id="study_lines56">
+                                  <label class="form-check-label" for="study_lines56">MSc, Earth and Space Physics and Engineering</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="MSC_EE1" value="study_lines" id="study_lines57">
+                                  <label class="form-check-label" for="study_lines57">MSc, Electrical Engineering</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="MSC_EA" value="study_lines" id="study_lines58">
+                                  <label class="form-check-label" for="study_lines58">MSc, Engineering Acoustics</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="MSC_EL" value="study_lines" id="study_lines59">
+                                  <label class="form-check-label" for="study_lines59">MSc, Engineering Light</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="MSC_EP" value="study_lines" id="study_lines60">
+                                  <label class="form-check-label" for="study_lines60">MSc, Engineering Physics</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="MSC_EE2" value="study_lines" id="study_lines61">
+                                  <label class="form-check-label" for="study_lines61">MSc, Environmental Engineering</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="MSC_FT" value="study_lines" id="study_lines62">
+                                  <label class="form-check-label" for="study_lines62">MSc, Food Technology</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="MSC_HCAI" value="study_lines" id="study_lines63">
+                                  <label class="form-check-label" for="study_lines63">MSc, Human Centered Artificial Intelligence</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="MSC_IEM" value="study_lines" id="study_lines64">
+                                  <label class="form-check-label" for="study_lines64">MSc, Industrial Engineering and Management</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="MSC_MME" value="study_lines" id="study_lines65">
+                                  <label class="form-check-label" for="study_lines65">MSc, Materials and Manufacturing Engineering</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="MSC_MMC" value="study_lines" id="study_lines66">
+                                  <label class="form-check-label" for="study_lines66">MSc, Mathematical Modelling and Computation</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="MSC_ME" value="study_lines" id="study_lines67">
+                                  <label class="form-check-label" for="study_lines67">MSc, Mechanical Engineering</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="MSC_OE" value="study_lines" id="study_lines68">
+                                  <label class="form-check-label" for="study_lines68">MSc, Ocean Engineering</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="MSC_PDE" value="study_lines" id="study_lines70">
+                                  <label class="form-check-label" for="study_lines70">MSc, Pharmaceutical Design and Engineering</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="MSC_QBDM" value="study_lines" id="study_lines73">
+                                  <label class="form-check-label" for="study_lines73">MSc, Quantitative Biology and Disease Modelling</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="MSC_SE" value="study_lines" id="study_lines74">
+                                  <label class="form-check-label" for="study_lines74">MSc, Sustainable Energy</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="MSC_TL" value="study_lines" id="study_lines76">
+                                  <label class="form-check-label" for="study_lines76">MSc, Transport and Logistics</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="MSC_TE" value="study_lines" id="study_lines77">
+                                  <label class="form-check-label" for="study_lines77">MSc, Technology Entrepreneurship</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="MSC_WE" value="study_lines" id="study_lines78">
+                                  <label class="form-check-label" for="study_lines78">MSc, Wind Energy</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="no_studyline" value="study_lines" id="study_lines_nolink3">
+                                  <label class="form-check-label" for="study_lines_nolink3">Show courses not linked to any study line</label>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </li>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="align-top" style="width: 9rem" scope="row">Institutes:</th>
+                  <td class="align-top pb-0 pt-0 mt-0 mb-0">
+                    <p>
+                      <button class="btn btn-outline-secondary btn-sm pb-0 pt-0" type="button" data-toggle="collapse" data-target="#FilterInstitutes" aria-expanded="false" aria-controls="FilterInstitutes">
+                        Institutes
+                      </button>
+                      <button class="btn btn-outline-secondary btn-sm pb-0 pt-0" type="button" data-toggle="collapse" data-target="#FilterCampuses" aria-expanded="false" aria-controls="FilterCampuses">
+                        Locations
+                      </button>
+                    </p>
+                    <div class="collapse" id="FilterInstitutes">
+                      <li class="list-group-item">
+                        <table class="table table-sm table-borderless mb-0">
+                          <tbody>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="01" value="institute" id="institute1">
+                                  <label class="form-check-label" for="institute1">01 Applied Mathematics</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="02" value="institute" id="institute2">
+                                  <label class="form-check-label" for="institute2">02 Computer Science</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="10" value="institute" id="institute3">
+                                  <label class="form-check-label" for="institute3">10 Physics</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="12" value="institute" id="institute5">
+                                  <label class="form-check-label" for="institute5">12 Environmental Engineering</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="22" value="institute" id="institute6">
+                                  <label class="form-check-label" for="institute6">22 Health Technology</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="23" value="institute" id="institute7">
+                                  <label class="form-check-label" for="institute7">23 National Food Institute</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="25" value="institute" id="institute8">
+                                  <label class="form-check-label" for="institute8">25 Aquatic Resources</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="26" value="institute" id="institute9">
+                                  <label class="form-check-label" for="institute9">26 Chemistry</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="27" value="institute" id="institute10">
+                                  <label class="form-check-label" for="institute10">27 Biotechnology and Biomedicine</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="29" value="institute" id="institute11">
+                                  <label class="form-check-label" for="institute11">29 Chemical Engineering</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="30" value="institute" id="institute12">
+                                  <label class="form-check-label" for="institute12">30 National Space Institute</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="34" value="institute" id="institute14">
+                                  <label class="form-check-label" for="institute14">34 Electro</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="41" value="institute" id="institute15">
+                                  <label class="form-check-label" for="institute15">41 Mechanical Engineering</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="42" value="institute" id="institute16">
+                                  <label class="form-check-label" for="institute16">42 Management and Economics</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="46" value="institute" id="institute17">
+                                  <label class="form-check-label" for="institute17">46 Wind Energy</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="47" value="institute" id="institute18">
+                                  <label class="form-check-label" for="institute18">47 Energy Conversion and Storage</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="62" value="institute" id="institute19">
+                                  <label class="form-check-label" for="institute19">62 BEng - Bachelor of Engineering</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="KU" value="institute" id="institute20">
+                                  <label class="form-check-label" for="institute20">KU Copenhagen University</label>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </li>
+                    </div>
+                    <div class="collapse" id="FilterCampuses">
+                      <li class="list-group-item">
+                        <table class="table table-sm table-borderless mb-0">
+                          <tbody>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="lyngby" value="campus" id="campus1">
+                                  <label class="form-check-label" for="campus1">Campus Lyngby</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="ballerup" value="campus" id="campus2">
+                                  <label class="form-check-label" for="campus2">Campus Ballerup</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-top">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="elsewhere" value="campus" id="campus3">
+                                  <label class="form-check-label" for="campus3">External location</label>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </li>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+        </ul>
+        <div class="card-footer pb-0">
+          <small class="text-muted"><button type="submit" class="btn btn-primary btn-block mb-2">Apply search filter</button></small>
         </div>
-        <form method="get" action="/browse">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-              <table class="table table-sm table-borderless mb-0">
-                <tbody>
-                  <tr>
-                    <th class="align-top" style="width: 9rem" scope="row">Language:</th>
-                    <td class="align-top">
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="dk" value="language" id="language1">
-                        <label class="form-check-label" for="language1">🍺Danish</label>
-                      </div>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="eng" value="language" id="language2">
-                        <label class="form-check-label" for="language2">🚀English</label>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </li>
-            <li class="list-group-item">
-              <table class="table table-sm table-borderless mb-0">
-                <tbody>
-                  <tr>
-                    <th class="align-top" style="width: 9rem" scope="row">Type:</th>
-                    <td class="align-top" style="width: 7.8rem">
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="beng" value="course_type" id="course_type1" checked>
-                        <label class="form-check-label" for="course_type1">🐇BEng</label>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="bsc" value="course_type" id="course_type2" checked>
-                        <label class="form-check-label" for="course_type2">🐢BSc</label>
-                      </div>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="msc" value="course_type" id="course_type3" checked>
-                        <label class="form-check-label" for="course_type3">👩‍🎓MSc</label>
-                      </div>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="phd" value="course_type" id="course_type4">
-                        <label class="form-check-label" for="course_type4">🧙Ph.D.</label>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </li>
-            <li class="list-group-item">
-              <table class="table table-sm table-borderless mb-0">
-                <tbody>
-                  <tr>
-                    <th class="align-top" style="width: 9rem" scope="row">Season:</th>
-                    <td class="align-top" style="width: 8.3rem">
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="autumn" value="semester_period" id="semester_period1">
-                        <label class="form-check-label" for="semester_period1">🍂Autumn</label>
-                      </div>
-                    </td>
-                    <td class="align-top">
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="spring" value="semester_period" id="semester_period2">
-                        <label class="form-check-label" for="semester_period2">🌱Spring</label>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th class="align-top" style="width: 9rem" scope="row"></th>
-                    <td class="align-top" style="width: 8.3rem">
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="jan" value="semester_period" id="semester_period3">
-                        <label class="form-check-label" for="semester_period3">❄️January</label>
-                      </div>
-                    </td>
-                    <td class="align-top">
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="jun" value="semester_period" id="semester_period4">
-                        <label class="form-check-label" for="semester_period4">☀️June</label>
-                      </div>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="jul" value="semester_period" id="semester_period5">
-                        <label class="form-check-label" for="semester_period5">⛱️July</label>
-                      </div>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="aug" value="semester_period" id="semester_period6">
-                        <label class="form-check-label" for="semester_period6">🌻August</label>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </li>
-            <li class="list-group-item">
-              <table class="table table-sm table-borderless mb-0">
-                <tbody>
-                  <tr>
-                    <th class="align-top" style="width: 9rem" scope="row">Schedule: <small class="fs-6 text-muted" data-toggle="modal" data-target="#schedule_legend_modal"
-                      style="cursor: pointer;">[?]</small></th>
-                    <td class="align-top">
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="Mon 8-12" value="timetable" id="timetable1">
-                        <label class="form-check-label" for="timetable1"><img src="{{ url_for('static', filename='assets/schedules/Mon_8_12_Schedule.png') }}" ></label>
-                      </div>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="Tue 8-12" value="timetable" id="timetable2">
-                        <label class="form-check-label" for="timetable2"><img src="{{ url_for('static', filename='assets/schedules/Tues_8_12_Schedule.png') }}" ></label>
-                      </div>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="Wed 8-12" value="timetable" id="timetable3">
-                        <label class="form-check-label" for="timetable3"><img src="{{ url_for('static', filename='assets/schedules/Wed_8_12_Schedule.png') }}" ></label>
-                      </div>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="Thu 8-12" value="timetable" id="timetable4">
-                        <label class="form-check-label" for="timetable4"><img src="{{ url_for('static', filename='assets/schedules/Thurs_8_12_Schedule.png') }}" ></label>
-                      </div>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="Fri 8-12" value="timetable" id="timetable5">
-                        <label class="form-check-label" for="timetable5"><img src="{{ url_for('static', filename='assets/schedules/Fri_8_12_Schedule.png') }}" ></label>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th class="align-top" style="width: 9rem" scope="row"></th>
-                    <td class="align-top">
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="Mon 13-17" value="timetable" id="timetable6">
-                        <label class="form-check-label" for="timetable6"><img src="{{ url_for('static', filename='assets/schedules/Mon_13_17_Schedule.png') }}" ></label>
-                      </div>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="Tue 13-17" value="timetable" id="timetable7">
-                        <label class="form-check-label" for="timetable7"><img src="{{ url_for('static', filename='assets/schedules/Tues_13_17_Schedule.png') }}" ></label>
-                      </div>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="Wed 13-17" value="timetable" id="timetable8">
-                        <label class="form-check-label" for="timetable8"><img src="{{ url_for('static', filename='assets/schedules/Wed_13_17_Schedule.png') }}" ></label>
-                      </div>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="Thu 13-17" value="timetable" id="timetable9">
-                        <label class="form-check-label" for="timetable9"><img src="{{ url_for('static', filename='assets/schedules/Thurs_13_17_Schedule.png') }}" ></label>
-                      </div>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="Fri 13-17" value="timetable" id="timetable10">
-                        <label class="form-check-label" for="timetable10"><img src="{{ url_for('static', filename='assets/schedules/Fri_13_17_Schedule.png') }}" ></label>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th class="align-top" style="width: 9rem" scope="row"></th>
-                    <td class="align-top">
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="offschedule" value="timetable" id="timetable11">
-                        <label class="form-check-label" for="timetable11"><img src="{{ url_for('static', filename='assets/schedules/Multi_Unknown_Schedule.png') }}" ></label>
-                      </div>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="Tue 18-22" value="timetable" id="timetable12">
-                        <label class="form-check-label" for="timetable12"><img src="{{ url_for('static', filename='assets/schedules/Tues_18_22_Schedule.png') }}" ></label>
-                      </div>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="3-week" value="timetable" id="timetable13">
-                        <label class="form-check-label" for="timetable13">3-week</label>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </li>
-            <li class="list-group-item">
-              <table class="table table-sm table-borderless mb-0">
-                <tbody>
-                  <tr>
-                    <th class="align-top" style="width: 9rem" scope="row">Exam type:</th>
-                    <td class="align-top" style="width: 10.6rem">
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="written" value="exam_type" id="exam_type1">
-                        <label class="form-check-label" for="exam_type1">✍Written exam</label>
-                      </div>
-                    </td>
-                    <td class="align-top" style="width: 9.2rem">
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="oral" value="exam_type" id="exam_type2">
-                        <label class="form-check-label" for="exam_type2">🦜Oral exam</label>
-                      </div>
-                    </td>
-                    <td class="align-top">
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="reporthandin" value="exam_type" id="exam_type3">
-                        <label class="form-check-label" for="exam_type3">📑No exam</label>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </li>
-            <li class="list-group-item">
-              <table class="table table-sm table-borderless mb-0">
-                <tbody>
-                  <tr>
-                    <th class="align-top" style="width: 9rem" scope="row">Exam details:</th>
-                    <td class="align-top">
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="passfail" value="gradetype" id="gradetype1">
-                        <label class="form-check-label" for="gradetype1">💯Pass/fail grade</label>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th class="align-top" style="width: 9rem" scope="row"></th>
-                    <td class="align-top">
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="digitalaid" value="aid" id="digitalaid1">
-                        <label class="form-check-label" for="digitalaid1">💻All aid (computers allowed)</label>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th class="align-top" style="width: 9rem" scope="row"></th>
-                    <td class="align-top">
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="noassign" value="assignments" id="assignments1">
-                        <label class="form-check-label" for="assignments1">🙏No hand-ins before exam</label>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th class="align-top" style="width: 9rem" scope="row"></th>
-                    <td class="align-top">
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="internal" value="examiner" id="examiner1">
-                        <label class="form-check-label" for="examiner1">🔑Internal examiner</label>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </li>
-            <li class="list-group-item pb-0">
-              <table class="table table-sm table-borderless mb-0">
-                <tbody>
-                  <tr>
-                    <th class="align-top" style="width: 9rem" scope="row">Study lines:</th>
-                    <td class="align-top pb-0">
-                      <p>
-                        <button class="btn btn-outline-secondary btn-sm pb-0 pt-0" type="button" data-toggle="collapse" data-target="#FilterStudylineBEng" aria-expanded="false" aria-controls="FilterStudylineBEng">
-                          BEng study lines
-                        </button>
-                        <button class="btn btn-outline-secondary btn-sm pb-0 pt-0" type="button" data-toggle="collapse" data-target="#FilterStudylineBSc" aria-expanded="false" aria-controls="FilterStudylineBSc">
-                          BSc study lines
-                        </button>
-                        <button class="btn btn-outline-secondary btn-sm pb-0 pt-0" type="button" data-toggle="collapse" data-target="#FilterStudylineMSc" aria-expanded="false" aria-controls="FilterStudylineMSc">
-                          MSc study lines
-                        </button>
-                      </p>
-                      <div class="collapse" id="FilterStudylineBEng">
-                        <li class="list-group-item">
-                          <table class="table table-sm table-borderless mb-0">
-                            <tbody>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BENG_AE" value="study_lines" id="study_lines1">
-                                    <label class="form-check-label" for="study_lines1">BEng, Architectural Engineering</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BENG_ACE" value="study_lines" id="study_lines2">
-                                    <label class="form-check-label" for="study_lines2">BEng, Arctic Civil Engineering</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BENG_CEIB" value="study_lines" id="study_lines3">
-                                    <label class="form-check-label" for="study_lines3">BEng, Chemical Engineering and International Business</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BENG_CBE" value="study_lines" id="study_lines4">
-                                    <label class="form-check-label" for="study_lines4">BEng, Chemical and Bio Engineering</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BENG_CE" value="study_lines" id="study_lines5">
-                                    <label class="form-check-label" for="study_lines5">BEng, Civil Engineering</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BENG_EET" value="study_lines" id="study_lines6">
-                                    <label class="form-check-label" for="study_lines6">BEng, Electrical Energy Technology</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BENG_EE" value="study_lines" id="study_lines7">
-                                    <label class="form-check-label" for="study_lines7">BEng, Electrical Engineering</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BENG_FT" value="study_lines" id="study_lines8">
-                                    <label class="form-check-label" for="study_lines8">BEng, Fisheries Technology</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BENG_FSQ" value="study_lines" id="study_lines9">
-                                    <label class="form-check-label" for="study_lines9">BEng, Food Safety and Quality</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BENG_GBE" value="study_lines" id="study_lines10">
-                                    <label class="form-check-label" for="study_lines10">BEng, Global Business Engineering</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BENG_HT" value="study_lines" id="study_lines11">
-                                    <label class="form-check-label" for="study_lines11">BEng, Healthcare Technology</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BENG_ITE2" value="study_lines" id="study_lines13">
-                                    <label class="form-check-label" for="study_lines13">BEng, IT and Economics</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BENG_MM" value="study_lines" id="study_lines14">
-                                    <label class="form-check-label" for="study_lines14">BEng, Manufacturing and Management</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BENG_ME" value="study_lines" id="study_lines15">
-                                    <label class="form-check-label" for="study_lines15">BEng, Mechanical Engineering</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BENG_MTL" value="study_lines" id="study_lines16">
-                                    <label class="form-check-label" for="study_lines16">BEng, Mobility, Transport and Logistics</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BENG_PI" value="study_lines" id="study_lines17">
-                                    <label class="form-check-label" for="study_lines17">BEng, Process and Innovation</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BENG_ST" value="study_lines" id="study_lines18">
-                                    <label class="form-check-label" for="study_lines18">BEng, Software Technology</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="no_studyline" value="study_lines" id="study_lines_nolink1">
-                                    <label class="form-check-label" for="study_lines_nolink1">Show courses not linked to any study line</label>
-                                  </div>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </li>
-                      </div>
-                      <div class="collapse" id="FilterStudylineBSc">
-                        <li class="list-group-item">
-                          <table class="table table-sm table-borderless mb-0">
-                            <tbody>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BSC_AE" value="study_lines" id="study_lines19">
-                                    <label class="form-check-label" for="study_lines19">BSc, Architectural Engineering</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BSC_AID" value="study_lines" id="study_lines20">
-                                    <label class="form-check-label" for="study_lines20">BSc, Artificial Intelligence and Data</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BSC_BE" value="study_lines" id="study_lines21">
-                                    <label class="form-check-label" for="study_lines21">BSc, Biomedical Engineering</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BSC_CT" value="study_lines" id="study_lines22">
-                                    <label class="form-check-label" for="study_lines22">BSc, Chemistry and Technology</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BSC_CE1" value="study_lines" id="study_lines23">
-                                    <label class="form-check-label" for="study_lines23">BSc, Civil Engineering</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BSC_CE2" value="study_lines" id="study_lines24">
-                                    <label class="form-check-label" for="study_lines24">BSc, Computer Engineering</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BSC_C" value="study_lines" id="study_lines25">
-                                    <label class="form-check-label" for="study_lines25">BSc, Cybertechnology</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BSC_DSM" value="study_lines" id="study_lines26">
-                                    <label class="form-check-label" for="study_lines26">BSc, Data Science and Management</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BSC_DI" value="study_lines" id="study_lines27">
-                                    <label class="form-check-label" for="study_lines27">BSc, Design and Innovation</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BSC_DSES" value="study_lines" id="study_lines28">
-                                    <label class="form-check-label" for="study_lines28">BSc, Design of Sustainable Energy Systems</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BSC_ESPE" value="study_lines" id="study_lines29">
-                                    <label class="form-check-label" for="study_lines29">BSc, Earth and Space Physics and Engineering</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BSC_EE1" value="study_lines" id="study_lines30">
-                                    <label class="form-check-label" for="study_lines30">BSc, Electrical Engineering</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BSC_EP" value="study_lines" id="study_lines31">
-                                    <label class="form-check-label" for="study_lines31">BSc, Engineering Physics</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BSC_EE2" value="study_lines" id="study_lines32">
-                                    <label class="form-check-label" for="study_lines32">BSc, Environmental Engineering</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BSC_GE" value="study_lines" id="study_lines33">
-                                    <label class="form-check-label" for="study_lines33">BSc, General Engineering</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BSC_HLSE" value="study_lines" id="study_lines34">
-                                    <label class="form-check-label" for="study_lines34">BSc, Human Life Science Engineering</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BSC_LST" value="study_lines" id="study_lines35">
-                                    <label class="form-check-label" for="study_lines35">BSc, Life Science and Technology</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BSC_MT1" value="study_lines" id="study_lines36">
-                                    <label class="form-check-label" for="study_lines36">BSc, Mathematics and Technology</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BSC_ME" value="study_lines" id="study_lines37">
-                                    <label class="form-check-label" for="study_lines37">BSc, Mechanical Engineering</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BSC_ST" value="study_lines" id="study_lines39">
-                                    <label class="form-check-label" for="study_lines39">BSc, Software Technology</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="BSC_SED" value="study_lines" id="study_lines40">
-                                    <label class="form-check-label" for="study_lines40">BSc, Sustainable Energy Design</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="no_studyline" value="study_lines" id="study_lines_nolink2">
-                                    <label class="form-check-label" for="study_lines_nolink2">Show courses not linked to any study line</label>
-                                  </div>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </li>
-                      </div>
-                      <div class="collapse" id="FilterStudylineMSc">
-                        <li class="list-group-item">
-                          <table class="table table-sm table-borderless mb-0">
-                            <tbody>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="MSC_AC" value="study_lines" id="study_lines42">
-                                    <label class="form-check-label" for="study_lines42">MSc, Applied Chemistry</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="MSC_AE" value="study_lines" id="study_lines44">
-                                    <label class="form-check-label" for="study_lines44">MSc, Architectural Engineering</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="MSC_AS" value="study_lines" id="study_lines45">
-                                    <label class="form-check-label" for="study_lines45">MSc, Autonomous Systems</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="MSC_BSB" value="study_lines" id="study_lines46">
-                                    <label class="form-check-label" for="study_lines46">MSc, Bioinformatics and Systems Biology</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="MSC_BEM" value="study_lines" id="study_lines47">
-                                    <label class="form-check-label" for="study_lines47">MSc, Biomaterial Engineering for Medicine</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="MSC_BE" value="study_lines" id="study_lines48">
-                                    <label class="form-check-label" for="study_lines48">MSc, Biomedical Engineering</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="MSC_B" value="study_lines" id="study_lines49">
-                                    <label class="form-check-label" for="study_lines49">MSc, Biotechnology</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="MSC_BA" value="study_lines" id="study_lines50">
-                                    <label class="form-check-label" for="study_lines50">MSc, Business Analytics</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="MSC_CBE" value="study_lines" id="study_lines51">
-                                    <label class="form-check-label" for="study_lines51">MSc, Chemical and Biochemical Engineering</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="MSC_CE" value="study_lines" id="study_lines52">
-                                    <label class="form-check-label" for="study_lines52">MSc, Civil Engineering</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="MSC_CTSD" value="study_lines" id="study_lines53">
-                                    <label class="form-check-label" for="study_lines53">MSc, Communication Technologies and System Design</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="MSC_CSE" value="study_lines" id="study_lines54">
-                                    <label class="form-check-label" for="study_lines54">MSc, Computer Science and Engineering</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="MSC_DI" value="study_lines" id="study_lines55">
-                                    <label class="form-check-label" for="study_lines55">MSc, Design and Innovation</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="MSC_ESPE" value="study_lines" id="study_lines56">
-                                    <label class="form-check-label" for="study_lines56">MSc, Earth and Space Physics and Engineering</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="MSC_EE1" value="study_lines" id="study_lines57">
-                                    <label class="form-check-label" for="study_lines57">MSc, Electrical Engineering</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="MSC_EA" value="study_lines" id="study_lines58">
-                                    <label class="form-check-label" for="study_lines58">MSc, Engineering Acoustics</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="MSC_EL" value="study_lines" id="study_lines59">
-                                    <label class="form-check-label" for="study_lines59">MSc, Engineering Light</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="MSC_EP" value="study_lines" id="study_lines60">
-                                    <label class="form-check-label" for="study_lines60">MSc, Engineering Physics</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="MSC_EE2" value="study_lines" id="study_lines61">
-                                    <label class="form-check-label" for="study_lines61">MSc, Environmental Engineering</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="MSC_FT" value="study_lines" id="study_lines62">
-                                    <label class="form-check-label" for="study_lines62">MSc, Food Technology</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="MSC_HCAI" value="study_lines" id="study_lines63">
-                                    <label class="form-check-label" for="study_lines63">MSc, Human Centered Artificial Intelligence</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="MSC_IEM" value="study_lines" id="study_lines64">
-                                    <label class="form-check-label" for="study_lines64">MSc, Industrial Engineering and Management</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="MSC_MME" value="study_lines" id="study_lines65">
-                                    <label class="form-check-label" for="study_lines65">MSc, Materials and Manufacturing Engineering</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="MSC_MMC" value="study_lines" id="study_lines66">
-                                    <label class="form-check-label" for="study_lines66">MSc, Mathematical Modelling and Computation</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="MSC_ME" value="study_lines" id="study_lines67">
-                                    <label class="form-check-label" for="study_lines67">MSc, Mechanical Engineering</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="MSC_OE" value="study_lines" id="study_lines68">
-                                    <label class="form-check-label" for="study_lines68">MSc, Ocean Engineering</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="MSC_PDE" value="study_lines" id="study_lines70">
-                                    <label class="form-check-label" for="study_lines70">MSc, Pharmaceutical Design and Engineering</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="MSC_QBDM" value="study_lines" id="study_lines73">
-                                    <label class="form-check-label" for="study_lines73">MSc, Quantitative Biology and Disease Modelling</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="MSC_SE" value="study_lines" id="study_lines74">
-                                    <label class="form-check-label" for="study_lines74">MSc, Sustainable Energy</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="MSC_TL" value="study_lines" id="study_lines76">
-                                    <label class="form-check-label" for="study_lines76">MSc, Transport and Logistics</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="MSC_TE" value="study_lines" id="study_lines77">
-                                    <label class="form-check-label" for="study_lines77">MSc, Technology Entrepreneurship</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="MSC_WE" value="study_lines" id="study_lines78">
-                                    <label class="form-check-label" for="study_lines78">MSc, Wind Energy</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="no_studyline" value="study_lines" id="study_lines_nolink3">
-                                    <label class="form-check-label" for="study_lines_nolink3">Show courses not linked to any study line</label>
-                                  </div>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </li>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th class="align-top" style="width: 9rem" scope="row">Institutes:</th>
-                    <td class="align-top pb-0 pt-0 mt-0 mb-0">
-                      <p>
-                        <button class="btn btn-outline-secondary btn-sm pb-0 pt-0" type="button" data-toggle="collapse" data-target="#FilterInstitutes" aria-expanded="false" aria-controls="FilterInstitutes">
-                          Institutes
-                        </button>
-                        <button class="btn btn-outline-secondary btn-sm pb-0 pt-0" type="button" data-toggle="collapse" data-target="#FilterCampuses" aria-expanded="false" aria-controls="FilterCampuses">
-                          Locations
-                        </button>
-                      </p>
-                      <div class="collapse" id="FilterInstitutes">
-                        <li class="list-group-item">
-                          <table class="table table-sm table-borderless mb-0">
-                            <tbody>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="01" value="institute" id="institute1">
-                                    <label class="form-check-label" for="institute1">01 Applied Mathematics</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="02" value="institute" id="institute2">
-                                    <label class="form-check-label" for="institute2">02 Computer Science</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="10" value="institute" id="institute3">
-                                    <label class="form-check-label" for="institute3">10 Physics</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="12" value="institute" id="institute5">
-                                    <label class="form-check-label" for="institute5">12 Environmental Engineering</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="22" value="institute" id="institute6">
-                                    <label class="form-check-label" for="institute6">22 Health Technology</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="23" value="institute" id="institute7">
-                                    <label class="form-check-label" for="institute7">23 National Food Institute</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="25" value="institute" id="institute8">
-                                    <label class="form-check-label" for="institute8">25 Aquatic Resources</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="26" value="institute" id="institute9">
-                                    <label class="form-check-label" for="institute9">26 Chemistry</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="27" value="institute" id="institute10">
-                                    <label class="form-check-label" for="institute10">27 Biotechnology and Biomedicine</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="29" value="institute" id="institute11">
-                                    <label class="form-check-label" for="institute11">29 Chemical Engineering</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="30" value="institute" id="institute12">
-                                    <label class="form-check-label" for="institute12">30 National Space Institute</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="34" value="institute" id="institute14">
-                                    <label class="form-check-label" for="institute14">34 Electro</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="41" value="institute" id="institute15">
-                                    <label class="form-check-label" for="institute15">41 Mechanical Engineering</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="42" value="institute" id="institute16">
-                                    <label class="form-check-label" for="institute16">42 Management and Economics</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="46" value="institute" id="institute17">
-                                    <label class="form-check-label" for="institute17">46 Wind Energy</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="47" value="institute" id="institute18">
-                                    <label class="form-check-label" for="institute18">47 Energy Conversion and Storage</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="62" value="institute" id="institute19">
-                                    <label class="form-check-label" for="institute19">62 BEng - Bachelor of Engineering</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="KU" value="institute" id="institute20">
-                                    <label class="form-check-label" for="institute20">KU Copenhagen University</label>
-                                  </div>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </li>
-                      </div>
-                      <div class="collapse" id="FilterCampuses">
-                        <li class="list-group-item">
-                          <table class="table table-sm table-borderless mb-0">
-                            <tbody>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="lyngby" value="campus" id="campus1">
-                                    <label class="form-check-label" for="campus1">Campus Lyngby</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="ballerup" value="campus" id="campus2">
-                                    <label class="form-check-label" for="campus2">Campus Ballerup</label>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="align-top">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="elsewhere" value="campus" id="campus3">
-                                    <label class="form-check-label" for="campus3">External location</label>
-                                  </div>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </li>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </li>
-          </ul>
-          <div class="card-footer pb-0">
-            <small class="text-muted"><button type="submit" class="btn btn-primary btn-block mb-2">Apply search filter</button></small>
-          </div>
-        </form>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- End of card section containing sorting options -->
+
+<br><br><br><br>
+
+<!-- Start of outer loop -->
+{% for category in dicts_to_display.list_of_dicts %}
+
+<h1 class="display-5">{{category}}</h1>
+<br>
+<p class="lead">Pro-tip: Click on a card to see detailed course statistics!</p>
+<br>
+
+<!-- Start of card list -->
+<section class="row row-cols-1 row-cols-xxl-3 g-4">
+  {% for course in course_lists[category] %}
+  <div class="col">
+    <div class="card h-100" style="max-width: 26rem">
+      <a href="{{ url_for('course_database.route_to_course', course_number=course) }}" class="stretched-link"></a>
+      <img src="{{ url_for('static', filename='assets/colors/red.png') }}" width="100%" height="20"
+        class="d-inline-block align-top" alt="red-color" loading="lazy"
+        style="filter: invert(0) grayscale(0%) brightness(100%)"/>
+      <div class="card-body pb-0">
+        <h6 class="card-title mb-0 ml-3 mr-0">{{course}} {{data.name[course]}}</h6></a>
+      </div>
+      <div class="card-footer bg-white border-top-0">
+        <ul class="list-group list-group-flush mt-0 pt-0">
+          <li class="list-group-item mt-0 pt-0">
+            <!-- Start of basic info table -->
+            <table class="table table-sm table-borderless mt-0 mb-3">
+              <tbody>
+                <tr>
+                  <th style="width: 7%" scope="row"></th>
+                  <td style="width: 8%" class="align-top"></td>
+                  <td style="width: 14%" class="align-top"></td>
+                  <th style="width: 6%" class="align-top"></th>
+                  <td style="width: 26%" class="align-top"></td>
+                  <td style="width: 4%" class="align-top"></td>
+                  <td style="width: 35%" class="align-top"></td>
+                </tr>
+                <tr>
+                  <th scope="row" colspan="5">
+                    <hr class="bg-secondary border-2 border-top border-secondary mb-0 mt-0">
+                  </th>
+                  <th></th>
+                  <td rowspan="6">
+                    {% if data.responsible[course] == "NO_DATA" %}
+                    <img class="img" alt="100%x280" src="{{ url_for('static', filename='assets/brand/blank_photo.png') }}" width="100%">
+                    {% else %}
+                    <img class="img" alt="100%x280" src="{{data.responsible[course]}}" width="100%">
+                    {% endif %}
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">🎓</th>
+                  <td class="align-top" colspan="2"><small>{{data.course_type[course]}}
+                    {% if data.language[course] == "Danish" %}
+                    <small class="fs-6 text-muted"> (DK)</small></small>
+                    {% endif %}
+                  </td>
+                  <th>🕗</th>
+                  <td class="align-top" colspan="2"><small>{{data.season[course]}}</small>{% if data.season[course] == "Fall" or data.season[course] == "Spring" %} <img src="{{ url_for('static', filename='assets/schedules/' ~ data.schedule[course] ~ '_Schedule.png') }}" >{% endif %}</td>
+                </tr>
+                <tr>
+                  <th scope="row">🏅</th>
+                  <td class="align-top" colspan="2"><small>{{data.ects[course]}} pts</small></td>
+                  <th>📚</th>
+                  <td class="align-top" colspan="2"><small>{{data.exam[course]}}</small></td>
+                </tr>
+                <tr>
+                  <th scope="row">👩‍🎓</th>
+                  <td class="align-top" colspan="2"><small>{{data.signups[course]}} ppl</small></td>
+                  <th>❌</th>
+                  <td class="align-top" colspan="2"><small>{{data.grade[course]}} <small class="fs-6 text-muted">({{data.fail[course]}}% fail)</small></small></td>
+                </tr>
+                <tr>
+                  <th scope="row">⭐</th>
+                  <td class="align-top" colspan="2"><small>{{data.rating[course]}}{% if data.votes[course] >= 1 and data.votes[course] <= 9 %}<small class="fs-6 text-danger" title="Warning: Low sample size ({{data.votes[course]}} evaluations)">(!)</small>{% endif %} stars <br></small></td>
+                  <th>☠️</th>
+                  <td class="align-top" colspan="2"><small>{{data.workload[course]}} workload</small></td>
+                </tr>
+                <tr>
+                  <th scope="row" colspan="5">
+                    <hr class="bg-secondary border-2 border-top border-secondary mb-0 mt-0">
+                  </th>
+                  <th></th>
+                </tr>
+              </tbody>
+            </table>
+            <!-- End of basic info table -->
+            <table>
+              <tbody>
+                <tr>
+                  <td>
+                    <img src="{{ url_for('static', filename='assets/ratings/' ~ data.rating_tier[course] ~ '-star.png') }}" width="100%">
+                  </td>
+                  <td style="text-align: center; width: 8%">{% if data.votes[course] >= 1 and data.votes[course] <= 9 %}<small><small class="fs-6 text-danger" title="Warning: Low sample size ({{data.votes[course]}} evaluations)">({{data.votes[course]}})</small></small>{% elif data.votes[course] <= 99 %}<small><small class="fs-6 text-muted" title="{{data.votes[course]}} evaluations">({{data.votes[course]}})</small></small>{% elif data.votes[course] >= 1000 %}<small><small><small><small class="fs-6 text-muted" title="{{data.votes[course]}} evaluations">({{data.votes[course]}})</small></small></small></small>{% else %}<small><small><small class="fs-6 text-muted" title="{{data.votes[course]}} evaluations">({{data.votes[course]}})</small></small></small>{% endif %}<br></td>
+                  <td>
+                    <img src="{{ url_for('static', filename='assets/ratings/' ~ data.workload_tier[course] ~ '-skull.png') }}" width="100%">
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
-  <!-- End of card section containing sorting options -->
-
-  <br><br><br><br>
-
-  <!-- Start of outer loop -->
-  {% for category in dicts_to_display.list_of_dicts %}
-
-  <h1 class="display-5">{{category}}</h1>
-  <br>
-  <p class="lead">Pro-tip: Click on a card to see detailed course statistics!</p>
-  <br>
-
-  <!-- Start of card list -->
-  <section class="row row-cols-1 row-cols-xxl-3 g-4">
-    {% for course in course_lists[category] %}
-    <div class="col">
-      <div class="card h-100" style="max-width: 26rem">
-        <a href="{{ url_for('course_database.route_to_course', course_number=course) }}" class="stretched-link"></a>
-        <img src="{{ url_for('static', filename='assets/colors/red.png') }}" width="100%" height="20"
-          class="d-inline-block align-top" alt="red-color" loading="lazy"
-          style="filter: invert(0) grayscale(0%) brightness(100%)"/>
-        <div class="card-body pb-0">
-          <h6 class="card-title mb-0 ml-3 mr-0">{{course}} {{data.name[course]}}</h6></a>
-        </div>
-        <div class="card-footer bg-white border-top-0">
-          <ul class="list-group list-group-flush mt-0 pt-0">
-            <li class="list-group-item mt-0 pt-0">
-              <!-- Start of basic info table -->
-              <table class="table table-sm table-borderless mt-0 mb-3">
-                <tbody>
-                  <tr>
-                    <th style="width: 7%" scope="row"></th>
-                    <td style="width: 8%" class="align-top"></td>
-                    <td style="width: 14%" class="align-top"></td>
-                    <th style="width: 6%" class="align-top"></th>
-                    <td style="width: 26%" class="align-top"></td>
-                    <td style="width: 4%" class="align-top"></td>
-                    <td style="width: 35%" class="align-top"></td>
-                  </tr>
-                  <tr>
-                    <th scope="row" colspan="5">
-                      <hr class="bg-secondary border-2 border-top border-secondary mb-0 mt-0">
-                    </th>
-                    <th></th>
-                    <td rowspan="6">
-                      {% if data.responsible[course] == "NO_DATA" %}
-                      <img class="img" alt="100%x280" src="{{ url_for('static', filename='assets/brand/blank_photo.png') }}" width="100%">
-                      {% else %}
-                      <img class="img" alt="100%x280" src="{{data.responsible[course]}}" width="100%">
-                      {% endif %}
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">🎓</th>
-                    <td class="align-top" colspan="2"><small>{{data.course_type[course]}}
-                      {% if data.language[course] == "Danish" %}
-                      <small class="fs-6 text-muted"> (DK)</small></small>
-                      {% endif %}
-                    </td>
-                    <th>🕗</th>
-                    <td class="align-top" colspan="2"><small>{{data.season[course]}}</small>{% if data.season[course] == "Fall" or data.season[course] == "Spring" %} <img src="{{ url_for('static', filename='assets/schedules/' ~ data.schedule[course] ~ '_Schedule.png') }}" >{% endif %}</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">🏅</th>
-                    <td class="align-top" colspan="2"><small>{{data.ects[course]}} pts</small></td>
-                    <th>📚</th>
-                    <td class="align-top" colspan="2"><small>{{data.exam[course]}}</small></td>
-                  </tr>
-                  <tr>
-                    <th scope="row">👩‍🎓</th>
-                    <td class="align-top" colspan="2"><small>{{data.signups[course]}} ppl</small></td>
-                    <th>❌</th>
-                    <td class="align-top" colspan="2"><small>{{data.grade[course]}} <small class="fs-6 text-muted">({{data.fail[course]}}% fail)</small></small></td>
-                  </tr>
-                  <tr>
-                    <th scope="row">⭐</th>
-                    <td class="align-top" colspan="2"><small>{{data.rating[course]}}{% if data.votes[course] >= 1 and data.votes[course] <= 9 %}<small class="fs-6 text-danger" title="Warning: Low sample size ({{data.votes[course]}} evaluations)">(!)</small>{% endif %} stars <br></small></td>
-                    <th>☠️</th>
-                    <td class="align-top" colspan="2"><small>{{data.workload[course]}} workload</small></td>
-                  </tr>
-                  <tr>
-                    <th scope="row" colspan="5">
-                      <hr class="bg-secondary border-2 border-top border-secondary mb-0 mt-0">
-                    </th>
-                    <th></th>
-                  </tr>
-                </tbody>
-              </table>
-              <!-- End of basic info table -->
-              <table>
-                <tbody>
-                  <tr>
-                    <td>
-                      <img src="{{ url_for('static', filename='assets/ratings/' ~ data.rating_tier[course] ~ '-star.png') }}" width="100%">
-                    </td>
-                    <td style="text-align: center; width: 8%">{% if data.votes[course] >= 1 and data.votes[course] <= 9 %}<small><small class="fs-6 text-danger" title="Warning: Low sample size ({{data.votes[course]}} evaluations)">({{data.votes[course]}})</small></small>{% elif data.votes[course] <= 99 %}<small><small class="fs-6 text-muted" title="{{data.votes[course]}} evaluations">({{data.votes[course]}})</small></small>{% elif data.votes[course] >= 1000 %}<small><small><small><small class="fs-6 text-muted" title="{{data.votes[course]}} evaluations">({{data.votes[course]}})</small></small></small></small>{% else %}<small><small><small class="fs-6 text-muted" title="{{data.votes[course]}} evaluations">({{data.votes[course]}})</small></small></small>{% endif %}<br></td>
-                    <td>
-                      <img src="{{ url_for('static', filename='assets/ratings/' ~ data.workload_tier[course] ~ '-skull.png') }}" width="100%">
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    {% endfor %}
-  </section>
-  <!-- End of card list -->
-  <br><br><br><br>
-
-  <!-- End of outer loop -->
   {% endfor %}
+</section>
+<!-- End of card list -->
+<br><br><br><br>
 
-  <!-- Start of where-to-go-from-here links -->
-  <a href="/browse?dk=language&eng=language" style="font-size: 20px" target="_blank">Click here to browse all DTU's 1700+ courses!</a>
-  <br><br>
-  <a href="/faq" style="font-size: 20px" target="_blank">If you're unsure about where to go from here, check out the FAQ page!</a>
-  <br><br><br><br>
-  <!-- End of where-to-go-from-here links -->
+<!-- End of outer loop -->
+{% endfor %}
 
-  <!-- Modal -->
-  <div class="modal fade" id="modal_search_filter" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Course filters:</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+<!-- Start of where-to-go-from-here links -->
+<a href="/browse?dk=language&eng=language" style="font-size: 20px" target="_blank">Click here to browse all DTU's 1700+ courses!</a>
+<br><br>
+<a href="/faq" style="font-size: 20px" target="_blank">If you're unsure about where to go from here, check out the FAQ page!</a>
+<br><br><br><br>
+<!-- End of where-to-go-from-here links -->
+
+<!-- Modal -->
+<div class="modal fade" id="modal_search_filter" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Course filters:</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h5>Popover in a modal</h5>
+        <p>This <a href="#" role="button" class="btn btn-secondary popover-test" title="Popover title"
+            data-content="Popover body content is set in this attribute.">button</a> triggers a popover on click.</p>
+        <hr>
+        <!-- Start of language checkbox -->
+        <b>Language:     </b>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="language_checkbox_01" value="option1" checked>
+          <label class="form-check-label" for="language_checkbox_01">Danish</label>
         </div>
-        <div class="modal-body">
-          <h5>Popover in a modal</h5>
-          <p>This <a href="#" role="button" class="btn btn-secondary popover-test" title="Popover title"
-              data-content="Popover body content is set in this attribute.">button</a> triggers a popover on click.</p>
-          <hr>
-          <!-- Start of language checkbox -->
-          <b>Language:     </b>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="language_checkbox_01" value="option1" checked>
-            <label class="form-check-label" for="language_checkbox_01">Danish</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="language_checkbox_02" value="option2" checked>
-            <label class="form-check-label" for="language_checkbox_02">English</label>
-          </div>
-          <!-- End of search checkboxes -->
-          <hr>
-          <!-- Start of course type checkbox -->
-          <b>Course type:     </b>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="course_type_checkbox_01" value="option1" checked>
-            <label class="form-check-label" for="course_type_checkbox_01">BSc</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="course_type_checkbox_02" value="option2" checked>
-            <label class="form-check-label" for="course_type_checkbox_02">MSc</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="course_type_checkbox_03" value="option3">
-            <label class="form-check-label" for="course_type_checkbox_03">Ph.D.</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="course_type_checkbox_04" value="option4">
-            <label class="form-check-label" for="course_type_checkbox_04">BEng</label>
-          </div>
-          <!-- End of course type checkboxes -->
-          <hr>
-          <!-- Start of popup on click -->
-          <hr>
-          <h5>Tooltips in a modal</h5>
-          <p><a href="#" class="tooltip-test" title="Tooltip">This link</a> and <a href="#" class="tooltip-test"
-              title="Tooltip">that link</a> have tooltips on hover.</p>
-          <!-- End of popup on click -->
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="language_checkbox_02" value="option2" checked>
+          <label class="form-check-label" for="language_checkbox_02">English</label>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+        <!-- End of search checkboxes -->
+        <hr>
+        <!-- Start of course type checkbox -->
+        <b>Course type:     </b>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="course_type_checkbox_01" value="option1" checked>
+          <label class="form-check-label" for="course_type_checkbox_01">BSc</label>
         </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="course_type_checkbox_02" value="option2" checked>
+          <label class="form-check-label" for="course_type_checkbox_02">MSc</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="course_type_checkbox_03" value="option3">
+          <label class="form-check-label" for="course_type_checkbox_03">Ph.D.</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="course_type_checkbox_04" value="option4">
+          <label class="form-check-label" for="course_type_checkbox_04">BEng</label>
+        </div>
+        <!-- End of course type checkboxes -->
+        <hr>
+        <!-- Start of popup on click -->
+        <hr>
+        <h5>Tooltips in a modal</h5>
+        <p><a href="#" class="tooltip-test" title="Tooltip">This link</a> and <a href="#" class="tooltip-test"
+            title="Tooltip">that link</a> have tooltips on hover.</p>
+        <!-- End of popup on click -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>
-  <!-- End of modal -->
+</div>
+<!-- End of modal -->
 
-  <!-- Start of end of page -->
-  <p><a href="#">Return to top of page</a></p>
-  <small class="fs-6 text-muted">Last updated: {{last_update.last_updated}}</small>
-  <br><br><br><br>
-  <!-- End of end of page -->
+<!-- Start of end of page -->
+<p><a href="#">Return to top of page</a></p>
+<small class="fs-6 text-muted">Last updated: {{last_update.last_updated}}</small>
+<br><br><br><br>
+<!-- End of end of page -->
 
-  <!-- Start of Schedule Legend Modal -->
-  <div class="modal fade" id="schedule_legend_modal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="schedule_modal_title">Breakdown of schedule icons:</h5>
-          <button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p>Reference guide for the schedule block icons:</p>
+<!-- Start of Schedule Legend Modal -->
+<div class="modal fade" id="schedule_legend_modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="schedule_modal_title">Breakdown of schedule icons:</h5>
+        <button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Reference guide for the schedule block icons:</p>
 
-          <h6 class="mt-3 border-bottom pb-2">Morning (08:00 - 12:00)</h6>
-          <table class="table table-sm table-borderless mb-0 align-middle">
-            <tbody>
-              <tr>
-                <td style="width: 50px;"><img
-                    src="{{ url_for('static', filename='assets/schedules/Mon_8_12_Schedule.png') }}" width="40"></td>
-                <td>Monday Morning (E1A)</td>
-              </tr>
-              <tr>
-                <td><img src="{{ url_for('static', filename='assets/schedules/Tues_8_12_Schedule.png') }}" width="40">
-                </td>
-                <td>Tuesday Morning (E2A)</td>
-              </tr>
-              <tr>
-                <td><img src="{{ url_for('static', filename='assets/schedules/Wed_8_12_Schedule.png') }}" width="40"></td>
-                <td>Wednesday Morning (E3A)</td>
-              </tr>
-              <tr>
-                <td><img src="{{ url_for('static', filename='assets/schedules/Thurs_8_12_Schedule.png') }}" width="40">
-                </td>
-                <td>Thursday Morning (E4A)</td>
-              </tr>
-              <tr>
-                <td><img src="{{ url_for('static', filename='assets/schedules/Fri_8_12_Schedule.png') }}" width="40"></td>
-                <td>Friday Morning (E5A)</td>
-              </tr>
-            </tbody>
-          </table>
+        <h6 class="mt-3 border-bottom pb-2">Morning (08:00 - 12:00)</h6>
+        <table class="table table-sm table-borderless mb-0 align-middle">
+          <tbody>
+            <tr>
+              <td style="width: 50px;"><img
+                  src="{{ url_for('static', filename='assets/schedules/Mon_8_12_Schedule.png') }}" width="40"></td>
+              <td>Monday Morning (E1A)</td>
+            </tr>
+            <tr>
+              <td><img src="{{ url_for('static', filename='assets/schedules/Tues_8_12_Schedule.png') }}" width="40">
+              </td>
+              <td>Tuesday Morning (E2A)</td>
+            </tr>
+            <tr>
+              <td><img src="{{ url_for('static', filename='assets/schedules/Wed_8_12_Schedule.png') }}" width="40"></td>
+              <td>Wednesday Morning (E3A)</td>
+            </tr>
+            <tr>
+              <td><img src="{{ url_for('static', filename='assets/schedules/Thurs_8_12_Schedule.png') }}" width="40">
+              </td>
+              <td>Thursday Morning (E4A)</td>
+            </tr>
+            <tr>
+              <td><img src="{{ url_for('static', filename='assets/schedules/Fri_8_12_Schedule.png') }}" width="40"></td>
+              <td>Friday Morning (E5A)</td>
+            </tr>
+          </tbody>
+        </table>
 
-          <h6 class="mt-3 border-bottom pb-2">Afternoon (13:00 - 17:00)</h6>
-          <table class="table table-sm table-borderless mb-0 align-middle">
-            <tbody>
-              <tr>
-                <td style="width: 50px;"><img
-                    src="{{ url_for('static', filename='assets/schedules/Mon_13_17_Schedule.png') }}" width="40"></td>
-                <td>Monday Afternoon (E1B)</td>
-              </tr>
-              <tr>
-                <td><img src="{{ url_for('static', filename='assets/schedules/Tues_13_17_Schedule.png') }}" width="40">
-                </td>
-                <td>Tuesday Afternoon (E2B)</td>
-              </tr>
-              <tr>
-                <td><img src="{{ url_for('static', filename='assets/schedules/Wed_13_17_Schedule.png') }}" width="40">
-                </td>
-                <td>Wednesday Afternoon (E3B)</td>
-              </tr>
-              <tr>
-                <td><img src="{{ url_for('static', filename='assets/schedules/Thurs_13_17_Schedule.png') }}" width="40">
-                </td>
-                <td>Thursday Afternoon (E4B)</td>
-              </tr>
-              <tr>
-                <td><img src="{{ url_for('static', filename='assets/schedules/Fri_13_17_Schedule.png') }}" width="40">
-                </td>
-                <td>Friday Afternoon (E5B)</td>
-              </tr>
-            </tbody>
-          </table>
+        <h6 class="mt-3 border-bottom pb-2">Afternoon (13:00 - 17:00)</h6>
+        <table class="table table-sm table-borderless mb-0 align-middle">
+          <tbody>
+            <tr>
+              <td style="width: 50px;"><img
+                  src="{{ url_for('static', filename='assets/schedules/Mon_13_17_Schedule.png') }}" width="40"></td>
+              <td>Monday Afternoon (E1B)</td>
+            </tr>
+            <tr>
+              <td><img src="{{ url_for('static', filename='assets/schedules/Tues_13_17_Schedule.png') }}" width="40">
+              </td>
+              <td>Tuesday Afternoon (E2B)</td>
+            </tr>
+            <tr>
+              <td><img src="{{ url_for('static', filename='assets/schedules/Wed_13_17_Schedule.png') }}" width="40">
+              </td>
+              <td>Wednesday Afternoon (E3B)</td>
+            </tr>
+            <tr>
+              <td><img src="{{ url_for('static', filename='assets/schedules/Thurs_13_17_Schedule.png') }}" width="40">
+              </td>
+              <td>Thursday Afternoon (E4B)</td>
+            </tr>
+            <tr>
+              <td><img src="{{ url_for('static', filename='assets/schedules/Fri_13_17_Schedule.png') }}" width="40">
+              </td>
+              <td>Friday Afternoon (E5B)</td>
+            </tr>
+          </tbody>
+        </table>
 
-          <h6 class="mt-3 border-bottom pb-2">Other</h6>
-          <table class="table table-sm table-borderless mb-0 align-middle">
-            <tbody>
-              <tr>
-                <td style="width: 50px;"><img
-                    src="{{ url_for('static', filename='assets/schedules/Tues_18_22_Schedule.png') }}" width="40"></td>
-                <td>Tuesday Evening (18:00 - 22:00)</td>
-              </tr>
-              <tr>
-                <td><img src="{{ url_for('static', filename='assets/schedules/Multi_Unknown_Schedule.png') }}" width="40">
-                </td>
-                <td>Off-schedule / Flexible / Unknown</td>
-              </tr>
-            </tbody>
-          </table>
+        <h6 class="mt-3 border-bottom pb-2">Other</h6>
+        <table class="table table-sm table-borderless mb-0 align-middle">
+          <tbody>
+            <tr>
+              <td style="width: 50px;"><img
+                  src="{{ url_for('static', filename='assets/schedules/Tues_18_22_Schedule.png') }}" width="40"></td>
+              <td>Tuesday Evening (18:00 - 22:00)</td>
+            </tr>
+            <tr>
+              <td><img src="{{ url_for('static', filename='assets/schedules/Multi_Unknown_Schedule.png') }}" width="40">
+              </td>
+              <td>Off-schedule / Flexible / Unknown</td>
+            </tr>
+          </tbody>
+        </table>
 
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal">Close</button>
-        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
-  <!-- End of Schedule Legend Modal -->
+</div>
+<!-- End of Schedule Legend Modal -->
 
-  {% endblock %}
+{% endblock %}
 

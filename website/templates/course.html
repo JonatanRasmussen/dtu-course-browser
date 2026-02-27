@@ -66,9 +66,8 @@
           <!-- Start of grade table -->
           <table class="table table-sm table-borderless mb-0">
             <tbody>
-              {% if 0 < data.TOTAL_STUDENTS %}
-              <tr>
-                <th style="width: 33%" scope="row">Grades:   <small class="fs-6 text-muted" data-toggle="modal"
+              {% if 0 < data.TOTAL_STUDENTS %} <tr>
+                <th style="width: 33%" scope="row">Grades: <small class="fs-6 text-muted" data-toggle="modal"
                     data-target="#gradegraph_explainer" style="cursor: pointer;">[?]</small></th>
                 <td>
                   <!-- Start of grade graph -->
@@ -77,88 +76,98 @@
                       <div class="row">
                         <div class="chart">
                           <!-- Start of pass grade -->
-                          {% if 0 < data.PASSED %}
-                          <span class="block" data-toggle="modal" data-target="#gradegraph_explainer"
+                          {% if 0 < data.PASSED %} <span class="block" data-toggle="modal"
+                            data-target="#gradegraph_explainer"
                             style="height: 16px; background-color: #01D93F; float: left; color: #01D93F00; position: relative; cursor: pointer;"
                             title="Grade 'Passed'">
                             <span class="value"
-                              style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.PASSED) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
-                          </span>
-                          <!-- End of pass grade -->
-                          {% endif %}
-                          <!-- Start of seven-step-grades -->
-                          {% if 0 < data.GRADE_12 + data.GRADE_10 + data.GRADE_7 + data.GRADE_4 + data.GRADE_02 + data.GRADE_00 + data.GRADE_MINUS_3 %}
-
-                          <span class="block" data-toggle="modal" data-target="#gradegraph_explainer"
-                            style="height: 16px; background-color: #244710; float: left; color: #24471000; position: relative; cursor: pointer;"
-                            title="Grade 12">
-                            <span class="value"
-                              style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_12) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
-                          </span>
-                          <span class="block" data-toggle="modal" data-target="#gradegraph_explainer"
-                            style="height: 16px; background-color: #1B791F; float: left; color: #1B791F00; position: relative; cursor: pointer;"
-                            title="Grade 10">
-                            <span class="value"
-                              style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_10) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
-                          </span>
-                          <span class="block" data-toggle="modal" data-target="#gradegraph_explainer"
-                            style="height: 16px; background-color: #01D93F; float: left; color: #01D93F00; position: relative; cursor: pointer;"
-                            title="Grade 7">
-                            <span class="value"
-                              style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_7) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
-                          </span>
-                          <span class="block" data-toggle="modal" data-target="#gradegraph_explainer"
-                            style="height: 16px; background-color: #FDBF02; float: left; color: #FDBF0200; position: relative; cursor: pointer;"
-                            title="Grade 4">
-                            <span class="value"
-                              style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_4) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
-                          </span>
-                          <span class="block" data-toggle="modal" data-target="#gradegraph_explainer"
-                            style="height: 16px; background-color: #FE7E03; float: left; color: #FE7E0300; position: relative; cursor: pointer;"
-                            title="Grade 02">
-                            <span class="value"
-                              style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_02) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
-                          </span>
-                          <span class="block" data-toggle="modal" data-target="#gradegraph_explainer"
-                            style="height: 16px; background-color: #D44B33; float: left; color: #D44B3300; position: relative; cursor: pointer;"
-                            title="Grade 00">
-                            <span class="value"
-                              style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_00) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
-                          </span>
-                          <span class="block" data-toggle="modal" data-target="#gradegraph_explainer"
-                            style="height: 16px; background-color: #8E1600; float: left; color: #8E160000; position: relative; cursor: pointer;"
-                            title="Grade -3">
-                            <span class="value"
-                              style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_MINUS_3) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
-                          </span>
-                          <!-- End of seven-step-grades -->
-                          {% endif %}
-                          <!-- Start of failed grade -->
-                          {% if 0 < data.FAILED + data.PASSED %}
-                          <span class="block" data-toggle="modal" data-target="#gradegraph_explainer"
-                            style="height: 16px; background-color: #8E1601; float: left; color: #8E160000; position: relative; cursor: pointer;"
-                            title="Grade 'Failed'">
-                            <span class="value"
-                              style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.FAILED) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
-                          </span>
-                          <!-- End of failed grade -->
-                          {% endif %}
-                          {% if 0 < data.ABSENT %}
-                          <span class="block" data-toggle="modal" data-target="#gradegraph_explainer"
-                            style="height: 16px; background-color: #989898; float: left; color: #98989800; position: relative; cursor: pointer;"
-                            title="Absent from exam">
-                            <span class="value"
-                              style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.ABSENT) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
-                          </span>
-                          {% endif %}
+                              style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100
+                              * data.PASSED) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                            </span>
+                            <!-- End of pass grade -->
+                            {% endif %}
+                            <!-- Start of seven-step-grades -->
+                            {% if 0 < data.GRADE_12 + data.GRADE_10 + data.GRADE_7 + data.GRADE_4 + data.GRADE_02 +
+                              data.GRADE_00 + data.GRADE_MINUS_3 %} <span class="block" data-toggle="modal"
+                              data-target="#gradegraph_explainer"
+                              style="height: 16px; background-color: #244710; float: left; color: #24471000; position: relative; cursor: pointer;"
+                              title="Grade 12">
+                              <span class="value"
+                                style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100
+                                * data.GRADE_12) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                              </span>
+                              <span class="block" data-toggle="modal" data-target="#gradegraph_explainer"
+                                style="height: 16px; background-color: #1B791F; float: left; color: #1B791F00; position: relative; cursor: pointer;"
+                                title="Grade 10">
+                                <span class="value"
+                                  style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100
+                                  * data.GRADE_10) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                              </span>
+                              <span class="block" data-toggle="modal" data-target="#gradegraph_explainer"
+                                style="height: 16px; background-color: #01D93F; float: left; color: #01D93F00; position: relative; cursor: pointer;"
+                                title="Grade 7">
+                                <span class="value"
+                                  style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100
+                                  * data.GRADE_7) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                              </span>
+                              <span class="block" data-toggle="modal" data-target="#gradegraph_explainer"
+                                style="height: 16px; background-color: #FDBF02; float: left; color: #FDBF0200; position: relative; cursor: pointer;"
+                                title="Grade 4">
+                                <span class="value"
+                                  style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100
+                                  * data.GRADE_4) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                              </span>
+                              <span class="block" data-toggle="modal" data-target="#gradegraph_explainer"
+                                style="height: 16px; background-color: #FE7E03; float: left; color: #FE7E0300; position: relative; cursor: pointer;"
+                                title="Grade 02">
+                                <span class="value"
+                                  style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100
+                                  * data.GRADE_02) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                              </span>
+                              <span class="block" data-toggle="modal" data-target="#gradegraph_explainer"
+                                style="height: 16px; background-color: #D44B33; float: left; color: #D44B3300; position: relative; cursor: pointer;"
+                                title="Grade 00">
+                                <span class="value"
+                                  style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100
+                                  * data.GRADE_00) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                              </span>
+                              <span class="block" data-toggle="modal" data-target="#gradegraph_explainer"
+                                style="height: 16px; background-color: #8E1600; float: left; color: #8E160000; position: relative; cursor: pointer;"
+                                title="Grade -3">
+                                <span class="value"
+                                  style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100
+                                  * data.GRADE_MINUS_3) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                              </span>
+                              <!-- End of seven-step-grades -->
+                              {% endif %}
+                              <!-- Start of failed grade -->
+                              {% if 0 < data.FAILED + data.PASSED %} <span class="block" data-toggle="modal"
+                                data-target="#gradegraph_explainer"
+                                style="height: 16px; background-color: #8E1601; float: left; color: #8E160000; position: relative; cursor: pointer;"
+                                title="Grade 'Failed'">
+                                <span class="value"
+                                  style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100
+                                  * data.FAILED) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                                </span>
+                                <!-- End of failed grade -->
+                                {% endif %}
+                                {% if 0 < data.ABSENT %} <span class="block" data-toggle="modal"
+                                  data-target="#gradegraph_explainer"
+                                  style="height: 16px; background-color: #989898; float: left; color: #98989800; position: relative; cursor: pointer;"
+                                  title="Absent from exam">
+                                  <span class="value"
+                                    style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100
+                                    * data.ABSENT) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                                  </span>
+                                  {% endif %}
                         </div>
                       </div>
                     </div>
                   </figure>
                   <!-- End of grade graph -->
                 </td>
-              </tr>
-              {% endif %}
+                </tr>
+                {% endif %}
             </tbody>
           </table>
           <table class="table table-sm table-borderless mb-0">
@@ -168,13 +177,13 @@
                 <td style="width: 15%" class="align-top">{{data.AVERAGE_GRADE}}</td>
                 <td class="align-top"><small class="fs-6 text-muted">({{data.TOTAL_STUDENTS}} grades)</small></td>
               </tr>
-              {% if 0 < data.TOTAL_STUDENTS %}
-              <tr>
+              {% if 0 < data.TOTAL_STUDENTS %} <tr>
                 <th style="width: 33%" scope="row">Failed students:</th>
                 <td style="width: 15%" class="align-top">{{data.PERCENT_FAILED}}%</td>
-                <td class="align-top"><small class="fs-6 text-muted">(+{{((100 * data.ABSENT) / data.TOTAL_STUDENTS)|round(1)}}% absent)</small></td>
-              </tr>
-              {% endif %}
+                <td class="align-top"><small class="fs-6 text-muted">(+{{((100 * data.ABSENT) /
+                    data.TOTAL_STUDENTS)|round(1)}}% absent)</small></td>
+                </tr>
+                {% endif %}
             </tbody>
           </table>
           <!-- End of grade table -->
@@ -184,16 +193,20 @@
             <tbody>
               <tr>
                 <th class="align-middle" style="width: 33%" scope="row">Workload burden:</th>
-                <td class="align-middle" style="width: 15%" >{{data.WORKLOAD_AVERAGE_SCORE}}</td>
-                <td><img data-toggle="modal" data-target="#semester_breakdown" style="cursor: pointer" src="{{ url_for('static', filename='assets/ratings/' ~ data.WORKLOAD_TIER ~ '-skull.png') }}" height="36"></td>
+                <td class="align-middle" style="width: 15%">{{data.WORKLOAD_AVERAGE_SCORE}}</td>
+                <td><img data-toggle="modal" data-target="#semester_breakdown" style="cursor: pointer"
+                    src="{{ url_for('static', filename='assets/ratings/' ~ data.WORKLOAD_TIER ~ '-skull.png') }}"
+                    height="36"></td>
               </tr>
-              {% if 0 < data.LEARNING_VOTES %}
-              <tr>
+              {% if 0 < data.LEARNING_VOTES %} <tr>
                 <th style="width: 33%" scope="row">Overworked students:</th>
-                <td style="width: 15%" class="align-top">{{(((100 * data.WORKLOAD_4_STAR) / data.LEARNING_VOTES) + ((100 * data.WORKLOAD_5_STAR) / data.LEARNING_VOTES))|round(1)}}%</td>
-                <td class="align-top"><small class="fs-6 text-muted">({{((100 * data.WORKLOAD_4_STAR) / data.LEARNING_VOTES)|round(1)}}% mildly + {{((100 * data.WORKLOAD_5_STAR) / data.LEARNING_VOTES)|round(1)}}% severely)</small></td>
-              </tr>
-              {% endif %}
+                <td style="width: 15%" class="align-top">{{(((100 * data.WORKLOAD_4_STAR) / data.LEARNING_VOTES) + ((100
+                  * data.WORKLOAD_5_STAR) / data.LEARNING_VOTES))|round(1)}}%</td>
+                <td class="align-top"><small class="fs-6 text-muted">({{((100 * data.WORKLOAD_4_STAR) /
+                    data.LEARNING_VOTES)|round(1)}}% mildly + {{((100 * data.WORKLOAD_5_STAR) /
+                    data.LEARNING_VOTES)|round(1)}}% severely)</small></td>
+                </tr>
+                {% endif %}
             </tbody>
           </table>
         </li>
@@ -204,26 +217,33 @@
               <tr>
                 <th style="width: 33%" scope="row">Average rating:</th>
                 <td style="width: 15%" class="align-top">{{data.RATING_AVERAGE_SCORE}}</td>
-                {% if 10 <= data.MOTIVATION_VOTES or 0 == data.MOTIVATION_VOTES %}
-                <td class="align-top"><small class="fs-6 text-muted">({{data.MOTIVATION_VOTES}} evaluations)</small></td>
-                {% else %}
-                <td class="align-top"><small class="fs-6 text-danger">({{data.MOTIVATION_VOTES}} evaluations) – low sample size!</small></td>
-                {% endif %}
+                {% if 10 <= data.MOTIVATION_VOTES or 0==data.MOTIVATION_VOTES %} <td class="align-top"><small
+                    class="fs-6 text-muted">({{data.MOTIVATION_VOTES}} evaluations)</small></td>
+                  {% else %}
+                  <td class="align-top"><small class="fs-6 text-danger">({{data.MOTIVATION_VOTES}} evaluations) – low
+                      sample size!</small></td>
+                  {% endif %}
               </tr>
               <tr>
                 <td class="align-middle" style="width: 33%" scope="row"><i>"I have learned a lot"</i>:</td>
-                <td class="align-middle" style="width: 15%" >{{data.LEARNING_AVERAGE_SCORE}}</td>
-                <td><img data-toggle="modal" data-target="#semester_breakdown" style="cursor: pointer" src="{{ url_for('static', filename='assets/ratings/' ~ data.LEARNING_TIER ~ '-star.png') }}" height="36"></td>
+                <td class="align-middle" style="width: 15%">{{data.LEARNING_AVERAGE_SCORE}}</td>
+                <td><img data-toggle="modal" data-target="#semester_breakdown" style="cursor: pointer"
+                    src="{{ url_for('static', filename='assets/ratings/' ~ data.LEARNING_TIER ~ '-star.png') }}"
+                    height="36"></td>
               </tr>
               <tr>
                 <td class="align-middle" style="width: 33%" scope="row"><i>"Motivating activities"</i>:</td>
-                <td class="align-middle" style="width: 15%" >{{data.MOTIVATION_AVERAGE_SCORE}}</td>
-                <td><img data-toggle="modal" data-target="#semester_breakdown" style="cursor: pointer" src="{{ url_for('static', filename='assets/ratings/' ~ data.MOTIVATION_TIER ~ '-star.png') }}" height="36"></td>
+                <td class="align-middle" style="width: 15%">{{data.MOTIVATION_AVERAGE_SCORE}}</td>
+                <td><img data-toggle="modal" data-target="#semester_breakdown" style="cursor: pointer"
+                    src="{{ url_for('static', filename='assets/ratings/' ~ data.MOTIVATION_TIER ~ '-star.png') }}"
+                    height="36"></td>
               </tr>
               <tr>
                 <td class="align-middle" style="width: 33%" scope="row"><i>"Access to feedback"</i>:</td>
-                <td class="align-middle" style="width: 15%" >{{data.FEEDBACK_AVERAGE_SCORE}}</td>
-                <td><img data-toggle="modal" data-target="#semester_breakdown" style="cursor: pointer" src="{{ url_for('static', filename='assets/ratings/' ~ data.FEEDBACK_TIER ~ '-star.png') }}" height="36"></td>
+                <td class="align-middle" style="width: 15%">{{data.FEEDBACK_AVERAGE_SCORE}}</td>
+                <td><img data-toggle="modal" data-target="#semester_breakdown" style="cursor: pointer"
+                    src="{{ url_for('static', filename='assets/ratings/' ~ data.FEEDBACK_TIER ~ '-star.png') }}"
+                    height="36"></td>
               </tr>
             </tbody>
           </table>
@@ -255,7 +275,8 @@
                     <i>Courses</i>:
                   </small>
                   {% for course in data.MAIN_RESPONSIBLE_COURSES %}
-                  <br /><a href="{{ url_for('.route_to_course', course_number=course) }}"><small class="fs-6 text-muted"><u>{{course}}</u></small></a>
+                  <br /><a href="{{ url_for('.route_to_course', course_number=course) }}"><small
+                      class="fs-6 text-muted"><u>{{course}}</u></small></a>
                   {% endfor %}
                 </td>
                 <td class="align-top">
@@ -283,8 +304,10 @@
         </li>
       </ul>
       <div class="card-body">
-        <button type="button" class="btn btn-outline-dark"  data-toggle="modal" data-target="#gradegraph_explainer">Grade distribution</button>
-        <button type="button" class="btn btn-outline-dark"  data-toggle="modal" data-target="#semester_breakdown">Semester breakdown</button>
+        <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#gradegraph_explainer">Grade
+          distribution</button>
+        <button type="button" class="btn btn-outline-dark" data-toggle="modal"
+          data-target="#semester_breakdown">Semester breakdown</button>
       </div>
       <ul class="list-group list-group-flush">
         {% if data.CO_RESPONSIBLE_1_NAME != 'NO_DATA' %}
@@ -301,7 +324,8 @@
                     <i>Courses</i>:
                   </small>
                   {% for course in data.CO_RESPONSIBLE_1_COURSES %}
-                  <br /><a href="{{ url_for('.route_to_course', course_number=course) }}"><small class="fs-6 text-muted"><u>{{course}}</u></small></a>
+                  <br /><a href="{{ url_for('.route_to_course', course_number=course) }}"><small
+                      class="fs-6 text-muted"><u>{{course}}</u></small></a>
                   {% endfor %}
                 </td>
                 <td class="align-top">
@@ -328,7 +352,8 @@
                     <i>Courses</i>:
                   </small>
                   {% for course in data.CO_RESPONSIBLE_2_COURSES %}
-                  <br /><a href="{{ url_for('.route_to_course', course_number=course) }}"><small class="fs-6 text-muted"><u>{{course}}</u></small></a>
+                  <br /><a href="{{ url_for('.route_to_course', course_number=course) }}"><small
+                      class="fs-6 text-muted"><u>{{course}}</u></small></a>
                   {% endfor %}
                 </td>
                 <td class="align-top">
@@ -355,7 +380,8 @@
                     <i>Courses</i>:
                   </small>
                   {% for course in data.CO_RESPONSIBLE_3_COURSES %}
-                  <br /><a href="{{ url_for('.route_to_course', course_number=course) }}"><small class="fs-6 text-muted"><u>{{course}}</u></small></a>
+                  <br /><a href="{{ url_for('.route_to_course', course_number=course) }}"><small
+                      class="fs-6 text-muted"><u>{{course}}</u></small></a>
                   {% endfor %}
                 </td>
                 <td class="align-top">
@@ -382,7 +408,8 @@
                     <i>Courses</i>:
                   </small>
                   {% for course in data.CO_RESPONSIBLE_4_COURSES %}
-                  <br /><a href="{{ url_for('.route_to_course', course_number=course) }}"><small class="fs-6 text-muted"><u>{{course}}</u></small></a>
+                  <br /><a href="{{ url_for('.route_to_course', course_number=course) }}"><small
+                      class="fs-6 text-muted"><u>{{course}}</u></small></a>
                   {% endfor %}
                 </td>
                 <td class="align-top">
@@ -447,64 +474,84 @@
         </li>
         {% endif %}
         {% if data.LEGACY_RECOMMENDED_PREREQUISITES != 'None' %}
-        <li class="list-group-item">
+        <li class="list-group-item" style="overflow: visible;">
           <table class="table table-sm table-borderless mb-0">
             <tbody>
               <tr>
-                <th class="align-top" style="width: 9rem" scope="row">Prerequisites:   <small class="fs-6 text-muted" data-toggle="modal"
-                  data-target="#course_graph_modal" onclick="initCourseGraph()" style="cursor: pointer;">[+]</small></th>
-                <td class="align-top">{{data.LEGACY_RECOMMENDED_PREREQUISITES|safe}}</td>
+                <th class="align-top" style="width: 9rem" scope="row">Prerequisites:</th>
+                <td class="align-top" style="overflow: visible;">
+                  {{data.LEGACY_RECOMMENDED_PREREQUISITES|safe}}<br />
+                  <small class="fs-6 text-muted" onclick="toggleInlineGraph('prereq-legacy')" style="cursor: pointer;"><span
+                      id="toggle-prereq-legacy">[Show graph]</span></small>
+                  <div id="graph-container-prereq-legacy" style="display: none; margin-top: 15px; overflow: visible;"></div>
+                </td>
               </tr>
             </tbody>
           </table>
         </li>
         {% endif %}
         {% if data.RECOMMENDED_PREREQUISITES != 'None' %}
-        <li class="list-group-item">
+        <li class="list-group-item" style="overflow: visible;">
           <table class="table table-sm table-borderless mb-0">
             <tbody>
               <tr>
-                <th class="align-top" style="width: 9rem" scope="row">Prerequisites:   <small class="fs-6 text-muted" data-toggle="modal"
-                  data-target="#course_graph_modal" onclick="initCourseGraph()" style="cursor: pointer;">[+]</small></th>
-                <td class="align-top">{{data.RECOMMENDED_PREREQUISITES|safe}}</td>
+                <th class="align-top" style="width: 9rem" scope="row">Prerequisites:</th>
+                <td class="align-top" style="overflow: visible;">
+                  {{data.RECOMMENDED_PREREQUISITES|safe}}<br />
+                  <small class="fs-6 text-muted" onclick="toggleInlineGraph('prereq-recommended')"
+                    style="cursor: pointer;"><span id="toggle-prereq-recommended">[Show graph]</span></small>
+                  <div id="graph-container-prereq-recommended" style="display: none; margin-top: 15px; overflow: visible;">
+                  </div>
+                </td>
               </tr>
             </tbody>
           </table>
         </li>
         {% endif %}
         {% if data.MANDATORY_PREREQUISITES != 'None' %}
-        <li class="list-group-item">
+        <li class="list-group-item" style="overflow: visible;">
           <table class="table table-sm table-borderless mb-0">
             <tbody>
               <tr>
-                <th class="align-top" style="width: 9rem" scope="row">Prerequisites:   <small class="fs-6 text-muted" data-toggle="modal"
-                  data-target="#course_graph_modal" onclick="initCourseGraph()" style="cursor: pointer;">[+]</small></th>
-                <td class="align-top">{{data.MANDATORY_PREREQUISITES|safe}}</td>
+                <th class="align-top" style="width: 9rem" scope="row">Prerequisites:</th>
+                <td class="align-top" style="overflow: visible;">
+                  {{data.MANDATORY_PREREQUISITES|safe}}<br />
+                  <small class="fs-6 text-muted" onclick="toggleInlineGraph('prereq-mandatory')" style="cursor: pointer;"><span
+                      id="toggle-prereq-mandatory">[Show graph]</span></small>
+                  <div id="graph-container-prereq-mandatory" style="display: none; margin-top: 15px; overflow: visible;"></div>
+                </td>
               </tr>
             </tbody>
           </table>
         </li>
         {% endif %}
         {% if (data.MANDATORY_PREREQUISITES == 'None' and data.RECOMMENDED_PREREQUISITES == 'None') %}
-        <li class="list-group-item">
+        <li class="list-group-item" style="overflow: visible;">
           <table class="table table-sm table-borderless mb-0">
             <tbody>
               <tr>
-                <th class="align-top" style="width: 9rem" scope="row">Prerequisites:   <small class="fs-6 text-muted" data-toggle="modal"
-                  data-target="#course_graph_modal" onclick="initCourseGraph()" style="cursor: pointer;">[+]</small></th>
-                <td class="align-top">No prerequisites required</td>
+                <th class="align-top" style="width: 9rem" scope="row">Prerequisites:</th>
+                <td class="align-top" style="overflow: visible;">
+                  No prerequisites required<br />
+                  <div id="graph-container-prereq-none" style="display: none; margin-top: 15px; overflow: visible;"></div>
+                </td>
               </tr>
             </tbody>
           </table>
         </li>
         {% endif %}
         {% if data.SUBSEQUENT_COURSES != 'No other course requires this as a prerequisite' %}
-        <li class="list-group-item">
+        <li class="list-group-item" style="overflow: visible;">
           <table class="table table-sm table-borderless mb-0">
             <tbody>
               <tr>
-                <th class="align-top" style="width: 9rem" scope="row">Prerequisite for:</th>
-                <td class="align-top">{{data.SUBSEQUENT_COURSES|safe}}</td>
+                <th class="align-top" style="width: 9rem" scope="row">Subsequent:</th>
+                <td class="align-top" style="overflow: visible;">
+                  {{data.SUBSEQUENT_COURSES|safe}}<br />
+                  <small class="fs-6 text-muted" onclick="toggleInlineGraph('subseq')" style="cursor: pointer;"><span
+                      id="toggle-subseq">[Show graph]</span></small>
+                  <div id="graph-container-subseq" style="display: none; margin-top: 15px; overflow: visible;"></div>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -640,8 +687,8 @@
 <!-- End of additional information -->
 
 <!-- Start of modal: semester breakdown -->
-<div class="modal fade" id="semester_breakdown" tabindex="-1" role="dialog"
-  aria-labelledby="semester_breakdown_label" aria-hidden="true">
+<div class="modal fade" id="semester_breakdown" tabindex="-1" role="dialog" aria-labelledby="semester_breakdown_label"
+  aria-hidden="true">
   <div class="modal-dialog modal-dialog-scrollable" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -662,27 +709,25 @@
             </tr>
           </thead>
           <tbody>
-          {% for semester, semester_data in semesters.items() %}
-          {% if semester_data.TOTAL_STUDENTS and (0.05 * data.TOTAL_STUDENTS) < semester_data.TOTAL_STUDENTS %}
-          <tr>
-            <th style="width: 33%" scope="row">{{semester_data.SEMESTER_NAME}}</th>
-            <td class="align-top">{{semester_data.AVERAGE_GRADE}}</td>
-            <td class="align-top">{{semester_data.PERCENT_FAILED}}%</td>
-            <td class="align-top">{{semester_data.TOTAL_STUDENTS}}</td>
-          </tr>
-          {% endif %}
-          {% endfor %}
+            {% for semester, semester_data in semesters.items() %}
+            {% if semester_data.TOTAL_STUDENTS and (0.05 * data.TOTAL_STUDENTS) < semester_data.TOTAL_STUDENTS %} <tr>
+              <th style="width: 33%" scope="row">{{semester_data.SEMESTER_NAME}}</th>
+              <td class="align-top">{{semester_data.AVERAGE_GRADE}}</td>
+              <td class="align-top">{{semester_data.PERCENT_FAILED}}%</td>
+              <td class="align-top">{{semester_data.TOTAL_STUDENTS}}</td>
+              </tr>
+              {% endif %}
+              {% endfor %}
           </tbody>
-          {% if (0.05 * data.TOTAL_STUDENTS) < data.TOTAL_STUDENTS %}
-          <tfoot>
+          {% if (0.05 * data.TOTAL_STUDENTS) < data.TOTAL_STUDENTS %} <tfoot>
             <tr>
               <th style="width: 33%" scope="row">All semesters</th>
               <td class="align-top">{{data.AVERAGE_GRADE}}</td>
               <td class="align-top">{{data.PERCENT_FAILED}}%</td>
               <td class="align-top">{{data.TOTAL_STUDENTS}}</td>
             </tr>
-          </tfoot>
-          {% endif %}
+            </tfoot>
+            {% endif %}
         </table>
 
         <br>
@@ -708,20 +753,18 @@
           </thead>
           <tbody>
             {% for semester, semester_data in semesters.items() %}
-            {% if 0 < semester_data.LEARNING_VOTES %}
-            <tr>
+            {% if 0 < semester_data.LEARNING_VOTES %} <tr>
               <th style="width: 33%" scope="row">{{semester_data.SEMESTER_NAME}}</th>
               <td class="align-top">{{semester_data.WORKLOAD_AVERAGE_SCORE}}</td>
               <td class="align-top">{{semester_data.LEARNING_AVERAGE_SCORE}}</td>
               <td class="align-top">{{semester_data.MOTIVATION_AVERAGE_SCORE}}</td>
               <td class="align-top">{{semester_data.FEEDBACK_AVERAGE_SCORE}}</td>
               <td class="align-top">{{semester_data.LEARNING_VOTES}}</td>
-            </tr>
-            {% endif %}
-            {% endfor %}
+              </tr>
+              {% endif %}
+              {% endfor %}
           </tbody>
-          {% if 0 < data.LEARNING_VOTES %}
-          <tfoot>
+          {% if 0 < data.LEARNING_VOTES %} <tfoot>
             <tr>
               <th style="width: 33%" scope="row">All semesters</th>
               <td class="align-top">{{data.WORKLOAD_AVERAGE_SCORE}}</td>
@@ -730,8 +773,8 @@
               <td class="align-top">{{data.FEEDBACK_AVERAGE_SCORE}}</td>
               <td class="align-top">{{data.LEARNING_VOTES}}</td>
             </tr>
-          </tfoot>
-          {% endif %}
+            </tfoot>
+            {% endif %}
         </table>
       </div>
       <div class="modal-footer">
@@ -762,15 +805,15 @@
               <th style="width: 6em" scope="row">
                 <div
                   style="content: ''; margin-right: .5em; display: inline-block; width: 10px; height: 10px; background-color: #FFFFFF;">
-                </div> Grade</th>
+                </div> Grade
+              </th>
               <th colspan="2">Distribution</th>
               <th style="width: 3em"></th>
             </tr>
           </thead>
           <tbody>
             <!-- Start of pass grades -->
-            {% if 0 < data.PASSED %}
-            <tr>
+            {% if 0 < data.PASSED %} <tr>
               <td scope="row">
                 <div
                   style="content: ''; margin-right: .5em; display: inline-block; width: 10px; height: 10px; background-color: #01D93F;">
@@ -782,11 +825,12 @@
                     <div class="row">
                       <div class="chart">
                         <span class="block"
-                        style="height: 18px; background-color: #01D93F; float: left; color: #01D93F00; position: relative;"
-                        title="Pass">
+                          style="height: 18px; background-color: #01D93F; float: left; color: #01D93F00; position: relative;"
+                          title="Pass">
                           <span class="value"
-                            style="font-size: x-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.PASSED) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
-                          </span>
+                            style="font-size: x-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100
+                            * data.PASSED) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                        </span>
                         </span>
                       </div>
                     </div>
@@ -794,12 +838,12 @@
                 </figure>
               </td>
               <td style="width: 3em"><small class="fs-6 text-muted">({{data.PASSED}})</small></td>
-            </tr>
+              </tr>
             <!-- End of pass grades -->
             {% endif %}
             <!-- Start of seven_step_grades -->
-            {% if 0 < data.GRADE_12 + data.GRADE_10 + data.GRADE_7 + data.GRADE_4 + data.GRADE_02 + data.GRADE_00 + data.GRADE_MINUS_3 %}
-            <tr>
+            {% if 0 < data.GRADE_12 + data.GRADE_10 + data.GRADE_7 + data.GRADE_4 + data.GRADE_02 + data.GRADE_00 +
+              data.GRADE_MINUS_3 %} <tr>
               <td scope="row">
                 <div
                   style="content: ''; margin-right: .5em; display: inline-block; width: 10px; height: 10px; background-color: #244710;">
@@ -814,8 +858,9 @@
                           style="height: 18px; background-color: #244710; float: left; color: #24471000; position: relative;"
                           title="Grade 12">
                           <span class="value"
-                            style="font-size: x-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_12) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
-                          </span>
+                            style="font-size: x-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100
+                            * data.GRADE_12) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                        </span>
                         </span>
                       </div>
                     </div>
@@ -823,162 +868,167 @@
                 </figure>
               </td>
               <td style="width: 3em"><small class="fs-6 text-muted">({{data.GRADE_12}})</small></td>
-            </tr>
-            <tr>
-              <td scope="row">
-                <div
-                  style="content: ''; margin-right: .5em; display: inline-block; width: 10px; height: 10px; background-color: #1B791F;">
-                </div> 10</th>
-              <td style="width: 4em">{{((100 * data.GRADE_10) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</td>
-              <td>
-                <figure class="mb-0 mt-1">
-                  <div class="graphic">
-                    <div class="row">
-                      <div class="chart">
-                        <span class="block"
-                        style="height: 18px; background-color: #1B791F; float: left; color: #1B791F00; position: relative;"
-                        title="Grade 10">
-                          <span class="value"
-                            style="font-size: x-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_10) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+              </tr>
+              <tr>
+                <td scope="row">
+                  <div
+                    style="content: ''; margin-right: .5em; display: inline-block; width: 10px; height: 10px; background-color: #1B791F;">
+                  </div> 10</th>
+                <td style="width: 4em">{{((100 * data.GRADE_10) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</td>
+                <td>
+                  <figure class="mb-0 mt-1">
+                    <div class="graphic">
+                      <div class="row">
+                        <div class="chart">
+                          <span class="block"
+                            style="height: 18px; background-color: #1B791F; float: left; color: #1B791F00; position: relative;"
+                            title="Grade 10">
+                            <span class="value"
+                              style="font-size: x-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100
+                              * data.GRADE_10) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
                           </span>
-                        </span>
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </figure>
-              </td>
-              <td style="width: 3em"><small class="fs-6 text-muted">({{data.GRADE_10}})</small></td>
-            </tr>
-            <tr>
-              <td scope="row">
-                <div
-                  style="content: ''; margin-right: .5em; display: inline-block; width: 10px; height: 10px; background-color: #01D93F;">
-                </div> 7</th>
-              <td style="width: 4em">{{((100 * data.GRADE_7) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</td>
-              <td>
-                <figure class="mb-0 mt-1">
-                  <div class="graphic">
-                    <div class="row">
-                      <div class="chart">
-                        <span class="block"
-                        style="height: 18px; background-color: #01D93F; float: left; color: #01D93F00; position: relative;"
-                        title="Grade 7">
-                          <span class="value"
-                            style="font-size: x-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_7) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                  </figure>
+                </td>
+                <td style="width: 3em"><small class="fs-6 text-muted">({{data.GRADE_10}})</small></td>
+              </tr>
+              <tr>
+                <td scope="row">
+                  <div
+                    style="content: ''; margin-right: .5em; display: inline-block; width: 10px; height: 10px; background-color: #01D93F;">
+                  </div> 7</th>
+                <td style="width: 4em">{{((100 * data.GRADE_7) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</td>
+                <td>
+                  <figure class="mb-0 mt-1">
+                    <div class="graphic">
+                      <div class="row">
+                        <div class="chart">
+                          <span class="block"
+                            style="height: 18px; background-color: #01D93F; float: left; color: #01D93F00; position: relative;"
+                            title="Grade 7">
+                            <span class="value"
+                              style="font-size: x-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100
+                              * data.GRADE_7) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
                           </span>
-                        </span>
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </figure>
-              </td>
-              <td style="width: 3em"><small class="fs-6 text-muted">({{data.GRADE_7}})</small></td>
-            </tr>
-            <tr>
-              <td scope="row">
-                <div
-                  style="content: ''; margin-right: .5em; display: inline-block; width: 10px; height: 10px; background-color: #FDBF02;">
-                </div> 4</th>
-              <td style="width: 4em">{{((100 * data.GRADE_4) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</td>
-              <td>
-                <figure class="mb-0 mt-1">
-                  <div class="graphic">
-                    <div class="row">
-                      <div class="chart">
-                        <span class="block"
-                        style="height: 18px; background-color: #FDBF02; float: left; color: #FDBF0200; position: relative;"
-                        title="Grade 4">
-                          <span class="value"
-                            style="font-size: x-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_4) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                  </figure>
+                </td>
+                <td style="width: 3em"><small class="fs-6 text-muted">({{data.GRADE_7}})</small></td>
+              </tr>
+              <tr>
+                <td scope="row">
+                  <div
+                    style="content: ''; margin-right: .5em; display: inline-block; width: 10px; height: 10px; background-color: #FDBF02;">
+                  </div> 4</th>
+                <td style="width: 4em">{{((100 * data.GRADE_4) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</td>
+                <td>
+                  <figure class="mb-0 mt-1">
+                    <div class="graphic">
+                      <div class="row">
+                        <div class="chart">
+                          <span class="block"
+                            style="height: 18px; background-color: #FDBF02; float: left; color: #FDBF0200; position: relative;"
+                            title="Grade 4">
+                            <span class="value"
+                              style="font-size: x-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100
+                              * data.GRADE_4) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
                           </span>
-                        </span>
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </figure>
-              </td>
-              <td style="width: 3em"><small class="fs-6 text-muted">({{data.GRADE_4}})</small></td>
-            </tr>
-            <tr>
-              <td scope="row">
-                <div
-                  style="content: ''; margin-right: .5em; display: inline-block; width: 10px; height: 10px; background-color: #FE7E03;">
-                </div> 02</th>
-              <td style="width: 4em">{{((100 * data.GRADE_02) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</td>
-              <td>
-                <figure class="mb-0 mt-1">
-                  <div class="graphic">
-                    <div class="row">
-                      <div class="chart">
-                        <span class="block"
-                        style="height: 18px; background-color: #FE7E03; float: left; color: #FE7E0300; position: relative;"
-                        title="Grade 02">
-                          <span class="value"
-                            style="font-size: x-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_02) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                  </figure>
+                </td>
+                <td style="width: 3em"><small class="fs-6 text-muted">({{data.GRADE_4}})</small></td>
+              </tr>
+              <tr>
+                <td scope="row">
+                  <div
+                    style="content: ''; margin-right: .5em; display: inline-block; width: 10px; height: 10px; background-color: #FE7E03;">
+                  </div> 02</th>
+                <td style="width: 4em">{{((100 * data.GRADE_02) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</td>
+                <td>
+                  <figure class="mb-0 mt-1">
+                    <div class="graphic">
+                      <div class="row">
+                        <div class="chart">
+                          <span class="block"
+                            style="height: 18px; background-color: #FE7E03; float: left; color: #FE7E0300; position: relative;"
+                            title="Grade 02">
+                            <span class="value"
+                              style="font-size: x-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100
+                              * data.GRADE_02) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
                           </span>
-                        </span>
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </figure>
-              </td>
-              <td style="width: 3em"><small class="fs-6 text-muted">({{data.GRADE_02}})</small></td>
-            </tr>
-            <tr>
-              <td scope="row">
-                <div
-                  style="content: ''; margin-right: .5em; display: inline-block; width: 10px; height: 10px; background-color: #D44B33;">
-                </div> 00</th>
-              <td style="width: 4em">{{((100 * data.GRADE_00) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</td>
-              <td>
-                <figure class="mb-0 mt-1">
-                  <div class="graphic">
-                    <div class="row">
-                      <div class="chart">
-                        <span class="block"
-                        style="height: 18px; background-color: #D44B33; float: left; color: #D44B3300; position: relative;"
-                        title="Grade 00">
-                          <span class="value"
-                            style="font-size: x-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_00) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                  </figure>
+                </td>
+                <td style="width: 3em"><small class="fs-6 text-muted">({{data.GRADE_02}})</small></td>
+              </tr>
+              <tr>
+                <td scope="row">
+                  <div
+                    style="content: ''; margin-right: .5em; display: inline-block; width: 10px; height: 10px; background-color: #D44B33;">
+                  </div> 00</th>
+                <td style="width: 4em">{{((100 * data.GRADE_00) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</td>
+                <td>
+                  <figure class="mb-0 mt-1">
+                    <div class="graphic">
+                      <div class="row">
+                        <div class="chart">
+                          <span class="block"
+                            style="height: 18px; background-color: #D44B33; float: left; color: #D44B3300; position: relative;"
+                            title="Grade 00">
+                            <span class="value"
+                              style="font-size: x-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100
+                              * data.GRADE_00) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
                           </span>
-                        </span>
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </figure>
-              </td>
-              <td style="width: 3em"><small class="fs-6 text-muted">({{data.GRADE_00}})</small></td>
-            </tr>
-            <tr>
-              <td scope="row">
-                <div
-                  style="content: ''; margin-right: .5em; display: inline-block; width: 10px; height: 10px; background-color: #8E1600;">
-                </div> -3</th>
-              <td style="width: 4em">{{((100 * data.GRADE_MINUS_3) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</td>
-              <td>
-                <figure class="mb-0 mt-1">
-                  <div class="graphic">
-                    <div class="row">
-                      <div class="chart">
-                        <span class="block"
-                        style="height: 18px; background-color: #8E1600; float: left; color: #8E160000; position: relative;"
-                        title="Grade -3">
-                          <span class="value"
-                            style="font-size: x-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_MINUS_3) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                  </figure>
+                </td>
+                <td style="width: 3em"><small class="fs-6 text-muted">({{data.GRADE_00}})</small></td>
+              </tr>
+              <tr>
+                <td scope="row">
+                  <div
+                    style="content: ''; margin-right: .5em; display: inline-block; width: 10px; height: 10px; background-color: #8E1600;">
+                  </div> -3</th>
+                <td style="width: 4em">{{((100 * data.GRADE_MINUS_3) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</td>
+                <td>
+                  <figure class="mb-0 mt-1">
+                    <div class="graphic">
+                      <div class="row">
+                        <div class="chart">
+                          <span class="block"
+                            style="height: 18px; background-color: #8E1600; float: left; color: #8E160000; position: relative;"
+                            title="Grade -3">
+                            <span class="value"
+                              style="font-size: x-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100
+                              * data.GRADE_MINUS_3) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
                           </span>
-                        </span>
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </figure>
-              </td>
-              <td style="width: 3em"><small class="fs-6 text-muted">({{data.GRADE_MINUS_3}})</small></td>
-            </tr>
+                  </figure>
+                </td>
+                <td style="width: 3em"><small class="fs-6 text-muted">({{data.GRADE_MINUS_3}})</small></td>
+              </tr>
             <!-- End of seven_step_grades -->
             {% endif %}
             <!-- Start of fail grades -->
-            {% if 0 < data.FAILED + data.PASSED %}
-            <tr>
+            {% if 0 < data.FAILED + data.PASSED %} <tr>
               <td scope="row">
                 <div
                   style="content: ''; margin-right: .5em; display: inline-block; width: 10px; height: 10px; background-color: #8E1600;">
@@ -990,11 +1040,12 @@
                     <div class="row">
                       <div class="chart">
                         <span class="block"
-                        style="height: 18px; background-color: #8E1600; float: left; color: #8E160000; position: relative;"
-                        title="Fail">
+                          style="height: 18px; background-color: #8E1600; float: left; color: #8E160000; position: relative;"
+                          title="Fail">
                           <span class="value"
-                            style="font-size: x-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.FAILED) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
-                          </span>
+                            style="font-size: x-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100
+                            * data.FAILED) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                        </span>
                         </span>
                       </div>
                     </div>
@@ -1002,12 +1053,11 @@
                 </figure>
               </td>
               <td style="width: 3em"><small class="fs-6 text-muted">({{data.FAILED}})</small></td>
-            </tr>
+              </tr>
             <!-- End of fail grades -->
             {% endif %}
             <!-- Start of absent grade -->
-            {% if 0 < data.ABSENT %}
-            <tr>
+            {% if 0 < data.ABSENT %} <tr>
               <td scope="row">
                 <div
                   style="content: ''; margin-right: .5em; display: inline-block; width: 10px; height: 10px; background-color: #989898;">
@@ -1019,11 +1069,12 @@
                     <div class="row">
                       <div class="chart">
                         <span class="block"
-                        style="height: 18px; background-color: #989898; float: left; color: #8E160000; position: relative;"
-                        title="Absent from exam">
+                          style="height: 18px; background-color: #989898; float: left; color: #8E160000; position: relative;"
+                          title="Absent from exam">
                           <span class="value"
-                            style="font-size: x-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.ABSENT) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
-                          </span>
+                            style="font-size: x-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100
+                            * data.ABSENT) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                        </span>
                         </span>
                       </div>
                     </div>
@@ -1031,7 +1082,7 @@
                 </figure>
               </td>
               <td style="width: 3em"><small class="fs-6 text-muted">({{data.ABSENT}})</small></td>
-            </tr>
+              </tr>
             <!-- End of absent grade -->
             {% endif %}
           </tbody>
@@ -1040,89 +1091,97 @@
               <th scope="row">
                 <div
                   style="content: ''; margin-right: .5em; display: inline-block; width: 10px; height: 10px; background-color: #ffffff;">
-                </div> Total</th>
-                <td style="width: 4em"></td>
-                <td>
+                </div> Total
+              </th>
+              <td style="width: 4em"></td>
+              <td>
                 <!-- Start of grade graph -->
                 <figure class="mb-0 mt-1">
                   <div class="graphic">
                     <div class="row">
                       <div class="chart">
                         <!-- Start of pass grade -->
-                        {% if 0 < data.PASSED %}
-                        <span class="block"
-                        style="height: 18px; background-color: #01D93F; float: left; color: #01D93F00; position: relative; cursor: pointer;"
-                        title="Grade 'Passed'">
+                        {% if 0 < data.PASSED %} <span class="block"
+                          style="height: 18px; background-color: #01D93F; float: left; color: #01D93F00; position: relative; cursor: pointer;"
+                          title="Grade 'Passed'">
                           <span class="value"
-                            style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.PASSED) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                            style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100
+                            * data.PASSED) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
                           </span>
-                        </span>
+                          </span>
                         <!-- End of pass grade -->
                         {% endif %}
                         <!-- Start of seven-step-grades -->
-                        {% if 0 < data.GRADE_12 + data.GRADE_10 + data.GRADE_7 + data.GRADE_4 + data.GRADE_02 + data.GRADE_00 + data.GRADE_MINUS_3 %}
-                        <span class="block"
+                        {% if 0 < data.GRADE_12 + data.GRADE_10 + data.GRADE_7 + data.GRADE_4 + data.GRADE_02 +
+                          data.GRADE_00 + data.GRADE_MINUS_3 %} <span class="block"
                           style="height: 18px; background-color: #244710; float: left; color: #24471000; position: relative; cursor: pointer;"
                           title="Grade 12">
                           <span class="value"
-                            style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_12) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
-                        </span>
-                        <span class="block"
-                          style="height: 18px; background-color: #1B791F; float: left; color: #1B791F00; position: relative; cursor: pointer;"
-                          title="Grade 10">
-                          <span class="value"
-                            style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_10) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
-                        </span>
-                        <span class="block"
-                          style="height: 18px; background-color: #01D93F; float: left; color: #01D93F00; position: relative; cursor: pointer;"
-                          title="Grade 7">
-                          <span class="value"
-                            style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_7) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
-                        </span>
-                        <span class="block"
-                          style="height: 18px; background-color: #FDBF02; float: left; color: #FDBF0200; position: relative; cursor: pointer;"
-                          title="Grade 4">
-                          <span class="value"
-                            style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_4) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
-                        </span>
-                        <span class="block"
-                          style="height: 18px; background-color: #FE7E03; float: left; color: #FE7E0300; position: relative; cursor: pointer;"
-                          title="Grade 02">
-                          <span class="value"
-                            style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_02) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
-                        </span>
-                        <span class="block"
-                          style="height: 18px; background-color: #D44B33; float: left; color: #D44B3300; position: relative; cursor: pointer;"
-                          title="Grade 00">
-                          <span class="value"
-                            style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_00) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
-                        </span>
-                        <span class="block"
-                          style="height: 18px; background-color: #8E1600; float: left; color: #8E160000; position: relative; cursor: pointer;"
-                          title="Grade -3">
-                          <span class="value"
-                            style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.GRADE_MINUS_3) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
-                        </span>
+                            style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100
+                            * data.GRADE_12) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                          </span>
+                          <span class="block"
+                            style="height: 18px; background-color: #1B791F; float: left; color: #1B791F00; position: relative; cursor: pointer;"
+                            title="Grade 10">
+                            <span class="value"
+                              style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100
+                              * data.GRADE_10) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                          </span>
+                          <span class="block"
+                            style="height: 18px; background-color: #01D93F; float: left; color: #01D93F00; position: relative; cursor: pointer;"
+                            title="Grade 7">
+                            <span class="value"
+                              style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100
+                              * data.GRADE_7) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                          </span>
+                          <span class="block"
+                            style="height: 18px; background-color: #FDBF02; float: left; color: #FDBF0200; position: relative; cursor: pointer;"
+                            title="Grade 4">
+                            <span class="value"
+                              style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100
+                              * data.GRADE_4) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                          </span>
+                          <span class="block"
+                            style="height: 18px; background-color: #FE7E03; float: left; color: #FE7E0300; position: relative; cursor: pointer;"
+                            title="Grade 02">
+                            <span class="value"
+                              style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100
+                              * data.GRADE_02) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                          </span>
+                          <span class="block"
+                            style="height: 18px; background-color: #D44B33; float: left; color: #D44B3300; position: relative; cursor: pointer;"
+                            title="Grade 00">
+                            <span class="value"
+                              style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100
+                              * data.GRADE_00) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                          </span>
+                          <span class="block"
+                            style="height: 18px; background-color: #8E1600; float: left; color: #8E160000; position: relative; cursor: pointer;"
+                            title="Grade -3">
+                            <span class="value"
+                              style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100
+                              * data.GRADE_MINUS_3) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                          </span>
                         <!-- End of seven-step-grades -->
                         {% endif %}
                         <!-- Start of failed grade -->
-                        {% if 0 < data.FAILED %}
-                        <span class="block"
-                        style="height: 18px; background-color: #8E1600; float: left; color: #8E160000; position: relative; cursor: pointer;"
-                        title="Grade 'Failed'">
+                        {% if 0 < data.FAILED %} <span class="block"
+                          style="height: 18px; background-color: #8E1600; float: left; color: #8E160000; position: relative; cursor: pointer;"
+                          title="Grade 'Failed'">
                           <span class="value"
-                            style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.FAILED) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                            style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100
+                            * data.FAILED) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
                           </span>
-                        </span>
+                          </span>
                         <!-- End of failed grade -->
                         {% endif %}
-                        {% if 0 < data.ABSENT %}
-                        <span class="block"
+                        {% if 0 < data.ABSENT %} <span class="block"
                           style="height: 18px; background-color: #989898; float: left; color: #98989800; position: relative; cursor: pointer;"
                           title="Absent from exam">
                           <span class="value"
-                            style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100 * data.ABSENT) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
-                        </span>
+                            style="font-size: xx-small; line-height: 0em; position: absolute; top: 50%; left: 50%; transform: translate(-50%);">{{((100
+                            * data.ABSENT) / data.TOTAL_STUDENTS)|round(1, 'floor')}}%</span>
+                          </span>
                         {% endif %}
                       </div>
                     </div>
@@ -1147,39 +1206,17 @@
 <script src="{{ url_for('static', filename='assets/dist/js/gradegraph.js') }}"></script>
 <!-- End of custom javascripts -->
 
-<!-- Start of modal: Course Graph -->
-<div class="modal fade" id="course_graph_modal" tabindex="-1" role="dialog" aria-labelledby="course_graph_label" aria-hidden="true">
-  <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="course_graph_label">Course dependency graph</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body" style="position: relative; min-height: 400px; overflow-x: auto;">
-        <!-- The graph will be injected here by JS -->
-        <div id="graph-container" style="width: 100%; min-width: 100%; position: relative;">
-            <div class="text-center mt-5"><div class="spinner-border" role="status"></div><br>Loading graph data...</div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- End of modal: Course Graph -->
-
 <style>
-  /* Friend's CSS adapted */
+  /* Friend's CSS adapted for inline tooltips and highlighting */
   .tooltip-link {
     position: relative;
-    color: #000000;
+    color: #b50404;
     text-decoration: none;
     display: inline-block;
     padding: 2px;
+    transition: all 0.2s ease;
   }
+
   .tooltip-link .tooltip-text {
     visibility: hidden;
     opacity: 0;
@@ -1196,18 +1233,118 @@
     font-size: 12px;
     font-weight: normal;
     white-space: nowrap;
-    box-shadow: 0px 2px 8px rgba(0,0,0,0.15);
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
     transition: opacity 0.3s ease;
     pointer-events: none;
   }
+
   .tooltip-link:hover .tooltip-text {
     visibility: visible;
     opacity: 1;
   }
+
   /* Graph specific table styles */
   .graph-section-table td {
     padding: 5px;
     position: relative;
+    overflow: visible;
+  }
+
+  .graph-section-table {
+    overflow: visible;
+  }
+
+  /* Ensure parent containers allow tooltip overflow */
+  .list-group-item:has(.graph-section-table),
+  .list-group-item:has([id^="graph-container-"]) {
+    overflow: visible !important;
+  }
+
+  /* Graph node highlighting */
+  .tooltip-link.node-highlight {
+    background-color: #ffcccc;
+    border-radius: 3px;
+    font-weight: bold;
+    color: #b50404;
+    box-shadow: 0 0 8px rgba(181, 4, 4, 0.6);
+  }
+
+  .tooltip-link.node-neighbor {
+    background-color: #ffcccc;
+    border-radius: 3px;
+    font-weight: bold;
+    color: #b50404;
+    box-shadow: 0 0 5px rgba(181, 4, 4, 0.4);
+  }
+
+  svg line {
+    transition: stroke 0.2s ease, stroke-width 0.2s ease, opacity 0.2s ease;
+  }
+
+  .edge-highlight {
+    stroke: #b50404 !important;
+    stroke-width: 3 !important;
+    opacity: 1 !important;
+  }
+
+  .edge-dimmed {
+    opacity: 0.2 !important;
+  }
+
+  .node-dimmed {
+    opacity: 0.4 !important;
+  }
+
+  /* Friend's Preview mode for large graphs */
+  .graph-preview-wrapper {
+    position: relative;
+    max-height: 180px;
+    overflow-y: hidden;
+    overflow-x: visible;
+    cursor: pointer;
+    border: 2px dashed #ccc;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+  }
+
+  .graph-preview-wrapper:hover {
+    border-color: #999;
+  }
+
+  .graph-preview-blur {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: linear-gradient(to bottom, rgba(248, 249, 250, 0) 0%, rgba(248, 249, 250, 0.95) 70%, rgba(248, 249, 250, 1) 100%);
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .graph-preview-overlay {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 13px;
+    z-index: 11;
+    pointer-events: none;
+  }
+
+  .graph-preview-wrapper:hover .graph-preview-overlay {
+    background: rgba(0, 0, 0, 0.85);
+  }
+
+  .graph-expanded {
+    max-height: none !important;
+    overflow: visible !important;
+    cursor: default;
+    border: none;
   }
 </style>
 
@@ -1216,117 +1353,285 @@
     let graphData = null;
     let nameMapping = null;
     const courseId = "{{data.COURSE}}".trim();
+    const loadedGraphs = {}; // Track which inline graphs have been loaded
+    const graphEdges = {}; // Store edges for each graph for hover interactions
 
-    // Global function to be called by the button onclick
-    window.initCourseGraph = async function () {
-      console.log("Init Course Graph triggered");
-      const container = document.getElementById('graph-container');
+    // Load graph data (shared across all graphs)
+    async function loadGraphData() {
+      if (nameMapping) return true; // Already loaded
 
-      // Load data if not loaded
-      if (!nameMapping) {
-        try {
-          container.innerHTML = `<div class="text-center mt-5"><div class="spinner-border" role="status"></div><br>Loading graph data...</div>`;
+      try {
+        const [mapRes, graphRes] = await Promise.all([
+          fetch('https://raw.githubusercontent.com/Marcrulo/DTU-courses-extension/master/jsons/id_to_name.json'),
+          fetch('https://raw.githubusercontent.com/Marcrulo/DTU-courses-extension/master/jsons/graphs.json')
+        ]);
+        if (!mapRes.ok || !graphRes.ok) throw new Error("Network response was not ok");
+        nameMapping = await mapRes.json();
+        const allGraphs = await graphRes.json();
 
-          const [mapRes, graphRes] = await Promise.all([
-            fetch('https://raw.githubusercontent.com/Marcrulo/DTU-courses-extension/master/jsons/id_to_name.json'),
-            fetch('https://raw.githubusercontent.com/Marcrulo/DTU-courses-extension/master/jsons/graphs.json')
-          ]);
-          if (!mapRes.ok || !graphRes.ok) throw new Error("Network response was not ok");
-          nameMapping = await mapRes.json();
-          const allGraphs = await graphRes.json();
-
-          if (allGraphs[courseId]) {
-            graphData = allGraphs[courseId];
-          } else {
-            graphData = null;
-          }
-        } catch (err) {
-          container.innerHTML = `<p class='text-danger text-center p-4'>Error loading data.<br><small>${err.message}</small></p>`;
-          return;
+        if (allGraphs[courseId]) {
+          graphData = allGraphs[courseId];
+        } else {
+          graphData = null;
         }
+        return true;
+      } catch (err) {
+        console.error("Error loading graph data:", err);
+        return false;
+      }
+    }
+
+    // Friend's check if graph is small based on the largest layer size
+    function isGraphSmall(viewType) {
+      if (!graphData) return true;
+
+      const nodes = graphData.nodes || [];
+      let relevantNodes = nodes.filter(n => viewType === 'prereq' ? n.level <= 0 : n.level >= 0);
+
+      // Count nodes per level to find the largest layer
+      const levelCounts = {};
+      for (const node of relevantNodes) {
+        levelCounts[node.level] = (levelCounts[node.level] || 0) + 1;
+      }
+
+      // Consider a graph small if the largest layer has 6 or fewer nodes
+      const maxLayerSize = Math.max(...Object.values(levelCounts), 0);
+      return maxLayerSize <= 6;
+    }
+
+    // Expand graph from preview mode
+    window.expandGraphPreview = function (event, graphId) {
+      if (event) {
+        event.stopPropagation();
+        event.preventDefault();
+      }
+
+      const previewWrapper = document.getElementById(`preview-${graphId}`);
+      if (!previewWrapper) return;
+
+      previewWrapper.classList.add('graph-expanded');
+      previewWrapper.onclick = null;
+
+      const blur = previewWrapper.querySelector('.graph-preview-blur');
+      const overlay = previewWrapper.querySelector('.graph-preview-overlay');
+      if (blur) blur.remove();
+      if (overlay) overlay.remove();
+
+      previewWrapper.style.border = 'none';
+      previewWrapper.style.cursor = 'default';
+    };
+
+    // Toggle inline graph display
+    window.toggleInlineGraph = async function (graphId) {
+      const container = document.getElementById(`graph-container-${graphId}`);
+      const toggle = document.getElementById(`toggle-${graphId}`);
+
+      if (!container || !toggle) return;
+
+      // If already visible, hide it
+      if (container.style.display !== 'none' && container.innerHTML.trim() !== '') {
+        container.style.display = 'none';
+        toggle.textContent = '[Show graph]';
+        return;
+      }
+
+      // Show container
+      container.style.display = 'block';
+      toggle.textContent = '[Hide graph]';
+
+      // If already loaded, don't reload data or redraw
+      if (loadedGraphs[graphId]) return;
+
+      // Show loading indicator
+      container.innerHTML = '<div class="text-center my-3"><div class="spinner-border spinner-border-sm" role="status"></div> Loading graph...</div>';
+
+      // Fetch data
+      const loaded = await loadGraphData();
+      if (!loaded) {
+        container.innerHTML = '<p class="text-danger text-center p-2">Error loading graph data.</p>';
+        return;
       }
 
       if (!graphData) {
         container.innerHTML = `
-        <div class="alert alert-secondary text-center mt-4">
-        <strong>No graph data is available for ${courseId}.</strong><br>
-        This feature is provided by the <a href="https://github.com/Marcrulo/DTU-courses-extension" style="color: #990000; text-decoration: none;" target="_blank">DTU-courses-extension</a>, and data for this course is not yet available.
+          <div class="alert alert-secondary text-center my-2" style="font-size: 0.9em;">
+            <strong>No graph data available for ${courseId}.</strong><br>
+            <small>This feature is provided by the <a href="https://github.com/Marcrulo/DTU-courses-extension" target="_blank">DTU-courses-extension</a>.</small>
           </div>`;
+        loadedGraphs[graphId] = true;
         return;
       }
 
-      // Calculate grid data immediately to check structure, though we might not render yet
-      const { t_prereq, t_subseq } = buildGrid(graphData);
-      const nodeCount = graphData.nodes ? graphData.nodes.length : 0;
-      const NODE_THRESHOLD = 50;
+      const viewType = graphId === 'subseq' ? 'subseq' : 'prereq';
+      const relevantNodes = graphData.nodes.filter(n => viewType === 'prereq' ? n.level <= 0 : n.level >= 0);
+      const nodeCount = relevantNodes.length;
 
-      // Function to actually render the HTML and draw lines
-      const renderGraph = () => {
-        // Build HTML structure: SVG Layer BEHIND Content Layer
-        let html = `
-          <div class="alert alert-light text-center" style="font-size: 0.9em; color: gray;">
-            The graphs show all prerequisite relationships leading to and from the given course.<br>
-            Outdated courses that are no longer being offered is not displayed.
-          </div>
-
-          <div id="svg-wrapper" style="position: relative;">
-            <!-- SVG Layer -->
-            <svg id="graph-svg" style="position: absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index: 0;">
-              <defs>
-                <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-                  <polygon points="0 0, 10 3.5, 0 7" fill="rgba(181, 4, 4, 0.3)" />
-                </marker>
-              </defs>
-            </svg>
-
-            <!-- Content Layer -->
-            <div style="position: relative; z-index: 1;">
-              <h6 class="text-center border-bottom pb-2">Prerequisites</h6>
-              <div id="prereq-area" style="min-height: 50px; margin-bottom: 20px;">
-                ${generateTableHTML(t_prereq, 'prereq')}
-              </div>
-
-              <h6 class="text-center border-bottom pb-2 border-top pt-2">Subsequent Courses</h6>
-              <div id="subseq-area" style="min-height: 50px;">
-                ${generateTableHTML(t_subseq, 'subseq')}
-              </div>
-            </div>
-          </div>
-
-          <div class="text-center mt-4" style="font-size: 11px; color: #888;">
-            Data is based on <a href="https://github.com/Marcrulo/DTU-courses-extension" style="color: #888; text-decoration: none;" target="_blank">DTU-courses-extension</a> by Marcus Presutti.
-          </div>
-        `;
-
-        container.innerHTML = html;
-
-        // Wait for modal transition/DOM update to finish before drawing lines
-        setTimeout(() => {
-          drawSVGLines(t_prereq, 'prereq');
-          drawSVGLines(t_subseq, 'subseq');
-        }, 200);
-      };
-
-      // Logic to handle large graphs
-      if (nodeCount > NODE_THRESHOLD) {
+      // Original User's massive graph check
+      if (nodeCount > 50) {
         container.innerHTML = `
-          <div class="d-flex flex-column align-items-center justify-content-center" style="height: 300px;">
-            <h4 class="text-danger mb-3">Large graph warning</h4>
-            <p class="text-muted text-center px-4">
+          <div class="d-flex flex-column align-items-center justify-content-center border rounded p-4 my-2 mx-auto" style="background-color: #f8f9fa; max-width: 400px;">
+            <h5 class="text-danger mb-2">Large graph warning</h5>
+            <p class="text-muted text-center mb-3">
               This dependency graph contains <strong>${nodeCount}</strong> courses.<br>
             </p>
-            <button id="show-graph-anyway-btn" class="btn btn-outline-danger mt-2">
+            <button id="show-anyway-${graphId}" class="btn btn-sm btn-outline-danger mt-2">
               Show anyway
             </button>
           </div>
         `;
-        // Attach click listener to the new button
-        document.getElementById('show-graph-anyway-btn').onclick = renderGraph;
+        document.getElementById(`show-anyway-${graphId}`).onclick = function (e) {
+          e.stopPropagation();
+          const isPreview = !isGraphSmall(viewType);
+          renderInlineGraph(container, viewType, graphId, isPreview);
+        };
       } else {
-        // Small graph, render immediately
-        renderGraph();
+        const isPreview = !isGraphSmall(viewType);
+        renderInlineGraph(container, viewType, graphId, isPreview);
       }
+
+      loadedGraphs[graphId] = true;
     };
+
+    function renderInlineGraph(container, viewType, graphId, isPreview = false) {
+      const { t_prereq, t_subseq } = buildGrid(graphData);
+
+      const showPrereq = (viewType === 'prereq');
+      const showSubseq = (viewType === 'subseq');
+
+      const svgId = `graph-svg-${graphId}`;
+      const wrapperId = `svg-wrapper-${graphId}`;
+
+      let graphContent = `
+        <div id="${wrapperId}" style="position: relative; min-height: 100px;">
+          <!-- SVG Layer -->
+          <svg id="${svgId}" style="position: absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index: 0;">
+            <defs>
+              <marker id="arrowhead-${graphId}" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="rgba(181, 4, 4, 0.3)" />
+              </marker>
+              <marker id="arrowhead-highlight-${graphId}" markerWidth="11" markerHeight="7.7" refX="9.9" refY="3.85" orient="auto">
+                <polygon points="0 0, 11 3.85, 0 7.7" fill="#b50404" />
+              </marker>
+            </defs>
+          </svg>
+
+          <!-- Content Layer -->
+          <div style="position: relative; z-index: 1;">
+            ${showPrereq ? `
+            <div id="prereq-area-${graphId}" style="min-height: 50px;">
+              ${generateTableHTML(t_prereq, 'prereq', graphId)}
+            </div>
+            ` : ''}
+
+            ${showSubseq ? `
+            <div id="subseq-area-${graphId}" style="min-height: 50px;">
+              ${generateTableHTML(t_subseq, 'subseq', graphId)}
+            </div>
+            ` : ''}
+          </div>
+        </div>
+
+        <div class="text-center mt-2" style="font-size: 10px; color: #888;">
+          Made in collaboration with <a href="https://github.com/Marcrulo/DTU-courses-extension" style="color: #888; text-decoration: none;" target="_blank">DTU-courses-extension</a>
+        </div>
+      `;
+
+      if (isPreview) {
+        container.innerHTML = `
+          <div class="graph-preview-wrapper" id="preview-${graphId}" onclick="expandGraphPreview(event, '${graphId}')">
+            ${graphContent}
+            <div class="graph-preview-blur"></div>
+            <div class="graph-preview-overlay">▼ Click to expand full graph ▼</div>
+          </div>
+        `;
+      } else {
+        container.innerHTML = graphContent;
+      }
+
+      // Wait for DOM update to finish before drawing lines
+      setTimeout(() => {
+        if (showPrereq) drawSVGLines(t_prereq, 'prereq', graphId);
+        if (showSubseq) drawSVGLines(t_subseq, 'subseq', graphId);
+
+        setupGraphHoverInteractions(graphId);
+      }, 100);
+    }
+
+    // Set up hover interactions for graph nodes
+    function setupGraphHoverInteractions(graphId) {
+      if (!graphData || !graphData.edges) return;
+
+      graphEdges[graphId] = graphData.edges;
+      const nodes = document.querySelectorAll(`[id$="_prereq_${graphId}"],[id$="_subseq_${graphId}"]`);
+
+      nodes.forEach(nodeLink => {
+        nodeLink.addEventListener('mouseenter', function () {
+          highlightNodeAndNeighbors(this, graphId);
+        });
+
+        nodeLink.addEventListener('mouseleave', function () {
+          clearGraphHighlights(graphId);
+        });
+      });
+    }
+
+    function highlightNodeAndNeighbors(nodeElement, graphId) {
+      const nodeId = nodeElement.id;
+      const courseCode = nodeId.replace(/_prereq_.*|_subseq_.*/, '');
+      const edges = graphEdges[graphId] || [];
+      const connectedNodes = new Set();
+
+      edges.forEach((edge) => {
+        if (edge.source === courseCode) connectedNodes.add(edge.target);
+        else if (edge.target === courseCode) connectedNodes.add(edge.source);
+      });
+
+      const allNodes = document.querySelectorAll(`[id$="_prereq_${graphId}"],[id$="_subseq_${graphId}"]`);
+      const svg = document.getElementById(`graph-svg-${graphId}`);
+      const allEdges = svg ? svg.querySelectorAll('line') : [];
+
+      allNodes.forEach(node => {
+        if (node !== nodeElement) node.classList.add('node-dimmed');
+      });
+      allEdges.forEach(edge => edge.classList.add('edge-dimmed'));
+
+      nodeElement.classList.add('node-highlight');
+      nodeElement.classList.remove('node-dimmed');
+
+      connectedNodes.forEach(connectedId => {
+        const connectedNode = document.getElementById(`${connectedId}_prereq_${graphId}`) ||
+          document.getElementById(`${connectedId}_subseq_${graphId}`);
+        if (connectedNode) {
+          connectedNode.classList.add('node-neighbor');
+          connectedNode.classList.remove('node-dimmed');
+        }
+      });
+
+      allEdges.forEach(edge => {
+        const source = edge.getAttribute('data-source');
+        const target = edge.getAttribute('data-target');
+
+        if (source === courseCode || target === courseCode) {
+          edge.classList.add('edge-highlight');
+          edge.classList.remove('edge-dimmed');
+          edge.setAttribute('marker-end', `url(#arrowhead-highlight-${graphId})`);
+        }
+      });
+    }
+
+    function clearGraphHighlights(graphId) {
+      const allNodes = document.querySelectorAll(`[id$="_prereq_${graphId}"], [id$="_subseq_${graphId}"]`);
+      const svg = document.getElementById(`graph-svg-${graphId}`);
+      const allEdges = svg ? svg.querySelectorAll('line') : [];
+
+      allNodes.forEach(node => {
+        node.classList.remove('node-highlight', 'node-neighbor', 'node-dimmed');
+      });
+      allEdges.forEach(edge => {
+        edge.classList.remove('edge-highlight', 'edge-dimmed');
+        edge.setAttribute('marker-end', `url(#arrowhead-${graphId})`);
+      });
+    }
 
     function buildGrid(graph) {
       if (!graph) return { t_prereq: [], t_subseq: [] };
@@ -1369,18 +1674,13 @@
       return { t_prereq, t_subseq };
     }
 
-    function generateTableHTML(grid, type) {
-      const labelMap = {
-        prereq: "prerequisite",
-        subseq: "subsequent"
-      };
+    function generateTableHTML(grid, type, graphId) {
+      const labelMap = { prereq: "prerequisite", subseq: "subsequent" };
       const label = labelMap[type] || type;
       if (!grid || grid.length === 0 || grid.every(r => r.every(c => c === null))) {
-        return `<div class="text-center text-muted font-italic my-3">
-          No ${label} courses found.
-        </div>`;
+        return `<div class="text-center text-muted font-italic my-3">No ${label} courses found.</div>`;
       }
-      const suffix = type === 'prereq' ? '_p' : '_s';
+      const suffix = `_${type}_${graphId}`;
       let html = `<table class="graph-section-table" style="width:100%; border-collapse: separate; margin: 0 auto;">`;
       grid.forEach(row => {
         html += `<tr>`;
@@ -1401,13 +1701,13 @@
       return html;
     }
 
-    function drawSVGLines(grid, type) {
+    function drawSVGLines(grid, type, graphId) {
       if (!grid || !graphData || !graphData.edges) return;
-      const suffix = type === 'prereq' ? '_p' : '_s';
-      const svg = document.getElementById('graph-svg');
+      const suffix = `_${type}_${graphId}`;
+      const svg = document.getElementById(`graph-svg-${graphId}`);
+      const wrapper = document.getElementById(`svg-wrapper-${graphId}`);
+      if (!wrapper || !svg) return;
 
-      const wrapper = document.getElementById('svg-wrapper');
-      if (!wrapper) return; // Safety check
       const wrapperRect = wrapper.getBoundingClientRect();
 
       graphData.edges.forEach(edge => {
@@ -1418,55 +1718,45 @@
           const startRect = startElem.getBoundingClientRect();
           const endRect = endElem.getBoundingClientRect();
 
-          // Calculate center points
           const startCenterX = startRect.left + startRect.width / 2;
           const startCenterY = startRect.top + startRect.height / 2;
           const endCenterX = endRect.left + endRect.width / 2;
           const endCenterY = endRect.top + endRect.height / 2;
 
           let x1, y1, x2, y2;
+          const gap = 6;
 
-          // --- CONFIGURATION ---
-          const gap = 6; // The fixed distance (in pixels) the arrow starts/ends away from the text
-
-          // Default Y to vertical center
           y1 = startCenterY - wrapperRect.top;
           y2 = endCenterY - wrapperRect.top;
 
-          // Determine the direction of the line to attach to the correct edges
           if (endCenterX > startCenterX + 10) {
-            // Flows Left to Right (Standard)
             x1 = (startRect.right + gap) - wrapperRect.left;
             x2 = (endRect.left - gap) - wrapperRect.left;
           } else if (startCenterX > endCenterX + 10) {
-            // Flows Right to Left
             x1 = (startRect.left - gap) - wrapperRect.left;
             x2 = (endRect.right + gap) - wrapperRect.left;
           } else {
-            // Vertical line (same column)
             x1 = startCenterX - wrapperRect.left;
             x2 = endCenterX - wrapperRect.left;
-
             if (endCenterY > startCenterY) {
-              // Top to Bottom
               y1 = (startRect.bottom + gap) - wrapperRect.top;
               y2 = (endRect.top - gap) - wrapperRect.top;
             } else {
-              // Bottom to Top
               y1 = (startRect.top - gap) - wrapperRect.top;
               y2 = (endRect.bottom + gap) - wrapperRect.top;
             }
           }
 
-          // Create SVG Line
           const newLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
           newLine.setAttribute('x1', x1);
           newLine.setAttribute('y1', y1);
           newLine.setAttribute('x2', x2);
           newLine.setAttribute('y2', y2);
-          newLine.setAttribute('stroke', 'rgba(100, 100, 100, 0.4)'); // Grey color
+          newLine.setAttribute('stroke', 'rgba(100, 100, 100, 0.4)');
           newLine.setAttribute('stroke-width', '2');
-          newLine.setAttribute('marker-end', 'url(#arrowhead)');
+          newLine.setAttribute('marker-end', `url(#arrowhead-${graphId})`);
+          newLine.setAttribute('data-source', edge.source);
+          newLine.setAttribute('data-target', edge.target);
 
           svg.appendChild(newLine);
         }
