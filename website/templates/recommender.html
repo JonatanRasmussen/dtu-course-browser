@@ -436,9 +436,9 @@
             <div class="btn-group w-100" role="group">
               <button type="button" class="btn recommender-btn-outline-brand" id="recommender-view-carousel-btn"
                 onclick="switchViewMode('carousel')">🎠 Carousel</button>
-              <button type="button" class="btn recommender-btn-outline-brand active" id="recommender-view-list-btn"
+              <button type="button" class="btn recommender-btn-outline-brand" id="recommender-view-list-btn"
                 onclick="switchViewMode('list')">📜 List</button>
-              <button type="button" class="btn recommender-btn-outline-brand" id="recommender-view-analyzer-btn"
+              <button type="button" class="btn recommender-btn-outline-brand active" id="recommender-view-analyzer-btn"
                 onclick="switchViewMode('analyzer')">📊 Analyzer</button>
             </div>
           </div>
@@ -504,7 +504,7 @@
     </div>
 
     <!-- List View (Constrained width) -->
-    <div id="recommender-view-list" style="max-width: 36rem;">
+    <div id="recommender-view-list" style="max-width: 36rem;" class="recommender-hidden">
       <div class="row row-cols-1 g-3" id="recommender-list-container"></div>
       <div class="text-center mt-4">
         <button id="recommender-load-more-btn" class="btn btn-outline-dark" onclick="loadMoreListResults()">Load
@@ -513,7 +513,7 @@
     </div>
 
     <!-- Analyzer View (Empty container populated by JS) -->
-    <div id="recommender-view-analyzer" class="recommender-hidden">
+    <div id="recommender-view-analyzer">
       <section class="row row-cols-1 row-cols-xxl-3 g-4" id="recommender-analyzer-container">
         <!-- Content injected by JS -->
       </section>
@@ -534,8 +534,8 @@
   let unlockedCourses = []; // Stores the prerequisite courses data
   let searchTimeout = null;
 
-  // View State - Default is now 'list'
-  let currentViewMode = 'list';
+  // View State - Default is now 'analyzer'
+  let currentViewMode = 'analyzer';
 
   // List View State
   let listDisplayedCount = 0;
@@ -1430,7 +1430,8 @@
         </button>
       </div>
       <div class="modal-body">
-        <p>This is a breakdown of how this course compares to your academic profile. Machine learning is used to calculate
+        <p>This is a breakdown of how this course compares to your academic profile. Machine learning is used to
+          calculate
           the semantic similarity between each of your inputs and the course description of this course. The result is
           shown as a match percentage from 0-100%:</p>
         <table class="table table-sm table-striped mt-2 mb-0">

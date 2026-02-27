@@ -8,6 +8,16 @@
   <meta name="author" content="Jonatan Rasmussen, s183649" />
   <title>DTU Course Browser</title>
 
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-53NMP6CHX6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-53NMP6CHX6');
+  </script>
+
   <!-- Bootstrap core CSS -->
   <!--
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" />
@@ -34,6 +44,11 @@
   <script type="text/javascript"
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>    src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
   -->
+
+  <!-- Icon displayed on Google Search (Optional) -->
+  <link rel="icon" href="{{ url_for('static', filename='assets/brand/favicon.png') }}" type="image/png">
+  <!-- Apple Touch Icon (Optional, but good for iPhones/Macs) -->
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='assets/brand/favicon.png') }}">
 
   <!-- Custom colors for navbar -->
   <style>
