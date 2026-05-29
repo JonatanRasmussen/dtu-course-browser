@@ -207,7 +207,7 @@ class InfoFormatter:
                 Utils.logger(message, "warning", FileNameConsts.format_log_name)
                 for study_line in lst_of_study_lines:
                     if study_line not in values:
-                        print(f'Warning, {course_number}: "{study_line}" was not recognized as a study line. Go to line ~300 of info_consts.py and manually update list')
+                        print(f'Warning, {course_number}: "{study_line}" was not recognized as a study line. Go to line ~300 of info_consts.py and manually update list of study lines, or map it to an existing study line in format_study_lines.py')
 
             # Check if all expected values in SCRAPED_INFO_DICT[key] was found
             if len(values) == 0:

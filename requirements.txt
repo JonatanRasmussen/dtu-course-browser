@@ -1,6 +1,11 @@
-# I am using Python 3.11.7, older versions may or may not work.
-Flask>=3.0.3,<4.0           # Required for website_launch.py
-pandas>=2.2.2,<3.0          # Required for website_launch.py
-beautifulsoup4>=4.12.3      # Required for main.py – Not required for website_launch.py
-lxml>=5.2.2                 # Required for main.py – Not required for website_launch.py
-requests>=2.31.0            # Required for main.py – Not required for website_launch.py
+# I am using Python 3.11.7, older versions may or may not work. This is what works on my machine:
+# If you just want to run the website without re-scraping data, you just need website_launch.py
+Flask==3.0.3                # Required for website_launch.py
+pandas==2.2.2               # Required for website_launch.py and data scraping
+numpy==1.26.3               # Required for website_launch.py and data scraping
+beautifulsoup4==4.12.3      # Required for main.py – Not required for website_launch.py
+lxml==5.2.2                 # Required for main.py – Not required for website_launch.py
+requests==2.31.0            # Required for main.py – Not required for website_launch.py
+scikit-learn==1.5.2         # Required for recommender embeddings – Not required for website_launch.py
+onnxruntime==1.24.1         # Required for recommender embeddings – Not required for website_launch.py
+tokenizers==0.22.1          # Required for recommender embeddings – Not required for website_launch.py
