@@ -27,7 +27,7 @@ class AllInOneScraper:
 
     @staticmethod
     def run_all_scrape_scripts():
-        """ Run all the scrape scripts. Some of them uses Selenium Webbrowser """
+        """ Run all the scrape scripts. """
         course_semesters = Config.course_semesters
         AllInOneScraper._print_start_of_scrape_announcements(course_semesters, Config.course_years)
 
@@ -58,6 +58,8 @@ class AllInOneScraper:
 
     @staticmethod
     def run_all_scrape_scripts_one_semester_at_a_time():
+        # CSV_CREATOR.py WILL NOT BE COMPATIBLE WITH THE FILE NAMES GENERATED VIA THIS METHOD
+        # PLEASE USE run_all_scrape_scripts() INSTEAD!!!
         course_semesters = Config.course_semesters
         AllInOneScraper._print_start_of_scrape_announcements(course_semesters, Config.course_years)
 
@@ -111,5 +113,4 @@ class AllInOneScraper:
 #%%
 if __name__ == "__main__":
     AllInOneScraper.quick_test_scrape_for_debugging_please_ignore()
-    AllInOneScraper.run_all_scrape_scripts_one_semester_at_a_time()
     AllInOneScraper.run_all_scrape_scripts()

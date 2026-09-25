@@ -129,7 +129,6 @@ def format_study_line_scrape(string_of_study_lines, study_lines_dct, course_numb
 
         # If a study line has multiple different names across courses, combine them
         scraped_data = scraped_data.replace("BEng, Building and Civil Engineering","BEng, Arctic Civil Engineering")
-        scraped_data = scraped_data.replace("BSc, Biotechnology","BSc, Human Life Science Engineering")
         scraped_data = scraped_data.replace("BSc, Quantitative Biology and Disease Modelling","BSc, Human Life Science Engineering")
 
         # 2024/2025 If a study line has multiple different names across courses, combine them
@@ -171,11 +170,14 @@ def format_study_line_scrape(string_of_study_lines, study_lines_dct, course_numb
         scraped_data = scraped_data.replace("MSc, MSc. Eng., Architectural Engineering","MSc, Architectural Engineering")
         scraped_data = scraped_data.replace("BSc, BSc in Architectural Engineering","BSc, Architectural Engineering")
         scraped_data = scraped_data.replace("BEng, Naval Architecture and Maritime Engineering","BEng, Naval Architecture and Offshore Engineering")
-        scraped_data = scraped_data.replace("BSc, Biotecnology", "BSc, Human Life Science Engineering")
+        scraped_data = scraped_data.replace("BSc, Biotecnology", "BSc, Biotechnology")
         scraped_data = scraped_data.replace("BEng, Global Business and Engineering", "BEng, Global Business Engineering")
         scraped_data = scraped_data.replace("BSc, Applied Mathematics", "BSc, Mathematics and Technology")
         scraped_data = scraped_data.replace("BSc, Mathematics and TechnologyMathematics and Technology", "BSc, Mathematics and Technology")
         scraped_data = scraped_data.replace("Mandatory course, Mechanical Engineering, digital", "BEng, Mechanical Engineering")
+
+        # 2026/2027 Renaming study lines to match "official" list
+        scraped_data = scraped_data.replace("BEng, Industrial Engineeringement","BEng, Industrial Engineering")
 
         # Replace double comma
         scraped_data = scraped_data.replace("MSc,, ","MSc, ")

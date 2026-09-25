@@ -108,10 +108,19 @@
     color: #990000;
   }
 
+  #recommender-study-line {
+    color: #6c757d;
+  }
+
+  #recommender-study-line:valid {
+      color: #212529;
+  }
+
   /* Step 2: Basket */
   .recommender-basket-container {
     min-height: 100px;
-    /* Reduced height */
+    max-height: 250px; /* Prevent infinite growth when adding full study lines */
+    overflow-y: auto;  /* Enable scrolling */
     background-color: #fff;
     border: 1px solid #ced4da;
     border-radius: 0.25rem;
@@ -143,6 +152,11 @@
   .recommender-basket-item.text-item {
     border-left: 4px solid #005599;
     background-color: #f0f7ff;
+  }
+
+  .recommender-basket-item.historical-item {
+    border-left: 4px solid #FC7634;
+    background-color: #fff4f0;
   }
 
   .recommender-basket-text {
@@ -386,7 +400,7 @@
             </div>
 
             <!-- Interest Input -->
-            <div class="recommender-input-wrapper mb-0">
+            <div class="recommender-input-wrapper">
               <label for="recommender-free-text" class="form-label small text-muted mb-1">Or describe your
                 interests:</label>
               <div class="input-group input-group-sm">
@@ -397,6 +411,23 @@
                 </div>
               </div>
             </div>
+
+            <!-- Study Line Input -->
+            <div class="recommender-input-wrapper mb-0">
+              <label for="recommender-study-line" class="form-label small text-muted mb-1">Or import from study line:</label>
+              <div class="input-group input-group-sm">
+                <select class="form-select" id="recommender-study-line" required>
+                    <option value="" selected disabled>Select a study line...</option>
+                    {% for sl in study_lines %}
+                        <option value="{{ sl }}">{{ sl }}</option>
+                    {% endfor %}
+                </select>
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" onclick="addStudyLineToBasket()">Add</button>
+                </div>
+              </div>
+            </div>
+
           </div>
 
           <!-- Box 2: Top 5 Recommendations -->
@@ -456,10 +487,17 @@
 
         <!-- Updated to match Left Column Style -->
         <div class="card-body">
-          <div class="recommender-step-header">Course Basket</div>
-          <p class="recommender-step-desc">
-            Courses similar to these will be found.
-          </p>
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <div class="recommender-step-header">Course Basket</div>
+              <p class="recommender-step-desc mb-0">
+                Courses similar to these will be found.
+              </p>
+            </div>
+            <button class="btn btn-sm btn-light text-dark border" style="background-color: #FFFFFF;" onclick="openCvHelperModal()">
+              📄 CV Helper
+            </button>
+          </div>
 
           <!-- Wrapped in recommender-content-box for matching white box style -->
           <div class="recommender-content-box">
@@ -568,7 +606,8 @@
     }
 
     searchTimeout = setTimeout(() => {
-      fetch(`/search_courses?query=${encodeURIComponent(query)}`)
+      // Added include_historical=true flag
+      fetch(`/search_courses?query=${encodeURIComponent(query)}&include_historical=true`)
         .then(response => response.json())
         .then(data => {
           if (data.success) displayAutocompleteResults(data.results);
@@ -587,7 +626,6 @@
     let html = '';
     let count = 0;
 
-    // Get current IDs in basket to avoid duplicates
     const currentIds = new Set(basketItems.filter(i => i.type === 'course').map(i => i.value));
 
     results.forEach(course => {
@@ -595,10 +633,14 @@
       if (count >= 10) return;
 
       const safeName = course.name.replace(/'/g, "\\'");
+      const isHist = course.is_historical ? 'true' : 'false';
+
+      // Format historical courses with italics
+      const displayName = course.is_historical ? `<em>${course.name}</em>` : course.name;
 
       html += `
-        <div class="recommender-autocomplete-item" onclick="addCourseToBasket('${course.course_id}', '${safeName}')">
-          <span class="recommender-match-id">${course.course_id}</span> ${course.name}
+        <div class="recommender-autocomplete-item" onclick="addCourseToBasket('${course.course_id}', '${safeName}', ${isHist})">
+          <span class="recommender-match-id">${course.course_id}</span> ${displayName}
         </div>
       `;
       count++;
@@ -612,25 +654,26 @@
     }
   }
 
-  // Helper to check if course is in basket
   function isCourseInBasket(courseId) {
     return basketItems.some(i => i.type === 'course' && i.value === courseId);
   }
 
-  function addCourseToBasket(courseId, courseName) {
-    // Check duplicate
+  // Added isHistorical parameter
+  function addCourseToBasket(courseId, courseName, isHistorical = false) {
     if (isCourseInBasket(courseId)) return;
 
     basketItems.push({
       type: 'course',
       value: courseId,
-      display: `<strong>${courseId}</strong> - ${courseName}`
+      is_historical: isHistorical,
+      display: isHistorical
+        ? `<strong>${courseId}</strong> - <em>${courseName}</em>`
+        : `<strong>${courseId}</strong> - ${courseName}`
     });
 
     updateBasketDisplay();
     document.getElementById('recommender-search-input').value = '';
 
-    // Close dropdown
     const listContainer = document.getElementById('recommender-autocomplete-list');
     listContainer.classList.remove('show');
     listContainer.innerHTML = '';
@@ -645,7 +688,6 @@
       return;
     }
 
-    // Truncate display text if too long
     const displaySnippet = text.length > 50 ? text.substring(0, 50) + "..." : text;
 
     basketItems.push({
@@ -659,7 +701,6 @@
   }
 
   function removeItemFromBasket(index) {
-    const item = basketItems[index];
     basketItems.splice(index, 1);
     updateBasketDisplay();
   }
@@ -673,8 +714,14 @@
 
     let html = '';
     basketItems.forEach((item, index) => {
-      const isText = item.type === 'text';
-      const cssClass = isText ? 'recommender-basket-item text-item' : 'recommender-basket-item';
+      let cssClass = 'recommender-basket-item';
+
+      // Apply specific styling classes
+      if (item.type === 'text') {
+        cssClass += ' text-item';
+      } else if (item.is_historical) {
+        cssClass += ' historical-item';
+      }
 
       html += `
         <div class="${cssClass}">
@@ -684,6 +731,70 @@
       `;
     });
     basket.innerHTML = html;
+  }
+
+  // --- Study Line Logic ---
+  function addStudyLineToBasket() {
+    const select = document.getElementById('recommender-study-line');
+    const studyLine = select.value;
+
+    if (!studyLine) {
+      alert("Please select a study line first.");
+      return;
+    }
+
+    const btn = select.nextElementSibling.querySelector('button');
+    const originalText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = "...";
+
+    fetch('/get_study_line_courses', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ study_line: studyLine })
+    })
+    .then(response => response.json())
+    .then(data => {
+      btn.disabled = false;
+      btn.textContent = originalText;
+
+      if (data.success) {
+        let addedCount = 0;
+        data.courses.forEach(c => {
+          if (!isCourseInBasket(c.course_id)) {
+            basketItems.push({
+              type: 'course',
+              value: c.course_id,
+              is_historical: false,
+              display: `<strong>${c.course_id}</strong> - ${c.name}`
+            });
+            addedCount++;
+          }
+        });
+
+        updateBasketDisplay();
+
+        if (addedCount > 0) {
+          // Show a temporary success message below the dropdown
+          const feedback = document.createElement('div');
+          feedback.className = 'text-success small mt-1 font-weight-bold';
+          feedback.textContent = `Successfully added ${addedCount} courses from ${studyLine}.`;
+          select.parentElement.parentElement.appendChild(feedback);
+          setTimeout(() => feedback.remove(), 4000);
+        } else {
+          alert("All courses from this study line are already in your basket.");
+        }
+
+        select.value = ""; // Reset selection
+      } else {
+        alert("Error: " + data.error);
+      }
+    })
+    .catch(error => {
+      btn.disabled = false;
+      btn.textContent = originalText;
+      alert("Network Error: " + error);
+    });
   }
 
   // --- Bulk Extract Logic ---
@@ -717,7 +828,10 @@
                 basketItems.push({
                   type: 'course',
                   value: c.course_id,
-                  display: `<strong>${c.course_id}</strong> - ${c.name || 'Unknown'}`
+                  is_historical: c.is_historical,
+                  display: c.is_historical
+                    ? `<strong>${c.course_id}</strong> - <em>${c.name}</em>`
+                    : `<strong>${c.course_id}</strong> - ${c.name || 'Unknown'}`
                 });
                 addedCount++;
               }
@@ -729,9 +843,7 @@
             let html = `<div class="text-success font-weight-bold mb-2 small">Added ${addedCount} new ${courseLabel} to basket.</div>`;
             feedbackDiv.innerHTML = html;
 
-            // Clear text area after successful add
             document.getElementById('recommender-bulk-text').value = '';
-
             return true;
           }
         } else {
@@ -1417,6 +1529,74 @@
     }
   });
 
+  // --- CV Helper Logic ---
+
+  function openCvHelperModal() {
+    // Extract only the course IDs from the basket
+    const courseIds = basketItems.filter(item => item.type === 'course').map(item => item.value);
+
+    if (courseIds.length === 0) {
+      alert("Add at least one course to your basket to use the CV Helper.");
+      return;
+    }
+
+    const textarea = document.getElementById('cv-helper-textarea');
+    textarea.value = "Loading context...";
+    document.getElementById('cv-helper-copy-feedback').style.display = 'none';
+
+    // Show modal (Handles both BS4 and BS5)
+    const modalEl = document.getElementById('cvHelperModal');
+    if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+      const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+      modal.show();
+    } else if (typeof $ !== 'undefined' && $.fn.modal) {
+      $(modalEl).modal('show');
+    }
+
+    // Fetch data from backend
+    fetch('/cv_helper', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ course_ids: courseIds })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        textarea.value = data.text;
+      } else {
+        textarea.value = "Error: " + data.error;
+      }
+    })
+    .catch(error => {
+      textarea.value = "Network Error: " + error;
+    });
+  }
+
+  function copyCvHelperText() {
+    const textarea = document.getElementById('cv-helper-textarea');
+    const text = textarea.value;
+
+    // Use modern clipboard API if available, fallback to execCommand
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(() => {
+            showCopyFeedback();
+        });
+    } else {
+        textarea.select();
+        textarea.setSelectionRange(0, 99999); // For mobile devices
+        document.execCommand("copy");
+        showCopyFeedback();
+    }
+  }
+
+  function showCopyFeedback() {
+    const feedback = document.getElementById('cv-helper-copy-feedback');
+    feedback.style.display = 'inline';
+    setTimeout(() => {
+      feedback.style.display = 'none';
+    }, 3000);
+  }
+
 </script>
 
 <!-- Similarity Breakdown Modal -->
@@ -1446,6 +1626,33 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CV Helper Modal -->
+<div class="modal fade" id="cvHelperModal" tabindex="-1" role="dialog" aria-labelledby="cvHelperModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="cvHelperModalLabel">Copy course data for AI purposes</h5>
+        <button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="small text-muted">
+          Copy the text below and provide it as context to an LLM (like ChatGPT) to help tailor your CV based on the selected courses.
+        </p>
+        <textarea class="form-control" id="cv-helper-textarea" rows="15" readonly></textarea>
+      </div>
+      <div class="modal-footer d-flex justify-content-between">
+        <span id="cv-helper-copy-feedback" class="text-success small font-weight-bold" style="display:none;">Copied to clipboard!</span>
+        <div>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" style="background-color: #990000; border-color: #990000;" onclick="copyCvHelperText()">Copy Text</button>
+        </div>
       </div>
     </div>
   </div>

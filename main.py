@@ -4,8 +4,11 @@ from recommender_update import run_recommender_embeddings_update
 from website_launch import website_launch_main
 #%%
 if __name__ == "__main__":
+    # USE THE EXACT PACKAGE VERSIONS SPECIFIED IN requirements.txt
+    # (pip installing the newest version of packages is CONFIRMED to sometimes break the code)
+    # For example, newest Pandas version might be incompatible with the provided .pkl data files
+
     # Scrape all data from DTU's websites and save it to scraped_data folder
-    # Note that this uses Selenium Webbrowser
     AllInOneScraper.run_all_scrape_scripts() # THIS TAKES HOURS. Async url scraping is NOT IMPLEMENTED
 
     # Take data from scraped_data folder and clean+format+parse it.

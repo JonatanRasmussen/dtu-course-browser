@@ -5,6 +5,7 @@ class FileNameConsts:
     scraped_data_folder_name = "scraped_data"
     archived_courses_json = "archived_courses"
     course_number_json = "course_numbers"
+    cv_helper_json = "cv_helper"
     df_index = 'COURSE'
     df_name = 'NAME'
     eval_df = 'scraped_evals'
