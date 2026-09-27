@@ -1,5 +1,3 @@
-
-
 # Imports
 import json
 # Helper functions and global constants
@@ -12,7 +10,7 @@ def load_course_data_dct_json_file(nested_dct_name):
     file_name = WebsiteConsts.json_course_data
     try:
         pythonanywhere_dct_name = FileNameConsts.pythonanywherecom_path_of_pkl + file_name + '.json'
-        with open(pythonanywhere_dct_name) as f:
+        with open(pythonanywhere_dct_name, encoding='utf-8') as f:
             dct = json.load(f)
         if nested_dct_name in dct:
             return dct[nested_dct_name]
@@ -21,31 +19,31 @@ def load_course_data_dct_json_file(nested_dct_name):
     except FileNotFoundError:
         dct_name = FileNameConsts.path_of_pkl + file_name + '.json'
         try:
-            with open(dct_name) as f:
+            with open(dct_name, encoding='utf-8') as f:
                 dct = json.load(f)
             if nested_dct_name in dct:
                 return dct[nested_dct_name]
             else:
                 return {}
-        except: # return empty dict if no file found
-            print(f"Error: Dictionary with file name {file_name} was not found in {FileNameConsts.path_of_pkl}")
+        except Exception as e: # return empty dict if no file found
+            print(f"Error: Dictionary with file name {file_name} failed to load from {FileNameConsts.path_of_pkl}. Reason: {e}")
             return {}
 
 def load_dct_from_json_file(file_name):
     """Load in dictionary from json file"""
     try:
         pythonanywhere_dct_name = FileNameConsts.pythonanywherecom_path_of_pkl + file_name + '.json'
-        with open(pythonanywhere_dct_name) as f:
+        with open(pythonanywhere_dct_name, encoding='utf-8') as f:
             dct = json.load(f)
         return dct
     except FileNotFoundError:
         try:
             dct_name = FileNameConsts.path_of_pkl + file_name + '.json'
-            with open(dct_name) as f:
+            with open(dct_name, encoding='utf-8') as f:
                 dct = json.load(f)
             return dct
-        except: # return empty dict if no file found
-            print(f"Error: Dictionary with file name {file_name} was not found in {FileNameConsts.path_of_pkl}")
+        except Exception as e: # return empty dict if no file found
+            print(f"Error: Dictionary with file name {file_name} failed to load from {FileNameConsts.path_of_pkl}. Reason: {e}")
             return {}
 
 def create_filtered_list_from_url_args(url_args):
@@ -111,8 +109,8 @@ def get_name_of_list(name_of_list):
 
 def course_lists(course_data): # Add dict name to dicts_to_display()
     all_courses = [
-        "02105", "02003", "02456", "02476", "34126", "02180", "42500",
-        "10605", "63852", "02451", "38106", "38110", "42620", "42893",
+        "02105", "02003", "02456", "02476", "34126", "02180", "42620",
+        "10605", "63852", "02451", "38106", "38110", "38103", "42893",
         "02810", "62999", "27020", "01001", "10420", "25102", "02402",
     ]
 

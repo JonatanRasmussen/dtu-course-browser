@@ -10,8 +10,8 @@ COURSE,E21_GRADE_12,E21_GRADE_10,E21_GRADE_7,E21_GRADE_4,E21_GRADE_02,E21_GRADE_
 01018,15,14,11,9,6,3,0,No data,No data,3
 01019,8,7,23,19,2,4,1,No data,No data,2
 01020,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-01025,10,22,15,11,4,4,0,No data,No data,3
-01034,17,27,41,27,14,15,4,No data,No data,10
+01025,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
+01034,17,27,41,27,14,15,4,No data,No data,9
 01035,54,79,71,57,28,40,3,No data,No data,18
 01037,0,2,2,2,0,0,0,No data,No data,1
 01125,25,16,2,0,1,0,0,No data,No data,No data
@@ -34,10 +34,10 @@ COURSE,E21_GRADE_12,E21_GRADE_10,E21_GRADE_7,E21_GRADE_4,E21_GRADE_02,E21_GRADE_
 01666,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 01715,4,6,5,2,4,4,0,No data,No data,1
 01716,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-01901,53,115,127,96,50,153,34,0,0,141
+01901,53,115,127,96,50,153,34,0,0,138
 01904,8,22,38,23,45,12,1,No data,No data,20
-01920,11,20,29,43,34,111,31,No data,No data,81
-02101,21,50,70,41,9,25,7,No data,No data,20
+01920,11,20,29,43,34,111,31,No data,No data,80
+02101,21,50,70,41,9,25,7,No data,No data,19
 02102,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 02105,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 02110,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
@@ -46,7 +46,7 @@ COURSE,E21_GRADE_12,E21_GRADE_10,E21_GRADE_7,E21_GRADE_4,E21_GRADE_02,E21_GRADE_
 02128,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 02132,33,43,21,7,2,2,0,No data,No data,6
 02135,23,29,19,1,0,1,0,No data,No data,7
-02138,12,14,15,5,3,13,9,No data,No data,5
+02138,12,14,15,5,3,13,9,No data,No data,4
 02139,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 02141,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 02148,16,40,14,4,0,1,0,No data,No data,No data
@@ -96,8 +96,8 @@ COURSE,E21_GRADE_12,E21_GRADE_10,E21_GRADE_7,E21_GRADE_4,E21_GRADE_02,E21_GRADE_
 02269,18,39,28,5,1,0,0,No data,No data,1
 02282,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 02285,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-02287,12,12,17,12,1,5,0,No data,No data,7
-02289,16,8,13,8,12,7,0,No data,No data,6
+02287,12,12,17,12,1,5,0,No data,No data,6
+02289,16,8,13,8,12,7,0,No data,No data,5
 02291,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 02312,22,20,22,8,1,18,0,No data,No data,12
 02314,0,4,4,8,3,6,2,No data,No data,5
@@ -117,12 +117,12 @@ COURSE,E21_GRADE_12,E21_GRADE_10,E21_GRADE_7,E21_GRADE_4,E21_GRADE_02,E21_GRADE_
 02393,No data,No data,No data,No data,No data,No data,No data,217,26,18
 02402,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 02403,0,4,1,3,2,4,0,No data,No data,2
-02405,15,19,42,25,12,21,2,No data,No data,10
+02405,15,19,42,25,12,21,2,No data,No data,9
 02407,13,8,5,5,2,8,0,No data,No data,10
 02409,18,42,37,8,8,5,1,No data,No data,13
 02411,8,16,20,15,14,16,10,No data,No data,11
 02413,8,7,2,1,1,0,0,No data,No data,2
-02417,26,35,32,15,11,1,0,No data,No data,6
+02417,26,35,32,15,11,1,0,No data,No data,3
 02418,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 02421,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 02424,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
@@ -134,7 +134,7 @@ COURSE,E21_GRADE_12,E21_GRADE_10,E21_GRADE_7,E21_GRADE_4,E21_GRADE_02,E21_GRADE_
 02441,11,16,14,9,5,0,0,No data,No data,2
 02443,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 02445,14,24,23,15,2,0,0,No data,No data,2
-02450,48,122,145,127,47,63,21,No data,No data,56
+02450,48,122,145,127,47,62,21,No data,No data,56
 02455,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 02456,187,145,0,4,3,1,0,13,0,17
 02458,8,9,26,17,8,15,3,No data,No data,5
@@ -155,7 +155,7 @@ COURSE,E21_GRADE_12,E21_GRADE_10,E21_GRADE_7,E21_GRADE_4,E21_GRADE_02,E21_GRADE_
 02506,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 02507,0,0,1,0,0,0,0,26,0,No data
 02514,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-02525,9,26,15,10,4,2,4,No data,No data,No data
+02525,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 02526,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 02561,12,20,11,2,1,3,2,No data,No data,8
 02562,12,7,7,3,0,0,0,No data,No data,4
@@ -167,7 +167,7 @@ COURSE,E21_GRADE_12,E21_GRADE_10,E21_GRADE_7,E21_GRADE_4,E21_GRADE_02,E21_GRADE_
 02612,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 02614,3,25,26,0,0,1,0,No data,No data,No data
 02616,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-02619,11,4,6,2,0,0,0,No data,No data,4
+02619,11,4,6,2,0,0,0,No data,No data,3
 02623,No data,No data,No data,No data,No data,No data,No data,87,0,3
 02624,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 02631,35,91,65,41,5,82,9,No data,No data,29
@@ -376,7 +376,7 @@ COURSE,E21_GRADE_12,E21_GRADE_10,E21_GRADE_7,E21_GRADE_4,E21_GRADE_02,E21_GRADE_
 11621,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 11627,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 11691,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-11764,7,2,16,3,9,7,1,No data,No data,8
+11764,7,2,16,3,9,7,1,No data,No data,7
 11767,0,0,3,12,16,18,14,No data,No data,9
 11821,0,4,6,1,0,4,0,No data,No data,No data
 11823,0,3,7,2,1,0,0,No data,No data,No data
@@ -394,11 +394,11 @@ COURSE,E21_GRADE_12,E21_GRADE_10,E21_GRADE_7,E21_GRADE_4,E21_GRADE_02,E21_GRADE_
 11858,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 11859,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 11880,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-11911,1,5,10,10,20,16,9,No data,No data,15
+11911,1,5,10,10,20,16,9,No data,No data,14
 11936,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 11937,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 11946,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-11951,10,22,24,9,3,2,3,No data,No data,No data
+11951,10,22,24,9,3,2,2,No data,No data,No data
 11952,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 11953,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 11954,0,53,18,1,0,0,0,No data,No data,No data
@@ -666,7 +666,7 @@ COURSE,E21_GRADE_12,E21_GRADE_10,E21_GRADE_7,E21_GRADE_4,E21_GRADE_02,E21_GRADE_
 25808,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 25809,No data,No data,No data,No data,No data,No data,No data,4,0,No data
 26000,8,13,22,13,10,17,1,No data,No data,7
-26002,No data,No data,No data,No data,No data,No data,No data,6,0,No data
+26002,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 26003,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 26004,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 26006,4,18,12,12,6,10,1,No data,No data,10
@@ -706,7 +706,7 @@ COURSE,E21_GRADE_12,E21_GRADE_10,E21_GRADE_7,E21_GRADE_4,E21_GRADE_02,E21_GRADE_
 26400,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 26407,No data,No data,No data,No data,No data,No data,No data,17,0,No data
 26411,33,30,25,18,15,20,4,No data,No data,4
-26416,No data,No data,No data,No data,No data,No data,No data,24,0,No data
+26416,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 26422,12,19,9,4,1,0,0,No data,No data,8
 26426,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 26428,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
@@ -766,7 +766,7 @@ COURSE,E21_GRADE_12,E21_GRADE_10,E21_GRADE_7,E21_GRADE_4,E21_GRADE_02,E21_GRADE_
 27430,13,18,34,23,15,12,1,No data,No data,7
 27432,No data,No data,No data,No data,No data,No data,No data,29,0,No data
 27455,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-27460,19,29,28,5,0,0,0,No data,No data,2
+27460,19,29,28,5,0,0,0,No data,No data,1
 27470,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 27472,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 27510,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
@@ -781,7 +781,7 @@ COURSE,E21_GRADE_12,E21_GRADE_10,E21_GRADE_7,E21_GRADE_4,E21_GRADE_02,E21_GRADE_
 27823,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 27828,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 28001,11,10,18,16,2,7,1,No data,No data,No data
-28012,1,6,15,13,2,31,0,No data,No data,4
+28012,1,6,15,13,2,31,0,No data,No data,3
 28016,3,9,7,13,8,5,0,No data,No data,9
 28020,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 28022,2,3,6,17,2,17,1,No data,No data,11
@@ -789,7 +789,7 @@ COURSE,E21_GRADE_12,E21_GRADE_10,E21_GRADE_7,E21_GRADE_4,E21_GRADE_02,E21_GRADE_
 28121,3,6,5,0,0,0,0,No data,No data,No data
 28123,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 28125,1,5,3,0,0,0,0,No data,No data,No data
-28140,9,5,6,7,9,4,3,No data,No data,2
+28140,9,5,6,7,9,4,2,No data,No data,1
 28150,3,8,12,3,3,2,0,No data,No data,No data
 28157,4,16,21,6,0,0,0,No data,No data,3
 28160,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
@@ -992,7 +992,7 @@ COURSE,E21_GRADE_12,E21_GRADE_10,E21_GRADE_7,E21_GRADE_4,E21_GRADE_02,E21_GRADE_
 34020,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 34021,9,18,2,1,2,0,0,No data,No data,1
 34022,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-34029,32,11,8,0,0,0,0,No data,No data,3
+34029,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 34031,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 34032,15,5,5,2,0,0,0,No data,No data,4
 34034,1,5,2,5,1,2,1,No data,No data,3
@@ -1209,7 +1209,7 @@ COURSE,E21_GRADE_12,E21_GRADE_10,E21_GRADE_7,E21_GRADE_4,E21_GRADE_02,E21_GRADE_
 41843,No data,No data,No data,No data,No data,No data,No data,9,0,No data
 41860,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 42002,40,56,85,19,2,0,3,No data,No data,No data
-42009,33,77,58,10,3,1,4,No data,No data,No data
+42009,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 42011,4,38,17,1,0,0,0,No data,No data,1
 42014,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 42015,30,49,62,54,12,0,3,No data,No data,5
@@ -1283,7 +1283,7 @@ COURSE,E21_GRADE_12,E21_GRADE_10,E21_GRADE_7,E21_GRADE_4,E21_GRADE_02,E21_GRADE_
 42583,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 42584,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 42586,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-42587,26,32,12,9,6,9,0,No data,No data,3
+42587,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 42610,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 42611,No data,No data,No data,No data,No data,No data,No data,417,3,1
 42634,54,100,52,0,0,0,0,0,1,No data
@@ -1297,7 +1297,7 @@ COURSE,E21_GRADE_12,E21_GRADE_10,E21_GRADE_7,E21_GRADE_4,E21_GRADE_02,E21_GRADE_
 42786,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 42879,12,26,55,42,20,10,0,No data,No data,4
 42973,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-42B50,4,17,0,0,0,0,0,No data,No data,No data
+42B50,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 42B51,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 42B54,6,10,4,1,0,0,0,No data,No data,No data
 42B55,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
@@ -1320,7 +1320,7 @@ COURSE,E21_GRADE_12,E21_GRADE_10,E21_GRADE_7,E21_GRADE_4,E21_GRADE_02,E21_GRADE_
 46000,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 46100,5,7,9,1,0,0,0,4,0,1
 46110,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-46115,2,4,5,1,0,0,0,No data,No data,No data
+46115,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 46200,14,63,26,0,0,0,0,No data,No data,1
 46205,22,64,45,10,0,0,0,No data,No data,6
 46211,4,9,27,5,3,8,2,No data,No data,8
@@ -1353,14 +1353,14 @@ COURSE,E21_GRADE_12,E21_GRADE_10,E21_GRADE_7,E21_GRADE_4,E21_GRADE_02,E21_GRADE_
 46W37,1,4,3,1,0,0,0,No data,No data,3
 47201,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 47202,12,29,39,24,8,3,0,No data,No data,4
-47203,10,32,43,11,2,0,0,No data,No data,2
+47203,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 47204,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 47205,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-47209,2,12,4,1,0,0,0,No data,No data,No data
+47209,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 47210,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 47211,5,29,5,0,0,0,1,No data,No data,No data
 47301,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-47302,No data,No data,No data,No data,No data,No data,No data,17,0,1
+47302,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 47304,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 47305,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 47309,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
@@ -1421,7 +1421,7 @@ COURSE,E21_GRADE_12,E21_GRADE_10,E21_GRADE_7,E21_GRADE_4,E21_GRADE_02,E21_GRADE_
 62119,4,2,4,4,1,1,0,No data,No data,2
 62120,0,7,6,2,0,0,0,No data,No data,No data
 62122,12,16,16,17,7,4,0,No data,No data,8
-62133,No data,No data,No data,No data,No data,No data,No data,115,7,6
+62133,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 62134,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 62139,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 62142,8,13,12,6,1,0,0,No data,No data,No data
@@ -1480,7 +1480,7 @@ COURSE,E21_GRADE_12,E21_GRADE_10,E21_GRADE_7,E21_GRADE_4,E21_GRADE_02,E21_GRADE_
 62282,1,3,2,3,0,0,0,No data,No data,No data
 62297,No data,No data,No data,No data,No data,No data,No data,55,0,2
 62317,No data,No data,No data,No data,No data,No data,No data,113,2,4
-62318,20,18,30,19,13,2,0,No data,No data,11
+62318,20,18,30,19,13,2,0,No data,No data,10
 62324,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 62327,No data,No data,No data,No data,No data,No data,No data,59,4,5
 62328,0,0,17,22,18,3,0,No data,No data,1
@@ -1498,7 +1498,7 @@ COURSE,E21_GRADE_12,E21_GRADE_10,E21_GRADE_7,E21_GRADE_4,E21_GRADE_02,E21_GRADE_
 62416,2,3,3,7,3,9,0,No data,No data,5
 62417,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 62419,5,1,0,0,0,0,0,No data,No data,No data
-62420,6,5,6,5,2,1,0,No data,No data,8
+62420,6,5,6,5,2,1,0,No data,No data,7
 62422,4,1,3,6,4,7,0,No data,No data,6
 62423,No data,No data,No data,No data,No data,No data,No data,26,0,1
 62426,0,2,0,3,0,0,0,No data,No data,1
@@ -1529,7 +1529,7 @@ COURSE,E21_GRADE_12,E21_GRADE_10,E21_GRADE_7,E21_GRADE_4,E21_GRADE_02,E21_GRADE_
 62547,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 62550,24,38,39,7,1,0,0,No data,No data,8
 62557,5,6,8,4,0,0,0,No data,No data,7
-62558,8,11,3,1,0,1,0,No data,No data,5
+62558,8,11,3,1,0,1,0,No data,No data,4
 62560,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 62573,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 62575,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
@@ -1633,7 +1633,7 @@ COURSE,E21_GRADE_12,E21_GRADE_10,E21_GRADE_7,E21_GRADE_4,E21_GRADE_02,E21_GRADE_
 62I12,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 62I13,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 62I90,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-62K01,6,7,5,1,0,0,0,No data,No data,No data
+62K01,5,6,3,0,0,0,0,No data,No data,No data
 62K02,10,4,4,1,1,0,0,No data,No data,No data
 62K03,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 62L01,3,3,2,2,1,0,0,No data,No data,No data
@@ -1724,7 +1724,7 @@ KU012,No data,No data,No data,No data,No data,No data,No data,45,2,No data
 KU015,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 KU101,10,10,16,11,8,3,2,No data,No data,11
 KU103,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-KU105,3,4,3,0,0,0,0,No data,No data,No data
+KU105,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 KU112,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 KU113,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 KU115,14,9,3,0,0,0,0,No data,No data,No data

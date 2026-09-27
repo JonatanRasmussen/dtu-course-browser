@@ -12,14 +12,14 @@ COURSE,F22_GRADE_12,F22_GRADE_10,F22_GRADE_7,F22_GRADE_4,F22_GRADE_02,F22_GRADE_
 01020,No data,No data,No data,No data,No data,No data,No data,64,8,6
 01025,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 01034,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-01035,18,22,34,19,24,22,6,No data,No data,17
+01035,18,22,34,19,24,22,6,No data,No data,16
 01037,20,37,56,71,37,54,6,No data,No data,13
 01125,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 01227,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 01237,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-01238,11,8,5,2,1,2,0,No data,No data,3
+01238,11,8,5,2,1,2,0,No data,No data,2
 01257,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-01325,3,2,15,13,11,10,3,No data,No data,4
+01325,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 01405,5,2,4,2,0,0,0,No data,No data,1
 01410,6,16,31,15,9,7,17,No data,No data,2
 01415,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
@@ -34,12 +34,12 @@ COURSE,F22_GRADE_12,F22_GRADE_10,F22_GRADE_7,F22_GRADE_4,F22_GRADE_02,F22_GRADE_
 01666,31,23,2,0,0,0,0,No data,No data,3
 01715,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 01716,No data,No data,No data,No data,No data,No data,No data,9,0,No data
-01901,22,35,44,55,27,147,50,No data,No data,109
+01901,22,35,44,55,27,147,50,No data,No data,107
 01904,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-01920,24,68,103,119,70,253,62,0,0,107
+01920,24,68,103,119,70,253,62,0,0,106
 02101,0,1,2,1,3,4,0,No data,No data,1
 02102,31,25,16,5,6,12,0,No data,No data,7
-02105,48,57,124,67,47,66,11,No data,No data,67
+02105,48,57,124,67,47,66,11,No data,No data,66
 02110,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 02121,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 02122,58,27,2,0,0,0,0,No data,No data,1
@@ -105,7 +105,7 @@ COURSE,F22_GRADE_12,F22_GRADE_10,F22_GRADE_7,F22_GRADE_4,F22_GRADE_02,F22_GRADE_
 02320,3,3,2,4,7,6,2,No data,No data,2
 02321,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 02322,7,9,19,13,10,14,32,No data,No data,8
-02323,8,11,26,27,12,32,7,No data,No data,36
+02323,8,11,26,27,12,32,7,No data,No data,35
 02324,9,14,29,17,11,20,0,No data,No data,15
 02326,13,16,40,32,17,41,4,No data,No data,33
 02327,25,16,28,18,14,19,2,0,1,13
@@ -134,13 +134,13 @@ COURSE,F22_GRADE_12,F22_GRADE_10,F22_GRADE_7,F22_GRADE_4,F22_GRADE_02,F22_GRADE_
 02441,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 02443,No data,No data,No data,No data,No data,No data,No data,117,0,9
 02445,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-02450,34,88,109,96,47,58,13,No data,No data,62
+02450,34,88,109,96,47,57,13,No data,No data,62
 02455,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 02456,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 02458,1,2,2,2,2,2,1,No data,No data,No data
 02460,45,7,8,0,0,0,0,No data,No data,1
 02461,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-02462,41,17,17,4,1,0,0,No data,No data,10
+02462,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 02463,25,33,16,6,1,0,0,No data,No data,4
 02464,31,25,17,8,3,2,0,No data,No data,19
 02465,27,16,10,8,8,4,0,No data,No data,24
@@ -162,7 +162,7 @@ COURSE,F22_GRADE_12,F22_GRADE_10,F22_GRADE_7,F22_GRADE_4,F22_GRADE_02,F22_GRADE_
 02580,2,8,9,10,1,2,0,No data,No data,1
 02582,7,30,72,14,3,0,1,No data,No data,7
 02586,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-02601,20,35,36,12,2,12,0,0,13,2
+02601,20,35,36,12,2,12,0,0,12,2
 02610,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 02612,34,17,7,5,4,0,0,No data,No data,11
 02614,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
@@ -187,7 +187,7 @@ COURSE,F22_GRADE_12,F22_GRADE_10,F22_GRADE_7,F22_GRADE_4,F22_GRADE_02,F22_GRADE_
 02840,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 02841,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 02901,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-02910,No data,No data,No data,No data,No data,No data,No data,32,0,13
+02910,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 02913,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 02935,No data,No data,No data,No data,No data,No data,No data,23,1,2
 02936,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
@@ -218,7 +218,7 @@ COURSE,F22_GRADE_12,F22_GRADE_10,F22_GRADE_7,F22_GRADE_4,F22_GRADE_02,F22_GRADE_
 02G09,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 02G10,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 10018,10,10,23,18,24,33,0,No data,No data,21
-10020,12,36,61,84,28,23,5,No data,No data,21
+10020,12,36,61,84,28,23,5,No data,No data,20
 10022,27,45,65,48,45,35,24,No data,No data,17
 10024,19,21,39,23,22,8,1,No data,No data,11
 10031,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
@@ -483,7 +483,7 @@ COURSE,F22_GRADE_12,F22_GRADE_10,F22_GRADE_7,F22_GRADE_4,F22_GRADE_02,F22_GRADE_
 22101,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 22107,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 22110,No data,No data,No data,No data,No data,No data,No data,10,13,No data
-22111,27,45,52,12,11,2,6,No data,No data,7
+22111,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 22112,No data,No data,No data,No data,No data,No data,No data,40,1,2
 22113,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 22115,25,3,2,0,0,2,1,No data,No data,2
@@ -666,7 +666,7 @@ COURSE,F22_GRADE_12,F22_GRADE_10,F22_GRADE_7,F22_GRADE_4,F22_GRADE_02,F22_GRADE_
 25808,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 25809,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 26000,6,16,23,7,13,11,2,No data,No data,7
-26002,No data,No data,No data,No data,No data,No data,No data,33,0,No data
+26002,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 26003,No data,No data,No data,No data,No data,No data,No data,38,0,4
 26004,No data,No data,No data,No data,No data,No data,No data,15,1,1
 26006,0,2,1,3,0,1,0,No data,No data,No data
@@ -681,8 +681,8 @@ COURSE,F22_GRADE_12,F22_GRADE_10,F22_GRADE_7,F22_GRADE_4,F22_GRADE_02,F22_GRADE_
 26125,3,11,13,2,0,0,0,No data,No data,No data
 26127,No data,No data,No data,No data,No data,No data,No data,4,0,No data
 26130,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-26134,0,1,2,1,3,0,0,No data,No data,1
-26171,5,2,7,11,9,12,0,No data,No data,12
+26134,0,1,2,1,3,0,0,No data,No data,No data
+26171,5,2,7,11,9,12,0,No data,No data,10
 26173,4,5,7,4,1,4,0,No data,No data,4
 26174,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 26201,5,4,9,20,8,18,8,No data,No data,4
@@ -703,7 +703,7 @@ COURSE,F22_GRADE_12,F22_GRADE_10,F22_GRADE_7,F22_GRADE_4,F22_GRADE_02,F22_GRADE_
 26330,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 26371,No data,No data,No data,No data,No data,No data,No data,15,4,1
 26374,No data,No data,No data,No data,No data,No data,No data,41,0,1
-26400,13,21,44,39,40,53,23,No data,No data,24
+26400,13,21,44,39,40,53,22,No data,No data,24
 26407,No data,No data,No data,No data,No data,No data,No data,35,0,No data
 26411,0,1,2,0,5,3,1,No data,No data,No data
 26416,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
@@ -714,7 +714,7 @@ COURSE,F22_GRADE_12,F22_GRADE_10,F22_GRADE_7,F22_GRADE_4,F22_GRADE_02,F22_GRADE_
 26433,0,1,1,1,0,1,0,No data,No data,No data
 26436,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 26438,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-26444,6,9,7,2,1,5,0,No data,No data,2
+26444,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 26446,13,9,5,4,4,2,1,No data,No data,1
 26455,No data,No data,No data,No data,No data,No data,No data,5,0,No data
 26471,4,18,13,13,11,26,10,No data,No data,17
@@ -737,7 +737,7 @@ COURSE,F22_GRADE_12,F22_GRADE_10,F22_GRADE_7,F22_GRADE_4,F22_GRADE_02,F22_GRADE_
 27008,9,8,13,8,1,5,2,No data,No data,1
 27015,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 27016,No data,No data,No data,No data,No data,No data,No data,9,0,No data
-27020,4,18,30,7,0,2,0,No data,No data,7
+27020,4,18,30,7,0,2,0,No data,No data,6
 27022,13,49,59,38,26,26,1,No data,No data,21
 27024,No data,No data,No data,No data,No data,No data,No data,143,4,No data
 27026,1,0,2,2,5,3,0,No data,No data,2
@@ -777,9 +777,9 @@ COURSE,F22_GRADE_12,F22_GRADE_10,F22_GRADE_7,F22_GRADE_4,F22_GRADE_02,F22_GRADE_
 27800,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 27801,No data,No data,No data,No data,No data,No data,No data,33,0,2
 27815,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-27820,No data,No data,No data,No data,No data,No data,No data,15,0,No data
+27820,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 27823,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-27828,No data,No data,No data,No data,No data,No data,No data,4,0,No data
+27828,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 28001,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 28012,6,4,12,12,0,10,3,No data,No data,8
 28016,2,3,8,10,0,3,1,No data,No data,11
@@ -796,7 +796,7 @@ COURSE,F22_GRADE_12,F22_GRADE_10,F22_GRADE_7,F22_GRADE_4,F22_GRADE_02,F22_GRADE_
 28212,5,6,9,4,4,3,0,No data,No data,4
 28213,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 28214,9,6,0,0,0,0,0,No data,No data,No data
-28216,0,2,3,1,0,1,0,No data,No data,No data
+28216,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 28217,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 28221,24,6,0,0,0,0,0,No data,No data,No data
 28231,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
@@ -851,11 +851,11 @@ COURSE,F22_GRADE_12,F22_GRADE_10,F22_GRADE_7,F22_GRADE_4,F22_GRADE_02,F22_GRADE_
 28930,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 28932,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 28933,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-28934,No data,No data,No data,No data,No data,No data,No data,6,1,No data
+28934,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 29900,No data,No data,No data,No data,No data,No data,No data,11,0,No data
 29902,No data,No data,No data,No data,No data,No data,No data,25,1,No data
 29903,No data,No data,No data,No data,No data,No data,No data,19,0,No data
-29905,No data,No data,No data,No data,No data,No data,No data,6,0,No data
+29905,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 30010,6,18,19,4,1,0,0,No data,No data,2
 30020,13,29,17,3,0,0,0,No data,No data,3
 30021,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
@@ -867,7 +867,7 @@ COURSE,F22_GRADE_12,F22_GRADE_10,F22_GRADE_7,F22_GRADE_4,F22_GRADE_02,F22_GRADE_
 30120,10,17,12,8,1,0,0,0,1,3
 30131,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 30142,2,3,7,12,12,6,2,No data,No data,1
-30150,2,10,14,5,3,0,0,No data,No data,No data
+30150,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 30160,6,6,7,6,4,4,0,No data,No data,10
 30202,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 30220,6,5,2,1,0,0,0,No data,No data,No data
@@ -1211,7 +1211,7 @@ COURSE,F22_GRADE_12,F22_GRADE_10,F22_GRADE_7,F22_GRADE_4,F22_GRADE_02,F22_GRADE_
 42002,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 42009,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 42011,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-42014,2,54,84,50,20,1,1,No data,No data,11
+42014,2,54,84,50,20,0,1,No data,No data,11
 42015,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 42022,32,43,10,0,0,0,0,No data,No data,1
 42042,24,20,20,0,0,0,0,No data,No data,1
@@ -1224,7 +1224,7 @@ COURSE,F22_GRADE_12,F22_GRADE_10,F22_GRADE_7,F22_GRADE_4,F22_GRADE_02,F22_GRADE_
 42105,9,53,34,6,1,0,0,No data,No data,8
 42106,3,11,13,10,2,3,1,No data,No data,3
 42111,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-42112,0,0,2,0,1,1,0,No data,No data,4
+42112,0,0,2,0,1,1,0,No data,No data,3
 42114,0,1,5,6,3,4,0,No data,No data,4
 42115,2,3,3,1,0,0,0,No data,No data,No data
 42117,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
@@ -1261,7 +1261,7 @@ COURSE,F22_GRADE_12,F22_GRADE_10,F22_GRADE_7,F22_GRADE_4,F22_GRADE_02,F22_GRADE_
 42392,No data,No data,No data,No data,No data,No data,No data,75,2,5
 42402,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 42406,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-42417,No data,No data,No data,No data,No data,No data,No data,158,10,4
+42417,No data,No data,No data,No data,No data,No data,No data,158,9,4
 42421,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 42429,67,195,141,35,4,5,0,No data,No data,8
 42430,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
@@ -1287,7 +1287,7 @@ COURSE,F22_GRADE_12,F22_GRADE_10,F22_GRADE_7,F22_GRADE_4,F22_GRADE_02,F22_GRADE_
 42610,No data,No data,No data,No data,No data,No data,No data,254,0,2
 42611,No data,No data,No data,No data,No data,No data,No data,183,4,2
 42634,56,104,57,33,0,0,0,No data,No data,1
-42702,No data,No data,No data,No data,No data,No data,No data,13,0,No data
+42702,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 42712,No data,No data,No data,No data,No data,No data,No data,7,0,No data
 42713,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 42750,No data,No data,No data,No data,No data,No data,No data,74,1,No data
@@ -1326,7 +1326,7 @@ COURSE,F22_GRADE_12,F22_GRADE_10,F22_GRADE_7,F22_GRADE_4,F22_GRADE_02,F22_GRADE_
 46211,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 46230,14,24,38,14,10,3,0,No data,No data,4
 46300,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-46310,6,18,8,3,0,1,0,No data,No data,1
+46310,6,18,8,3,0,1,0,No data,No data,No data
 46320,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 46400,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 46411,6,5,8,1,2,2,0,No data,No data,2
@@ -1371,7 +1371,7 @@ COURSE,F22_GRADE_12,F22_GRADE_10,F22_GRADE_7,F22_GRADE_4,F22_GRADE_02,F22_GRADE_
 47325,5,2,3,1,0,0,0,No data,No data,No data
 47330,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 47331,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-47332,4,5,0,1,0,0,0,No data,No data,No data
+47332,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 47333,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 47334,2,16,6,0,0,0,0,No data,No data,No data
 47335,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
@@ -1421,11 +1421,11 @@ COURSE,F22_GRADE_12,F22_GRADE_10,F22_GRADE_7,F22_GRADE_4,F22_GRADE_02,F22_GRADE_
 62119,10,7,11,8,2,3,0,No data,No data,10
 62120,0,14,17,2,0,0,0,No data,No data,2
 62122,3,6,7,13,3,2,0,No data,No data,9
-62133,No data,No data,No data,No data,No data,No data,No data,112,15,6
+62133,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 62134,16,13,3,1,1,0,0,No data,No data,1
 62139,No data,No data,No data,No data,No data,No data,No data,62,0,1
 62142,9,14,17,7,0,0,0,No data,No data,2
-62145,1,10,10,4,0,0,9,No data,No data,11
+62145,1,10,10,4,0,0,8,No data,No data,11
 62146,4,6,3,0,0,0,0,No data,No data,3
 62159,1,1,5,6,14,9,0,No data,No data,5
 62168,2,4,1,2,1,0,0,No data,No data,6
@@ -1469,17 +1469,17 @@ COURSE,F22_GRADE_12,F22_GRADE_10,F22_GRADE_7,F22_GRADE_4,F22_GRADE_02,F22_GRADE_
 62267,0,8,17,1,1,0,0,No data,No data,1
 62268,4,1,6,7,0,0,0,No data,No data,1
 62269,1,28,21,9,3,0,0,No data,No data,3
-62270,12,32,40,27,16,15,2,No data,No data,11
+62270,12,32,40,27,16,15,2,No data,No data,10
 62271,2,1,2,1,4,4,0,No data,No data,1
 62273,12,36,39,20,15,6,1,No data,No data,7
-62276,0,0,14,19,7,4,0,No data,No data,3
+62276,0,0,14,19,7,4,0,No data,No data,2
 62277,4,11,4,8,4,5,1,No data,No data,No data
 62279,28,34,17,11,15,0,0,No data,No data,4
 62280,3,0,4,2,0,0,0,No data,No data,No data
 62281,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 62282,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 62297,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
-62317,No data,No data,No data,No data,No data,No data,No data,63,0,3
+62317,No data,No data,No data,No data,No data,No data,No data,63,0,2
 62318,8,14,17,8,11,12,0,No data,No data,8
 62324,20,35,41,20,7,0,0,No data,No data,No data
 62327,No data,No data,No data,No data,No data,No data,No data,91,13,2
@@ -1559,7 +1559,7 @@ COURSE,F22_GRADE_12,F22_GRADE_10,F22_GRADE_7,F22_GRADE_4,F22_GRADE_02,F22_GRADE_
 62640,No data,No data,No data,No data,No data,No data,No data,30,0,2
 62643,No data,No data,No data,No data,No data,No data,No data,No data,No data,No data
 62646,7,6,13,12,4,9,6,0,1,13
-62657,2,7,12,7,5,6,0,No data,No data,4
+62657,2,7,12,7,5,6,0,No data,No data,3
 62669,1,10,13,7,9,4,0,No data,No data,5
 62675,2,5,6,2,10,7,2,No data,No data,17
 62677,1,2,6,7,10,9,0,No data,No data,4

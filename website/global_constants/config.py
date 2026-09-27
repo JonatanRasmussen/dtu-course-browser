@@ -1,14 +1,14 @@
 
 
 class Config:
-    course_semesters = ['E20', 'F21', 'E21', 'F22', 'E22', 'F23', 'E23', 'F24', 'E24', 'F25', 'E25', 'F26']
-    course_years = '2025-2026'
+    course_semesters = ['E20', 'F21', 'E21', 'F22', 'E22', 'F23', 'E23', 'F24', 'E24', 'F25', 'E25', 'F26', 'E26', 'F27']
+    course_years = '2026-2027'
     data_null_value = None  #type: ignore
     data_decimal_precision = 2
     data_percental_precision = 1
 
-    website_current_year = "2025-2026"
-    website_last_updated = "29/05/2026"
+    website_current_year = course_years
+    website_last_updated = "25/09/2026"
 
     # feature flags for scraping
     feature_flag_scrape_archive = True

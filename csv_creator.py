@@ -35,7 +35,7 @@ class CsvCreator:
         name_and_path_of_csv = FileNameConsts.path_of_csv + FileNameConsts.name_of_csv + ".csv"
         name_and_path_of_pkl = FileNameConsts.path_of_pkl + FileNameConsts.name_of_pkl + ".pkl"
         print()
-        print("Part 1 of 3: Creating csv file with specified columns: "+name_and_path_of_csv)
+        print("Part 1 of 4: Creating csv file with specified columns: "+name_and_path_of_csv)
         print()
         premade_columns = CsvColumnConsts.PREMADE_COLUMNS
         premade_columns_df = CsvCreator._build_combined_df(name_and_path_of_csv, premade_columns)
@@ -46,7 +46,7 @@ class CsvCreator:
         name_and_path_of_extended_csv = FileNameConsts.path_of_csv + FileNameConsts.extended_csv_name + ".csv"
         name_and_path_of_extended_pkl = FileNameConsts.path_of_pkl + FileNameConsts.extended_pkl_name + ".pkl"
         print()
-        print("Part 2 of 3: Creating extended csv file with all columns: "+name_and_path_of_extended_csv)
+        print("Part 2 of 4: Creating extended csv file with all columns: "+name_and_path_of_extended_csv)
         print()
         no_premade_columns = []
         all_columns_df = CsvCreator._build_combined_df(name_and_path_of_extended_csv, no_premade_columns)
@@ -56,12 +56,17 @@ class CsvCreator:
         all_columns_df.to_pickle(name_and_path_of_extended_pkl)
 
         print()
-        print("Part 3 of 3: Creating json files used for website search and filter functionality...")
+        print("Part 3 of 4: Creating json files used for website search and filter functionality...")
         print()
         #save specific columns as json dct that are used by the website
         data_dct = WebsiteConsts.create_website_data_dct(premade_columns_df)  # Use premade column df
         CsvCreator._data_dct_to_json(data_dct)
         CsvCreator._filter_dct_to_json(all_columns_df)  # Use all columns df
+        print()
+
+        print("Part 4 of 4: Creating CV helper json file for LLM context generation...")
+        print()
+        CsvCreator._create_cv_helper()
         print()
 
         # Success!
@@ -87,19 +92,19 @@ class CsvCreator:
                 previous_courses = InfoFormatter.parse_previous_courses_from_dtu_website_rawstring(info_formatted_dct[InfoConsts.previous_course.key_df])
                 for previous_course in previous_courses:
                     if previous_course in all_course_numbers:
-                        for df, _ in [(eval_df, ""), (grade_df, "")]:
-                            current_row = df.loc[course_numbers[i]]
-                            if course_numbers[i] not in df.index or previous_course not in df.index:
+                        for df_target, _ in [(eval_df, ""), (grade_df, "")]:
+                            current_row = df_target.loc[course_numbers[i]]
+                            if course_numbers[i] not in df_target.index or previous_course not in df_target.index:
                                 continue  # No data at all for previous course
-                            prev_row = df.loc[previous_course]
-                            for col in df.columns:
+                            prev_row = df_target.loc[previous_course]
+                            for col in df_target.columns:
                                 if not isinstance(col, str) or not col.startswith((DtuConsts.dtu_term_spring, DtuConsts.dtu_term_autumn)):
                                     continue  # Skip columns that are not semester-specific
                                 current_val = current_row[col]
-                                if current_val == "" or current_val is None or current_val == GradeConsts.grade_none: # or pd.isna(current_val):
+                                if current_val == "" or current_val is None or current_val== GradeConsts.grade_none: # or pd.isna(current_val):
                                     prev_val = prev_row[col]  # Only fill in missing data ("", "No data", or NaN) in the current course
                                     if prev_val != "" and prev_val is not None and prev_val != GradeConsts.grade_none:
-                                        df.at[course_numbers[i], col] = prev_val  # Only copy if the previous course actually has data
+                                        df_target.at[course_numbers[i], col] = prev_val  # Only copy if the previous course actually has data
 
         for i in range(0, len(course_numbers)):
             grades_formatted_dct = GradeFormatter.format_grades(grade_df, course_numbers[i], semesters)
@@ -136,6 +141,8 @@ class CsvCreator:
             unique_vals = unique_vals.replace("", None)  # treat empty string as None
             if len(unique_vals) <= 1 and col != InfoConsts.old_recommended_prerequisites.key_df and col[0] != DtuConsts.dtu_term_autumn[0] and col[0] != DtuConsts.dtu_term_spring[0]:  # I know this will impact all columns starting with E and F but I kinda don't care
                 print(f"[Warning] Column '{col}' has identical values for all rows: {unique_vals.iloc[0] if not unique_vals.empty else None}")
+                if col == InfoConsts.study_lines.key_df:
+                    print(f"[Warning] If no study lines were found, it is likely because 'Consts.course_years' ({Config.course_years}) is NOT the most recent year on DTU's website. Study lines cannot be scraped for older years.")
         return df
 
     @staticmethod
@@ -217,6 +224,71 @@ class CsvCreator:
         with open(path_and_file_name, 'w') as fp:
             json.dump(filter_dct, fp)
         print(f"The dictionary {json_name}.json has been saved...")
+
+    @staticmethod
+    def _create_cv_helper():
+        """ Iterates over all historical scraped_info CSVs (from oldest to newest) to build up a
+        comprehensive context dictionary for every course that has ever existed.
+        The context is formatted as one long string optimized for LLM consumption. """
+        # Extract unique year ranges and sort them (oldest to newest)
+        year_ranges = Utils.extract_unique_year_ranges(Config.course_semesters)
+        # The required columns that must be present in the CSV
+        required_columns = [
+            FileNameConsts.df_index,
+            InfoConsts.danish_name.key_raw,
+            InfoConsts.course_description.key_raw,
+            InfoConsts.course_content.key_raw,
+            InfoConsts.learning_objectives.key_raw
+        ]
+        cv_context_dict = {}
+        for year_range in year_ranges:
+            year_range_underscores = year_range.replace('-', '_')
+            csv_file_name = f"{FileNameConsts.info_df}_{year_range_underscores}"
+            json_file_path = f"{FileNameConsts.scraped_data_folder_name}/archived_courses_{year_range_underscores}.json"
+            # Load CSV
+            try:
+                df = Utils.load_scraped_csv(csv_file_name)
+            except FileNotFoundError:
+                print(f"[Warning] CV Helper: Could not find {csv_file_name}.csv. Skipping...")
+                continue
+            # Load JSON containing the English names
+            course_names_dict = {}
+            try:
+                with open(json_file_path, 'r', encoding='utf-8') as f:
+                    json_data = json.load(f)
+                    course_names_dict = json_data.get(year_range, {})
+            except FileNotFoundError:
+                print(f"[Warning] CV Helper: Could not find {json_file_path}. English names might be missing.")
+            # Just crash if required columns are missing
+            missing_cols = [col for col in required_columns if col not in df.columns]
+            if missing_cols:
+                raise KeyError(f"[Error] CV Helper: Missing required columns {missing_cols} in {csv_file_name}.csv")
+            # Iterate over each course in the CSV
+            for _index, row in df.iterrows():
+                course_number = str(row[FileNameConsts.df_index])
+                # Fetch the English name from the JSON dict (fallback if missing)
+                english_name = course_names_dict.get(course_number, "Unknown Course Name")
+                # Start the context parts with the English name
+                context_parts = [f"Name English: {english_name}"]
+                for col in required_columns[1:]:  # Skip df_index
+                    val = row[col]
+                    if pd.notna(val) and str(val).strip():
+                        # Clean HTML artifacts and extra whitespaces
+                        clean_text = re.sub(r'<[^>]+>', ' ', str(val))
+                        clean_text = re.sub(r'\s+', ' ', clean_text).strip()
+                        # Format nicely for LLM consumption
+                        col_name_clean = col.replace('_', ' ').title()
+                        context_parts.append(f"{col_name_clean}: {clean_text}")
+                # Combine all parts with a line break for better readability
+                full_context_string = "\n".join(context_parts)
+                # Overwrite existing data (ensures we keep the most recent context for the course)
+                cv_context_dict[course_number] = full_context_string
+        # Save the dictionary as a JSON file
+        Utils.create_folder(FileNameConsts.path_of_pkl)
+        path_and_file_name = f"{FileNameConsts.path_of_pkl}{FileNameConsts.cv_helper_json}.json"
+        with open(path_and_file_name, 'w', encoding='utf-8') as fp:
+            json.dump(cv_context_dict, fp, ensure_ascii=False, indent=4)
+        print(f"The dictionary {FileNameConsts.cv_helper_json}.json has been saved with {len(cv_context_dict)} unique courses.")
 
 
 #%%
