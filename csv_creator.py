@@ -1,5 +1,3 @@
-#%%
-
 import pandas as pd
 import json
 import re
@@ -81,6 +79,18 @@ class CsvCreator:
         grade_df = Utils.load_scraped_df(FileNameConsts.grade_df)
         eval_df = Utils.load_scraped_df(FileNameConsts.eval_df)
         info_df = Utils.load_scraped_df(f"{FileNameConsts.info_df}_{Config.course_years.replace('-','_')}")
+
+        # Load orbit dict if flag is true (Load once outside the loop for performance)
+        orbit_dict = {}
+        if Config.use_orbit_profile_pictures:
+            orbit_file_name = f"{FileNameConsts.orbit_json}_{Config.course_years.replace('-', '_')}.json"
+            orbit_file_path = f"{FileNameConsts.scraped_data_folder_name}/{orbit_file_name}"
+            try:
+                with open(orbit_file_path, 'r', encoding='utf-8') as f:
+                    orbit_dict = json.load(f)
+            except FileNotFoundError:
+                print(f"[Warning] CsvCreator: Could not find {orbit_file_path}. Orbit pictures will not be added.")
+
         # Adding data dicts to the data frame, one course at a time
         semesters = Config.course_semesters
         column_names = []  # Create list with column names, this will be the data frame columns
@@ -110,6 +120,25 @@ class CsvCreator:
             grades_formatted_dct = GradeFormatter.format_grades(grade_df, course_numbers[i], semesters)
             evals_formatted_dct = EvalFormatter.format_evaluations(eval_df, course_numbers[i], semesters)
             info_formatted_dct = InfoFormatter.format_info(info_df, course_numbers[i])
+            # Inject Orbit profile pictures if enabled
+            if Config.use_orbit_profile_pictures and orbit_dict:
+                # Inject Orbit profile pictures and strictly enforce "NO_DATA" for missing images
+                pic_mapping = {
+                    InfoConsts.main_responsible_name.key_df: InfoConsts.main_responsible_pic.key_df,
+                    InfoConsts.co_responsible_1_name.key_df: InfoConsts.co_responsible_1_pic.key_df,
+                    InfoConsts.co_responsible_2_name.key_df: InfoConsts.co_responsible_2_pic.key_df,
+                    InfoConsts.co_responsible_3_name.key_df: InfoConsts.co_responsible_3_pic.key_df,
+                    InfoConsts.co_responsible_4_name.key_df: InfoConsts.co_responsible_4_pic.key_df,
+                }
+                for name_col, pic_col in pic_mapping.items():
+                    teacher_name = info_formatted_dct.get(name_col)
+                    pic_url = InfoConsts.no_responsible  # Default to NO_DATA to protect HTML logic
+                    if Config.use_orbit_profile_pictures and orbit_dict and teacher_name and isinstance(teacher_name, str):
+                        fetched_url = orbit_dict.get(teacher_name.strip(), "")
+                        # Only overwrite NO_DATA if we actually got a valid URL string
+                        if fetched_url and fetched_url != "None":
+                            pic_url = fetched_url
+                    info_formatted_dct[pic_col] = pic_url
             data_dct = {**grades_formatted_dct, **evals_formatted_dct, **info_formatted_dct}
             if i == 0:  # Initialize columns
                 if premade_columns == []:  # Create a column for all keys in data_dct if no premade columns exist

@@ -8,10 +8,13 @@ class Config:
     data_percental_precision = 1
 
     website_current_year = course_years
-    website_last_updated = "25/09/2026"
+    website_last_updated = "30/09/2026"
+
+    use_orbit_profile_pictures = True
 
     # feature flags for scraping
     feature_flag_scrape_archive = True
     feature_flag_scrape_evals = True
     feature_flag_scrape_grades = True
     feature_flag_scrape_info = True
+    feature_flag_scrape_orbit = True

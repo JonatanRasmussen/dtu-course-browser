@@ -281,7 +281,9 @@
                 </td>
                 <td class="align-top">
                   {% if data.MAIN_RESPONSIBLE_PIC != 'NO_DATA' %}
-                  <img class="img-fluid" alt="100%x280" src="{{data.MAIN_RESPONSIBLE_PIC}}">
+                  <img class="img-fluid" alt="100%x280" src="{{data.MAIN_RESPONSIBLE_PIC}}"
+                       onerror="this.onerror=null; this.src='{{ url_for('static', filename='assets/brand/blank_photo.png') }}';"
+                       onload="if(this.naturalWidth <= 10 && !this.src.includes('blank_photo.png')) { this.src='{{ url_for('static', filename='assets/brand/blank_photo.png') }}'; }">
                   {% endif %}
                 </td>
               </tr>
@@ -330,7 +332,9 @@
                 </td>
                 <td class="align-top">
                   {% if data.CO_RESPONSIBLE_1_PIC != 'NO_DATA' %}
-                  <img class="img-fluid" alt="100%x280" src="{{data.CO_RESPONSIBLE_1_PIC}}">
+                  <img class="img-fluid" alt="100%x280" src="{{data.CO_RESPONSIBLE_1_PIC}}"
+                       onerror="this.onerror=null; this.src='{{ url_for('static', filename='assets/brand/blank_photo.png') }}';"
+                       onload="if(this.naturalWidth <= 10 && !this.src.includes('blank_photo.png')) { this.src='{{ url_for('static', filename='assets/brand/blank_photo.png') }}'; }">
                   {% endif %}
                 </td>
               </tr>
@@ -358,7 +362,9 @@
                 </td>
                 <td class="align-top">
                   {% if data.CO_RESPONSIBLE_2_PIC != 'NO_DATA' %}
-                  <img class="img-fluid" alt="100%x280" src="{{data.CO_RESPONSIBLE_2_PIC}}">
+                  <img class="img-fluid" alt="100%x280" src="{{data.CO_RESPONSIBLE_2_PIC}}"
+                       onerror="this.onerror=null; this.src='{{ url_for('static', filename='assets/brand/blank_photo.png') }}';"
+                       onload="if(this.naturalWidth <= 10 && !this.src.includes('blank_photo.png')) { this.src='{{ url_for('static', filename='assets/brand/blank_photo.png') }}'; }">
                   {% endif %}
                 </td>
               </tr>
@@ -386,7 +392,9 @@
                 </td>
                 <td class="align-top">
                   {% if data.CO_RESPONSIBLE_3_PIC != 'NO_DATA' %}
-                  <img class="img-fluid" alt="100%x280" src="{{data.CO_RESPONSIBLE_3_PIC}}">
+                  <img class="img-fluid" alt="100%x280" src="{{data.CO_RESPONSIBLE_3_PIC}}"
+                       onerror="this.onerror=null; this.src='{{ url_for('static', filename='assets/brand/blank_photo.png') }}';"
+                       onload="if(this.naturalWidth <= 10 && !this.src.includes('blank_photo.png')) { this.src='{{ url_for('static', filename='assets/brand/blank_photo.png') }}'; }">
                   {% endif %}
                 </td>
               </tr>
@@ -414,7 +422,9 @@
                 </td>
                 <td class="align-top">
                   {% if data.CO_RESPONSIBLE_4_PIC != 'NO_DATA' %}
-                  <img class="img-fluid" alt="100%x280" src="{{data.CO_RESPONSIBLE_4_PIC}}">
+                  <img class="img-fluid" alt="100%x280" src="{{data.CO_RESPONSIBLE_4_PIC}}"
+                       onerror="this.onerror=null; this.src='{{ url_for('static', filename='assets/brand/blank_photo.png') }}';"
+                       onload="if(this.naturalWidth <= 10 && !this.src.includes('blank_photo.png')) { this.src='{{ url_for('static', filename='assets/brand/blank_photo.png') }}'; }">
                   {% endif %}
                 </td>
               </tr>

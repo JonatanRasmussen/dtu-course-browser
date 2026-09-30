@@ -9,6 +9,7 @@ from scrape_archive import ArchiveScraper
 from scrape_evaluations import EvalScraper
 from scrape_grades import GradeScraper
 from scrape_info import InfoScraper
+from scrape_orbit import OrbitScraper
 
 class AllInOneScraper:
 
@@ -55,6 +56,14 @@ class AllInOneScraper:
                 current_year_course_numbers = Utils.get_archived_course_numbers(academic_year)
                 info_df_name = f"{FileNameConsts.info_df}_{academic_year[0:4]}_{academic_year[5:9]}"
                 InfoScraper.scrape_info(current_year_course_numbers, academic_year, info_df_name)
+
+        # orbit profile pictures backup
+        if Config.feature_flag_scrape_orbit:
+            year_ranges = Utils.extract_unique_year_ranges(course_semesters)
+            for academic_year in year_ranges:  # academic_year has format '2024-2025'
+                current_year_course_numbers = Utils.get_archived_course_numbers(academic_year)
+                orbit_file_name = f"{FileNameConsts.orbit_json}_{academic_year[0:4]}_{academic_year[5:9]}"
+                OrbitScraper.scrape_orbit(current_year_course_numbers, academic_year, orbit_file_name)
 
     @staticmethod
     def run_all_scrape_scripts_one_semester_at_a_time():
@@ -112,5 +121,5 @@ class AllInOneScraper:
 
 #%%
 if __name__ == "__main__":
-    AllInOneScraper.quick_test_scrape_for_debugging_please_ignore()
+    #AllInOneScraper.quick_test_scrape_for_debugging_please_ignore()
     AllInOneScraper.run_all_scrape_scripts()

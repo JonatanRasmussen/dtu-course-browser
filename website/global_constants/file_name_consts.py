@@ -3,6 +3,7 @@
 class FileNameConsts:
     # General
     scraped_data_folder_name = "scraped_data"
+    scraped_images_folder_name = "scraped_images"
     archived_courses_json = "archived_courses"
     course_number_json = "course_numbers"
     cv_helper_json = "cv_helper"
@@ -11,6 +12,7 @@ class FileNameConsts:
     eval_df = 'scraped_evals'
     grade_df = 'scraped_grades'
     info_df = 'scraped_info'
+    orbit_json = 'scraped_orbit'
     eval_format = 'format_evals'
     grade_format = 'format_grades'
     info_format = 'format_info'
@@ -24,6 +26,10 @@ class FileNameConsts:
 
     # Year
     create_file_for_specific_year = ""
+
+    # Cached profile pics handling
+    path_of_profile_pics = "website/static/assets/profile_pics/"
+    pythonanywherecom_path_of_profile_pics = pythonanywherecom_top_folder + path_of_profile_pics
 
     # CSV
     path_of_csv = "website/static/csv_files/"
