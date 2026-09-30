@@ -192,7 +192,7 @@
                   <img class="img-fluid" alt="100%x280"
                     src="{{ url_for('static', filename='assets/brand/blank_photo.png') }}" width="100%">
                   {% else %}
-                    <img class="img-fluid" alt="100%x280" src="{{data.responsible[course]}}" width="100%" onerror="this.onerror=null; this.src='{{ url_for('static', filename='assets/brand/blank_photo.png') }}';" onload="if(this.naturalWidth <= 10 && !this.src.includes('blank_photo.png')) { this.src='{{ url_for('static', filename='assets/brand/blank_photo.png') }}'; }">
+                    <img class="img-fluid" loading="lazy" alt="100%x280" src="{{data.responsible[course]}}" width="100%" onerror="this.onerror=null; this.src='{{ url_for('static', filename='assets/brand/blank_photo.png') }}';" onload="if(this.naturalWidth <= 10 && !this.src.includes('blank_photo.png')) { this.src='{{ url_for('static', filename='assets/brand/blank_photo.png') }}'; }">
                   {% endif %}
                   </td>
                 </tr>
