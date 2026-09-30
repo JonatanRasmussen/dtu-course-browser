@@ -31,7 +31,7 @@
 
 <h1 class="display-4">DTU Course Analyzer {{last_update.current_year}}</h1>
 <br>
-<p class="lead">A software project by DTU-graduate Jonatan Rasmussen s183649</p>
+<p class="lead">A software project by Jonatan Rasmussen s183649</p>
 <p style="color:red; font-size:12px; font-weight:bold;"></p>
 <br>
 <!-- End of main title -->
@@ -1298,16 +1298,28 @@
   {% endfor %}
 </section>
 <!-- End of card list -->
-<br><br><br><br>
+<br><br><br>
 
 <!-- End of outer loop -->
 {% endfor %}
 
 <!-- Start of where-to-go-from-here links -->
-<a href="/browse?dk=language&eng=language" style="font-size: 20px" target="_blank">Click here to browse all DTU's 1700+ courses!</a>
+<!-- Start of where-to-go-from-here buttons -->
+<a href="/browse?dk=language&eng=language"
+   class="btn d-block mb-2"
+   style="background-color: rgb(153, 0, 0); max-width: 26rem; color: white; font-size: 14px;"
+   target="_blank">
+  Click here to browse all DTU's 1700+ courses!
+</a>
+
+<a href="/faq"
+   class="btn d-block"
+   style="background-color: rgb(47, 62, 234); max-width: 26rem; color: white; font-size: 14px;"
+   target="_blank">
+  You can also check out the FAQ page!
+</a>
+
 <br><br>
-<a href="/faq" style="font-size: 20px" target="_blank">If you're unsure about where to go from here, check out the FAQ page!</a>
-<br><br><br><br>
 <!-- End of where-to-go-from-here links -->
 
 <!-- Modal -->
